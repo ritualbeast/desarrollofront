@@ -2,6 +2,10 @@ import icono1 from '../assets/img/icono_dashboard.png'
 import icono2 from '../assets/img/icono_encuesta.png'
 import icono3 from '../assets/img/icono_ipn.png'
 import icono4 from '../assets/img/icono_reporte.png'
+import icono5 from '../assets/img/icono_preguntas.png'
+import icono6 from '../assets/img/icono_logica.png'
+import icono7 from '../assets/img/icono_formato.png'
+
 
 const lista = [
     {
@@ -24,25 +28,16 @@ const lista = [
 
 const lista2 = [
     {
-        icono: icono1,
-        nombre: "crear"
-    },
-    {
-        icono: icono2,
-        nombre: "editar"
-    },
-    {
-        icono: icono3,
+        icono: icono5,
         nombre: "bancopreguntas"
     },
     {
-        icono: icono4,
-        nombre: "formato"
-    }
-    ,
-    {
-        icono: icono4,
+        icono: icono6,
         nombre: "logica"
+    },
+    {
+        icono: icono7,
+        nombre: "formato"
     }
 
 
