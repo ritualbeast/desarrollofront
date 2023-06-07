@@ -1,0 +1,17 @@
+.contenedor-estilo {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+}
+.row-estilo {
+    position: static;
+    display: unset;
+    justify-content: space-between;
+  }
+  .menu-reporte-estilo{
+    cursor: pointer;
+    border: 1px solid #4e4e4e;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 384%;
+  }

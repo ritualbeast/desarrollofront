@@ -1,0 +1,15 @@
+.contenedor-crear {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+}
+.row-crear {
+    position: static;
+    display: unset;
+    justify-content: space-between;
+  }
+  .menu-reporte-crear{
+    cursor: pointer;
+    border: 1px solid #4e4e4e;
+    padding: 20px;
+  }

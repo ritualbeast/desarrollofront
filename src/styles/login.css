@@ -1,0 +1,76 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10%;
+    margin-left: 67%;
+}
+.login-pt1 {
+    text-align: left;
+    margin-top: 170px;
+  }
+  
+  .login-pt2 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-right: 115px;
+  }
+
+  .login-pt2-1 {
+    display: flex;
+    justify-content: space-between;
+  }
+  .img-1 {
+    margin-right: 7.1%;
+  }
+  .login-pt2-2 {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .login-pt2 label {
+    margin-bottom: 5px;
+  }
+  
+  .login-pt2 input {
+    padding: 5px;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid gray;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .login-pt2 button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 160%;
+  }
+  
+  .login-pt3 {
+    margin-top: 20px;
+    margin-left: 90px;
+  }
+  
+  .login-pt4 {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .login-pt4 p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-left: 50px;
+}
+  .olvide {
+    margin-top: 15px;
+    margin-right: 70px;
+}
+  .registro {
+    margin-top: 15px;
+    margin-right: 70px;
+  }

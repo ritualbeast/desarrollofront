@@ -1,0 +1,22 @@
+.row {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+  }
+  .contenedor-reporte{
+    border-right: #4e4e4e;
+  }
+  .menu-tabs {
+    margin: 0 20px;
+    padding: 10px 90px 10px 90px;
+    background-color: transparent;
+  }
+  .menu-reporte{
+    cursor: pointer;
+  }
+  .hr2 {
+    margin-top: auto;
+    margin-bottom: 15px;
+    border: 1px solid #6c6b6b;
+  }
+  

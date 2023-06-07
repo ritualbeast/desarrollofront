@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import '../../../styles/consultarRespuestaIPN.css'
 
 const ConsultarRespuestaIPN = () => {
     const [fechaValidez, setFechaValidez] = useState('');

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/global.css';
 
 const FormatoEncuesta = () => {

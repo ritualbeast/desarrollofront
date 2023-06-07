@@ -1,59 +1,187 @@
+/* Header */
+.header-content{
+  padding-bottom: 1%;
+}
+.menu-logo {
+  margin-top: 20px;
+  margin-left: 30px;
+}
+.menu-icon {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+.menu-icon-1 {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+.menu-icon-1:hover {
+  cursor: pointer;
+}
+.form-inline {
+  display: flex;
+  float: right;
+  margin: auto;
+  width: 15%;
+  padding-top: 0.3%;
+}
+.form-inline-1 {
+  display: flex;
+  float: right;
+  width: 100%;
+}
+.mensaje-senal {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  background-color: #ffd230;
+  border-radius: 50%;
+  top: -30px;
+  right: -8px;
+}
+.menu-icon-2 {
+  margin-top: 13px;
+  margin-right: 10px;
+}
+.menu-icon-2:hover {
+  cursor: pointer;
+}
+.dropdown-toggle{
+  display: flex;
+  text-align: center;
+}
+#img-user {
+  border-radius: 16px;
+  border-style: none;
+  height: 43px;
+  vertical-align: baseline;
+  width: 43px;
+  margin-top: 13px;
+}
+.menu-icon-3 {
+  margin-bottom: 12px;
+  margin-right: 10px;
+  margin-top: 15%;
+  margin-left: 3%;
+}
+.nav-link-2:hover{
+  cursor: pointer;
+}
+.dropdown-toggle:hover {
+  cursor: pointer;
+}
+.dropdown-menu-n {
+  position: absolute;
+  margin-top: 0.8%;
+  padding: 5px;
+  padding-top: 0.4%;
+  padding-bottom: 0.7%;
+  z-index: 1000;
+  font-size: 1rem;
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  left: 78%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.dropdown-menu-n.show {
+  display: block;
+}
+.dropdown-menu {
+  position: absolute;
+  margin-top: 4.8%;
+  padding: 5px;
+  padding-top: 0.4%;
+  padding-bottom: 0.7%;
+  z-index: 1000;
+  font-size: 1rem;
+  text-align: left;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  left: 90%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.dropdown-menu.show {
+  display: block;
+}
+.dropdown-item {
+  transition: background-color 0.3s ease; /* Agregamos una transición suave para el cambio de color */
+}
+.dropdown-item:hover {
+  background-color: rgba(0, 0, 0, 0.2); /* Cambiamos el color de fondo al pasar el mouse por encima */
+}
+
+/* Footer */
 .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #f5f5f5;
-    color: #333;
-    text-align: center;
-    padding: 10px;
-  }
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #cbcaca;
+  color: #333;
+  text-align: center;
+  padding: 5px;
+}
 
-  .menu {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    background-color: #f5f5f5;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    color: #333;
-  }
-  Link 
-    {
-        text-decoration: none;
-        color: #333;
-    }
-  
-    .table td, .table th {
-        width: 25%;
-      }
+/* Layout */
+.main-content {
+  margin-left: 2%;
+}
+.row {
+  width: 100%;
+}
 
-      .btn-group > .btn {
-        margin-right: 5px;
-      }
-
-      .encuestaButtonCrear {
-        display: flex;
-        justify-content: flex-end;
-        margin : 40px;
-      }
-      
-      .encuestaButtonCrear button {
-        border-radius: 20px;
-      }
-      .encuestaContenedorBotones
-        {
-            display: flex;
-            justify-content: flex-end;
-        }
-      
-
-        .nav-link.active {
-          background-color: #007bff;
-          color: #fff;
-        }
-      
-      
+/* SIDEBAR */
+.sidebar-2 {
+  background: #f0f0f1;
+  border-radius: 15px;
+  display: inherit;
+  height: 190px;
+  left: 35px;
+  min-width: 50px;
+  text-align: center;
+  width: 50px;
+  margin-left: 19%;
+  margin-top: 5%;
+}
+.fondo-icon1{
+  padding-top: 16px;
+}
+.fondo-icon2 {
+  padding-top: 8px;
+  padding-left: 5px;
+  padding-bottom: 7px;
+  padding-right: 5px;
+  border-radius: 10px;
+  width: 60%;
+  margin-left: 5px;
+}
+.fondo-icon2.active-background {
+  background-color: white;
+}
+.icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.juntar-icon-nombre {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 2px;
+}
+.opcion-nombre {
+  background-color: #ffd230;
+  margin-left: 20px;
+  text-decoration: none;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  border-radius: 20px;
+}
+.no-underline {
+  text-decoration: none;
+  color: black;
+}

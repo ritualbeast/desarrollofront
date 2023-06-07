@@ -30,6 +30,7 @@ const CrearEncuestadeCero = () => {
           Nombre de la encuesta:
           <input type="text" value={nombreEncuesta} onChange={handleNombreEncuesta} />
         </label>
+
         <label>
           Categoría de la encuesta:
           <select value={categoriaEncuesta} onChange={handleCategoriaEncuesta}>
@@ -43,16 +44,18 @@ const CrearEncuestadeCero = () => {
             <input type="text" value={nuevaCategoria} onChange={handleNuevaCategoria} placeholder="Escribe la nueva categoría" />
           )}
         </label>
-        <div className="card-container">
-          <div className="card">
+
+        <div className="card-container-decero">
+          <div className="card-decero">
             <h3>Formato Clásico</h3>
             <p>Permite mostrar todas las preguntas de la encuesta en una sola página.</p> 
           </div>
-          <div className="card">
+          <div className="card-decero">
             <h3>Una pregunta a la vez</h3>
             <p>Permite mostrar una sola pregunta de la encuesta por página.</p>          
           </div>
         </div>
+
         <div className='encuestaContenedorBotones'>
             <div className='encuestaButtonCrear'>
               <Link to= '/create'>
@@ -69,7 +72,7 @@ const CrearEncuestadeCero = () => {
                 </button>
               </Link>
             </div>
-      </div>
+          </div>
       </form>
   )
 }

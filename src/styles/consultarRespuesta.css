@@ -1,0 +1,15 @@
+.div-fecha {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .label {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+  }
+  
+  button {
+    float: left;
+  }
