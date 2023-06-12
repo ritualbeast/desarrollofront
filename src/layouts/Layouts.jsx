@@ -20,7 +20,7 @@ const Layout = () => {
   return (
     <>
       <Header onToggleSidebar={toggleSidebar} />
-      <Row>
+      <Row className='layout-row'>
         {isSidebarVisible && (
           <Col xs={2} style={{ width: '15.9%' }}>
             <Sidebar onClose={closeSidebar} />
