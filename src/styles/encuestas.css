@@ -109,10 +109,16 @@
   }
   
   .encuestas-filtrarpor__li {
-    margin-left: 20px;
-    margin-right: 20px;
     display: inline-block;
   }
+
+  .encuestas-filtrarpor__li a {
+    text-decoration: none;
+    color: #000;
+    padding: 0.5rem;
+    border-bottom: 1px solid #000;
+  }
+  
   
   
   
@@ -170,4 +176,62 @@
     width: 100%;
     padding: 1%;
   }
+  
+
+
+  /*posicionar el icono menu*/
+  .encuestas-dropdownmenu{
+    background-color: #fff;
+  }
+
+  .encuestas-icon{
+    background-color: #fff;
+    border-style: none;
+  }
+  .encuestas-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .encuestas-titulo h4 {
+    margin: 0;
+  }
+  
+  .encuestas-dropdownmenu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .encuestas-icon {
+    border: none;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+  }
+  .encuestas-icon:hover{
+    border-style: solid;
+    border-width: 3px;
+    border-color: #FFC700;
+    border-radius: 5px;
+  }
+  .dropdown-menu-right {
+    background-color: #fff;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .encuesta-item{
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    padding: 0.5rem;
+  }
+  .encuesta-item span{
+    margin-right: 1rem;
+  }
+  
+  
+  
   
