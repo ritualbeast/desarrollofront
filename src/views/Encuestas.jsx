@@ -1,17 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../styles/encuestas.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BiPlus } from 'react-icons/bi';
-import { Select, Pagination } from '@mui/material';
+import { Select, Pagination, Box, Modal} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from "@material-ui/core";
 import { Dropdown } from 'react-bootstrap';
 import svgManager from '../assets/svg';
-/*iconos menu encuestas*/
-import puntos from '../assets/img/icono_3puntos.jpg';
-import copy from '../assets/img/icon_copy.png';
-import eliminar from '../assets/img/icon_basura.png';
-import base from '../assets/img/icon_database.png';
+import CrearEncuestas from './Encuestas/CrearEncuestas';
+import ModalCrearEncuestas from './Encuestas/ModalCrearEncuestas';
+
 const pagination = makeStyles({
   root: {
     "& li.Mui-selected": {
@@ -31,134 +29,138 @@ const shareSVG = svgManager.getSVG('share');
 const databaseSVG = svgManager.getSVG('database');
 const sendSVG = svgManager.getSVG('send');
 const trash = svgManager.getSVG('trash');
+const closeSVG = svgManager.getSVG('close');
 
 const paginationStyle = {
   '& .Mui-selected': {
     color: '#0a0800',
-    backgroundColor: '#f3cd4f',
+    backgroundColor: '#f3cd4f !important',
   },
 };
 
+  
 const Encuestas = () => {
   const paginationClass = pagination();
+  const [opcionFiltro, setOpcionFiltro] = useState('');
+  const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
+
+  const handleFiltroClick = (opcion) => {
+    setOpcionFiltro(opcion);
+  };
+
+  const handleOpenCrearEncuesta = () => {
+  setOpenCrearEncuesta(true);
+};
+
   return (
-    <Container fluid className='encuesta-container'>
-      <Row id="encuestas-Row">
-        <Col xs={2} className="encuestas__coltitulo">
-          <h2 className='encuesta-titulo'>Mis Encuestas</h2>
-        </Col>
+    <>
+      <Container fluid className='encuesta-container'>
+        <Row id="encuestas-Row">
+          <Col xs={2} className="encuestas__coltitulo">
+            <h2 className='encuesta-titulo'>Mis Encuestas</h2>
+          </Col>
 
-        <Col xs={7} className="encuestas__colinput">
-          <div className="input-container">
-            <input
-              type="text"
-              placeholder="Buscar por nombre"
-              className="input-filtro"
+          <Col xs={7} className="encuestas__colinput">
+            <div className="input-container">
+              <input
+                type="text"
+                placeholder="Buscar por nombre"
+                className="input-filtro"
+              />
+              <SearchIcon className="search-icon" />
+            </div>
+          </Col>
+
+          <Col xs={3} className="encuestas__colbutton">
+            <Button
+              variant="primary"
+              className="btn-notisurvey"
+              startIcon={<BiPlus />}
+              onClick={handleOpenCrearEncuesta}
+            >
+              Crear Encuesta <BiPlus />
+            </Button>
+          </Col>
+        </Row>
+        <Row className="encuestasFiltros" xs={12}>
+          <Col xs={6} className="encuestas-filtrarpor">
+            <h4>Filtrar por:</h4>
+            <ul className="encuestas-filtrarpor__ul">
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'abiertas' ? 'active' : ''}`} onClick={() => handleFiltroClick('abiertas')}>
+                <a >Abiertas</a>
+              </li>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'cerradas' ? 'active' : ''}`} onClick={() => handleFiltroClick('cerradas')}>
+                <a >Cerradas</a>
+              </li>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'todas' ? 'active' : ''}`} onClick={() => handleFiltroClick('todas')}>
+                <a>Todas</a>
+              </li>
+            </ul>
+          </Col>
+
+          <Col xs={6} className="encuestas-ordenarpor">
+            <h4>Ordenar por:</h4>
+            <select className="encuestas-ordenarpor__select">
+              <option value="default">Seleccionar Categoría</option>
+              <option value="nombre">Nombre</option>
+              <option value="fecha">Fecha de creación</option>
+            </select>
+          </Col>
+        </Row>
+
+        {(opcionFiltro === 'abiertas' || opcionFiltro === 'cerradas' || opcionFiltro === 'todas') && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} />
+        )}
+        <Row className="encuestas-paginacion">
+          <Col xs={12} className="encuestas-paginacion__col">
+            <div className={paginationClass.root}>
+            <Pagination
+              count={10}
+              variant="outlined"
+              shape="rounded"
+              sx={paginationStyle}
             />
-            <SearchIcon className="search-icon" />
-          </div>
-        </Col>
+            </div>
+          </Col>
+        </Row>
 
-        <Col xs={3} className="encuestas__colbutton">
-          <Button
-            variant="primary"
-            className="btn-notisurvey"
-            startIcon={<BiPlus />}
-          >
-            Crear Encuesta <BiPlus />
-          </Button>
-        </Col>
-      </Row>
-      <Row className="encuestasFiltros" xs={12}>
-        <Col xs={6} className="encuestas-filtrarpor">
-          <h4>Filtrar por:</h4>
-          <ul className="encuestas-filtrarpor__ul">
-            <li className="encuestas-filtrarpor__li"><a href=''>Abiertas</a></li>
-            <li className="encuestas-filtrarpor__li"><a href=''>Cerradas</a></li>
-            <li className="encuestas-filtrarpor__li"><a href=''>Todas</a></li>
-          </ul>
-        </Col>
+      </Container>
+      
+      <Modal
+  open={openCrearEncuesta}
+  onClose={() => setOpenCrearEncuesta(false)}
+  sx={{
+    width: '60%',
+    height: '60%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 'auto',
+    marginTop: '5%',
+  }}
+>
+  <Box className="encuesta_modalcrear" sx={{ width: '50%' }}>
+    <div className="encuesta_modalcrear_closeicon">
+      <p className="encuesta_modalcrear__title">Crear encuesta</p>
+      <span
+        dangerouslySetInnerHTML={{ __html: closeSVG }}
+        onClick={() => setOpenCrearEncuesta(false)}
+        className="encuesta_modalcrear__close"
+        style={{ marginLeft: 'auto' }}
+      />
+    </div>
+    
+    <ModalCrearEncuestas />
+  </Box>
+</Modal>
 
-        <Col xs={6} className="encuestas-ordenarpor">
-          <h4>Ordenar por:</h4>
-          <select className="encuestas-ordenarpor__select">
-            <option value="default">Seleccionar Categoría</option>
-            <option value="nombre">Nombre</option>
-            <option value="fecha">Fecha de creación</option>
-          </select>
+          
+    
+    
+    </>
+    
 
-        </Col>
-      </Row>
-      <Row className="encuestas-cuerpo">
-        <Col xs={4} className="encuestas-cuerpo__col">
-        <div className='encuestas-titulo'>
-          <h4 className='encuestas-titulo__h4'>Encuesta 1</h4>
-          <Dropdown className='encuestas-dropdownmenu'>
-            <Dropdown.Toggle variant="primary" id="dropdown-menu" className='encuestas-icon'>
-              <span dangerouslySetInnerHTML={{ __html: verticalSVG }} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className='dropdown-menu-right dropdown-column'>
-              
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: copySVG }} />
-                Duplicar</Dropdown.Item>
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: eyeSVG }} />
-                Visualizar</Dropdown.Item>
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: shareSVG }} />
-                Compartir</Dropdown.Item>
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: databaseSVG }} />
-                Ver datos</Dropdown.Item>
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: sendSVG }} />
-                Publicar</Dropdown.Item>
-              <Dropdown.Item className='encuesta-item'>
-                <span dangerouslySetInnerHTML={{ __html: trash }} />
-                Eliminar</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-            
-
-
-            <p>Creación: 01/01/2021</p>
-            
-            <Button variant="primary" className="encuestas-editarbutton">
-              Editar encuesta
-            </Button>
-        </Col>
-        <Col xs={4} className="encuestas-cuerpo__col">
-            <h4>Encuesta 2</h4>
-            <p>Creación: 01/01/2021</p>
-            <Button variant="primary" className="encuestas-editarbutton">
-              Editar encuesta
-            </Button>
-        </Col>
-        <Col xs={4} className="encuestas-cuerpo__col">
-            <h4>Encuesta 3</h4>
-            <p>Creación: 01/01/2021</p>
-            <Button variant="primary" className="encuestas-editarbutton">
-              Editar encuesta
-            </Button>
-        </Col>
-      </Row>
-
-      <Row className="encuestas-paginacion">
-        <Col xs={12} className="encuestas-paginacion__col">
-          <div className={paginationClass.root}>
-          <Pagination
-  count={10}
-  variant="outlined"
-  shape="rounded"
-  sx={paginationStyle}
-/>
-          </div>
-        </Col>
-      </Row>
-
-    </Container>
+    
   );
 };
 

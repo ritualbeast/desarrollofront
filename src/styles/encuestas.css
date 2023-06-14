@@ -115,7 +115,7 @@
   .encuestas-filtrarpor__li a {
     text-decoration: none;
     color: #000;
-    padding: 0.5rem;
+    padding: 0.3rem;
     border-bottom: 1px solid #000;
   }
   
@@ -233,5 +233,23 @@
   }
   
   
-  
-  
+  /*Estilos para modal*/
+
+  .encuesta_modalcrear{
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  .encuesta_modalcrear_closeicon{
+    text-align: right;
+    display: flex;
+  }
+  .encuesta_modalcrear_closeicon span{
+    margin: 1rem;
+    cursor: pointer;
+  }
+
+  .encuesta_modalcrear__title{
+    font: poppins;
+    color: gray;
+    margin: 1rem;
+  }

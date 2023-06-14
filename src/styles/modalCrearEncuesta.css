@@ -1,0 +1,12 @@
+.modalCrearEncuesta_Contenedorbutton{
+    display: flex;
+}
+.modalCrearEncuesta_button{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: solid 1px;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #3F3F3F;
+    cursor: pointer;
+}
