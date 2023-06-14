@@ -139,7 +139,7 @@ const Encuestas = () => {
     marginTop: '5%',
   }}
 >
-  <Box className="encuesta_modalcrear" sx={{ width: '50%' }}>
+  <Box className="encuesta_modalcrear" sx={{ width: '70%', height: '45%' }}>
     <div className="encuesta_modalcrear_closeicon">
       <p className="encuesta_modalcrear__title">Crear encuesta</p>
       <span

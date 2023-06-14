@@ -1,5 +1,9 @@
+.comentario {
+    margin-left: 2.8%;
+}
 .modalCrearEncuesta_Contenedorbutton{
     display: flex;
+    margin-left: 1.5%;
 }
 .modalCrearEncuesta_button{
     margin: 0.5rem;
@@ -9,4 +13,7 @@
     background-color: #fff;
     color: #3F3F3F;
     cursor: pointer;
+    width: 43.5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
 }
