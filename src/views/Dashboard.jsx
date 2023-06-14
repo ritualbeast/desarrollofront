@@ -4,7 +4,7 @@ const Dashboard = () => {
   return (
     <div>
       <h1 className='titulo-d' style={{ color: 'darkblue' }}>
-        Dashboard
+        Dashboard hola
       </h1>
     </div>
   )
