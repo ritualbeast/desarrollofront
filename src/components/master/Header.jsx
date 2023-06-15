@@ -84,8 +84,8 @@ const Header = ({ onToggleSidebar }) => {
 
             <div className="dropdown" role="button" onClick={toggleUserDropdown}>
               <img src={userImg} id="img-user" alt="ml" className="mr-2" />
-              <h6 className="mb-0">Anna Gabriela Montesdoca</h6>
-              <Iconify icon={isUserDropdownVisible ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'} color="black" className="menu-icon-3 ml-2" />
+              <h6 className="mb-0" style={{ marginTop: '10px', marginBottom: '0', marginLeft: '10px' }}>Anna Gabriela Montesdoca</h6>
+              <Iconify icon={isUserDropdownVisible ? 'eva:arrow-ios-upward-fill' : 'eva:arrow-ios-downward-fill'} color="black" className="menu-icon-3 ml-2" style={{ marginTop: '15px', marginBottom: '0' }}/>
               {isUserDropdownVisible && (
                 <div className="dropdown-menu" aria-labelledby="userDropdown" onClick={closeUserDropdown}>
                   <Link

@@ -1,6 +1,6 @@
-.encuesta-container{
+/* .encuesta-container{
   margin: 4%;
-}
+} */
 /*encabezado filtro y crear*/
 #encuestas-Row {
   display: flex;
@@ -252,4 +252,9 @@
     font: poppins;
     color: gray;
     margin: 1rem;
+  }
+
+  /* Estilos para cerrar modal */
+  .encuesta_modal_cerrar {
+    float: right;
   }

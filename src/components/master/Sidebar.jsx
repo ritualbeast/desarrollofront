@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
 
   return (
-      <div className="sidebar-2">
+    <div className="sidebar-2">
       <div className="fondo-icon1">
         {lista.map((item) => (
           <Link

@@ -1,7 +1,7 @@
 /* Header */
-.header-content{
+/* .header-content{
   padding-bottom: 1%;
-}
+} */
 .menu-logo {
   margin-top: 20px;
   margin-left: 30px;
@@ -51,17 +51,14 @@
 }
 #img-user {
   border-radius: 16px;
-  border-style: none;
-  height: 43px;
-  vertical-align: baseline;
-  width: 43px;
-  margin-top: 13px;
+  height: 44px;
+  width: 44px;
+  margin-top: 2px;
 }
 .menu-icon-3 {
   margin-bottom: 12px;
-  margin-right: 10px;
   margin-top: 15%;
-  margin-left: 3%;
+  margin-right: 20px;
 }
 .nav-link-2:hover{
   cursor: pointer;

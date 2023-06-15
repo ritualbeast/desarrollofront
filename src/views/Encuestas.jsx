@@ -50,7 +50,11 @@ const Encuestas = () => {
 
   const handleOpenCrearEncuesta = () => {
   setOpenCrearEncuesta(true);
-};
+  };
+
+  const handleCloseEliminar = () => {
+    setOpenCrearEncuesta(false);
+  };
 
   return (
     <>
@@ -127,40 +131,54 @@ const Encuestas = () => {
       </Container>
       
       <Modal
-  open={openCrearEncuesta}
-  onClose={() => setOpenCrearEncuesta(false)}
-  sx={{
-    width: '60%',
-    height: '60%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 'auto',
-    marginTop: '5%',
-  }}
->
-  <Box className="encuesta_modalcrear" sx={{ width: '70%', height: '45%' }}>
-    <div className="encuesta_modalcrear_closeicon">
-      <p className="encuesta_modalcrear__title">Crear encuesta</p>
-      <span
-        dangerouslySetInnerHTML={{ __html: closeSVG }}
-        onClick={() => setOpenCrearEncuesta(false)}
-        className="encuesta_modalcrear__close"
-        style={{ marginLeft: 'auto' }}
-      />
-    </div>
-    
-    <ModalCrearEncuestas />
-  </Box>
-</Modal>
+        open={openCrearEncuesta}
+        onClose={() => setOpenCrearEncuesta(false)}
+        sx={{
+          width: '60%',
+          height: '60%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 'auto',
+          marginTop: '5%',
+        }}
+      >
+        <Box className="encuesta_modalcrear" sx={{ width: '70%', height: '55%' }}>
+          <div className="encuesta_modalcrear_closeicon">
+            <p className="encuesta_modalcrear__title">Crear encuesta</p>
+            <span
+              dangerouslySetInnerHTML={{ __html: closeSVG }}
+              onClick={() => setOpenCrearEncuesta(false)}
+              className="encuesta_modalcrear__close"
+              style={{ marginLeft: 'auto' }}
+            />
+          </div>
+          
+          <ModalCrearEncuestas/>
+
+          <div className='encuesta_modal_cerrar'>
+            <Box sx={{ width: '50%' }}>
+                <Container>
+                  <Row>
+                    <Col>
+                      <Button className='buttondeleteuser' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                        Cancelar
+                      </Button>
+                      <Button className='buttondeleteuser' variant="contained" color="primary"
+                      // onClick={handleEliminar}
+                      >
+                        Continuar
+                      </Button>
+                    </Col>
+                  </Row>  
+                </Container>
+            </Box>
+          </div>
+        </Box>
+      </Modal>
 
           
-    
-    
     </>
-    
-
-    
   );
 };
 
