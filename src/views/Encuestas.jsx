@@ -44,6 +44,8 @@ const Encuestas = () => {
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
 
+
+
   const handleFiltroClick = (opcion) => {
     setOpcionFiltro(opcion);
   };
@@ -127,32 +129,36 @@ const Encuestas = () => {
       </Container>
       
       <Modal
-  open={openCrearEncuesta}
-  onClose={() => setOpenCrearEncuesta(false)}
-  sx={{
-    width: '60%',
-    height: '60%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 'auto',
-    marginTop: '5%',
-  }}
->
-  <Box className="encuesta_modalcrear" sx={{ width: '50%' }}>
-    <div className="encuesta_modalcrear_closeicon">
-      <p className="encuesta_modalcrear__title">Crear encuesta</p>
-      <span
-        dangerouslySetInnerHTML={{ __html: closeSVG }}
-        onClick={() => setOpenCrearEncuesta(false)}
-        className="encuesta_modalcrear__close"
-        style={{ marginLeft: 'auto' }}
-      />
-    </div>
-    
-    <ModalCrearEncuestas />
-  </Box>
-</Modal>
+        open={openCrearEncuesta}
+        onClose={() => setOpenCrearEncuesta(false)}
+        sx={{
+          width: '60%',
+          height: '60%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: 'auto',
+          marginTop: '5%',
+        }}
+      >
+        <Box className="encuesta_modalcrear" sx={{ width: '50%' }}>
+          <div className="encuesta_modalcrear_closeicon">
+            <p className="encuesta_modalcrear__title">Crear encuesta</p>
+            <span
+              dangerouslySetInnerHTML={{ __html: closeSVG }}
+              onClick={() => setOpenCrearEncuesta(false)}
+              className="encuesta_modalcrear__close"
+              style={{ marginLeft: 'auto' }}
+            />
+          </div>
+          
+          <ModalCrearEncuestas />
+        </Box>
+      </Modal>
+
+      
+
+
 
           
     
