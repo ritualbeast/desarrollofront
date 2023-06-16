@@ -43,22 +43,42 @@ const Encuestas = () => {
   const paginationClass = pagination();
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
+  const [blurBackground, setBlurBackground] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleFiltroClick = (opcion) => {
     setOpcionFiltro(opcion);
   };
 
   const handleOpenCrearEncuesta = () => {
-  setOpenCrearEncuesta(true);
+    setOpenCrearEncuesta(true);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   };
 
   const handleCloseEliminar = () => {
     setOpenCrearEncuesta(false);
+    setBlurBackground(false);
+    setIsModalVisible(false);
   };
+
+  const handleClickOutsideModal = (event) => {
+    const modalContainer = document.getElementById('modal-container');
+    if (!modalContainer.contains(event.target)) {
+      setOpenCrearEncuesta(false);
+      setBlurBackground(false);
+      setIsModalVisible(false);
+    }
+  };    
 
   return (
     <>
-      <Container fluid className='encuesta-container'>
+    <div
+      id="modal-container"
+      className={`encuesta-container ${blurBackground ? 'encuesta-blur' : ''}`}
+      onClick={handleClickOutsideModal}
+    >
+      <Container fluid>
         <Row id="encuestas-Row">
           <Col xs={2} className="encuestas__coltitulo">
             <h2 className='encuesta-titulo'>Mis Encuestas</h2>
@@ -129,6 +149,7 @@ const Encuestas = () => {
         </Row>
 
       </Container>
+    </div>
       
       <Modal
         open={openCrearEncuesta}
@@ -142,13 +163,20 @@ const Encuestas = () => {
           margin: 'auto',
           marginTop: '5%',
         }}
+        BackdropProps={{
+          onClick: () => {
+            setOpenCrearEncuesta(false);
+            setBlurBackground(false);
+            setIsModalVisible(false);
+          },
+        }}
       >
-        <Box className="encuesta_modalcrear" sx={{ width: '70%', height: '55%' }}>
+        <Box className="encuesta_modalcrear" sx={{ width: '73%', height: '60%' }}>
           <div className="encuesta_modalcrear_closeicon">
             <p className="encuesta_modalcrear__title">Crear encuesta</p>
             <span
               dangerouslySetInnerHTML={{ __html: closeSVG }}
-              onClick={() => setOpenCrearEncuesta(false)}
+              onClick={() => handleCloseEliminar(false)}
               className="encuesta_modalcrear__close"
               style={{ marginLeft: 'auto' }}
             />
@@ -157,21 +185,17 @@ const Encuestas = () => {
           <ModalCrearEncuestas/>
 
           <div className='encuesta_modal_cerrar'>
-            <Box sx={{ width: '50%' }}>
-                <Container>
-                  <Row>
-                    <Col>
-                      <Button className='buttondeleteuser' variant="contained" color="primary" onClick={handleCloseEliminar}>
-                        Cancelar
+            <Box sx={{ width: '50%', display: 'contents'}}>
+                    <Col className="d-flex justify-content-center">
+                      <Button className='buttoncancelaruser' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                        <span className='cancelar-encuesta'>Cancelar</span>
                       </Button>
                       <Button className='buttondeleteuser' variant="contained" color="primary"
                       // onClick={handleEliminar}
                       >
-                        Continuar
+                        <span className='continuar-encuesta'>Continuar</span>
                       </Button>
                     </Col>
-                  </Row>  
-                </Container>
             </Box>
           </div>
         </Box>

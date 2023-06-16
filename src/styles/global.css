@@ -1,9 +1,19 @@
 /* Header */
-/* .header-content{
-  padding-bottom: 1%;
-} */
+.header{
+  display: flex;
+  align-items: center;
+}
+.header1{
+  display: flex;
+  align-items: center;
+  flex-basis: 119%;
+  margin-top: 5px;
+}
+.header2{
+  display: flex;
+  align-items: center;
+}
 .menu-logo {
-  margin-top: 20px;
   margin-left: 30px;
 }
 .menu-icon {
@@ -20,7 +30,6 @@
 .form-inline {
   display: flex;
   float: right;
-  margin: auto;
   width: 15%;
   padding-top: 0.3%;
   margin-right: 5px;

@@ -19,6 +19,7 @@
 .encuestas_colsg_create_1{
   display: flex;
   align-items: center;
+  flex-basis: 80%;
 }
 .encuestas_colsg1{
   display: flex;
@@ -28,7 +29,7 @@
   margin-right: 5px;
 }
 .imgchevron{
-  margin-left: 55px;
+  margin-left: 5px;
   margin-right: 15px;
 }
 .encuesta-sg-create_1_1{
@@ -62,7 +63,6 @@
 .encuestas_colsg_create_2 {
   display: flex;
   align-items: center;
-  margin-left: 54%;
 }
 .encuesta-sg-buttonv-create{
   font-family: 'Poppins', sans-serif;
@@ -83,6 +83,9 @@
   order: 0;
   flex-grow: 0;
 }
+.encuesta-sg-buttonv-create:hover{
+  cursor: pointer;
+}
 .encuesta-sg-buttons-create{
   font-family: 'Poppins', sans-serif;
   font-style: normal;
@@ -101,6 +104,10 @@
   flex: none;
   flex-grow: 0;
 }
+.encuesta-sg-buttons-create:hover{
+  cursor: pointer;
+  background-color: #ececec;
+}
 .contenedor-create {
     position: static;
     display: flex;
@@ -118,8 +125,9 @@
     align-items: flex-start;
   }
   .encuesta-cuerpo2{
-    display: flex;
+    display: block;
     align-items: center;
+    width: 6%;
   }
   .encuestas_colsubtitulo_create{
     display: flex;
@@ -155,6 +163,9 @@
     flex: none;
     order: 0;
     flex-grow: 0;
+    margin-top: 9px;
+    margin-left: 25px;
+    margin-bottom: 10px;
   }
   .lista-2 {
     background: rgba(245, 245, 245, 1);
@@ -209,6 +220,9 @@
     order: 1;
     flex-grow: 0;
   }
+  .fondo-lista2:hover{
+    cursor: pointer;
+  }
   .juntar-lista-nombre .fondo-lista2 {
     display: flex;
     flex-direction: column;
@@ -236,10 +250,28 @@
   .lista-container:not(.active) svg {
     color: rgba(177, 177, 177, 1);
   }
+  #button-tooltip {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-left: 10px;
+    padding: 18px;
+    width: 220px;
+    height: 180px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    flex: none;
+    order: 1;
+    flex-grow: 1;
+  }
+  .btnX:hover{
+    cursor: pointer;
+  }
 
   /* Segunda columna */
   .encuesta-Segundocuerpo2{
-    display: flex;
+    display: block;
     align-items: center;
     margin-left: 20px;
   }
@@ -249,7 +281,7 @@
     align-items: flex-start;
     padding: 4px 16px;
     width: 326px;
-    height: 370px;
+    height: 570px;
     overflow: auto;
     background: #F5F5F5;
     border-radius: 20px;
@@ -304,4 +336,192 @@
   }
   .fondo-listaBancoPreguntas2{
     width: 320px;
+  }
+
+  /* Tercera columna */
+  .encuesta-Tercerocuerpo2{
+    border: solid 1px;
+    border-color: #b8b8b8;
+    width: 70%;
+    border-radius: 10px;
+    margin-left: 1%;
+    margin-top: 0.5%;
+    overflow: auto;
+  }
+  .titulo-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: #FF4197;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-left: 1.4%;
+  }
+  .comentario-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #3B3B3B;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-left: 1.4%;
+  }
+  .contendor-nuevaEncuesta{
+    border: solid 1px;
+    width: 96.6%;
+    margin-left: 1.4%;
+    border-radius: 5px;
+    padding-bottom: 2%;
+  }
+  .titulo-nuevaEncuesta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #270089;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-left: 3%;
+  }
+  .comentario-nuevaEncuesta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #3B3B3B;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-left: 3%;
+  }
+  .seccion3-nuevaEcuesta{
+    width: 92%;
+    margin-left: 1.8%;
+    border: 2px dashed;
+    border-color: #b8b8b8;
+    border-radius: 5px;
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+  }
+  .boton-logotipo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 113px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid #090909;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .textoLogotipo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #090909;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .seccion4-nuevaEcuesta{
+    width: 90.8%;
+    margin-left: 1.8%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 36px 24px;
+    gap: 10px;
+    background: #F5F5F5;
+    border-radius: 10px;
+    flex: none;
+    order: 2;
+    align-self: stretch;
+    flex-grow: 0;
+    margin-top: 2%;
+  }
+  .boton-NuevaPregunta{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 8px;
+    background: #FFF0C7;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .textoNuevaPregunta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #202020;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .hr{
+    height: 20px;
+    background-color: rgba(0, 0, 0, 1);
+  }
+  .boton-Imgpie{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 147px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid #090909;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-top: 2%;
+  }
+  .boton-encuestaT{
+    width: 97%;
+    margin-top: 2%;
+    margin-left: 1.4%;
+    margin-bottom: 2%;
+    background: white;
+    border: solid 1px;
+    border-color: #b8b8b8;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+  }
+  .boton-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FF4197;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
   }
