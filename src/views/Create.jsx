@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { lista } from '../prisma/data/listaEncuesta.ts';
 import { listaBancoPreguntas } from '../prisma/data/listaBancoPreguntas.ts';
 import svgManager from '../assets/svg';
-import Crear from './Create/Crear'
-import Estilo from './Create/Estilo'
-import Logica from './Create/Logica'
-import BancodePreguntas from './Create/BancodePreguntas'
-import Opciones from './Create/Opciones'
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -17,35 +12,20 @@ const chevronsLeftSVG = svgManager.getSVG('chevrons-left');
 const helpCircleSVG = svgManager.getSVG('help-circle');
 
 const Create = () => {
-    const [activeIcon, setActiveIcon] = useState(null);
+    const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
+    const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
       };
+      
+    useEffect(() => {
+        setShowBancoPreguntas(true);
+    }, []);
 
     const handleNestedClick = (nombre) => {
         // Lógica para manejar el clic en las opciones desplegadas
     };
-    // const handleSegment = (op) => {
-    //     setOpcion(op)
-    // }
-
-    // const switchOpcion = () => {
-    //     switch (opcion) {
-    //         case 1:
-    //             return <Crear />;
-    //         case 2:
-    //             return <Estilo />;
-    //         case 3:
-    //             return <Logica />;
-    //         case 4:
-    //             return <Opciones />;
-    //         case 5:
-    //             return <BancodePreguntas />;
-    //         default:
-    //             return '';
-    //     }
-    // }
 
     return (
         <>
@@ -86,7 +66,7 @@ const Create = () => {
                         </div>
                         <div className='encuesta-subtitulo2'>
                             <h2 className='encuesta-subtitulo-2'>Banco de Preguntas</h2>
-                            <span style={{marginLeft: '70px'}} dangerouslySetInnerHTML={{ __html: helpCircleSVG }}/>
+                            <span style={{marginLeft: '150px'}} dangerouslySetInnerHTML={{ __html: helpCircleSVG }}/>
                         </div>
                     </Col>
                     
@@ -114,24 +94,24 @@ const Create = () => {
                             </div>
                         </Col>
 
-                        {activeIcon && (
-                            <Col className="encuesta-Segundocuerpo2">
+                        <Col className="encuesta-Segundocuerpo2">
+                            {showBancoPreguntas && (
                                 <div className="desplegado-container">
                                     <div className="listaBancoPreguntas-2">
                                         <div className="fondo-lista">
                                             {listaBancoPreguntas.map((item) => (
                                                 <div
                                                     key={item.nombre}
-                                                    className='encuesta-nombrelista'
+                                                    className="encuesta-nombrelista"
                                                     onClick={() => handleNestedClick(item.nombre)}
                                                 >
                                                     <div className="juntar-listaBancoPreguntas-nombre">
                                                         <div className="fondo-listaBancoPreguntas2">
                                                             <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
                                                             {item.icono && (
-                                                                <span dangerouslySetInnerHTML={{ __html: item.icono }} />
+                                                                <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
                                                             )}
-                                                            <hr />
+                                                            <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -139,8 +119,8 @@ const Create = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                        )}
+                            )}
+                        </Col>
                     </Col>
                 </Row>
             </Container> 

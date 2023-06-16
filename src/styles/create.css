@@ -7,6 +7,9 @@
   color: rgba(255, 65, 151, 1);
   margin: 0;
   flex-basis: 25%;
+  margin-top: 5px;
+  margin-left: 27px;
+  margin-bottom: 5px;
 }
 .encuestas_colsg_create {
   display: flex;
@@ -25,6 +28,7 @@
   margin-right: 5px;
 }
 .imgchevron{
+  margin-left: 55px;
   margin-right: 15px;
 }
 .encuesta-sg-create_1_1{
@@ -56,7 +60,9 @@
   margin-bottom: 2px;
 }
 .encuestas_colsg_create_2 {
-  margin-left: 50%;
+  display: flex;
+  align-items: center;
+  margin-left: 54%;
 }
 .encuesta-sg-buttonv-create{
   font-family: 'Poppins', sans-serif;
@@ -91,6 +97,7 @@
   color: rgba(194, 194, 194, 1);
   background: #F5F5F5;
   border-radius: 40px;
+  border-color: #F5F5F5;
   flex: none;
   flex-grow: 0;
 }
@@ -136,7 +143,7 @@
     flex: none;
     order: 1;
     flex-grow: 0;
-    margin-right: 70px;
+    margin-right: 45px;
   }
   .encuesta-subtitulo-2 {
     font-family: 'Poppins', sans-serif;
@@ -241,8 +248,8 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 4px 16px;
-    width: 324px;
-    height: 400px;
+    width: 326px;
+    height: 370px;
     overflow: auto;
     background: #F5F5F5;
     border-radius: 20px;
@@ -250,7 +257,20 @@
     order: 1;
     align-self: stretch;
     flex-grow: 0;
-
+  }
+  .listaBancoPreguntas-2::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+  }
+  .listaBancoPreguntas-2::-webkit-scrollbar-track {
+    background-color: #ddd;
+  }
+  .listaBancoPreguntas-2::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+  .listaBancoPreguntas-2::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
   }
   .juntar-listaBancoPreguntas-nombre{
     display: flex;
@@ -277,11 +297,11 @@
     flex: none;
     order: 0;
     flex-grow: 0;
+    padding-left: 10px;
   }
   .encuesta-nombrelista{
     margin-top: 25px;
   }
   .fondo-listaBancoPreguntas2{
     width: 320px;
-    text-align: center;
   }

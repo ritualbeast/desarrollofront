@@ -23,6 +23,7 @@
   margin: auto;
   width: 15%;
   padding-top: 0.3%;
+  margin-right: 5px;
 }
 .form-inline-1 {
   display: flex;
@@ -128,6 +129,13 @@
 .row {
   width: 100%;
 }
+.content-col {
+  width: 98%;
+}
+.content-col-with-sidebar {
+  width: 83.9%; /* Ajusta el ancho según tus necesidades */
+}
+
 
 /* SIDEBAR */
 .sidebar-2 {

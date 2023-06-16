@@ -26,7 +26,7 @@ const Layout = () => {
             <Sidebar onClose={closeSidebar} />
           </Col>
         )}
-        <Col xs={10} style={{ width: '100%' }}>
+        <Col xs={10} className={`content-col ${isSidebarVisible ? 'content-col-with-sidebar' : ''}`}>
           <main className="main-content md:w-8/12 xl:w-3/4 2xl:w-4/5 h-screen overflow-y-scroll">
             <div className="p-10">
               <Outlet />

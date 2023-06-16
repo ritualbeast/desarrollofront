@@ -1,31 +1,51 @@
 import svgManager from '../../assets/svg';
 
-const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
+const chevronsNighBtSVG = svgManager.getSVG('chevron-rigth-black');
 
 const listaBancoPreguntas = [
   {
     nombre: "Preguntas usadas anteriormente",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
   },
   {
     nombre: "Todas las categorías",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
   },
   {
     nombre: "Asistencia médica",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
   },
   {
     nombre: "Comentario de clientes",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
   },
   {
     nombre: "Comunidad",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
   },
   {
     nombre: "Demografía",
-    icono: chevronsNightSVG
+    icono: chevronsNighBtSVG
+  },
+  {
+    nombre: "Educación",
+    icono: chevronsNighBtSVG
+  },
+  {
+    nombre: "Eventos",
+    icono: chevronsNighBtSVG
+  },
+  {
+    nombre: "Investigación de mercado",
+    icono: chevronsNighBtSVG
+  },
+  {
+    nombre: "Perfiles sectoriales",
+    icono: chevronsNighBtSVG
+  },
+  {
+    nombre: "Política",
+    icono: chevronsNighBtSVG
   }
 ];
 
