@@ -127,7 +127,6 @@
   .encuesta-cuerpo2{
     display: block;
     align-items: center;
-    width: 6%;
   }
   .encuestas_colsubtitulo_create{
     display: flex;
@@ -136,6 +135,9 @@
   .encuesta-subtitulo1{
     display: flex;
     align-items: center;
+  }
+  .encuesta-subtitulo1:hover{
+    cursor: pointer;
   }
   .encuesta-subtitulo2{
     display: flex;
@@ -148,10 +150,8 @@
     font-size: 14px;
     line-height: 20px;
     color: #FF4197;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    margin-right: 45px;
+    margin-top: unset;
+    margin-bottom: unset;
   }
   .encuesta-subtitulo-2 {
     font-family: 'Poppins', sans-serif;
@@ -273,7 +273,7 @@
   .encuesta-Segundocuerpo2{
     display: block;
     align-items: center;
-    margin-left: 20px;
+    margin-left: 10px;
   }
   .listaBancoPreguntas-2{
     display: flex;
@@ -281,7 +281,7 @@
     align-items: flex-start;
     padding: 4px 16px;
     width: 326px;
-    height: 570px;
+    height: 650px;
     overflow: auto;
     background: #F5F5F5;
     border-radius: 20px;
@@ -348,6 +348,14 @@
     margin-top: 0.5%;
     overflow: auto;
   }
+  .encuesta-Tercerocuerpo2.encuesta-abierto {
+    width: 70%;
+  }
+  
+  .encuesta-Tercerocuerpo2.encuesta-cerrado {
+    width: 132.8%;
+  }
+  
   .titulo-encuesta-tercero{
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -406,12 +414,12 @@
   .seccion3-nuevaEcuesta{
     width: 92%;
     margin-left: 1.8%;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
     border: 2px dashed;
     border-color: #b8b8b8;
     border-radius: 5px;
-    padding: 2%;
-    display: flex;
-    justify-content: center;
   }
   .boton-logotipo{
     display: flex;
@@ -441,21 +449,16 @@
     flex-grow: 0;
   }
   .seccion4-nuevaEcuesta{
-    width: 90.8%;
+    width: 92.4%;
     margin-left: 1.8%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 36px 24px;
-    gap: 10px;
+    /* padding: 36px 24px; */
+    padding: 2%;
     background: #F5F5F5;
     border-radius: 10px;
-    flex: none;
-    order: 2;
-    align-self: stretch;
-    flex-grow: 0;
     margin-top: 2%;
+    margin-bottom: 2%;
   }
   .boton-NuevaPregunta{
     display: flex;
@@ -500,7 +503,6 @@
     flex: none;
     order: 0;
     flex-grow: 0;
-    margin-top: 2%;
   }
   .boton-encuestaT{
     width: 97%;

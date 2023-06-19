@@ -1,28 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Select, Pagination, Box, Modal} from '@mui/material';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { lista } from '../prisma/data/listaEncuesta.ts';
 import { listaBancoPreguntas } from '../prisma/data/listaBancoPreguntas.ts';
 import svgManager from '../assets/svg';
+import ModalAñadirLogo from './Create/ModalAñadirLogo';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
 const chevronsLeftSVG = svgManager.getSVG('chevrons-left');
+const chevronsRightSVG = svgManager.getSVG('chevrons-right');
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
 const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
+const closeSVG = svgManager.getSVG('close');
 
 const Create = () => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
     const targetRef = useRef(null);
+    const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
+    const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -39,6 +45,19 @@ const Create = () => {
     const handleIconClick = () => {
         setShowTooltip(false);
     };
+
+    const toggleEncuestaSegundoCuerpo = () => {
+        setEncuestaSegundoCuerpoVisible(!encuestaSegundoCuerpoVisible);
+    };
+
+    const handleOpenAñadirLogo = () => {
+        setOpenAñadirLogo(true);
+    }
+    const handleCloseEliminar = () => {
+        setOpenAñadirLogo(false);
+        // setBlurBackground(false);
+        // setIsModalVisible(false);
+      };
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -71,14 +90,48 @@ const Create = () => {
                     
                     <Col xs={2} className="encuestas_colsg_create">
                         <div className='encuestas_colsg_create_1'>
-                            <div className='encuestas_colsg1'>
+                            <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
+                                <div style={{ 
+                                    position: 'absolute', 
+                                    top: '0', 
+                                    left: '0', 
+                                    width: '17.2%', 
+                                    height: '92%', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontStyle: 'normal',
+                                    color: 'rgba(32, 32, 32, 1)',
+                                    fontWeight: 'bold'
+                                }}>
+                                    1
+                                </div>
                                 <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                 <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
                             </div>
+
                             <div>
                                 <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
                             </div>
-                            <div className='encuestas_colsg1'>
+
+                            <div className='encuestas_colsg1'style={{position: 'relative', width: '180px', height: '50px'}}>
+                            <div style={{ 
+                                    position: 'absolute', 
+                                    top: '0', 
+                                    left: '0', 
+                                    width: '17.6%', 
+                                    height: '92%', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    fontFamily: 'Poppins, sans-serif',
+                                    fontStyle: 'normal',
+                                    color: 'rgba(32, 32, 32, 1)',
+                                    fontWeight: 'bold'
+                                }}>
+                                    2
+                                </div>
                                 <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                 <h2 className='encuesta-sg-create_1_2'>Revisión</h2>
                             </div>
@@ -95,10 +148,19 @@ const Create = () => {
                     
                     <Col className='encuesta-cuerpo'>
                         <Col className="encuesta-cuerpo2">
-                            <Col>
-                                <div className='encuesta-subtitulo1'>
-                                    <span dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }}/>
-                                    <h2 className='encuesta-subtitulo-1'>Colapsar</h2>
+                            <Col style={{paddingTop: '9.5%', paddingBottom: '9%'}}>
+                                <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
+                                {encuestaSegundoCuerpoVisible ? (
+                                    <>
+                                        <span dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
+                                        <span className="encuesta-subtitulo-1">Colapsar</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
+                                        <span dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
+                                    </>
+                                )}
                                 </div>
                             </Col>
                             <Col>
@@ -125,6 +187,7 @@ const Create = () => {
                             </Col>
                         </Col>
 
+                        {encuestaSegundoCuerpoVisible && (
                         <Col className="encuesta-Segundocuerpo2">
                             <Col>
                                 <div className='encuesta-subtitulo2'>
@@ -179,8 +242,9 @@ const Create = () => {
                                 )}
                             </Col>
                         </Col>
+                        )}
 
-                        <Col className='encuesta-Tercerocuerpo2'>
+                        <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
                             <Col>
                                 <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
                             </Col>
@@ -195,7 +259,10 @@ const Create = () => {
                                     <p className='comentario-nuevaEncuesta'>Primera parte de la encuesta para conocer la relación entre su area y marketing</p>
                                 </Col>
                                 <Col className='seccion3-nuevaEcuesta'>
-                                    <Button className='boton-logotipo'>
+                                    <Button 
+                                        className='boton-logotipo'
+                                        onClick={handleOpenAñadirLogo}
+                                    >
                                         <p className='textoLogotipo'>Logotipo</p>
                                         <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                                     </Button>
@@ -222,6 +289,56 @@ const Create = () => {
                     </Col>
                 </Row>
             </Container> 
+
+            <Modal
+                open={openAñadirLogo}
+                onClose={() => setOpenAñadirLogo(false)}
+                sx={{
+                width: '60%',
+                height: '60%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: 'auto',
+                marginTop: '5%',
+                }}
+                BackdropProps={{
+                onClick: () => {
+                    setOpenAñadirLogo(false);
+                    // setBlurBackground(false);
+                    // setIsModalVisible(false);
+                },
+                }}
+            >
+                <Box className="encuesta_modalcrear" sx={{ width: '73%', height: '60%' }}>
+                <div className="encuesta_modalcrear_closeicon">
+                    <p className="encuesta_modalcrear__title">Crear encuesta</p>
+                    <span
+                    dangerouslySetInnerHTML={{ __html: closeSVG }}
+                    onClick={() => handleCloseEliminar(false)}
+                    className="encuesta_modalcrear__close"
+                    style={{ marginLeft: 'auto' }}
+                    />
+                </div>
+                
+                <ModalAñadirLogo/>
+
+                <div className='encuesta_modal_cerrar'>
+                    <Box sx={{ width: '50%', display: 'contents'}}>
+                            <Col className="d-flex justify-content-center">
+                            <Button className='buttoncancelaruser' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                                <span className='cancelar-encuesta'>Cancelar</span>
+                            </Button>
+                            <Button className='buttondeleteuser' variant="contained" color="primary"
+                            // onClick={handleEliminar}
+                            >
+                                <span className='continuar-encuesta'>Continuar</span>
+                            </Button>
+                            </Col>
+                    </Box>
+                </div>
+                </Box>
+            </Modal>
         </>
     )  
 }
