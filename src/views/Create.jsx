@@ -29,6 +29,8 @@ const Create = () => {
     const targetRef = useRef(null);
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
+    const [blurBackground, setBlurBackground] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -52,11 +54,13 @@ const Create = () => {
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
+        setBlurBackground(false);
+        setIsModalVisible(false);
     }
     const handleCloseEliminar = () => {
         setOpenAñadirLogo(false);
-        // setBlurBackground(false);
-        // setIsModalVisible(false);
+        setBlurBackground(false);
+        setIsModalVisible(false);
       };
 
     const renderTooltip = (props) => (
@@ -80,215 +84,231 @@ const Create = () => {
         </Tooltip>
     );
 
+    const handleClickOutsideModal = (event) => {
+        const modalContainer = document.getElementById('modal-container');
+        if (!modalContainer.contains(event.target)) {
+            setOpenAñadirLogo(false);
+            setBlurBackground(false);
+            setIsModalVisible(false);
+        }
+      };
+
     return (
         <>
-            <Container fluid className='encuesta-container'>
-                <Row>
-                    <Col xs={2} className="encuestas_coltitulo_create">
-                        <h2 className='encuesta-titulo-create'>Encuesta Veris</h2>
-                    </Col>
-                    
-                    <Col xs={2} className="encuestas_colsg_create">
-                        <div className='encuestas_colsg_create_1'>
-                            <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
-                                <div style={{ 
-                                    position: 'absolute', 
-                                    top: '0', 
-                                    left: '0', 
-                                    width: '17.2%', 
-                                    height: '92%', 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    fontFamily: 'Poppins, sans-serif',
-                                    fontStyle: 'normal',
-                                    color: 'rgba(32, 32, 32, 1)',
-                                    fontWeight: 'bold'
-                                }}>
-                                    1
-                                </div>
-                                <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
-                                <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
-                            </div>
-
-                            <div>
-                                <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
-                            </div>
-
-                            <div className='encuestas_colsg1'style={{position: 'relative', width: '180px', height: '50px'}}>
-                            <div style={{ 
-                                    position: 'absolute', 
-                                    top: '0', 
-                                    left: '0', 
-                                    width: '17.6%', 
-                                    height: '92%', 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    fontFamily: 'Poppins, sans-serif',
-                                    fontStyle: 'normal',
-                                    color: 'rgba(32, 32, 32, 1)',
-                                    fontWeight: 'bold'
-                                }}>
-                                    2
-                                </div>
-                                <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
-                                <h2 className='encuesta-sg-create_1_2'>Revisión</h2>
-                            </div>
-                        </div>
-                        <div className='encuestas_colsg_create_2'>
-                            <Button className='encuesta-sg-buttonv-create'>
-                                <p style={{ marginLeft: '3px', marginRight: '2px'}}>Vista previa</p>
-                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: eyeSVG }}/>
-                            </Button>
-                            <Button className='encuesta-sg-buttons-create'>Siguiente</Button>
-                        </div>
-                    </Col>
-                    <hr />
-                    
-                    <Col className='encuesta-cuerpo'>
-                        <Col className="encuesta-cuerpo2">
-                            <Col style={{paddingTop: '9.5%', paddingBottom: '9%'}}>
-                                <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
-                                {encuestaSegundoCuerpoVisible ? (
-                                    <>
-                                        <span dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
-                                        <span className="encuesta-subtitulo-1">Colapsar</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
-                                        <span dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
-                                    </>
-                                )}
-                                </div>
-                            </Col>
-                            <Col>
-                                <div className="lista-2">
-                                        <div className="fondo-lista">
-                                            {lista.map((item) => (
-                                            <div
-                                                key={item.nombre}
-                                                className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
-                                                onClick={() => handleClick(item.nombre)}
-                                            >
-                                                <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
-                                                    <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
-                                                        {item.icono && (
-                                                            <span dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                        )}
-                                                        <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                            </Col>
+            <div
+                id="modal-container"
+                className={`encuesta-container ${blurBackground ? 'encuesta-blur' : ''}`}
+                onClick={handleClickOutsideModal}
+            >
+                <Container fluid className='encuesta-container'>
+                    <Row>
+                        <Col xs={2} className="encuestas_coltitulo_create">
+                            <h2 className='encuesta-titulo-create'>Encuesta Veris</h2>
                         </Col>
-
-                        {encuestaSegundoCuerpoVisible && (
-                        <Col className="encuesta-Segundocuerpo2">
-                            <Col>
-                                <div className='encuesta-subtitulo2'>
-                                    <h2 className='encuesta-subtitulo-2'>Banco de Preguntas</h2>
-                                    <OverlayTrigger
-                                        trigger="click"
-                                        show={showTooltip}
-                                        target={targetRef.current}
-                                        placement="right"
-                                        delay={{ show: 250, hide: 400 }}
-                                        overlay={renderTooltip}
-                                        onHide={() => setShowTooltip(false)}
-                                    >
-                                        <div
-                                            className='help-icon'
-                                            onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                                        >
-                                            <span
-                                                ref={targetRef}
-                                                style={{ marginLeft: '150px' }}
-                                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                                            />
-                                        </div>
-                                    </OverlayTrigger>
+                        
+                        <Col xs={2} className="encuestas_colsg_create">
+                            <div className='encuestas_colsg_create_1'>
+                                <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
+                                    <div style={{ 
+                                        position: 'absolute', 
+                                        top: '0', 
+                                        left: '0', 
+                                        width: '17.2%', 
+                                        height: '92%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        fontFamily: 'Poppins, sans-serif',
+                                        fontStyle: 'normal',
+                                        color: 'rgba(32, 32, 32, 1)',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        1
+                                    </div>
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
+                                    <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
                                 </div>
-                            </Col>
-                            <Col>
-                                {showBancoPreguntas && (
-                                    <div className="desplegado-container">
-                                        <div className="listaBancoPreguntas-2">
+
+                                <div>
+                                    <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
+                                </div>
+
+                                <div className='encuestas_colsg1'style={{position: 'relative', width: '180px', height: '50px'}}>
+                                <div style={{ 
+                                        position: 'absolute', 
+                                        top: '0', 
+                                        left: '0', 
+                                        width: '17.6%', 
+                                        height: '92%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        fontFamily: 'Poppins, sans-serif',
+                                        fontStyle: 'normal',
+                                        color: 'rgba(32, 32, 32, 1)',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        2
+                                    </div>
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
+                                    <h2 className='encuesta-sg-create_1_2'>Revisión</h2>
+                                </div>
+                            </div>
+                            <div className='encuestas_colsg_create_2'>
+                                <Button className='encuesta-sg-buttonv-create'>
+                                    <p style={{ marginLeft: '3px', marginRight: '2px'}}>Vista previa</p>
+                                    <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: eyeSVG }}/>
+                                </Button>
+                                <Button className='encuesta-sg-buttons-create'>Siguiente</Button>
+                            </div>
+                        </Col>
+                        <hr />
+                        
+                        <Col className='encuesta-cuerpo'>
+                            <Col className="encuesta-cuerpo2">
+                                <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
+                                    <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
+                                    {encuestaSegundoCuerpoVisible ? (
+                                        <>
+                                            <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
+                                            <span className="encuesta-subtitulo-1">Colapsar</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
+                                            <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
+                                        </>
+                                    )}
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <div className="lista-2">
                                             <div className="fondo-lista">
-                                                {listaBancoPreguntas.map((item) => (
-                                                    <div
-                                                        key={item.nombre}
-                                                        className="encuesta-nombrelista"
-                                                        onClick={() => handleNestedClick(item.nombre)}
-                                                    >
-                                                        <div className="juntar-listaBancoPreguntas-nombre">
-                                                            <div className="fondo-listaBancoPreguntas2">
-                                                                <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                                {item.icono && (
-                                                                    <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                                )}
-                                                                <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
-                                                            </div>
+                                                {lista.map((item) => (
+                                                <div
+                                                    key={item.nombre}
+                                                    className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
+                                                    onClick={() => handleClick(item.nombre)}
+                                                >
+                                                    <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
+                                                        <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
+                                                            {item.icono && (
+                                                                <span dangerouslySetInnerHTML={{ __html: item.icono }} />
+                                                            )}
+                                                            <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
                                                         </div>
                                                     </div>
+                                                </div>
                                                 ))}
                                             </div>
                                         </div>
-                                    </div>
-                                )}
+                                </Col>
                             </Col>
-                        </Col>
-                        )}
 
-                        <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                            <Col>
-                                <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
-                            </Col>
-                            <Col>
-                                <p className='comentario-encuesta-tercero'>Encuesta enfocada en colaboradores de Veris, para cononcer el clima laboral, es de carácter obligatorio.</p>
-                            </Col>
-                            <Col className='contendor-nuevaEncuesta'>
+                            {encuestaSegundoCuerpoVisible && (
+                            <Col className="encuesta-Segundocuerpo2">
                                 <Col>
-                                    <p className='titulo-nuevaEncuesta'>Sección 1</p>
+                                    <div className='encuesta-subtitulo2'>
+                                        <h2 className='encuesta-subtitulo-2'>Banco de Preguntas</h2>
+                                        <OverlayTrigger
+                                            trigger="click"
+                                            show={showTooltip}
+                                            target={targetRef.current}
+                                            placement="right"
+                                            delay={{ show: 250, hide: 400 }}
+                                            overlay={renderTooltip}
+                                            onHide={() => setShowTooltip(false)}
+                                        >
+                                            <div
+                                                className='help-icon'
+                                                onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                                            >
+                                                <span
+                                                    ref={targetRef}
+                                                    style={{ marginLeft: '150px' }}
+                                                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                                />
+                                            </div>
+                                        </OverlayTrigger>
+                                    </div>
                                 </Col>
                                 <Col>
-                                    <p className='comentario-nuevaEncuesta'>Primera parte de la encuesta para conocer la relación entre su area y marketing</p>
-                                </Col>
-                                <Col className='seccion3-nuevaEcuesta'>
-                                    <Button 
-                                        className='boton-logotipo'
-                                        onClick={handleOpenAñadirLogo}
-                                    >
-                                        <p className='textoLogotipo'>Logotipo</p>
-                                        <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                    </Button>
-                                </Col>
-                                <Col className='seccion4-nuevaEcuesta'>
-                                    <Button className='boton-NuevaPregunta'>
-                                        <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
-                                        <hr className='hr'/>
-                                        <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
-                                    </Button>
-                                </Col>
-                                <Col className='seccion3-nuevaEcuesta'>
-                                    <Button className='boton-Imgpie'>
-                                        <p className='textoLogotipo'>Imagen de pie</p>
-                                        <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                    </Button>
+                                    {showBancoPreguntas && (
+                                        <div className="desplegado-container">
+                                            <div className="listaBancoPreguntas-2">
+                                                <div className="fondo-lista">
+                                                    {listaBancoPreguntas.map((item) => (
+                                                        <div
+                                                            key={item.nombre}
+                                                            className="encuesta-nombrelista"
+                                                            onClick={() => handleNestedClick(item.nombre)}
+                                                        >
+                                                            <div className="juntar-listaBancoPreguntas-nombre">
+                                                                <div className="fondo-listaBancoPreguntas2">
+                                                                    <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
+                                                                    {item.icono && (
+                                                                        <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
+                                                                    )}
+                                                                    <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </Col>
                             </Col>
-                            <Button className='boton-encuestaT'>
-                                <p className='boton-encuesta-tercero'>Nueva sección</p>
-                                <span style={{marginTop: '11px', marginLeft: '5px'}} dangerouslySetInnerHTML={{ __html: chevronDownSVG }}/>
-                            </Button>
+                            )}
+
+                            <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
+                                <Col>
+                                    <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
+                                </Col>
+                                <Col>
+                                    <p className='comentario-encuesta-tercero'>Encuesta enfocada en colaboradores de Veris, para cononcer el clima laboral, es de carácter obligatorio.</p>
+                                </Col>
+                                <Col className='contendor-nuevaEncuesta'>
+                                    <Col>
+                                        <p className='titulo-nuevaEncuesta'>Sección 1</p>
+                                    </Col>
+                                    <Col>
+                                        <p className='comentario-nuevaEncuesta'>Primera parte de la encuesta para conocer la relación entre su area y marketing</p>
+                                    </Col>
+                                    <Col className='seccion3-nuevaEcuesta'>
+                                        <Button 
+                                            className='boton-logotipo'
+                                            onClick={handleOpenAñadirLogo}
+                                        >
+                                            <p className='textoLogotipo'>Logotipo</p>
+                                            <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                                        </Button>
+                                    </Col>
+                                    <Col className='seccion4-nuevaEcuesta'>
+                                        <Button className='boton-NuevaPregunta'>
+                                            <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
+                                            <hr className='hr'/>
+                                            <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
+                                        </Button>
+                                    </Col>
+                                    <Col className='seccion3-nuevaEcuesta'>
+                                        <Button className='boton-Imgpie'>
+                                            <p className='textoLogotipo'>Imagen de pie</p>
+                                            <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                                        </Button>
+                                    </Col>
+                                </Col>
+                                <Button className='boton-encuestaT'>
+                                    <p className='boton-encuesta-tercero'>Nueva sección</p>
+                                    <span style={{marginTop: '11px', marginLeft: '5px'}} dangerouslySetInnerHTML={{ __html: chevronDownSVG }}/>
+                                </Button>
+                            </Col>
                         </Col>
-                    </Col>
-                </Row>
-            </Container> 
+                    </Row>
+                </Container> 
+            </div>
+            
 
             <Modal
                 open={openAñadirLogo}
@@ -305,18 +325,18 @@ const Create = () => {
                 BackdropProps={{
                 onClick: () => {
                     setOpenAñadirLogo(false);
-                    // setBlurBackground(false);
-                    // setIsModalVisible(false);
+                    setBlurBackground(false);
+                    setIsModalVisible(false);
                 },
                 }}
             >
-                <Box className="encuesta_modalcrear" sx={{ width: '73%', height: '60%' }}>
-                <div className="encuesta_modalcrear_closeicon">
-                    <p className="encuesta_modalcrear__title">Crear encuesta</p>
+                <Box className="encuesta_modalAñadirLogotipo" sx={{ marginTop: '12%', width: '83%', height: '88%' }}>
+                <div className="encuesta_modalAñadir_closeicon">
+                    <p className="encuesta_modalAñadir__title">Añadir Logotipo</p>
                     <span
                     dangerouslySetInnerHTML={{ __html: closeSVG }}
                     onClick={() => handleCloseEliminar(false)}
-                    className="encuesta_modalcrear__close"
+                    className="encuesta_modalAñadir__close"
                     style={{ marginLeft: 'auto' }}
                     />
                 </div>
@@ -326,13 +346,13 @@ const Create = () => {
                 <div className='encuesta_modal_cerrar'>
                     <Box sx={{ width: '50%', display: 'contents'}}>
                             <Col className="d-flex justify-content-center">
-                            <Button className='buttoncancelaruser' variant="contained" color="primary" onClick={handleCloseEliminar}>
-                                <span className='cancelar-encuesta'>Cancelar</span>
+                            <Button className='buttoncancelarlogo' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                                <span className='cancelar-logo'>Cancelar</span>
                             </Button>
-                            <Button className='buttondeleteuser' variant="contained" color="primary"
+                            <Button className='buttondeletelogo' variant="contained" color="primary"
                             // onClick={handleEliminar}
                             >
-                                <span className='continuar-encuesta'>Continuar</span>
+                                <span className='agregarLogotipo'>Agregar logotipo</span>
                             </Button>
                             </Col>
                     </Box>

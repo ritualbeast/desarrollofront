@@ -201,7 +201,6 @@ const Encuestas = () => {
         </Box>
       </Modal>
 
-          
     </>
   );
 };

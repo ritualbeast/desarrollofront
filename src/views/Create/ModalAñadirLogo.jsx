@@ -1,33 +1,28 @@
 import React, { useState } from 'react'
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
-import '../../styles/modalCrearEncuesta.css';
+import '../../styles/añadirLogo.css';
 
-const PlusSqareSVG = svgManager.getSVG('plus-sqare');
-const TrelloSVG = svgManager.getSVG('trello');
+const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 
 const ModalAñadirLogo = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
 
   return (
     <>
-        <div className='comentario'>Selecciona una opcion</div>
-        <div className='modalCrearEncuesta_Contenedorbutton'>
-          <div
-            className={`modalCrearEncuesta_button ${selectedOption === 'opcion1' ? 'selected' : ''}`}
-            onClick={() => setSelectedOption('opcion1')}
-          >
-            <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
-            <h2 className='modal1Comentario'>Comienza desde cero</h2>
-          </div>
-
-          <div
-            className={`modalCrearEncuesta_button ${selectedOption === 'opcion2' ? 'selected' : ''}`}
-            onClick={() => setSelectedOption('opcion2')}
-          >
-            <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
-            <h2 className='modal2Comentario'>Usa y personaliza una plantilla</h2>
-          </div>
-        </div>
+        <Container>
+          <Row className='contenedor-añadirLogo'>
+            <Col>
+              <span dangerouslySetInnerHTML={{ __html: uploadCloudSVG }}/>
+            </Col>
+            <Col className='contendorTitulo-añadirLogo'>
+              <h2 className='titulo-añadirLogo'>Arrastra y suelta una imagen o </h2>
+              <h2 className='titulo-añadirLogo-2' href="#">Explora</h2>
+            </Col>
+            <Col>
+              <h2 className='comentario-añadirLogo'>La imagen debe tener un tamaño de 500px x 100px y ser en formato JPEG o PNG</h2>
+            </Col>
+          </Row>
+        </Container>
     </>
   )
 }

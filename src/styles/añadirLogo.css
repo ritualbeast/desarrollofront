@@ -1,0 +1,67 @@
+.contenedor-añadirLogo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 44px;
+    gap: 19px;
+    width: 81%;
+    height: 100px;
+    background: #F5F5F5;
+    border: 1px dashed #202020;
+    border-radius: 20px;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    margin-left: 3%;
+    margin-bottom: 2%;
+}
+.contendorTitulo-añadirLogo{
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.titulo-añadirLogo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 28px;
+    color: #202020;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-top: 1.1%;
+    margin-bottom: unset;
+}
+.titulo-añadirLogo-2{
+    position: relative;
+    color: #270089;
+    margin-bottom: unset;
+    margin-top: unset;
+    margin-left: 1%;
+}
+.titulo-añadirLogo-2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #270089;
+}
+.underline-link {
+    text-decoration: none;
+}
+.underline-link:hover {
+    text-decoration: underline;
+}
+.comentario-añadirLogo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #828282;
+    margin-top: unset;
+}
