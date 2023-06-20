@@ -87,7 +87,7 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
           
           <Container className='modalbancopreguntas_divpreguntas'>
             <Row className='modalbancopreguntas_rowpreguntas'>
-             <Col className='modalbancopreguntas_colpreguntas' md={6}>
+            <Col className='modalbancopreguntas_colpreguntas' md={6}>
                     <div className='modalbancopreguntas_divpreguntas'>
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam pariatur molestiae quisquam ipsum iusto et quae deserunt hic magnam temporibus! Beatae ullam odio expedita dolor quos soluta autem inventore et?
                     </div>
@@ -121,12 +121,15 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <p className='modalbancopreguntas_p'>Mostrar respuestas</p>
+                        Mostrar respuestas
                       </AccordionSummary>
-                      <AccordionDetails>
-                        <p className='modalbancopreguntas_p'>Respuesta 1 de la pregunta 1</p>
-                        <p className='modalbancopreguntas_p'>Respuesta 2 de la pregunta 1</p>
+                      <AccordionDetails className='modalbancopreguntas_acordion'>
+                        <ul className='modalbancopreguntas_ul'>
+                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
+                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
+                        </ul>
                       </AccordionDetails>
+
                     </Accordion>
                     </div>
                   </Col>
@@ -141,12 +144,15 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <p className='modalbancopreguntas_p'>Mostrar respuestas</p>
+                        Mostrar respuestas
                       </AccordionSummary>
-                      <AccordionDetails>
-                        <p className='modalbancopreguntas_p'>Respuesta 1 de la pregunta 1</p>
-                        <p className='modalbancopreguntas_p'>Respuesta 2 de la pregunta 1</p>
+                      <AccordionDetails className='modalbancopreguntas_acordion'>
+                        <ul className='modalbancopreguntas_ul'>
+                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
+                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
+                        </ul>
                       </AccordionDetails>
+
                     </Accordion>
                     </div>
                   </Col>
@@ -161,12 +167,15 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                       >
-                        <p className='modalbancopreguntas_p'>Mostrar respuestas</p>
+                        Mostrar respuestas
                       </AccordionSummary>
-                      <AccordionDetails>
-                        <p className='modalbancopreguntas_p'>Respuesta 1 de la pregunta 1</p>
-                        <p className='modalbancopreguntas_p'>Respuesta 2 de la pregunta 1</p>
+                      <AccordionDetails className='modalbancopreguntas_acordion'>
+                        <ul className='modalbancopreguntas_ul'>
+                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
+                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
+                        </ul>
                       </AccordionDetails>
+
                     </Accordion>
                     </div>
                   </Col>

@@ -272,6 +272,7 @@
   border-style: none;
   margin-bottom: 5%;
   margin-top: 5%;
+  font-weight: 600;
  }
 
  .buttoncancelarEncuesta{
@@ -285,6 +286,7 @@
   padding: 8px 16px;
  
   font-family: 'Circular Std';
+  font-weight: 600;
   font-style: normal;
   color: #CE0000;
   border-style: none;
@@ -298,6 +300,7 @@
   font-weight: 500;
   font-size: 20px;
   line-height: 28px;
+  font-weight: 550;
   color: #3B3B3B;
   margin-left: 5%;
  }

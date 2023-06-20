@@ -51,7 +51,7 @@
 }
 
 .modalbancopreguntas_select{
-    border-color: #eea0a0;
+    border-color: #c5c0c0;
     color: #757575  ;
     font-size: 14px;
 }
@@ -66,7 +66,6 @@
 
 .modalbancopreguntas_rowtitle2{
     display: flex;
-    margin-top: 2%;
     margin-bottom: 2%;
 }
 .modalbancopreguntas_coltitle2{
@@ -138,13 +137,17 @@
 
 
 .modalbancopreguntas_divmenudesplegable{
-    margin: 1%;
+    margin: 3%;
+    display: flex;
+    justify-content: center !important;
 }
 .modalbancopreguntas_divmenudesplegableSelect{
     
-    width: 100% !important;
-    background-color: #F5F5F5;
+    width: 90% !important;
+    background-color: #F5F5F5 !important;
     font-weight: bold;
+    
+    
 }
 .modalbancopreguntas_divpreguntas{
     margin: 3%;

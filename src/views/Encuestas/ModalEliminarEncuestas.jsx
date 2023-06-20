@@ -33,7 +33,7 @@ const ModalEliminarEncuestas = ({ open, onClose }) => (
           </Col>
           <Col className='modalEliminarencuesta_encabezado'>
           <span />
-          <p className='modalEliminarencuesta_titulo'>¿Desea eliminar la sección seleccionada?</p>
+          <p className='modalEliminarencuesta_titulo2'>¿Desea eliminar la encuesta seleccionada?</p>
           </Col>
         </Row>
         <Row>
