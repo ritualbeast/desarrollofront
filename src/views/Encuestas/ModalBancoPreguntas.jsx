@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import { Select, Pagination, Box, Modal, Menu, MenuItem, Accordion, AccordionDetails, AccordionSummary} from '@mui/material';
@@ -6,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import svgManager from '../../assets/svg';
 import '../../styles/modalBancopreguntas.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {ListarCategoriasService} from '../../services/EncuestasServices';
 
 const alertSVG = svgManager.getSVG('alert');
 const xSVG = svgManager.getSVG('x');
@@ -13,7 +14,11 @@ const xSVG = svgManager.getSVG('x');
 
 const ModalBancoPreguntas = ({ open, onClose }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [listarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
 
+  useEffect(() => {
+    ListarCategoriaEncuesta();
+  }, []);
   const handleChange = (event) => {
     setSelectedAnswer(event.target.value);
   };
@@ -31,7 +36,17 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
   ];
 
   const rows = Math.ceil(data.length / 2); // Calcular el número de filas
-
+   // crear consumo categoria de encuestas
+   const [empresas, setEmpresas] = useState([]);
+   const ListarCategoriaEncuesta = async () => {
+     try {
+       const response = await  ListarCategoriasService();
+       console.log(response);
+       setListarCategoriaEncuestas(response.data.row);
+     } catch (error) {
+       console.error(error);
+     }
+   };
 
   return (
     <Modal
@@ -66,8 +81,11 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
             <Col xs={3} className='modalbancopreguntas_col1'>
               <select className='modalbancopreguntas_select'>
                 <option value="todas">Todas las categorias</option>
-                <option value="categoria1">Categoria 1</option>
-                <option value="categoria2">Categoria 2</option>
+                {listarCategoriaEncuestas.map((item, index) => (
+                  <option key={index} value={item.idCategoriaEncuesta}>{item.nombre}</option>
+                ))  
+                }
+                
               </select>
             </Col>
             <Col xs={9} className='modalbancopreguntas_col2'>
