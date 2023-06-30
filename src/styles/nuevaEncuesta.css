@@ -204,7 +204,7 @@
     cursor: pointer;
     background-color: rgba(255, 199, 0, 1);
   }
-  .boton-NuevaPregunta.boton-NuevaPregunta.active {
+  .boton-NuevaPregunta.boton-NuevaPregunta.inactive {
     background-color: rgba(255, 199, 0, 1);
   }
   

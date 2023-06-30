@@ -1,7 +1,39 @@
+.container-opcionMultiple{
+    border: solid 1px;
+    width: 96.6%;
+    margin-left: 1.4%;
+    border-radius: 5px;
+    padding-bottom: 2%;
+    padding-top: 1.5%;
+}
+.seccion1-opcionMultiple{
+    display: flex;
+}
+.editar-opcionMultiple{
+    margin-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.configurar-opcionMultiple,
+.logica-opcionMultiple{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.editar-opcionMultiple:hover,
+.configurar-opcionMultiple:hover,
+.logica-opcionMultiple:hover{
+    cursor: pointer;
+}
+.editar-opcionMultiple.editar-opcionMultiple.inactive,
+.configurar-opcionMultiple.configurar-opcionMultiple.inactive,
+.logica-opcionMultiple.logica-opcionMultiple.inactive{
+    border-bottom: 3px solid rgba(255, 199, 0, 1);
+}
 .seccion6-opcionMultiple{
     display: flex;
     justify-content: flex-end;
-    margin-right: 1%;
+    margin-right: 0.8%;
+    margin-top: 1%;
 }
 .cancelarOpcionMultiple{
     width: 10%;
@@ -24,4 +56,32 @@
 }
 .guardarOpcionMultiple:hover{
     cursor: pointer;
+}
+
+/* Contenido de Editar */
+.opcionMultiple-container-editar{
+    background-color: rgba(245, 245, 245, 1);
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.selectEditar {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 96%;
+    margin-left: 2%;
+    margin-top: unset;
+  }
+  
+  select:hover {
+    border-color: #999;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #333;
+  }
+.seccion3-opcionMultiple-editar{
+    display: flex;
 }

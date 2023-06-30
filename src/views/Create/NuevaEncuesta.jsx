@@ -215,7 +215,7 @@ const NuevaEncuesta = () => {
 
                 <Col className='seccion4-nuevaEcuesta'>
                     <Button 
-                      className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : ''}`}
+                      className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : 'inactive'}`}
                       onClick={handleButtonNuevaPregunta}
                     >
                         <p className='textoNuevaPregunta'>Nueva Pregunta</p> 

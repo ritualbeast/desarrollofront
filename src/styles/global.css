@@ -122,9 +122,10 @@
 /* Footer */
 .footer {
   position: fixed;
+  z-index: 3;
   left: 0;
   bottom: 0;
-  width: 100%;
+  width: 99.3%;
   background-color: #cbcaca;
   color: #333;
   text-align: center;
