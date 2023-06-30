@@ -26,7 +26,7 @@ const logOut = async sessionData => {
   
   const grantedUser = async idUsuario => {
     const headers = { 'Content-Type': 'application/json' }
-    headers.Canal = global.CANAL
+    headers.Canal = global.CANAL_SECURITY
     const data = {
       idUsuario
     }

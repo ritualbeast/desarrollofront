@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/encuestas.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BiPlus } from 'react-icons/bi';
@@ -69,7 +69,18 @@ const Encuestas = () => {
       setBlurBackground(false);
       setIsModalVisible(false);
     }
-  };    
+  };
+  
+  useEffect(() => {
+    verificarLocalStorage()
+  }, [])
+
+  const verificarLocalStorage = () => {
+    const isAdmin = localStorage.getItem('data')
+    if (isAdmin === null) {
+      window.location.href = global.ROUTE_LOGIN
+    }
+  }
 
   return (
     <>

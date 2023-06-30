@@ -1,0 +1,15 @@
+.encuesta_modalDuplicarSeccion{
+    background: white;
+    border-radius: 10px;
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    margin-left: 3%;
+    margin-bottom: 2%;
+}
+.contendedor-duplicarSeccion{
+    margin-left: 4%;
+    margin-top: 2%;
+    margin-right: 2%;
+}

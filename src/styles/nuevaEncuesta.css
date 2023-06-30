@@ -1,0 +1,520 @@
+.encuesta-Tercerocuerpo2-1{
+    border: solid 1px;
+    border-color: #b8b8b8;
+    width: 99%;
+    border-radius: 10px;
+    margin-left: 1%;
+    margin-top: 0.5%;
+    overflow: auto;
+  }
+  .titulo-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: #FF4197;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-left: 1.4%;
+  }
+  .comentario-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #3B3B3B;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-left: 1.4%;
+  }
+  .contendor-nuevaEncuesta{
+    border: solid 1px;
+    width: 96.6%;
+    margin-left: 1.4%;
+    border-radius: 5px;
+    padding-bottom: 2%;
+    padding-top: 1.5%;
+  }
+  .contenedor-editar-seccion{
+    display: flex;
+    align-items: center;
+    border-radius: 10px;;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-top: 0.3%;
+    padding-bottom: 0.3%;
+    background-color: rgba(237, 237, 237, 1);
+    transition: transform 0.5s cubic-bezier(0, 0, 0.2, 1);
+  }
+  .contenedor-editar-seccion.oculto {
+    transform: translateY(-100%);
+  }
+  .contenedor-editar-seccion.visible {
+    transform: translateY(0);
+  }
+  .contenedor-editar-seccion {
+    display: none;
+  }
+  
+  .contenedor-editar-seccion.visible {
+    display: flex;
+  }
+  
+  .contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-seccion,
+  .contenedor-editar-seccion:hover {
+    display: flex;
+  }
+  
+  /* 
+  .contenedor-editar-seccion:hover {
+    cursor: pointer;
+  }
+  
+  .iconcoCopyRosa:hover {
+    cursor: pointer;
+  }
+  */
+  
+  .contenedor-tituloNuevaEncuesta{
+    display: flex;
+    align-items: center;
+    border-radius: 10px;;
+    margin: 2%;
+    margin-top: unset;
+    transition: transform 5s ease; /* Transición de 5 segundos */
+  }
+  .contenedor-tituloNuevaEncuesta.oculto {
+    transform: translateY(-100%);
+  }
+  .contenedor-tituloNuevaEncuesta.visible {
+    transform: translateY(0);
+  }
+  .contenedor-tituloNuevaEncuesta:hover{
+    background-color: rgba(237, 237, 237, 1);
+    cursor: pointer;
+  }
+  .contenedor-tituloNuevaEncuesta.editar-visible{
+    background-color: rgba(245, 245, 245, 1);
+    cursor: pointer;
+  }
+  .titulo-editarEncuesta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(255, 65, 151, 1);
+    margin-left: 1.5%;
+    width: 87%;
+  }
+  .titulo-nuevaEncuesta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #270089;
+    margin-left: 1.5%;
+    width: 92.6%;
+  }
+  .comentario-nuevaEncuesta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #3B3B3B;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-left: 3%;
+  }
+  .seccion3-nuevaEcuesta{
+    width: 92%;
+    margin-left: 1.8%;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    border: 2px dashed;
+    border-color: #b8b8b8;
+    border-radius: 5px;
+  }
+  .boton-logotipo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 113px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid #090909;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .boton-logotipo:hover{
+    cursor: pointer;
+  }
+  .textoLogotipo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #090909;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .seccion4-nuevaEcuesta{
+    width: 92.4%;
+    margin-left: 1.8%;
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    background: #F5F5F5;
+    border-radius: 10px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .boton-NuevaPregunta{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2%;
+    padding-right: 2%;
+    gap: 8px;
+    background: #FFF0C7;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .boton-NuevaPregunta:hover {
+    cursor: pointer;
+    background-color: rgba(255, 199, 0, 1);
+  }
+  .boton-NuevaPregunta.boton-NuevaPregunta.active {
+    background-color: rgba(255, 199, 0, 1);
+  }
+  
+  .textoNuevaPregunta{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #202020;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .hr{
+    height: 20px;
+    background-color: rgba(0, 0, 0, 1);
+  }
+  .boton-Imgpie{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 147px;
+    height: 36px;
+    background: #FFFFFF;
+    border: 1px solid #090909;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .boton-Imgpie:hover{
+    cursor: pointer;
+  }
+  .boton-encuestaT{
+    width: 97%;
+    margin-top: 1%;
+    margin-left: 1.4%;
+    margin-bottom: 2%;
+    background: white;
+    border: solid 1px;
+    border-color: #b8b8b8;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  .boton-encuestaT:hover{
+    cursor: pointer;
+  }
+  .boton-encuesta-tercero{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FF4197;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+/* Estilos para Nuevo Contenedor */
+  .container-newContendor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .container-newContendor-pt1,
+  .container-newContendor-pt2{
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+  .container-newContendor-pt1:hover,
+  .container-newContendor-pt2:hover{
+    cursor: pointer;
+    background-color: rgba(245, 245, 245, 1);
+  }
+
+  /* Estilo para contenedor nueva Pregunta */
+  .container-newContendorPregunta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .container-newContendorPregunta-pt1,
+  .container-newContendorPregunta-pt2,
+  .container-newContendorPregunta-pt3,
+  .container-newContendorPregunta-pt4,
+  .container-newContendorPregunta-pt5{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+  }
+  .container-newContendorPregunta-pt1:hover,
+  .container-newContendorPregunta-pt2:hover,
+  .container-newContendorPregunta-pt3:hover,
+  .container-newContendorPregunta-pt4:hover,
+  .container-newContendorPregunta-pt5:hover{
+    cursor: pointer;
+    background-color: rgba(245, 245, 245, 1);
+  }
+
+  /*Estilos para modal*/
+  .encuesta_modalDuplicarSeccion{
+    background-color: #fff;
+    border-radius: 15px;
+  }
+  .encuesta_modalDuplciar_closeicon{
+    text-align: left;
+    display: flex;
+    margin-left: 17px;
+  }
+  .encuesta_modalDuplciar_closeicon span{
+    margin-top: 1.3rem;
+    cursor: pointer;
+    margin-right: 4%;
+  }
+
+  .encuesta_modalDuplicar__title{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 2;
+    color: #3B3B3B;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    margin-bottom: unset;
+  }
+  .buttoncancelarlogo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 97px;
+    height: 36px;
+    background: #FFF0C7;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .buttoncancelarlogo:hover{
+    cursor: pointer;
+  }
+  .buttondeletelogo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 123px;
+    height: 36px;
+    background: #F5F5F5;
+    border-radius: 40px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+  .buttondeletelogo:hover{
+    cursor: pointer;
+  }
+  .cancelar-logo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #202020;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .agregarLogotipo{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #C2C2C2;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .encuesta-blur {
+    filter: blur(5px); /* Ajusta el valor de desenfoque según tus preferencias */
+    pointer-events: none; /* Para evitar interacciones con los elementos desenfocados */
+    opacity: 0.7;
+  }
+  .encuesta-blur * {
+    pointer-events: auto;
+  }
+  
+  /* Estilos para cerrar modal */
+  .encuesta_modal_cerrarLogo {
+    float: right;
+    margin-right: 10px;
+  }
+
+  /* Duplicar Seccion */
+  .encuesta_modalAñadirLogotipo{
+    background-color: #fff;
+    border-radius: 15px;
+  }
+  .encuesta_modalAñadir_closeicon{
+    text-align: left;
+    display: flex;
+    margin-left: 17px;
+  }
+  .encuesta_modalAñadir_closeicon span{
+    margin: 1rem;
+    cursor: pointer;
+  }
+  .encuesta_modalAñadir__title{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: #3B3B3B;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+  }
+  .buttoncancelarduplicar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 97px;
+    height: 36px;
+    background: #FFF0C7;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .buttoncancelarduplicar:hover{
+    cursor: pointer;
+  }
+  .buttondeleteduplicar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 123px;
+    height: 36px;
+    background: rgba(255, 199, 0, 1);
+    border-radius: 40px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+  .buttondeleteduplicar:hover{
+    cursor: pointer;
+  }
+  .cancelar-duplicar{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #202020;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .duplicar{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(32, 32, 32, 1);
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .encuesta-blur {
+    filter: blur(5px); /* Ajusta el valor de desenfoque según tus preferencias */
+    pointer-events: none; /* Para evitar interacciones con los elementos desenfocados */
+    opacity: 0.7;
+  }
+  .encuesta-blur * {
+    pointer-events: auto;
+  }
+  
+  /* Estilos para cerrar modal */
+  .encuesta_modal_cerrarDuplicar {
+    float: right;
+    margin-right: 10px;
+    margin-top: 4%;
+  }

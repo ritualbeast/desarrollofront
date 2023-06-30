@@ -43,49 +43,43 @@ function App() {
   }
   return (
     <div>
-  {/* Comentario: Bloqueo temporalmente desactivado */}
-  {/* {
-    user === null
-  ? <Router>
-      <Routes>
-        <Route path="/*" caseSensitive={false} element={<Login />} />
-      </Routes>
-    </Router>
-  : */}
-  {/* Fin del bloqueo temporalmente desactivado */}
+      {
+        user === null
+      ? <Router>
+          <Routes>
+            <Route path="/*" caseSensitive={false} element={<Login />} />
+          </Routes>
+        </Router>
+      : load &&
+      <Router>
+        <Routes>
+          <Route path="/dashboard/*" element={<Layouts />} >
+            <Route index element={<Dashboard />} />
+          </Route>
 
-  {/* Rutas accesibles libremente */}
-  <Router>
-    <Routes>
-      <Route path="/dashboard/*" element={<Layouts />} >
-        <Route index element={<Dashboard />} />
-      </Route>
+          <Route path="/encuesta/*" element={<Layouts />} >
+            <Route index element={<Encuestas />} />
+          </Route>
 
-      <Route path="/encuesta/*" element={<Layouts />} >
-        <Route index element={<Encuestas />} />
-      </Route>
+          <Route path="/ipn/*"element={<Layouts />} >
+            <Route index element={<IPN />} />
+          </Route>
 
-      <Route path="/ipn/*"element={<Layouts />} >
-        <Route index element={<IPN />} />
-      </Route>
+          <Route path="/reportes/*" element={<Layouts />} >
+            <Route index element={<Reporte />} />
+          </Route>
 
-      <Route path="/reportes/*" element={<Layouts />} >
-        <Route index element={<Reporte />} />
-      </Route>
+          <Route path="ipn/crearEncuesta" element={<Layouts />} >
+            <Route index element={<CrearEncuestas />} />
+          </Route>
 
-      <Route path="ipn/crearEncuesta" element={<Layouts />} >
-        <Route index element={<CrearEncuestas />} />
-      </Route>
-
-      <Route path="/create" element={<Layouts />} >
-        <Route index element={<Create />} />
-      </Route>
-    </Routes>
-  </Router>
-  {/* Comentario: Cierre de la llave del bloqueo */}
-  {/* } */}
-</div>
-
+          <Route path="/create" element={<Layouts />} >
+            <Route index element={<Create />} />
+          </Route>
+        </Routes>
+      </Router>
+      }
+    </div>
   );
 }
 

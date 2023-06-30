@@ -14,7 +14,7 @@ const login = async credenciales => {
   const token = 'Basic ' + base64.encode(credenciales.username + ':' + credenciales.password)
   const headers = { 'Content-Type': 'application/json' }
   headers.Authorization = token
-  headers.Canal = global.CANAL
+  headers.Canal = global.CANAL_SECURITY
   const requestOptions = {
     method: 'POST',
     headers
@@ -87,12 +87,14 @@ const validarLogin = async () => {
   const token = `Bearer ${tokenUsuario}`;
   const headers = { 'Content-Type': 'application/json' }
   headers.Authorization = token
-  headers.Canal = global.CANAL
+  headers.Canal = global.CANAL_SECURITY
+  const nemonicoCanal = 'NOTISURVEY';
   const requestOptions = {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      idUsuario
+      idUsuario,
+      nemonicoCanal
     })
   };
   const dataResp = await fetch(global.VALIDATE_LOGIN, requestOptions) // se mapeta el API
@@ -109,9 +111,9 @@ const validarLogin = async () => {
     window.localStorage.setItem(
       'empresa', resp.data.nombreEmpresa
     )
-    window.localStorage.setItem(
-      'rol', resp.data.canal.nombre
-    )
+    // window.localStorage.setItem(
+    //   'rol', resp.data.canal.nombre
+    // )
     localStorage.setItem('token', resp.data.token);
     localStorage.setItem('data', resp.data.idUsuario);
     global.HEADER = global.MODAL_HEAD_SUCCESS
@@ -120,7 +122,7 @@ const validarLogin = async () => {
     if (global.HAVECAMPAIGN === 0) {
       if (global.ROUTE_URL_NEW) {
         // Redirigir a la URL almacenada en global.ROUTE_URL_NEW
-        window.location.href = 'http://localhost:3000/dashboard';
+        window.location.href = '/dashboard';
       } else {
         // Redirigir a la URL de localhost si no hay URL almacenada
         window.location.href = global.ROUTE_URL_NEW;

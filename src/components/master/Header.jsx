@@ -22,7 +22,7 @@ const Header = ({ onToggleSidebar }) => {
   const handleClose = () => {
     setOpen(null);
     localStorage.clear();
-    window.location.href = '/';
+    window.location.href = '/login';
   };
 
   const ontoggleNotificacion = () => {
@@ -92,12 +92,21 @@ const Header = ({ onToggleSidebar }) => {
                 {isUserDropdownVisible && (
                   <div className="dropdown-menu" aria-labelledby="userDropdown" onClick={closeUserDropdown}>
                     <Link
+                      className={`dropdown-item no-underline ${activeOption === 'notify' ? 'active' : ''}`}
+                      to="http://localhost:3004/notify/dashboard"
+                      onClick={() => handleOptionClick('notify')}
+                    >
+                        Notify
+                    </Link>
+                    <br />
+                    <Link
                       className={`dropdown-item no-underline ${activeOption === 'dashboard' ? 'active' : ''}`}
                       to="/dashboard"
                       onClick={() => handleOptionClick('dashboard')}
                     >
                       Dashboard
                     </Link>
+                    <br />
                     <Link
                       className={`dropdown-item no-underline ${activeOption === 'logout' ? 'active' : ''}`}
                       to="/login"

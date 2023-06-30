@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Encuestas from './IPN/Encuestas'
 import { Link } from 'react-router-dom';
 
 const IPN = () => {
+  useEffect(() => {
+    verificarLocalStorage()
+  }, [])
+
+  const verificarLocalStorage = () => {
+    const isAdmin = localStorage.getItem('data')
+    if (isAdmin === null) {
+      window.location.href = global.ROUTE_LOGIN
+    }
+  }
   return (
     <div>
       <div className='encuestaContenedorBotones'>

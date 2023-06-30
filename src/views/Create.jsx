@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Select, Pagination, Box, Modal} from '@mui/material';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { lista } from '../prisma/data/listaEncuesta.ts';
 import { listaBancoPreguntas } from '../prisma/data/listaBancoPreguntas.ts';
 import svgManager from '../assets/svg';
-import ModalAñadirLogo from './Create/ModalAñadirLogo';
+import NuevaEncuesta from './Create/NuevaEncuesta';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -17,10 +16,6 @@ const chevronsRightSVG = svgManager.getSVG('chevrons-right');
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
-const chevronDownSVG = svgManager.getSVG('chevron-down');
-const uploadSVG = svgManager.getSVG('upload');
-const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
-const closeSVG = svgManager.getSVG('close');
 
 const Create = () => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
@@ -37,6 +32,7 @@ const Create = () => {
       };
       
     useEffect(() => {
+        // verificarLocalStorage();
         setShowBancoPreguntas(true);
     }, []);
 
@@ -51,17 +47,6 @@ const Create = () => {
     const toggleEncuestaSegundoCuerpo = () => {
         setEncuestaSegundoCuerpoVisible(!encuestaSegundoCuerpoVisible);
     };
-
-    const handleOpenAñadirLogo = () => {
-        setOpenAñadirLogo(true);
-        setBlurBackground(false);
-        setIsModalVisible(false);
-    }
-    const handleCloseEliminar = () => {
-        setOpenAñadirLogo(false);
-        setBlurBackground(false);
-        setIsModalVisible(false);
-      };
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -92,6 +77,13 @@ const Create = () => {
             setIsModalVisible(false);
         }
       };
+
+    // const verificarLocalStorage = () => {
+    //     const isAdmin = localStorage.getItem("nombreUsuario");
+    //     if (isAdmin === null) {
+    //     window.location.href = "/login";
+    //     }
+    // }
 
     return (
         <>
@@ -263,102 +255,13 @@ const Create = () => {
                             )}
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                                <Col>
-                                    <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
-                                </Col>
-                                <Col>
-                                    <p className='comentario-encuesta-tercero'>Encuesta enfocada en colaboradores de Veris, para cononcer el clima laboral, es de carácter obligatorio.</p>
-                                </Col>
-                                <Col className='contendor-nuevaEncuesta'>
-                                    <Col>
-                                        <p className='titulo-nuevaEncuesta'>Sección 1</p>
-                                    </Col>
-                                    <Col>
-                                        <p className='comentario-nuevaEncuesta'>Primera parte de la encuesta para conocer la relación entre su area y marketing</p>
-                                    </Col>
-                                    <Col className='seccion3-nuevaEcuesta'>
-                                        <Button 
-                                            className='boton-logotipo'
-                                            onClick={handleOpenAñadirLogo}
-                                        >
-                                            <p className='textoLogotipo'>Logotipo</p>
-                                            <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                        </Button>
-                                    </Col>
-                                    <Col className='seccion4-nuevaEcuesta'>
-                                        <Button className='boton-NuevaPregunta'>
-                                            <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
-                                            <hr className='hr'/>
-                                            <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
-                                        </Button>
-                                    </Col>
-                                    <Col className='seccion3-nuevaEcuesta'>
-                                        <Button className='boton-Imgpie'>
-                                            <p className='textoLogotipo'>Imagen de pie</p>
-                                            <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                        </Button>
-                                    </Col>
-                                </Col>
-                                <Button className='boton-encuestaT'>
-                                    <p className='boton-encuesta-tercero'>Nueva sección</p>
-                                    <span style={{marginTop: '11px', marginLeft: '5px'}} dangerouslySetInnerHTML={{ __html: chevronDownSVG }}/>
-                                </Button>
+                                <NuevaEncuesta/>
                             </Col>
                         </Col>
                     </Row>
                 </Container> 
             </div>
             
-
-            <Modal
-                open={openAñadirLogo}
-                onClose={() => setOpenAñadirLogo(false)}
-                sx={{
-                width: '60%',
-                height: '60%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: 'auto',
-                marginTop: '5%',
-                }}
-                BackdropProps={{
-                onClick: () => {
-                    setOpenAñadirLogo(false);
-                    setBlurBackground(false);
-                    setIsModalVisible(false);
-                },
-                }}
-            >
-                <Box className="encuesta_modalAñadirLogotipo" sx={{ marginTop: '12%', width: '83%', height: '88%' }}>
-                <div className="encuesta_modalAñadir_closeicon">
-                    <p className="encuesta_modalAñadir__title">Añadir Logotipo</p>
-                    <span
-                    dangerouslySetInnerHTML={{ __html: closeSVG }}
-                    onClick={() => handleCloseEliminar(false)}
-                    className="encuesta_modalAñadir__close"
-                    style={{ marginLeft: 'auto' }}
-                    />
-                </div>
-                
-                <ModalAñadirLogo/>
-
-                <div className='encuesta_modal_cerrar'>
-                    <Box sx={{ width: '50%', display: 'contents'}}>
-                            <Col className="d-flex justify-content-center">
-                            <Button className='buttoncancelarlogo' variant="contained" color="primary" onClick={handleCloseEliminar}>
-                                <span className='cancelar-logo'>Cancelar</span>
-                            </Button>
-                            <Button className='buttondeletelogo' variant="contained" color="primary"
-                            // onClick={handleEliminar}
-                            >
-                                <span className='agregarLogotipo'>Agregar logotipo</span>
-                            </Button>
-                            </Col>
-                    </Box>
-                </div>
-                </Box>
-            </Modal>
         </>
     )  
 }

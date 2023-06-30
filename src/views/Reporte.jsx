@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ConsultarReporte from './Reporte/ConsultarReporte'
 import ReporteEncuesta from './Reporte/ReporteEncuesta'
 import ReporteIPN from './Reporte/ReporteIPN'
@@ -23,7 +23,16 @@ const Reporte = (reporte) => {
                 return '';
         }
     }
-
+    useEffect(() => {
+        verificarLocalStorage()
+      }, [])
+    
+      const verificarLocalStorage = () => {
+        const isAdmin = localStorage.getItem('data')
+        if (isAdmin === null) {
+          window.location.href = global.ROUTE_LOGIN
+        }
+      }
     return (
         <div className='contenedor'>
             <div className='row'>

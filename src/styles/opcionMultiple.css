@@ -1,0 +1,27 @@
+.seccion6-opcionMultiple{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1%;
+}
+.cancelarOpcionMultiple{
+    width: 10%;
+    color: rgba(32, 32, 32, 1);
+    background: rgba(255, 240, 199, 1);
+    border-radius: 50px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.cancelarOpcionMultiple:hover{
+    cursor: pointer;
+}
+.guardarOpcionMultiple{
+    width: 10%;
+    color: rgba(32, 32, 32, 1);
+    background: rgba(255, 199, 0, 1);
+    border-radius: 50px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.guardarOpcionMultiple:hover{
+    cursor: pointer;
+}
