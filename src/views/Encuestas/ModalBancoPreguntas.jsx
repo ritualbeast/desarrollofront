@@ -37,7 +37,7 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
 
   const rows = Math.ceil(data.length / 2); // Calcular el número de filas
    // crear consumo categoria de encuestas
-   const [empresas, setEmpresas] = useState([]);
+ 
    const ListarCategoriaEncuesta = async () => {
      try {
        const response = await  ListarCategoriasService();

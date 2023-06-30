@@ -1,12 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import { Select, Pagination, Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
+import {EliminarEncuesta} from '../../services/EncuestasServices';
 
 const alertSVG = svgManager.getSVG('alert');
-const ModalEliminarEncuestas = ({ open, onClose }) => (
-  <Modal
+// crear consumo categoria de encuestas
+
+
+const ModalEliminarEncuestas = ({ open, onClose }) => {
+  const [EliminarEncuestass, setEliminarEncuestass] = useState([]); 
+
+  const EliminarEncuestas = async () => {
+    try {
+      const response = await EliminarEncuesta();
+      console.log(response);
+      setEliminarEncuestass(response.data.row);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <Modal
     open={open}
     onClose={onClose}
     style={{
@@ -51,7 +69,7 @@ const ModalEliminarEncuestas = ({ open, onClose }) => (
               className='buttondeleteEncuesta'
               variant="contained"
               color="primary"
-              onClick={onClose}
+              onClick={EliminarEncuestas}
             >
               Eliminar
             </Button>
@@ -60,6 +78,7 @@ const ModalEliminarEncuestas = ({ open, onClose }) => (
       </Container>
     </Box>
   </Modal>
-);
+  );
+};
 
 export default ModalEliminarEncuestas;
