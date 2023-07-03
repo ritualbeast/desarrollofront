@@ -34,6 +34,10 @@ const CrearEncuestas = () => {
     setOpen(!open);
   };
 
+  const handleCloseMenu = () => {
+    setOpen(false);
+  };
+
   const handleOpenEliminar = () => {
     setOpenEliminar(true);
   };
@@ -59,48 +63,50 @@ const CrearEncuestas = () => {
   return (
     <div>
       <ModalEliminarEncuestas open={openEliminar} onClose={handleCloseEliminar} />
+      <ModalBancoPreguntas open={openBancoPreguntas} onClose={handleCloseBancoPreguntas} />
       <Row className="encuestas-cuerpo">
         <Col xs={4} className="encuestas-cuerpo__col">
           <div className="encuestas-titulo">
             <h4 className="encuestas-titulo__h4">Encuesta 1</h4>
 
-            <div className="encuestas-icon" ref={selectRef}>
-              <div className={`select ${open ? 'open' : ''}`} onClick={handleOpenMenu}>
-                <span
-                  dangerouslySetInnerHTML={{ __html: VerticalSVG }}
-                  className="icon"
-                  style={{ marginLeft: 'auto', marginRight: '4px' }}
-                />
-                {open && (
-                  <ul className="options">
-                    <li className="encuesta-item">
-                      <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
-                      Duplicar
-                    </li>
-                    <li className="encuesta-item">
-                      <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
-                      Visualizar
-                    </li>
-                    <li className="encuesta-item">
-                      <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
-                      Compartir
-                    </li>
-                    <li className="encuesta-item">
-                      <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
-                      Ver datos
-                    </li>
-                    <li className="encuesta-item">
-                      <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
-                      Publicar
-                    </li>
-                    <li className="encuesta-item" onClick={handleOpenEliminar}>
-                      <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
-                      Eliminar
-                    </li>
-                  </ul>
+            <Select
+                className="encuestas-icon"
+                open={open}
+                onClose={handleCloseMenu}
+                onOpen={handleOpenMenu}
+                IconComponent={({ className }) => (
+                  <span
+                    dangerouslySetInnerHTML={{ __html: VerticalSVG }}
+                    className={className}
+                    style={{ marginLeft: 'auto', marginRight: '4px' }}
+                  />
                 )}
-              </div>
-            </div>
+              >
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
+                  Duplicar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
+                  Visualizar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
+                  Compartir
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
+                  Ver datos
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
+                  Publicar
+                </MenuItem>
+                <MenuItem className="encuesta-item" onClick={handleOpenEliminar}>
+                  <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
+                  Eliminar
+                </MenuItem>
+              </Select>
           </div>
             <p>Creación: 01/01/2021</p>
             <Button variant="primary" className="encuestas-editarbutton"
@@ -111,16 +117,155 @@ const CrearEncuestas = () => {
             </Button>
           </Col>
           <Col xs={4} className="encuestas-cuerpo__col">
-            <h4>Encuesta 2</h4>
+          <div className="encuestas-titulo">
+            <h4 className="encuestas-titulo__h4">Encuesta 1</h4>
+
+            <Select
+                className="encuestas-icon"
+                open={open}
+                onClose={handleCloseMenu}
+                onOpen={handleOpenMenu}
+                IconComponent={({ className }) => (
+                  <span
+                    dangerouslySetInnerHTML={{ __html: VerticalSVG }}
+                    className={className}
+                    style={{ marginLeft: 'auto', marginRight: '4px' }}
+                  />
+                )}
+              >
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
+                  Duplicar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
+                  Visualizar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
+                  Compartir
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
+                  Ver datos
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
+                  Publicar
+                </MenuItem>
+                <MenuItem className="encuesta-item" onClick={handleOpenEliminar}>
+                  <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
+                  Eliminar
+                </MenuItem>
+              </Select>
+          </div>
             <p>Creación: 01/01/2021</p>
-            <Button variant="primary" className="encuestas-editarbutton">
+            <Button variant="primary" className="encuestas-editarbutton"
+            onClick={handleOpenBancoPreguntas}
+
+            >
               Editar encuesta
             </Button>
           </Col>
           <Col xs={4} className="encuestas-cuerpo__col">
-            <h4>Encuesta 3</h4>
+          <div className="encuestas-titulo">
+            <h4 className="encuestas-titulo__h4">Encuesta 1</h4>
+
+            <Select
+                className="encuestas-icon"
+                open={open}
+                onClose={handleCloseMenu}
+                onOpen={handleOpenMenu}
+                IconComponent={({ className }) => (
+                  <span
+                    dangerouslySetInnerHTML={{ __html: VerticalSVG }}
+                    className={className}
+                    style={{ marginLeft: 'auto', marginRight: '4px' }}
+                  />
+                )}
+              >
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
+                  Duplicar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
+                  Visualizar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
+                  Compartir
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
+                  Ver datos
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
+                  Publicar
+                </MenuItem>
+                <MenuItem className="encuesta-item" onClick={handleOpenEliminar}>
+                  <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
+                  Eliminar
+                </MenuItem>
+              </Select>
+          </div>
             <p>Creación: 01/01/2021</p>
-            <Button variant="primary" className="encuestas-editarbutton">
+            <Button variant="primary" className="encuestas-editarbutton"
+            onClick={handleOpenBancoPreguntas}
+
+            >
+              Editar encuesta
+            </Button>
+          </Col>
+          <Col xs={4} className="encuestas-cuerpo__col">
+          <div className="encuestas-titulo">
+            <h4 className="encuestas-titulo__h4">Encuesta 1</h4>
+
+            <Select
+                className="encuestas-icon"
+                open={open}
+                onClose={handleCloseMenu}
+                onOpen={handleOpenMenu}
+                IconComponent={({ className }) => (
+                  <span
+                    dangerouslySetInnerHTML={{ __html: VerticalSVG }}
+                    className={className}
+                    style={{ marginLeft: 'auto', marginRight: '4px' }}
+                  />
+                )}
+              >
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
+                  Duplicar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
+                  Visualizar
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
+                  Compartir
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
+                  Ver datos
+                </MenuItem>
+                <MenuItem className="encuesta-item">
+                  <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
+                  Publicar
+                </MenuItem>
+                <MenuItem className="encuesta-item" onClick={handleOpenEliminar}>
+                  <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
+                  Eliminar
+                </MenuItem>
+              </Select>
+          </div>
+            <p>Creación: 01/01/2021</p>
+            <Button variant="primary" className="encuestas-editarbutton"
+            onClick={handleOpenBancoPreguntas}
+
+            >
               Editar encuesta
             </Button>
           </Col>

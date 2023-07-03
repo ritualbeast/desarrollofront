@@ -1,7 +1,7 @@
 .modalbancopreguntas_rowfiltro{
     display: flex;
     width: 100%;
-
+    margin: 1%;
 }
 .modalbancopreguntas_col1{
     width: 20%;
@@ -13,12 +13,13 @@
 }
 
 .modalbancopreguntas_col2{
-    width: 80%;
+    width: 73%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-left: 1%;
     margin-right: 1%;
+    position: relative;
 }
 
 .modalbancopreguntas_coltitle p{
@@ -53,6 +54,7 @@
 .modalbancopreguntas_rowtitle{
     display: flex;
     width: 100%;
+    margin: 1%;
 }
 
 .modalbancopreguntas_select{
@@ -65,13 +67,16 @@
     border-color: #E0E0E0 !important;
     color: #757575  !important;
     font-size: 14px !important;
+    
 }
 
 /*Estilos titulo despues del filtro*/
 
 .modalbancopreguntas_rowtitle2{
     display: flex;
-    margin-bottom: 2%;
+    margin: 0%;
+    padding: 0%;
+    height: 20px !important;
 }
 .modalbancopreguntas_coltitle2{
     width: 50%;
@@ -80,20 +85,36 @@
 .modalbancopreguntas_coltitle2x{
     width: 50%;
     text-align: start;
-    margin: 2%;
+    margin-left:  2%;
+    height: 20px !important;
 }
+.modalbancopreguntas_coltitle2x p{
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color : #878787;
+
+}   
 .modalbancopreguntas_coltitle3{
     width: 50%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 55px !important;
 }
 .modalbancopreguntas_seleccionadas{
     padding: 1%;
     color: #FF4197;
-    font-family: 'Poppins';
-    font-style: normal;
-    font-weight: bold;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: right;
+
 }
 .modalbancopreguntas_preguntastotal{
     margin-right: 2%;
@@ -101,7 +122,6 @@
     color: #757575;
     font-family: 'Poppins';
     font-style: normal;
-    font-weight: bold;
 }
 
 
@@ -115,14 +135,26 @@
     margin-bottom: 2%;
     border-style: solid ;
     border-width: 1px;
-    border-color: #757575;
+    border-color: #bebebe;
     border-radius: 20px;
     
 }
 
+.modalbancopreguntas_colpreguntas.clicked {
+    border: 2px solid #000000;
+  }
+
 .modalbancopreguntas_acordion{
     margin: 0;
     padding: 0;
+    color : #757575;
+    font-weight: initial;
+}
+
+.modalbancopreguntas_ul{
+    margin: 0;
+    padding: 10%;
+    list-style: outside;
     color : #757575;
     font-weight: initial;
 }
@@ -155,8 +187,17 @@
     
 }
 .modalbancopreguntas_divpreguntas{
-    margin: 3%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 3%;
+    margin-bottom: 0%;
 }
+.modalbancopreguntas_divpreguntasbody{
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-top: 5%;
+    margin-bottom: 0%;
+}	
 
 /*Estilos de los botones*/
 
@@ -169,11 +210,11 @@
     justify-content: center;
     align-items: center;
     padding: 8px 16px;
-   
-    font-family: 'Circular Std';
-    font-style: normal;
-    color: #000000;
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
     border-style: none;
+    text-align: left;
     margin-bottom: 5%;
     margin-top: 5%;
    }
@@ -188,10 +229,39 @@
     align-items: center;
     padding: 8px 16px;
    
-    font-family: 'Circular Std';
-    font-style: normal;
-    color: #070707;
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
     border-style: none;
     margin-bottom: 5%;
     margin-top: 5%;
    }
+
+   /*Estilos de los botones*/
+
+   .modalbancopreguntas_rowpaginacion{
+    padding: 0%;
+    margin: 0%;
+    height: 60px !important;
+   }
+
+   /*Estilos del boton search*/
+   .modalbancopreguntas_inputContainer {
+    position: relative;
+  }
+  
+  .modalbancopreguntas_searchIconContainer {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  
+  .modalbancopreguntas_searchIcon {
+    width: 5px !important;
+    height: 5px !important;
+    fill: #000; /* Ajusta el color del icono según tus necesidades */
+  }
