@@ -7,6 +7,8 @@ import { lista } from '../prisma/data/listaEncuesta.ts';
 import { listaBancoPreguntas } from '../prisma/data/listaBancoPreguntas.ts';
 import svgManager from '../assets/svg';
 import NuevaEncuesta from './Create/NuevaEncuesta';
+import DisenoEncuesta from './Create/DiseñoEncuesta';
+import DisenoEncuestaLateralPrincipal from './Create/DisenoEncuestaLateralPrincipal';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -196,66 +198,80 @@ const Create = () => {
                                         </div>
                                 </Col>
                             </Col>
-
-                            {encuestaSegundoCuerpoVisible && (
-                            <Col className="encuesta-Segundocuerpo2">
-                                <Col>
-                                    <div className='encuesta-subtitulo2'>
-                                        <h2 className='encuesta-subtitulo-2'>Banco de Preguntas</h2>
+                            {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible && (
+                                <Col className="encuesta-Segundocuerpo2">
+                                    <Col>
+                                    <div className="encuesta-subtitulo2">
+                                        <h2 className="encuesta-subtitulo-2">Banco de Preguntas</h2>
                                         <OverlayTrigger
-                                            trigger="click"
-                                            show={showTooltip}
-                                            target={targetRef.current}
-                                            placement="right"
-                                            delay={{ show: 250, hide: 400 }}
-                                            overlay={renderTooltip}
-                                            onHide={() => setShowTooltip(false)}
+                                        trigger="click"
+                                        show={showTooltip}
+                                        target={targetRef.current}
+                                        placement="right"
+                                        delay={{ show: 250, hide: 400 }}
+                                        overlay={renderTooltip}
+                                        onHide={() => setShowTooltip(false)}
                                         >
-                                            <div
-                                                className='help-icon'
-                                                onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                                            >
-                                                <span
-                                                    ref={targetRef}
-                                                    style={{ marginLeft: '150px' }}
-                                                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                                                />
-                                            </div>
+                                        <div
+                                            className="help-icon"
+                                            onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                                        >
+                                            <span
+                                            ref={targetRef}
+                                            style={{ marginLeft: '150px' }}
+                                            dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                            />
+                                        </div>
                                         </OverlayTrigger>
                                     </div>
-                                </Col>
-                                <Col>
+                                    </Col>
+                                    <Col>
                                     {showBancoPreguntas && (
                                         <div className="desplegado-container">
-                                            <div className="listaBancoPreguntas-2">
-                                                <div className="fondo-lista">
-                                                    {listaBancoPreguntas.map((item) => (
-                                                        <div
-                                                            key={item.nombre}
-                                                            className="encuesta-nombrelista"
-                                                            onClick={() => handleNestedClick(item.nombre)}
-                                                        >
-                                                            <div className="juntar-listaBancoPreguntas-nombre">
-                                                                <div className="fondo-listaBancoPreguntas2">
-                                                                    <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                                    {item.icono && (
-                                                                        <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                                    )}
-                                                                    <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    ))}
+                                        <div className="listaBancoPreguntas-2">
+                                            <div className="fondo-lista">
+                                            {listaBancoPreguntas.map((item) => (
+                                                <div
+                                                key={item.nombre}
+                                                className="encuesta-nombrelista"
+                                                onClick={() => handleNestedClick(item.nombre)}
+                                                >
+                                                <div className="juntar-listaBancoPreguntas-nombre">
+                                                    <div className="fondo-listaBancoPreguntas2">
+                                                    <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>
+                                                        {item.nombre}
+                                                    </span>
+                                                    {item.icono && (
+                                                        <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
+                                                    )}
+                                                    <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
+                                                    </div>
                                                 </div>
+                                                </div>
+                                            ))}
                                             </div>
                                         </div>
+                                        </div>
                                     )}
+                                    </Col>
                                 </Col>
-                            </Col>
-                            )}
+                                )}
+
+                            {activeIcon === 'Estilo'  && (
+                                <DisenoEncuestaLateralPrincipal/>
+                                )}
+
+                            
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
+                                {activeIcon === 'Banco de Preguntas' && (
                                 <NuevaEncuesta/>
+                                )
+                                }
+                                {activeIcon === 'Estilo' && (
+                                    <DisenoEncuesta/>
+                                )
+                                    }
                             </Col>
                         </Col>
                     </Row>
