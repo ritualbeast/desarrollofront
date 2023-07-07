@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect, useRef } from 'react'
 import '../../styles/nuevaEncuesta.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Box, Modal} from '@mui/material';
@@ -7,6 +7,9 @@ import ModalAñadirLogo from '../Create/ModalAñadirLogo';
 import ModalDuplicarSeccion from './ModalDuplicarSeccion';
 import ModalSeccionCierre from './ModalSeccionCierre';
 import OpcionMultiple from './OpcionMultiple';
+import VariacionEstrellas from './VariacionEstrellas';
+import $ from 'jquery'
+import { keys } from '@material-ui/core/styles/createBreakpoints';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -23,18 +26,19 @@ const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
 
 const NuevaEncuesta = () => {
-    const [editarSeccionVisible, setEditarSeccionVisible] = useState(false);
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [openDuplicarSeccion, setOpenDuplicarSeccion] = useState(false);
+    const buttonRef = useRef(null);
+    const containerRef = useRef(null);
     const [isActive, setIsActive] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
-    const [numContenedores, setNumContenedores] = useState(0);
-    const [duplicarSeccionVisible, setDuplicarSeccionVisible] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showOpcionMultiple, setShowOpcionMultiple] = useState(false);
+    const [contentCont, setContentCont] = useState([{tipo:'C', contentPreg:[]}]);
+    const [contentVari, setContentVari] = useState([]);
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -49,22 +53,62 @@ const NuevaEncuesta = () => {
     }
 
     const handleNewContenedor = () => {
-      setNumContenedores(numContenedores + 1);
+      let obj={
+        tipo:'C',
+        contentPreg:[]
+      }
+      setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
     };
-
+    console.log(contentCont);
     const handleSeccionCierre = () => {
       setShowModal(true);
       setNuevaSeccionVisible(false);
     };    
 
-    const handleOptionMultiple = () => {
-      setShowOpcionMultiple(true);
-      setNuevaPreguntaVisible(false);
+    const handleOptionMultiple = (index) => {
+      let obj={
+        tipo:'M',
+        titulo: '',
+        opcionesRespuestas: []
+      }
+
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      contenidoActual.push(obj);
+
+      nuevoEstado[index].contentPreg = contenidoActual;
+
+      console.log('nuevoEstado', nuevoEstado)
+      setContentCont(nuevoEstado);
+
+      
+
+       $(`#NuevaPreg${index +1}`).removeClass("active");
+       $(`#NuevaPreg${index +1}`).addClass("inactive");
+       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
-    const handleValoracionEstrellas = () => {
-      setNuevaPreguntaVisible(false);
+    const handleValoracionEstrellas = (index) => {
+      let obj={
+        tipo:'V',
+      }
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      contenidoActual.push(obj);
+
+      nuevoEstado[index].contentPreg = contenidoActual;
+
+      console.log('nuevoEstado', nuevoEstado)
+      setContentCont(nuevoEstado);
+
+      
+
+       $(`#NuevaPreg${index +1}`).removeClass("active");
+       $(`#NuevaPreg${index +1}`).addClass("inactive");
+       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
     const handleMatrizValoracion = () => {
@@ -86,93 +130,69 @@ const NuevaEncuesta = () => {
         setIsModalVisible(false);
     };
 
-    const handleMouseEnterEditar = () => {
-      setEditarSeccionVisible(true);
+    const handleMouseEnterEditar = (index) => {
+      $(`#editSec${index +1}`).removeClass("oculto");
+      $(`#editSec${index +1}`).addClass("visible");
+      $(`#Sec${index +1}`).addClass("editar-visible");
+      // setEditarSeccionVisible(true);
     };
 
-    const handleMouseLeaveEditar = () => {
-      setEditarSeccionVisible(false);
+    const handleMouseLeaveEditar = (index) => {
+      $(`#editSec${index +1}`).removeClass("visible");
+      $(`#editSec${index +1}`).addClass("oculto");
+      $(`#Sec${index +1}`).removeClass("editar-visible");
+      // setEditarSeccionVisible(false);
     };
 
     const handleButtonClick = () => {
       setNuevaSeccionVisible(!nuevaSeccionVisible);
     };
 
-    const handleButtonNuevaPregunta = () => {
-      setNuevaPreguntaVisible(!nuevaPreguntaVisible);
-      setIsActive(!isActive);
-    }
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          buttonRef.current &&
+          !buttonRef.current.contains(event.target) &&
+          containerRef.current &&
+          !containerRef.current.contains(event.target)
+        ) {
+          setIsActive(false);
+          setNuevaPreguntaVisible(false);
+          setNuevaSeccionVisible(false);
+        }
+      };
+    
+      document.addEventListener('mousedown', handleClickOutside);
+    
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [nuevaPreguntaVisible, nuevaSeccionVisible]);
 
-    const handleMouseEnterDuplicar = () => {
-      setDuplicarSeccionVisible(true);
-    };
+    const handleButtonNuevaPregunta = (index) => {
+      // Verificar el estado actual de las acciones
+      
+      if($(`#NuevaPreg${index +1}`).hasClass('active')){
 
-    const handleMouseLeaveDuplicar = () => {
-      setDuplicarSeccionVisible(false);
+        $(`#NuevaPreg${index +1}`).removeClass("active");
+        $(`#NuevaPreg${index +1}`).addClass("inactive");
+        $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+        $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+
+
+      }else{
+        $(`#NuevaPregVisi${index +1}`).removeClass("ocultar");
+        $(`#NuevaPreg${index +1}`).addClass("active");
+        $(`#NuevaPreg${index +1}`).removeClass("inactive");
+        $(`#NuevaPreg${index +1}`).addClass("editar-visible");
+
+      }
     };
     
-    const duplicarContenedor = (
-        <Col className="contendor-nuevaEncuesta">
-          <Col>
-            <Col
-              className={`contenedor-editar-seccion ${
-                editarSeccionVisible ? "visible" : "oculto"
-              }`}
-              onMouseEnter={handleMouseEnterDuplicar}
-              onMouseLeave={handleMouseLeaveDuplicar}
-            >
-              <p className="titulo-editarEncuesta">Editar</p>
-              <span
-                className='iconcoCopyRosa'
-                style={{ marginRight: "2.7%" }}
-                dangerouslySetInnerHTML={{ __html: copyRosaSVG }}
-                onClick={handleDuplicarSeccion}
-              />
-              <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
-            </Col>
-
-            <Col
-              className={`contenedor-tituloNuevaEncuesta ${
-                editarSeccionVisible ? "editar-visible" : ""
-              }`}
-              onMouseEnter={handleMouseEnterDuplicar}
-              onMouseLeave={handleMouseLeaveDuplicar}
-            >
-              <p className="titulo-nuevaEncuesta">Sección 1</p>
-              <span
-                style={{ display: "flex", alignItems: "center" }}
-                dangerouslySetInnerHTML={{ __html: chevronUpSVG }}
-              />
-            </Col>
-          </Col>
-      
-          <Col className="seccion3-nuevaEcuesta">
-            <Button className="boton-logotipo" onClick={handleOpenAñadirLogo}>
-              <p className="textoLogotipo">Logotipo</p>
-              <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
-            </Button>
-          </Col>
-      
-          <Col className="seccion4-nuevaEcuesta">
-            <Button className="boton-NuevaPregunta">
-              <p className="textoNuevaPregunta">Nueva Pregunta</p>
-              <hr className="hr" />
-              <span
-                style={{ marginTop: "3px" }}
-                dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}
-              />
-            </Button>
-          </Col>
-      
-          <Col className="seccion3-nuevaEcuesta">
-            <Button className="boton-Imgpie">
-              <p className="textoLogotipo">Imagen de pie</p>
-              <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
-            </Button>
-          </Col>
-        </Col>
-    );
-
+    const handleCerrarOpcionMultiple = (dato) => {
+      setShowOpcionMultiple(false);
+    };
+    
   return (
     <>
         <Container className='encuesta-Tercerocuerpo2-1'>
@@ -180,174 +200,134 @@ const NuevaEncuesta = () => {
                 <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
             </Col>
 
-            <Col className='contendor-nuevaEncuesta'>
-                <Col>
-                    <Col 
-                        className={`contenedor-editar-seccion ${editarSeccionVisible ? 'visible' : 'oculto'}`}
-                        onMouseEnter={handleMouseEnterEditar}
-                        onMouseLeave={handleMouseLeaveEditar}
-                    >
-                        <p className='titulo-editarEncuesta'>Ediar</p>
-                        <span style={{ marginRight: '2.7%' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
-                        <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
-                    </Col>
-                    <Col 
-                        className={`contenedor-tituloNuevaEncuesta ${editarSeccionVisible ? 'editar-visible' : ''}`} 
-                        onMouseEnter={handleMouseEnterEditar}
-                        onMouseLeave={handleMouseLeaveEditar}
-                    >
-                        <p className='titulo-nuevaEncuesta'>Sección 1</p>
-                        <span style={{ display: 'flex', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: chevronUpSVG }} />
-                    </Col>
-                </Col>
-
-                <Col className='seccion3-nuevaEcuesta'>
-                    <Button 
-                        className='boton-logotipo'
-                        onClick={handleOpenAñadirLogo}
-                    >
-                        <p className='textoLogotipo'>Logotipo</p>
-                        <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                    </Button>
-                </Col>
-
-                {showOpcionMultiple && <OpcionMultiple />}
-
-                <Col className='seccion4-nuevaEcuesta'>
-                    <Button 
-                      className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : 'inactive'}`}
-                      onClick={handleButtonNuevaPregunta}
-                    >
-                        <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
-                        <hr className='hr'/>
-                        <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
-                    </Button>
-                </Col>
-
-                {nuevaPreguntaVisible && (
-                      <Container className={`container-newContendorPregunta ${nuevaPreguntaVisible ? 'visible' : 'oculto'}`}>
-                        <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
-                          <Col className='container-newContendorPregunta-pt1' onClick={handleOptionMultiple}>
-                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
-                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
-                          </Col>
-                          
-                          <Col className='container-newContendorPregunta-pt2' onClick={handleValoracionEstrellas}>
-                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
-                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
-                          </Col>
-
-                          <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
-                            <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
-                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
-                          </Col>
-                          
-                          <Col className='container-newContendorPregunta-pt4' onClick={handleCargaArchivo}>
-                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
-                          </Col>
-
-                          <Col className='container-newContendorPregunta-pt5' onClick={handleCuadroComentarios}>
-                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
-                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
-                          </Col>
-                        </Row>
-                      </Container>
-                )}
-
-                <Col className='seccion3-nuevaEcuesta'>
-                    <Button className='boton-Imgpie'>
-                        <p className='textoLogotipo'>Imagen de pie</p>
-                        <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                    </Button>
-                </Col>
-            </Col>
-
-            {Array.from({ length: numContenedores }, (_, index) => (
-              <Fragment key={index}>
-                <br />
-                <Col className="contendor-nuevaEncuesta">
+            {contentCont.map((seccion, index) => {
+                return (
                   <Col>
-                    <Col
-                      className={`contenedor-editar-seccion ${
-                        editarSeccionVisible ? "visible" : "oculto"
-                      }`}
-                      onMouseEnter={handleMouseEnterDuplicar}
-                      onMouseLeave={handleMouseLeaveDuplicar}
-                    >
-                      <p className="titulo-editarEncuesta">Editar</p>
-                      <span
-                        className='iconcoCopyRosa'
-                        style={{ marginRight: "2.7%" }}
-                        dangerouslySetInnerHTML={{ __html: copyRosaSVG }}
-                        onClick={handleDuplicarSeccion}
-                      />
-                      <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
+                    <Col key={index} className='contendor-nuevaEncuesta principal'>
+                      <Col>
+                          <Col 
+                              id={`editSec${index +1}`}
+                              className={`contenedor-editar-seccion`}
+                          >
+                              <p className='titulo-editarEncuesta'>Editar</p>
+                              <span style={{ marginRight: '2.7%' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
+                              <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
+                          </Col>
+                          <Col 
+                              id={`Sec${index +1}`}
+                              className={`contenedor-tituloNuevaEncuesta `} 
+                              onMouseEnter={() => handleMouseEnterEditar(index)}
+                              onMouseLeave={() => handleMouseLeaveEditar(index)}
+                          >
+                              <p className='titulo-nuevaEncuesta'>Sección {index +1}</p>
+                              <span style={{ display: 'flex', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: chevronUpSVG }} />
+                          </Col>
+                      </Col>
+      
+                      <Col className='seccion3-nuevaEcuesta'>
+                          <Button 
+                              className='boton-logotipo'
+                              onClick={handleOpenAñadirLogo}
+                          >
+                              <p className='textoLogotipo'>Logotipo</p>
+                              <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                          </Button>
+                      </Col>
+      
+                      {seccion.contentPreg.map((preg, indexp) => { 
+                        if (preg.tipo == 'M') {
+                          return <OpcionMultiple indice={indexp} indiceSec = {index}  closeopmul={handleCerrarOpcionMultiple} />
+                        }  
+                        if (preg.tipo == 'V') {
+                          return <VariacionEstrellas indice={index} />
+                        }
+                        return '';
+                      })}
+                      
+                      <Col className='seccion4-nuevaEcuesta'>
+                          <Button
+                            id={`NuevaPreg${index + 1}`}
+                            ref={buttonRef}
+                            className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : 'inactive'}`}
+                            onClick={() => handleButtonNuevaPregunta(index)}
+                          >
+                              <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
+                              <hr className='hr'/>
+                              <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
+                          </Button>
+                      </Col>
+                      
+                      {/* {nuevaPreguntaVisible && ( */}
+                            <Container
+                              ref={containerRef}
+                              id={`NuevaPregVisi${index + 1}`}
+                              className="container-newContendorPregunta ocultar"
+                              
+                            >
+                              <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
+                                <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
+                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
+                                </Col>
+                                
+                                <Col className='container-newContendorPregunta-pt2' onClick={handleValoracionEstrellas}>
+                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
+                                </Col>
+      
+                                <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
+                                  <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
+                                </Col>
+                                
+                                <Col className='container-newContendorPregunta-pt4' onClick={handleCargaArchivo}>
+                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
+                                </Col>
+      
+                                <Col className='container-newContendorPregunta-pt5' onClick={handleCuadroComentarios}>
+                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
+                                </Col>
+                              </Row>
+                            </Container>
+                      {/* )} */}
+      
+                      <Col className='seccion3-nuevaEcuesta'>
+                          <Button className='boton-Imgpie'>
+                              <p className='textoLogotipo'>Imagen de pie</p>
+                              <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                          </Button>
+                      </Col>
                     </Col>
-
-                    <Col
-                      className={`contenedor-tituloNuevaEncuesta ${
-                        editarSeccionVisible ? "editar-visible" : ""
-                      }`}
-                      onMouseEnter={handleMouseEnterDuplicar}
-                      onMouseLeave={handleMouseLeaveDuplicar}
-                    >
-                      <p className="titulo-nuevaEncuesta">Sección {index + 2}</p>
-                      <span
-                        style={{ display: "flex", alignItems: "center" }}
-                        dangerouslySetInnerHTML={{ __html: chevronUpSVG }}
-                      />
-                    </Col>
+                    <br />
                   </Col>
-
-                  <Col className="seccion3-nuevaEcuesta">
-                    <Button className="boton-logotipo" onClick={handleOpenAñadirLogo}>
-                      <p className="textoLogotipo">Logotipo</p>
-                      <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
-                    </Button>
-                  </Col>
-
-                  <Col className="seccion4-nuevaEcuesta">
-                    <Button className="boton-NuevaPregunta">
-                      <p className="textoNuevaPregunta">Nueva Pregunta</p>
-                      <hr className="hr" />
-                      <span
-                        style={{ marginTop: "3px" }}
-                        dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}
-                      />
-                    </Button>
-                  </Col>
-
-                  <Col className="seccion3-nuevaEcuesta">
-                    <Button className="boton-Imgpie">
-                      <p className="textoLogotipo">Imagen de pie</p>
-                      <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
-                    </Button>
-                  </Col>
-                </Col>
-                <br />
-              </Fragment>
-            ))}
+                )
+            })}
 
             {showModal && <ModalSeccionCierre />}
 
             {nuevaSeccionVisible && (
-            <Container className={`container-newContendor ${nuevaSeccionVisible ? 'visible' : 'oculto'}`}>
-              <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginBottom: '2%' }}>
-                <Col className='container-newContendor-pt1' onClick={handleNewContenedor}>
-                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: listPlushSVG }}/>
-                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Sección con preguntas</p>
-                </Col>
-                
-                <Col className='container-newContendor-pt2' onClick={handleSeccionCierre}>
-                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: arrowDownSVG }}/>
-                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Sección de cierre</p>
-                </Col>
-              </Row>
-            </Container>
+              <Container 
+                ref={containerRef}
+                className={`container-newContendor ${nuevaSeccionVisible ? 'visible' : 'oculto'}`}
+              >
+                <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginBottom: '2%' }}>
+                  <Col className='container-newContendor-pt1' onClick={handleNewContenedor}>
+                    <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: listPlushSVG }}/>
+                    <p style={{ marginTop: '2%', marginBottom: '2%' }}>Sección con preguntas</p>
+                  </Col>
+                  
+                  <Col className='container-newContendor-pt2' onClick={handleSeccionCierre}>
+                    <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: arrowDownSVG }}/>
+                    <p style={{ marginTop: '2%', marginBottom: '2%' }}>Sección de cierre</p>
+                  </Col>
+                </Row>
+              </Container>
             )}
 
             <Button
+              ref={buttonRef}
               className={`boton-encuestaT ${nuevaSeccionVisible ? 'editar-visible' : ''}`}
               onClick={handleButtonClick}
             >

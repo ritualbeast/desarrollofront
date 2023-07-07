@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../../styles/opcionMultiple.css';
+import '../../styles/variacionEstrellas.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -8,7 +8,7 @@ const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
+const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -27,9 +27,9 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState('');
     
-    const handleCancelarOpcionMultiple = () => {
-        closeopmul(false);
-    }
+    // const handleCancelarOpcionMultiple = () => {
+    //     closeopmul(false);
+    // }
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -212,26 +212,26 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
     return (
     <>
         <br />
-        <Container className='container-opcionMultiple'>
-            <Col className='seccion1-opcionMultiple'>
-                <Col className={`editar-opcionMultiple ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
+        <Container className='container-variacionEstrellas'>
+            <Col className='seccion1-variacionEstrellas'>
+                <Col className={`editar-variacionEstrellas ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
                     Editar
                 </Col>
 
-                <Col className={`configurar-opcionMultiple ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
+                <Col className={`configurar-variacionEstrellas ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
                     Configuración
                 </Col>
                 
-                <Col className={`logica-opcionMultiple ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
+                <Col className={`logica-variacionEstrellas ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
                     Lógica
                 </Col>
             </Col>
             
             {mostrarEditar && (
-                <Container className='opcionMultiple-container-editar'>
+                <Container className='variacionEstrellas-container-editar'>
                     <Col>
                         <select className='selectEditar'>
-                            <option value="" selected disabled hidden>Opcion multiple</option>
+                            <option value="" selected disabled hidden>Variación por Estrella</option>
                             <option value="option1">Opción 1</option>
                             <option value="option2">Opción 2</option>
                             <option value="option3">Opción 3</option>
@@ -249,9 +249,9 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         />
                     </Col>
 
-                    <Col className='seccion3-opcionMultiple-editar'>
+                    <Col className='seccion3-variacionEstrellas-editar'>
                         <DragDropContext onDragEnd={handleDragEnd}>
-                            <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
+                            <Droppable droppableId={`${indice}`}>
                                 {(provided) => (
                                     <div {...provided.droppableProps} ref={provided.innerRef}>
                                         {opcionesRespuesta.map((opcion, index) => {
@@ -268,25 +268,26 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                         >
-                                                            <Col className="seccion3-1-opcionMultiple-editar">
-                                                                <label className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}>
-                                                                    <input
-                                                                        type={opcion.type}
-                                                                        style={{ width: '100%', height: '100%' }}
-                                                                        checked={opcion.checked}
-                                                                        onChange={() => handleOpcionChange(opcion.id)}
-                                                                    />
-                                                                    <span class="checkmark"></span>
-                                                                </label>
+                                                            <Col className="seccion3-1-variacionEstrellas-editar">
+                                                                <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{indice+1} Estrella</p>
 
                                                                 <FormControl
-                                                                    style={{ width: '79.5%', border: '1px solid #ccc' }}
+                                                                    style={{ width: '35%', border: '1px solid #ccc' }}
                                                                     className="textoOpcionRespuesta"
                                                                     type="text"
                                                                     value={opcion.text}
-                                                                    placeholder="Ingrese una opción de respuesta"
+                                                                    placeholder="Ingrese una estiqueta de valoración"
                                                                     onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
                                                                 />
+
+                                                                <select className='selectTipoGrafico' style={{width: '17%'}}>
+                                                                    <option value="" selected disabled hidden>Estrella</option>
+                                                                    <option value="option1">Opción 1</option>
+                                                                    <option value="option2">Opción 2</option>
+                                                                    <option value="option3">Opción 3</option>
+                                                                </select>
+
+                                                                <p style={{marginLeft: '2%'}}>Color</p>
 
                                                                 {usarPonderacion && (
                                                                     inputs.map((inputNum, index) => (
@@ -326,7 +327,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         </Col>
                     </Col>
 
-                    <Col className='seccion5-opcionMultiple-editar'>
+                    <Col className='seccion5-variacionEstrellas-editar'>
                         <label class="switch">
                             <input type="checkbox" onChange={handleSwitchChange} checked={usarPonderacion} />
                             <span className="slider round"></span>
@@ -337,8 +338,8 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
             )}
 
             {mostrarConfiguracion && (
-                <Container className='opcionMultiple-container-configuracion'>
-                    <Col className='seccion1-opcionMultiple-configuracion'>
+                <Container className='variacionEstrellas-container-configuracion'>
+                    <Col className='seccion1-variacionEstrellas-configuracion'>
                         <label class="switch">
                             <input type="checkbox" onChange={handleSwitchConfigurar1} checked={configuracion1}/>
                             <span className="slider round"></span>
@@ -346,13 +347,13 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la respuesta a esta pregunta sea obligatoria</p>
                     </Col>
                     {configuracion1 && (
-                        <Col className='seccion1-1-opcionMultiple-configuracion'>
+                        <Col className='seccion1-1-variacionEstrellas-configuracion'>
                             <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
                             <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
                         </Col>
                     )}
 
-                    <Col className='seccion2-opcionMultiple-configuracion'>
+                    <Col className='seccion2-variacionEstrellas-configuracion'>
                         <label class="switch">
                             <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
                             <span className="slider round"></span>
@@ -360,7 +361,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que esta pregunta sea complementaria</p>
                     </Col>
                     {configuracion2 && (
-                        <Col className='seccion1-2-opcionMultiple-configuracion'>
+                        <Col className='seccion1-2-variacionEstrellas-configuracion'>
                             <select className='selectConfigurar'>
                                 <option value="" selected disabled hidden>Seleccionar Pregunta</option>
                                 <option value="option1">Opción 1</option>
@@ -369,16 +370,8 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                             </select>
                         </Col>
                     )}
-
-                    <Col className='seccion3-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la pregunta resiva multiples respuestas</p>
-                    </Col>
                     
-                    <Col className='seccion4-opcionMultiple-configuracion'>
+                    <Col className='seccion4-variacionEstrellas-configuracion'>
                         <label class="switch">
                             <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
                             <span className="slider round"></span>
@@ -386,13 +379,13 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         <p style={{ margin: 'unset', cursor: 'default' }}>Agregar como opción de respuesta "Ninguna de las anteriores"</p>
                     </Col>
                     {configuracion4 && (
-                        <Col className='seccion1-4-opcionMultiple-configuracion'>
+                        <Col className='seccion1-4-variacionEstrellas-configuracion'>
                             <p style={{margin: 'unset' }}>Etiqueta</p>
                             <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
                         </Col>
                     )}
 
-                    <Col className='seccion5-opcionMultiple-configuracion'>
+                    <Col className='seccion5-variacionEstrellas-configuracion'>
                         <label class="switch">
                             <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
                             <span className="slider round"></span>
@@ -400,12 +393,12 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                         <p style={{ margin: 'unset', cursor: 'default' }}>Agregar "otra" como opción de respuesta para comentarios</p>
                     </Col>
                     {configuracion5 && (
-                        <Col className='seccion1-5-opcionMultiple-configuracion'>
+                        <Col className='seccion1-5-variacionEstrellas-configuracion'>
                             <Col>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
                                 <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
                             </Col>
-                            <Col className='seccion1-5-2-opcionMultiple-configuracion'>
+                            <Col className='seccion1-5-2-variacionEstrellas-configuracion'>
                                 <Col style={{ width: '55%' }}>
                                     <Col>
                                         <p className='configurarTamaño'>Tamaño</p>
@@ -443,15 +436,15 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
             )}
 
             {mostrarLogica && (
-                <Container className='opcionMultiple-container-logica'>
-                    <Col className='seccion1-opcionMultiple-logica'>
+                <Container className='variacionEstrellas-container-logica'>
+                    <Col className='seccion1-variacionEstrellas-logica'>
                         <p style={{margin: 'unset'}}>Si la respuesta es...</p>
                         <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
                     </Col>
                     <div>
                     {moreContendorLogica.map((mostrar, index) => mostrar && (
                         <div key={index}>
-                            <Col className='seccion2-opcionMultiple-logica'>
+                            <Col className='seccion2-variacionEstrellas-logica'>
                                 {opcionesRespuesta.map((opcion, opcionIndex) => (
                                     opcionIndex === index && (
                                         <div key={opcion.id} style={{ width: '29%' }}>
@@ -503,12 +496,15 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                 </Container> 
             )}
 
-            <Col className='seccion6-opcionMultiple'>
-                <Button className='cancelarOpcionMultiple' onClick={handleCancelarOpcionMultiple}>
+            <Col className='seccion6-variacionEstrellas'>
+                <Button 
+                    className='cancelarvariacionEstrellas' 
+                    // onClick={handleCancelarOpcionMultiple}
+                >
                     Cancelar
                 </Button>
                     
-                <Button className='guardarOpcionMultiple' onClick={handleGuardarOpcionMultiple}>
+                <Button className='guardarvariacionEstrellas' onClick={handleGuardarOpcionMultiple}>
                     Guardar
                 </Button>
             </Col>
@@ -517,4 +513,4 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
   )
 }
 
-export default OpcionMultiple
+export default VariacionEstrellas
