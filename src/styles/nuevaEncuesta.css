@@ -49,8 +49,6 @@
     padding-bottom: 0.3%;
     background-color: rgba(237, 237, 237, 1);
   }
-  .contenedor-editar-seccion.oculto {
-  }
   .contenedor-editar-seccion.visible {
     transform: translateY(0);
   }

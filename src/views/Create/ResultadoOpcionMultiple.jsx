@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import OpcionMultiple from './OpcionMultiple';
 
 const ResultadoOpcionMultiple = () => {
-  const [pregunta, setPregunta] = useState('');
-
-  const handlePreguntaChange = (value) => {
-    setPregunta(value);
+  const capturarValores = (pregunta, opciones) => {
+    // Aquí puedes utilizar los valores capturados como desees
+    console.log('Pregunta:', pregunta);
+    console.log('Opciones de respuesta:', opciones);
   };
 
   return (
     <div>
-      <h2>Resultado Opción Múltiple</h2>
-      <OpcionMultiple onPreguntaChange={handlePreguntaChange} />
-      <p>Valor de la pregunta: {pregunta}</p>
+      <OpcionMultiple onPreguntaChange={capturarValores} />
     </div>
   );
 };

@@ -73,11 +73,6 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
-    useEffect(() => {
-        console.log('ejecuta')
-        // handleMoreOpcion();
-    }, []);
-
     const handleOpcionChange = (id, value, checked) => {
         setOpcionText(value);
 
@@ -204,9 +199,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
     };
 
     const handleGuardarOpcionMultiple = (event) => {
-        // const value = event.target.value;
-        // setPregunta(value);
-        // onPreguntaChange(value);
+        onPreguntaChange(pregunta, opcionesRespuesta);
     };
 
     return (
@@ -246,6 +239,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                             type="text"
                             value={pregunta}
                             placeholder="Escribe aquí..." 
+                            onChange={(e) => setPregunta(e.target.value)}
                         />
                     </Col>
 
@@ -260,7 +254,6 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
                                                     key={opcion.id.toString()}
                                                     draggableId={opcion.id.toString()}
                                                     index={index}
-                                                    
                                                 >
                                                     {(provided) => (
                                                         <div

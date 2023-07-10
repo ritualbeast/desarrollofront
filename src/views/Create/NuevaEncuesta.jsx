@@ -10,6 +10,7 @@ import OpcionMultiple from './OpcionMultiple';
 import VariacionEstrellas from './VariacionEstrellas';
 import $ from 'jquery'
 import { keys } from '@material-ui/core/styles/createBreakpoints';
+import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -67,6 +68,7 @@ const NuevaEncuesta = () => {
     };    
 
     const handleOptionMultiple = (index) => {
+      setShowOpcionMultiple(true);
       let obj={
         tipo:'M',
         titulo: '',
@@ -82,33 +84,28 @@ const NuevaEncuesta = () => {
       console.log('nuevoEstado', nuevoEstado)
       setContentCont(nuevoEstado);
 
-      
-
-       $(`#NuevaPreg${index +1}`).removeClass("active");
-       $(`#NuevaPreg${index +1}`).addClass("inactive");
-       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
-       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      $(`#NuevaPreg${index +1}`).removeClass("active");
+      $(`#NuevaPreg${index +1}`).addClass("inactive");
+      $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+      $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
     const handleValoracionEstrellas = (index) => {
       let obj={
         tipo:'V',
       }
+
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[index].contentPreg];
       contenidoActual.push(obj);
 
       nuevoEstado[index].contentPreg = contenidoActual;
-
-      console.log('nuevoEstado', nuevoEstado)
-      setContentCont(nuevoEstado);
-
       
-
-       $(`#NuevaPreg${index +1}`).removeClass("active");
-       $(`#NuevaPreg${index +1}`).addClass("inactive");
-       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
-       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      setContentVari((prevVari) => [...prevVari, obj]);
+      $(`#NuevaPreg${index +1}`).removeClass("active");
+      $(`#NuevaPreg${index +1}`).addClass("inactive");
+      $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+      $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
     const handleMatrizValoracion = () => {
@@ -178,21 +175,49 @@ const NuevaEncuesta = () => {
         $(`#NuevaPreg${index +1}`).addClass("inactive");
         $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
         $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
-
-
       }else{
         $(`#NuevaPregVisi${index +1}`).removeClass("ocultar");
         $(`#NuevaPreg${index +1}`).addClass("active");
         $(`#NuevaPreg${index +1}`).removeClass("inactive");
         $(`#NuevaPreg${index +1}`).addClass("editar-visible");
-
       }
     };
     
-    const handleCerrarOpcionMultiple = (dato) => {
-      setShowOpcionMultiple(false);
-    };
+    const handleCerrarOpcionMultiple = (dato, index) => {
+      console.log(dato);
+      //setShowOpcionMultiple(dato);
+      console.log("index ", index);
     
+      let variable
+      let obj={
+        tipo:'M',
+        titulo: '',
+        opcionesRespuestas: []
+      }
+      const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[0].contentPreg];
+     $.each(contentCont, function(index2, elemento) {
+      //if(index2 !== index){
+        console.log(1);
+        //handleOptionMultiple()
+        variable = elemento.contentPreg.splice(index, 1)
+        
+        //contenidoActual.push(obj);
+
+      //}
+     });
+     contentCont.contentPreg=variable;
+     console.log(contentCont);
+     //setContentCont(contenidoActual);
+    };
+
+    const capturarValores = (pregunta, opciones) => {
+      // Aquí puedes utilizar los valores capturados como desees
+      console.log('Pregunta:', pregunta);
+      console.log('Opciones de respuesta:', opciones);
+    };
+
+    let dato = false;
   return (
     <>
         <Container className='encuesta-Tercerocuerpo2-1'>
@@ -233,16 +258,18 @@ const NuevaEncuesta = () => {
                               <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                           </Button>
                       </Col>
-      
+                      {console.log(seccion)}
                       {seccion.contentPreg.map((preg, indexp) => { 
                         if (preg.tipo == 'M') {
-                          return <OpcionMultiple indice={indexp} indiceSec = {index}  closeopmul={handleCerrarOpcionMultiple} />
+                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} />
                         }  
                         if (preg.tipo == 'V') {
                           return <VariacionEstrellas indice={index} />
                         }
                         return '';
                       })}
+
+                      {/* <ResultadoOpcionMultiple/> */}
                       
                       <Col className='seccion4-nuevaEcuesta'>
                           <Button
@@ -258,7 +285,7 @@ const NuevaEncuesta = () => {
                       </Col>
                       
                       {/* {nuevaPreguntaVisible && ( */}
-                            <Container
+                            <div
                               ref={containerRef}
                               id={`NuevaPregVisi${index + 1}`}
                               className="container-newContendorPregunta ocultar"
@@ -270,7 +297,7 @@ const NuevaEncuesta = () => {
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
                                 </Col>
                                 
-                                <Col className='container-newContendorPregunta-pt2' onClick={handleValoracionEstrellas}>
+                                <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
                                 </Col>
@@ -290,7 +317,7 @@ const NuevaEncuesta = () => {
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
                                 </Col>
                               </Row>
-                            </Container>
+                            </div>
                       {/* )} */}
       
                       <Col className='seccion3-nuevaEcuesta'>

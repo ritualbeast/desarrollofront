@@ -3,10 +3,13 @@ import '../../styles/variacionEstrellas.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { SketchPicker } from 'react-color';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
+const squareThinSVG = svgManager.getSVG('square-thin');
+
 
 const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -26,6 +29,8 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
     const [configuracion5, setConfiguracion5] = useState(false);
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState('');
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [selectedColor, setSelectedColor] = useState('#000000');
     
     // const handleCancelarOpcionMultiple = () => {
     //     closeopmul(false);
@@ -209,6 +214,18 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
         // onPreguntaChange(value);
     };
 
+    const handleIconClick = () => {
+        setShowColorPicker(!showColorPicker);
+    };
+      
+    const handleColorChange = (color) => {
+        setSelectedColor(color.hex);
+    };
+      
+    const handleCloseColorPicker = () => {
+        setShowColorPicker(false);
+    };
+
     return (
     <>
         <br />
@@ -269,7 +286,7 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
                                                             {...provided.dragHandleProps}
                                                         >
                                                             <Col className="seccion3-1-variacionEstrellas-editar">
-                                                                <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{indice+1} Estrella</p>
+                                                                <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{indice+1} estrella</p>
 
                                                                 <FormControl
                                                                     style={{ width: '35%', border: '1px solid #ccc' }}
@@ -287,13 +304,29 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice}) => {
                                                                     <option value="option3">Opción 3</option>
                                                                 </select>
 
-                                                                <p style={{marginLeft: '2%'}}>Color</p>
+                                                                <p style={{marginLeft: '2%', textAlign: 'center'}}>Color</p>
+
+                                                                <span
+                                                                    style={{ marginLeft: '2%', cursor: 'pointer', marginTop: '0.8%' }}
+                                                                    dangerouslySetInnerHTML={{ __html: squareThinSVG }}
+                                                                    onClick={handleIconClick}
+                                                                />
+
+{showColorPicker && (
+  <div style={{ position: 'absolute', zIndex: '2', display: 'flex', right: '20%', bottom: '-30%' }}>
+    <SketchPicker
+      color={selectedColor}
+      onChange={handleColorChange}
+      onChangeComplete={handleCloseColorPicker}
+    />
+  </div>
+)}
 
                                                                 {usarPonderacion && (
                                                                     inputs.map((inputNum, index) => (
                                                                         <input
                                                                             className="numeracionRespuesta"
-                                                                            style={{ width: '2.5%', textAlign: 'center' }}
+                                                                            style={{ width: '2.2%', textAlign: 'center', height: '2%', marginTop: '1%' }}
                                                                             key={inputNum}
                                                                             // placeholder={index + 1}
                                                                             type="text"
