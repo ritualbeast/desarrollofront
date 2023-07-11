@@ -9,7 +9,7 @@ const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({closeopmul, indice, indiceSec, props, onAceptar}) => {
+const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
     const [mostrarContenedor, setMostrarContenedor] = useState(true);
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);

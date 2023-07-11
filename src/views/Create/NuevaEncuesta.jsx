@@ -11,6 +11,7 @@ import VariacionEstrellas from './VariacionEstrellas';
 import $ from 'jquery'
 import { keys } from '@material-ui/core/styles/createBreakpoints';
 import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
+import CargaDatos from './CargaDatos';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -40,6 +41,7 @@ const NuevaEncuesta = () => {
     const [showOpcionMultiple, setShowOpcionMultiple] = useState(false);
     const [contentCont, setContentCont] = useState([{tipo:'C', contentPreg:[]}]);
     const [contentVari, setContentVari] = useState([]);
+    const [contentCarg, setContentCarg] = useState([]);
     const [mostrarResultado, setMostrarResultado] = useState(false);
 
     const handleOpenAñadirLogo = () => {
@@ -112,8 +114,22 @@ const NuevaEncuesta = () => {
       setNuevaPreguntaVisible(false);
     };
 
-    const handleCargaArchivo = () => {
-      setNuevaPreguntaVisible(false);
+    const handleCargaArchivo = (index) => {
+      let obj={
+        tipo:'CA',
+      }
+
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      contenidoActual.push(obj);
+
+      nuevoEstado[index].contentPreg = contenidoActual;
+
+      setContentCarg((prevVari) => [...prevVari, obj]);
+      $(`#NuevaPreg${index +1}`).removeClass("active");
+      $(`#NuevaPreg${index +1}`).addClass("inactive");
+      $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+      $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
     const handleCuadroComentarios = () => {
@@ -209,15 +225,13 @@ const NuevaEncuesta = () => {
      //setContentCont(contenidoActual);
     };
 
-    const capturarValores = (pregunta, opciones) => {
-      // Aquí puedes utilizar los valores capturados como desees
-      console.log('Pregunta:', pregunta);
-      console.log('Opciones de respuesta:', opciones);
-    };
-
     let dato = false;
 
     const handleAceptarOpcionMultiple = () => {
+      setMostrarResultado(true);
+    };
+
+    const handleAceptarValoracionEstrellas = () => {
       setMostrarResultado(true);
     };
 
@@ -265,9 +279,13 @@ const NuevaEncuesta = () => {
                       {console.log(seccion)}
                       {seccion.contentPreg.map((preg, indexp) => { 
                         if (preg.tipo == 'M') {
-                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} onAceptar={handleAceptarOpcionMultiple} />                        }  
+                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} onAceptar={handleAceptarOpcionMultiple} />
+                        }  
                         if (preg.tipo == 'V') {
-                          return <VariacionEstrellas indice={index} />
+                          return <VariacionEstrellas indice={index} indiceSec = {index} onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}/>
+                        }
+                        if (preg.tipo == 'CA') {
+                          return <CargaDatos indice={index}/>
                         }
                         return '';
                       })}
@@ -308,7 +326,7 @@ const NuevaEncuesta = () => {
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
                                 </Col>
                                 
-                                <Col className='container-newContendorPregunta-pt4' onClick={handleCargaArchivo}>
+                                <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
                                 </Col>
