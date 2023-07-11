@@ -40,6 +40,7 @@ const NuevaEncuesta = () => {
     const [showOpcionMultiple, setShowOpcionMultiple] = useState(false);
     const [contentCont, setContentCont] = useState([{tipo:'C', contentPreg:[]}]);
     const [contentVari, setContentVari] = useState([]);
+    const [mostrarResultado, setMostrarResultado] = useState(false);
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -62,6 +63,7 @@ const NuevaEncuesta = () => {
       setNuevaSeccionVisible(false);
     };
     console.log(contentCont);
+
     const handleSeccionCierre = () => {
       setShowModal(true);
       setNuevaSeccionVisible(false);
@@ -71,8 +73,6 @@ const NuevaEncuesta = () => {
       setShowOpcionMultiple(true);
       let obj={
         tipo:'M',
-        titulo: '',
-        opcionesRespuestas: []
       }
 
       const nuevoEstado = [...contentCont];
@@ -191,8 +191,6 @@ const NuevaEncuesta = () => {
       let variable
       let obj={
         tipo:'M',
-        titulo: '',
-        opcionesRespuestas: []
       }
       const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[0].contentPreg];
@@ -218,6 +216,11 @@ const NuevaEncuesta = () => {
     };
 
     let dato = false;
+
+    const handleAceptarOpcionMultiple = () => {
+      setMostrarResultado(true);
+    };
+
   return (
     <>
         <Container className='encuesta-Tercerocuerpo2-1'>
@@ -258,18 +261,16 @@ const NuevaEncuesta = () => {
                               <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                           </Button>
                       </Col>
+                      
                       {console.log(seccion)}
                       {seccion.contentPreg.map((preg, indexp) => { 
                         if (preg.tipo == 'M') {
-                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} />
-                        }  
+                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} onAceptar={handleAceptarOpcionMultiple} />                        }  
                         if (preg.tipo == 'V') {
                           return <VariacionEstrellas indice={index} />
                         }
                         return '';
                       })}
-
-                      {/* <ResultadoOpcionMultiple/> */}
                       
                       <Col className='seccion4-nuevaEcuesta'>
                           <Button

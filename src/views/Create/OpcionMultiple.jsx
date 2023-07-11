@@ -3,19 +3,30 @@ import '../../styles/opcionMultiple.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
+const OpcionMultiple = ({closeopmul, indice, indiceSec, props, onAceptar}) => {
+    const [mostrarContenedor, setMostrarContenedor] = useState(true);
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
     const [isActiveLogica, setIsActiveLogica] = useState(true);
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState([]);
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState([
+        {
+            id: 1,
+            checked: false,
+            text: "",
+            type: 'checkbox',
+            seccionValue: '',
+            preguntaValue: '',
+          }
+    ]);
     const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
@@ -26,6 +37,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
     const [configuracion5, setConfiguracion5] = useState(false);
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState('');
+    const [mostrarResultado, setMostrarResultado] = useState(false);
     
     const handleCancelarOpcionMultiple = () => {
         closeopmul(false);
@@ -99,7 +111,7 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.filter((opcion) => opcion.id !== id)
         );
-      };
+    };
 
     const handleSwitchChange = () => {
         setUsarPonderacion(!usarPonderacion);
@@ -198,314 +210,327 @@ const OpcionMultiple = ({closeopmul, onPreguntaChange, indice, indiceSec}) => {
         });
     };
 
-    const handleGuardarOpcionMultiple = (event) => {
-        onPreguntaChange(pregunta, opcionesRespuesta);
+    const handleGuardarOpcionMultiple = () => {
+        setMostrarResultado(true);
+        onAceptar();
+        setMostrarContenedor(false);
     };
+
+    useEffect(() => {
+        setMoreContendorLogica([true]);
+    }, []);
 
     return (
     <>
-        <br />
-        <Container className='container-opcionMultiple'>
-            <Col className='seccion1-opcionMultiple'>
-                <Col className={`editar-opcionMultiple ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
-                    Editar
-                </Col>
+        {mostrarContenedor && (
+            <Container className='container-opcionMultiple'>
+                <Col className='seccion1-opcionMultiple'>
+                    <Col className={`editar-opcionMultiple ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
+                        Editar
+                    </Col>
 
-                <Col className={`configurar-opcionMultiple ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
-                    Configuración
+                    <Col className={`configurar-opcionMultiple ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
+                        Configuración
+                    </Col>
+                    
+                    <Col className={`logica-opcionMultiple ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
+                        Lógica
+                    </Col>
                 </Col>
                 
-                <Col className={`logica-opcionMultiple ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
-                    Lógica
-                </Col>
-            </Col>
-            
-            {mostrarEditar && (
-                <Container className='opcionMultiple-container-editar'>
-                    <Col>
-                        <select className='selectEditar'>
-                            <option value="" selected disabled hidden>Opcion multiple</option>
-                            <option value="option1">Opción 1</option>
-                            <option value="option2">Opción 2</option>
-                            <option value="option3">Opción 3</option>
-                        </select>
-                    </Col>
-
-                    <Col>
-                        <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
-                        <FormControl 
-                            style={{ width: '94.2%', border: '1px solid #ccc' }} 
-                            className= 'textoAgradecimiento' 
-                            type="text"
-                            value={pregunta}
-                            placeholder="Escribe aquí..." 
-                            onChange={(e) => setPregunta(e.target.value)}
-                        />
-                    </Col>
-
-                    <Col className='seccion3-opcionMultiple-editar'>
-                        <DragDropContext onDragEnd={handleDragEnd}>
-                            <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
-                                {(provided) => (
-                                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                                        {opcionesRespuesta.map((opcion, index) => {
-                                            return (
-                                                <Draggable
-                                                    key={opcion.id.toString()}
-                                                    draggableId={opcion.id.toString()}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                        >
-                                                            <Col className="seccion3-1-opcionMultiple-editar">
-                                                                <label className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}>
-                                                                    <input
-                                                                        type={opcion.type}
-                                                                        style={{ width: '100%', height: '100%' }}
-                                                                        checked={opcion.checked}
-                                                                        onChange={() => handleOpcionChange(opcion.id)}
-                                                                    />
-                                                                    <span class="checkmark"></span>
-                                                                </label>
-
-                                                                <FormControl
-                                                                    style={{ width: '79.5%', border: '1px solid #ccc' }}
-                                                                    className="textoOpcionRespuesta"
-                                                                    type="text"
-                                                                    value={opcion.text}
-                                                                    placeholder="Ingrese una opción de respuesta"
-                                                                    onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
-                                                                />
-
-                                                                {usarPonderacion && (
-                                                                    inputs.map((inputNum, index) => (
-                                                                        <input
-                                                                            className="numeracionRespuesta"
-                                                                            style={{ width: '2.5%', textAlign: 'center' }}
-                                                                            key={inputNum}
-                                                                            // placeholder={index + 1}
-                                                                            type="text"
-                                                                        />
-                                                                    ))
-                                                                )}
-
-                                                                <span
-                                                                    style={{ marginTop: '1.3%', marginLeft: '2%', cursor: 'pointer' }}
-                                                                    dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
-                                                                    onClick={() => handleDeleteOpcion(opcion.id)}
-                                                                />
-                                                            </Col>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            );
-                                        })}
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-
-                        <Col >
-                            <span 
-                                style={{ marginTop: '1.3%', cursor: 'pointer' }} 
-                                dangerouslySetInnerHTML={{ __html: plushCircleSVG }} 
-                                onClick={handleMoreOpcion}
-                            />
-                        </Col>
-                    </Col>
-
-                    <Col className='seccion5-opcionMultiple-editar'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchChange} checked={usarPonderacion} />
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Usar ponderación</p>
-                    </Col>
-                </Container>
-            )}
-
-            {mostrarConfiguracion && (
-                <Container className='opcionMultiple-container-configuracion'>
-                    <Col className='seccion1-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar1} checked={configuracion1}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la respuesta a esta pregunta sea obligatoria</p>
-                    </Col>
-                    {configuracion1 && (
-                        <Col className='seccion1-1-opcionMultiple-configuracion'>
-                            <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
-                            <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
-                        </Col>
-                    )}
-
-                    <Col className='seccion2-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que esta pregunta sea complementaria</p>
-                    </Col>
-                    {configuracion2 && (
-                        <Col className='seccion1-2-opcionMultiple-configuracion'>
-                            <select className='selectConfigurar'>
-                                <option value="" selected disabled hidden>Seleccionar Pregunta</option>
+                {mostrarEditar && (
+                    <Container className='opcionMultiple-container-editar'>
+                        <Col>
+                            <select className='selectEditar'>
+                                <option value="" selected disabled hidden>Opcion multiple</option>
                                 <option value="option1">Opción 1</option>
                                 <option value="option2">Opción 2</option>
                                 <option value="option3">Opción 3</option>
                             </select>
                         </Col>
-                    )}
 
-                    <Col className='seccion3-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la pregunta resiva multiples respuestas</p>
-                    </Col>
-                    
-                    <Col className='seccion4-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Agregar como opción de respuesta "Ninguna de las anteriores"</p>
-                    </Col>
-                    {configuracion4 && (
-                        <Col className='seccion1-4-opcionMultiple-configuracion'>
-                            <p style={{margin: 'unset' }}>Etiqueta</p>
-                            <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
+                        <Col>
+                            <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
+                            <FormControl 
+                                style={{ width: '94.2%', border: '1px solid #ccc' }} 
+                                className= 'textoAgradecimiento' 
+                                type="text"
+                                value={pregunta}
+                                placeholder="Escribe aquí..." 
+                                onChange={(e) => setPregunta(e.target.value)}
+                            />
                         </Col>
-                    )}
 
-                    <Col className='seccion5-opcionMultiple-configuracion'>
-                        <label class="switch">
-                            <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
-                            <span className="slider round"></span>
-                        </label>
-                        <p style={{ margin: 'unset', cursor: 'default' }}>Agregar "otra" como opción de respuesta para comentarios</p>
-                    </Col>
-                    {configuracion5 && (
-                        <Col className='seccion1-5-opcionMultiple-configuracion'>
-                            <Col>
-                                <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
-                            </Col>
-                            <Col className='seccion1-5-2-opcionMultiple-configuracion'>
-                                <Col style={{ width: '55%' }}>
-                                    <Col>
-                                        <p className='configurarTamaño'>Tamaño</p>
-                                    </Col>
-                                    <Col className='contenedorConfigurarTamaño'>
-                                        <select className='selectConfigurarTamaño1'>
-                                            <option value="" selected disabled hidden>Una sola linea de texto</option>
-                                            <option value="option1">Opción 1</option>
-                                            <option value="option2">Opción 2</option>
-                                            <option value="option3">Opción 3</option>
-                                        </select>
+                        <Col className='seccion3-opcionMultiple-editar'>
+                            <DragDropContext onDragEnd={handleDragEnd}>
+                                <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
+                                    {(provided) => (
+                                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                                            {opcionesRespuesta.map((opcion, index) => {
+                                                return (
+                                                    <Draggable
+                                                        key={opcion.id.toString()}
+                                                        draggableId={opcion.id.toString()}
+                                                        index={index}
+                                                    >
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                            >
+                                                                <Col className="seccion3-1-opcionMultiple-editar">
+                                                                    <label className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}>
+                                                                        <input
+                                                                            type={opcion.type}
+                                                                            style={{ width: '100%', height: '100%' }}
+                                                                            checked={opcion.checked}
+                                                                            onChange={() => handleOpcionChange(opcion.id)}
+                                                                        />
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
 
-                                        <select className='selectConfigurarTamaño2'>
-                                            <option value="" selected disabled hidden>50 caracteres</option>
-                                            <option value="option1">Opción 1</option>
-                                            <option value="option2">Opción 2</option>
-                                            <option value="option3">Opción 3</option>
-                                        </select>
-                                    </Col>
-                                </Col>
-                                <Col style={{ width: '41.12%', marginLeft: '2%' }}>
-                                    <p className='configurarValidacion'>Validación</p>
+                                                                    <FormControl
+                                                                        style={{ width: '79.5%', border: '1px solid #ccc' }}
+                                                                        className="textoOpcionRespuesta"
+                                                                        type="text"
+                                                                        value={opcion.text}
+                                                                        placeholder="Ingrese una opción de respuesta"
+                                                                        onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
+                                                                    />
 
-                                    <select className='selectConfigurarValidacion'>
-                                        <option value="" selected disabled hidden>No validar esta respuesta</option>
-                                        <option value="option1">Opción 1</option>
-                                        <option value="option2">Opción 2</option>
-                                        <option value="option3">Opción 3</option>
-                                    </select>
-                                </Col>
-                            </Col>
-                        </Col>
-                    )}
-                </Container>
-            )}
+                                                                    {usarPonderacion && (
+                                                                        inputs.map((inputNum, index) => (
+                                                                            <input
+                                                                                className="numeracionRespuesta"
+                                                                                style={{ width: '2.5%', textAlign: 'center' }}
+                                                                                key={inputNum}
+                                                                                // placeholder={index + 1}
+                                                                                type="text"
+                                                                            />
+                                                                        ))
+                                                                    )}
 
-            {mostrarLogica && (
-                <Container className='opcionMultiple-container-logica'>
-                    <Col className='seccion1-opcionMultiple-logica'>
-                        <p style={{margin: 'unset'}}>Si la respuesta es...</p>
-                        <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
-                    </Col>
-                    <div>
-                    {moreContendorLogica.map((mostrar, index) => mostrar && (
-                        <div key={index}>
-                            <Col className='seccion2-opcionMultiple-logica'>
-                                {opcionesRespuesta.map((opcion, opcionIndex) => (
-                                    opcionIndex === index && (
-                                        <div key={opcion.id} style={{ width: '29%' }}>
-                                            <p style={{ margin: 'unset', width: '20%' }}>{opcion.text}</p>
+                                                                    <span
+                                                                        style={{ marginTop: '1.3%', marginLeft: '2%', cursor: 'pointer' }}
+                                                                        dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
+                                                                        onClick={() => handleDeleteOpcion(opcion.id)}
+                                                                    />
+                                                                </Col>
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                );
+                                            })}
+                                            {provided.placeholder}
                                         </div>
-                                    )
-                                ))}
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
 
-                                {opcionesRespuesta.map((opcion, opcionIndex) => (
-                                    opcionIndex === index && (
-                                        <Col style={{ width: '100%' }}>
-                                            <div key={opcion.id}></div>
-                                                <select
-                                                    className='select1Logica1'
-                                                    value={opcion.seccionValue}
-                                                    onChange={(event) => handleSeccionChange(opcionIndex, event)}
-                                                >
-                                                    <option value='' disabled hidden>Sección...</option>
-                                                    <option value='option1'>Sección 1</option>
-                                                    <option value='option2'>Sección 2</option>
-                                                    <option value='option3'>Sección 3</option>
-                                                </select>
-
-                                                <select
-                                                    className='select1Logica2'
-                                                    value={opcion.preguntaValue}
-                                                    onChange={(event) => handlePreguntaChange(index, event)}
-                                                >
-                                                    <option value='' disabled hidden>Pregunta...</option>
-                                                    <option value='option1'>Pregunta 1</option>
-                                                    <option value='option2'>Pregunta 2</option>
-                                                    <option value='option3'>Pregunta 3</option>
-                                                </select>
-
-                                                <Button className='borrarLogica'>
-                                                    <span
-                                                        style={{ marginTop: '1.3%', cursor: 'pointer' }}
-                                                        dangerouslySetInnerHTML={{ __html: trashSVG }}
-                                                        onClick={() => handleClearOpcion(index)}
-                                                    />
-                                                </Button>
-                                        </Col>
-                                    )
-                                ))}
+                            <Col >
+                                <span 
+                                    style={{ marginTop: '1.3%', cursor: 'pointer' }} 
+                                    dangerouslySetInnerHTML={{ __html: plushCircleSVG }} 
+                                    onClick={handleMoreOpcion}
+                                />
                             </Col>
-                        </div>
-                        ))}
-                    </div>
-                </Container> 
-            )}
+                        </Col>
 
-            <Col className='seccion6-opcionMultiple'>
-                <Button className='cancelarOpcionMultiple' onClick={handleCancelarOpcionMultiple}>
-                    Cancelar
-                </Button>
-                    
-                <Button className='guardarOpcionMultiple' onClick={handleGuardarOpcionMultiple}>
-                    Guardar
-                </Button>
-            </Col>
-        </Container>    
+                        <Col className='seccion5-opcionMultiple-editar'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchChange} checked={usarPonderacion} />
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Usar ponderación</p>
+                        </Col>
+                    </Container>
+                )}
+
+                {mostrarConfiguracion && (
+                    <Container className='opcionMultiple-container-configuracion'>
+                        <Col className='seccion1-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar1} checked={configuracion1}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la respuesta a esta pregunta sea obligatoria</p>
+                        </Col>
+                        {configuracion1 && (
+                            <Col className='seccion1-1-opcionMultiple-configuracion'>
+                                <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
+                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
+                            </Col>
+                        )}
+
+                        <Col className='seccion2-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que esta pregunta sea complementaria</p>
+                        </Col>
+                        {configuracion2 && (
+                            <Col className='seccion1-2-opcionMultiple-configuracion'>
+                                <select className='selectConfigurar'>
+                                    <option value="" selected disabled hidden>Seleccionar Pregunta</option>
+                                    <option value="option1">Opción 1</option>
+                                    <option value="option2">Opción 2</option>
+                                    <option value="option3">Opción 3</option>
+                                </select>
+                            </Col>
+                        )}
+
+                        <Col className='seccion3-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la pregunta resiva multiples respuestas</p>
+                        </Col>
+                        
+                        <Col className='seccion4-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar como opción de respuesta "Ninguna de las anteriores"</p>
+                        </Col>
+                        {configuracion4 && (
+                            <Col className='seccion1-4-opcionMultiple-configuracion'>
+                                <p style={{margin: 'unset' }}>Etiqueta</p>
+                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
+                            </Col>
+                        )}
+
+                        <Col className='seccion5-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar "otra" como opción de respuesta para comentarios</p>
+                        </Col>
+                        {configuracion5 && (
+                            <Col className='seccion1-5-opcionMultiple-configuracion'>
+                                <Col>
+                                    <p style={{margin: 'unset' }}>Etiqueta</p>
+                                    <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
+                                </Col>
+                                <Col className='seccion1-5-2-opcionMultiple-configuracion'>
+                                    <Col style={{ width: '55%' }}>
+                                        <Col>
+                                            <p className='configurarTamaño'>Tamaño</p>
+                                        </Col>
+                                        <Col className='contenedorConfigurarTamaño'>
+                                            <select className='selectConfigurarTamaño1'>
+                                                <option value="" selected disabled hidden>Una sola linea de texto</option>
+                                                <option value="option1">Opción 1</option>
+                                                <option value="option2">Opción 2</option>
+                                                <option value="option3">Opción 3</option>
+                                            </select>
+
+                                            <select className='selectConfigurarTamaño2'>
+                                                <option value="" selected disabled hidden>50 caracteres</option>
+                                                <option value="option1">Opción 1</option>
+                                                <option value="option2">Opción 2</option>
+                                                <option value="option3">Opción 3</option>
+                                            </select>
+                                        </Col>
+                                    </Col>
+                                    <Col style={{ width: '41.12%', marginLeft: '2%' }}>
+                                        <p className='configurarValidacion'>Validación</p>
+
+                                        <select className='selectConfigurarValidacion'>
+                                            <option value="" selected disabled hidden>No validar esta respuesta</option>
+                                            <option value="option1">Opción 1</option>
+                                            <option value="option2">Opción 2</option>
+                                            <option value="option3">Opción 3</option>
+                                        </select>
+                                    </Col>
+                                </Col>
+                            </Col>
+                        )}
+                    </Container>
+                )}
+
+                {mostrarLogica && (
+                    <Container className='opcionMultiple-container-logica'>
+                        <Col className='seccion1-opcionMultiple-logica'>
+                            <p style={{margin: 'unset'}}>Si la respuesta es...</p>
+                            <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
+                        </Col>
+                        <div>
+                            {moreContendorLogica.map((mostrar, index) => mostrar && (
+                                <div key={index}>
+                                    <Col className='seccion2-opcionMultiple-logica'>
+                                        {opcionesRespuesta.map((opcion, opcionIndex) => (
+                                            opcionIndex === index && (
+                                                <div key={opcion.id} style={{ width: '29%' }}>
+                                                    <p style={{ margin: 'unset', width: '20%' }}>{opcion.text}</p>
+                                                </div>
+                                            )
+                                        ))}
+
+                                        {opcionesRespuesta.map((opcion, opcionIndex) => (
+                                            opcionIndex === index && (
+                                                <Col style={{ width: '100%' }}>
+                                                    <div key={opcion.id}></div>
+                                                        <select
+                                                            className='select1Logica1'
+                                                            value={opcion.seccionValue}
+                                                            onChange={(event) => handleSeccionChange(opcionIndex, event)}
+                                                        >
+                                                            <option value='' disabled hidden>Seleccionar Sección</option>
+                                                            <option value='option1'>Sección 1</option>
+                                                            <option value='option2'>Sección 2</option>
+                                                            <option value='option3'>Sección 3</option>
+                                                        </select>
+
+                                                        <select
+                                                            className='select1Logica2'
+                                                            value={opcion.preguntaValue}
+                                                            onChange={(event) => handlePreguntaChange(index, event)}
+                                                        >
+                                                            <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                            <option value='option1'>Pregunta 1</option>
+                                                            <option value='option2'>Pregunta 2</option>
+                                                            <option value='option3'>Pregunta 3</option>
+                                                        </select>
+
+                                                        <Button className='borrarLogica'>
+                                                            <span
+                                                                style={{ marginTop: '1.3%', cursor: 'pointer' }}
+                                                                dangerouslySetInnerHTML={{ __html: trashSVG }}
+                                                                onClick={() => handleClearOpcion(index)}
+                                                            />
+                                                        </Button>
+                                                </Col>
+                                            )
+                                        ))}
+                                    </Col>
+                                </div>
+                            ))}
+                        </div>
+                    </Container> 
+                )}
+
+                <Col className='seccion6-opcionMultiple'>
+                    <Button className='cancelarOpcionMultiple' onClick={handleCancelarOpcionMultiple}>
+                        Cancelar
+                    </Button>
+                        
+                    <Button className='guardarOpcionMultiple' onClick={handleGuardarOpcionMultiple}>
+                        Guardar
+                    </Button>
+                </Col>
+            </Container>
+        )}
+
+        {mostrarResultado && (
+            <Container>
+                <ResultadoOpcionMultiple index={indice} pregunta={pregunta} opciones={opcionesRespuesta} />
+            </Container>
+        )}
     </>
   )
 }
