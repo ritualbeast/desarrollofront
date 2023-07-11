@@ -13,7 +13,6 @@ const ListarCategoriasService = async () => {
     };
     const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/categoria/listarCategorias', requestOptions);
     const data = await response.json();
-    console.log(data);
 
     return data;
   } catch (error) {
@@ -21,15 +20,17 @@ const ListarCategoriasService = async () => {
     throw error;
   }
 };
-
-const EliminarEncuesta = async (idEncuesta, usuarioInactivacion) => {
+const usuarioInactivacion = "CBENJAC";
+const EliminarEncuesta = async (idEncuesta) => {
+  console.log(idEncuesta);
+  console.log(usuarioInactivacion);
   try {
-    const tokenUsuario = localStorage.getItem('token');
+    // const tokenUsuario = localStorage.getItem('token');
     const canales = '808cd0b9-141f-4132-81e9-c3822436191b';
-    const token = `Bearer ${tokenUsuario}`;
+    // const token = `Bearer ${tokenUsuario}`;
     const headers = {
       'Content-Type': 'application/json',
-      Authorization: token,
+      // Authorization: token,
       Canal: canales
     };
     const body = {
@@ -50,7 +51,8 @@ const EliminarEncuesta = async (idEncuesta, usuarioInactivacion) => {
   }
 };
 
-const ListarEncuestas = async () => {
+const ListarEncuestas = async (tipo, valor) => {
+  console.log(tipo, valor);
   try {
     const canales = '808cd0b9-141f-4132-81e9-c3822436191b';
     const headers = {
@@ -61,7 +63,7 @@ const ListarEncuestas = async () => {
       method: 'GET',
       headers
     };
-    const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas/tipoEncuesta/4?pagina=&size=', requestOptions);
+    const response = await fetch(`http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas?nombre=&categoriaEncuestas=${valor}&fechaInicio&fechaFin&formatoPresentacion=&esPublica=&tipoVigencia&tipoEncuesta&estadoEncuesta=${tipo}&pagina=&size=`, requestOptions);
     const data = await response.json();
     return data;
   } catch (error) {

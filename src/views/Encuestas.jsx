@@ -43,16 +43,23 @@ const Encuestas = () => {
   const paginationClass = pagination();
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
+  const [tipo, setTipo] = useState('');
+  const [valor, setValor] = useState('');
 
 
 
-  const handleFiltroClick = (opcion) => {
+  const handleFiltroClick = (opcion, valor) => {
     setOpcionFiltro(opcion);
+    setTipo(opcion);
+    setValor(valor);
   };
 
   const handleOpenCrearEncuesta = () => {
   setOpenCrearEncuesta(true);
 };
+
+const  [currentPage, setCurrentPage] = useState(0);
+
 
   return (
     <>
@@ -88,13 +95,13 @@ const Encuestas = () => {
           <Col xs={6} className="encuestas-filtrarpor">
             <h4>Filtrar por:</h4>
             <ul className="encuestas-filtrarpor__ul">
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'abiertas' ? 'active' : ''}`} onClick={() => handleFiltroClick('abiertas')}>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'A' ? 'active' : ''}`} onClick={() => handleFiltroClick('A', 1)}>
                 <a >Abiertas</a>
               </li>
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'cerradas' ? 'active' : ''}`} onClick={() => handleFiltroClick('cerradas')}>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'C' ? 'active' : ''}`} onClick={() => handleFiltroClick('C',1)}>
                 <a >Cerradas</a>
               </li>
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'todas' ? 'active' : ''}`} onClick={() => handleFiltroClick('todas')}>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'T' ? 'active' : ''}`} onClick={() => handleFiltroClick('T',1)}>
                 <a>Todas</a>
               </li>
             </ul>
@@ -110,22 +117,10 @@ const Encuestas = () => {
           </Col>
         </Row>
 
-        {(opcionFiltro === 'abiertas' || opcionFiltro === 'cerradas' || opcionFiltro === 'todas') && (
-          <CrearEncuestas opcionFiltro={opcionFiltro} />
+        {(opcionFiltro === 'A' || opcionFiltro === 'C' || opcionFiltro === 'T') && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor}/>
         )}
-        <Row className="encuestas-paginacion">
-          <Col xs={12} className="encuestas-paginacion__col">
-            <div className={paginationClass.root}>
-            <Pagination
-              count={10}
-              variant="outlined"
-              shape="rounded"
-              sx={paginationStyle}
-            />
-            </div>
-          </Col>
-        </Row>
-
+        
       </Container>
       
       <Modal
@@ -150,23 +145,11 @@ const Encuestas = () => {
               className="encuesta_modalcrear__close"
               style={{ marginLeft: 'auto' }}
             />
-          </div>
-          
+          </div>   
           <ModalCrearEncuestas />
         </Box>
-      </Modal>
-
-      
-
-
-
-          
-    
-    
-    </>
-    
-
-    
+      </Modal>    
+    </>  
   );
 };
 

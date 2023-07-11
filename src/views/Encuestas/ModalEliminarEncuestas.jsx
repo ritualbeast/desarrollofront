@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import { Select, Pagination, Box, Modal} from '@mui/material';
@@ -9,14 +9,18 @@ const alertSVG = svgManager.getSVG('alert');
 // crear consumo categoria de encuestas
 
 
-const ModalEliminarEncuestas = ({ open, onClose }) => {
+const ModalEliminarEncuestas = ({ open, onClose, eliminarid, eliminarEncuesta }) => {
   const [EliminarEncuestass, setEliminarEncuestass] = useState([]); 
+  const [idEncuesta, setIdEncuesta] = useState(eliminarid);
+
+  useEffect(() => {
+    setIdEncuesta(eliminarid);
+  }, [eliminarid]);
 
   const EliminarEncuestas = async () => {
     try {
-      const response = await EliminarEncuesta();
-      console.log(response);
-      setEliminarEncuestass(response.data.row);
+      const response = await EliminarEncuesta(idEncuesta);
+      eliminarEncuesta();
       onClose();
     } catch (error) {
       console.error(error);
