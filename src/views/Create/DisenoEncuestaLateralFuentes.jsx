@@ -1,17 +1,13 @@
 import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
-import '../../styles/disenoEncuestaLogo.css'
-import Logo from '../../assets/img/LOGO_VERIS.jpg'
-import { RadioGroup } from '@material-ui/core';
-import { FormControlLabel } from '@material-ui/core';
-import { Radio } from '@material-ui/core';
+import '../../styles/disenoEncuestaFuente.css'
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLateralFuentes = () => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -78,7 +74,18 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    
+    // lista de titulos de fuentes
+
+    const titulos = [
+        "Título de encuesta",
+        "Descripción de encuesta",
+        "Título de sección",
+        "Descripción de sección",
+        "Preguntas",
+        "Opciones de respuesta",
+        "Texto de cierre de encuestas",
+        "Texto de botones"
+      ];
     
     
   return (
@@ -116,49 +123,43 @@ const DisenoEncuestaLaterallogotipo = () => {
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
+                            <span className='cabeceraTitle'>Fuentes</span>
                         </div>
-                        <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
-                        
-                        </div>
-                        <div className="contenedorContenedorTamano">
-                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-                            <div className="contenedortamanoLogotipo">
-                                <div className='radioLogotipo'>
-                                {tamano.map((opcion) => (
-                                    <div key={opcion.id} className="radioOption">
-                                    <RadioButton
-                                        id={opcion.id.toString()}
-                                        value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
-                                        onChange={handleChangeTamano}
-                                        label={opcion.nombre}
-                                    />
-                                    </div>
-                                ))}
+                        <div>
+                            {titulos.map((titulo, index) => (
+                                <div className="contenedorFuenteTitulo" key={index}>
+                                <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">{titulo}</span>
                                 </div>
-                            </div>
+
+                                <div className="subcontenedorFuenteTituloselect">
+                                    <select className="fuenteTituloSelect">
+                                    <option value="">Seleccionar tipografía</option>
+                                    <option value="1">Arial</option>
+                                    <option value="2">Arial Black</option>
+                                    </select>
+                                </div>
+
+                                <div className="subcontenedorFuenteTituloselect2">
+                                    <select className="fuenteTituloSelect2">
+                                    <option value="">Grosor</option>
+                                    <option value="1">Normal</option>
+                                    <option value="2">Negrita</option>
+                                    </select>
+                                    <select className="fuenteTituloSelect3">
+                                    <option value="">Tamaño</option>
+                                    <option value="1">10</option>
+                                    <option value="2">12</option>
+                                    </select>
+                                </div>
+                                </div>
+                            ))}
                         </div>
 
-                        <div className="contenedorContenedorPosicion">
-                            <span className='contenedorPosicionLabel'>Posición</span>
-                            
-                            <div className="contenedorPosicion">
-                                <select className="selectPosicion">
-                                    <option value="1">Izquierda</option>
-                                    <option value="2">Derecha</option>
-                                    <option value="3">Centro</option>
-                                    <option value="4">Arriba</option>
-                                    <option value="5">Abajo</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                   
-                    
                     
                     </div>
+                    <br />
+                    <br />
                 </div>
                 </div>
             
@@ -171,4 +172,4 @@ const DisenoEncuestaLaterallogotipo = () => {
   )
 }
 
-export default DisenoEncuestaLaterallogotipo
+export default DisenoEncuestaLateralFuentes

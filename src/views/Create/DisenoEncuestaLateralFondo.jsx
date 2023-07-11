@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
-import '../../styles/disenoEncuestaLogo.css'
+import '../../styles/disenoEncuestaFondo.css'
 import Logo from '../../assets/img/LOGO_VERIS.jpg'
 import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
@@ -10,6 +10,7 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const uploadSVG = svgManager.getSVG('upload');
 
 const DisenoEncuestaLaterallogotipo = () => {
 
@@ -86,7 +87,7 @@ const DisenoEncuestaLaterallogotipo = () => {
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
+                <h2 className="encuesta-subtitulo-2">Fondo</h2>
                 <OverlayTrigger
                 trigger="click"
                 show={showTooltip}
@@ -116,44 +117,16 @@ const DisenoEncuestaLaterallogotipo = () => {
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
+                            <span className='cabeceraTitle'>Fondo</span>
                         </div>
                         <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
+                            <div className='buttonLogotipo'>
+                                <span className='buttonLogotipoText'>Imagen</span>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                            </div>
                         
                         </div>
-                        <div className="contenedorContenedorTamano">
-                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-                            <div className="contenedortamanoLogotipo">
-                                <div className='radioLogotipo'>
-                                {tamano.map((opcion) => (
-                                    <div key={opcion.id} className="radioOption">
-                                    <RadioButton
-                                        id={opcion.id.toString()}
-                                        value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
-                                        onChange={handleChangeTamano}
-                                        label={opcion.nombre}
-                                    />
-                                    </div>
-                                ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="contenedorContenedorPosicion">
-                            <span className='contenedorPosicionLabel'>Posición</span>
-                            
-                            <div className="contenedorPosicion">
-                                <select className="selectPosicion">
-                                    <option value="1">Izquierda</option>
-                                    <option value="2">Derecha</option>
-                                    <option value="3">Centro</option>
-                                    <option value="4">Arriba</option>
-                                    <option value="5">Abajo</option>
-                                </select>
-                            </div>
-                        </div>
+                        
                         
                    
                     

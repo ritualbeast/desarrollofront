@@ -1,17 +1,17 @@
 import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
-import '../../styles/disenoEncuestaLogo.css'
-import Logo from '../../assets/img/LOGO_VERIS.jpg'
-import { RadioGroup } from '@material-ui/core';
-import { FormControlLabel } from '@material-ui/core';
-import { Radio } from '@material-ui/core';
+import '../../styles/disenoEncuestaTransicion.css'
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const slashSVG = svgManager.getSVG('slash');
+const chevronsrightSVG = svgManager.getSVG('chevrons-right');
+const chevronsdownSVG = svgManager.getSVG('chevrons-down');
 
-const DisenoEncuestaLaterallogotipo = () => {
+
+const DisenoEncuestaLateralTransicion = () => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -78,6 +78,17 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
+    // resaltar seleccion
+
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleClick = (item) => {
+        if (selectedItem === item) {
+          setSelectedItem(null);
+        } else {
+          setSelectedItem(item);
+        }
+      };
     
     
     
@@ -116,49 +127,35 @@ const DisenoEncuestaLaterallogotipo = () => {
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
-                        </div>
-                        <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
-                        
-                        </div>
-                        <div className="contenedorContenedorTamano">
-                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-                            <div className="contenedortamanoLogotipo">
-                                <div className='radioLogotipo'>
-                                {tamano.map((opcion) => (
-                                    <div key={opcion.id} className="radioOption">
-                                    <RadioButton
-                                        id={opcion.id.toString()}
-                                        value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
-                                        onChange={handleChangeTamano}
-                                        label={opcion.nombre}
-                                    />
-                                    </div>
-                                ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="contenedorContenedorPosicion">
-                            <span className='contenedorPosicionLabel'>Posición</span>
-                            
-                            <div className="contenedorPosicion">
-                                <select className="selectPosicion">
-                                    <option value="1">Izquierda</option>
-                                    <option value="2">Derecha</option>
-                                    <option value="3">Centro</option>
-                                    <option value="4">Arriba</option>
-                                    <option value="5">Abajo</option>
-                                </select>
-                            </div>
+                            <span className='cabeceraTitle'>Disposición</span>
                         </div>
                         
-                   
-                    
-                    
+                        <div className="contenedorDispocision">
+                            <div
+                                className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
+                                onClick={() => handleClick(1)}
+                            >
+                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: slashSVG }}/>
+                                <span className="1">Ninguna</span>
+                            </div>
+                            <div
+                                className={`Dispocision ${selectedItem === 2 ? 'selected' : ''}`}
+                                onClick={() => handleClick(2)}
+                            >
+                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsrightSVG }}/>
+                                <span className="2">Izquierda a derecha</span>
+                            </div>
+                            <div
+                                className={`Dispocision ${selectedItem === 3 ? 'selected' : ''}`}
+                                onClick={() => handleClick(3)}
+                            >
+                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsdownSVG }}/>
+                                <span className="3">Arriba a abajo</span>
+                            </div>
+                        </div>
                     </div>
+                    <br />
+                    <br />
                 </div>
                 </div>
             
@@ -171,4 +168,4 @@ const DisenoEncuestaLaterallogotipo = () => {
   )
 }
 
-export default DisenoEncuestaLaterallogotipo
+export default DisenoEncuestaLateralTransicion

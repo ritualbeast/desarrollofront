@@ -1,6 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import DisenoEncuestaLaterallogotipo from './DisenoEncuestaLateralLogotipo';
+import DisenoEncuestaLateralPiePagina from './DisenoEncuestaLateralPiePagina';
+import DisenoEncuestaLateralFuentes from './DisenoEncuestaLateralFuentes';
+import DisenoEncuestaLateralDisposicion from './DisenoEncuestaLateralDisposicion';
+import DisenoEncuestaLateralFondo from './DisenoEncuestaLateralFondo';
+import DisenoEncuestaLateralTransicion from './DisenoEncuestaLateralTransicion';
+import DisenoEncuestaLateralColores from './DisenoEncuestaLateralColores';
 import svgManager from '../../assets/svg';
 import '../../styles/estilodiseno.css'
 
@@ -21,12 +27,50 @@ const DisenoEncuestaLateralPrincipal = () => {
 
     const [openDisenoPrincipal, setOpenDisenoPrincipal] = React.useState(true);
     const [openDisenoLogotipo, setOpenDisenoLogotipo] = React.useState(false);
+    const [openDisenoPiePagina, setOpenDisenoPiePagina] = React.useState(false);
+    const [openDisenoFuentes, setOpenDisenoFuentes] = React.useState(false);
+    const [openDisenoDisposicion, setOpenDisenoDisposicion] = React.useState(false);
+    const [openDisenoFondo, setOpenDisenoFondo] = React.useState(false);
+    const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
+    const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     
 
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
         setOpenDisenoPrincipal(false);
     };
+
+    const openDisenoPiePaginaHandler = () => {
+        setOpenDisenoPiePagina(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+    const openDisenoFuentesHandler = () => {
+        setOpenDisenoFuentes(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+    const openDisenoDisposicionHandler = () => {
+        setOpenDisenoDisposicion(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+    const openDisenoFondoHandler = () => {
+        setOpenDisenoFondo(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+    const openDisenoTransicionHandler = () => {
+        setOpenDisenoTransicion(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+    const openDisenoColoresHandler = () => {
+        setOpenDisenoColores(true);
+        setOpenDisenoPrincipal(false);
+    };
+
+
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const targetRef = useRef(null);
@@ -106,14 +150,31 @@ const DisenoEncuestaLateralPrincipal = () => {
           setFilaSeleccionada(null); // Desactivar la selección si se hace clic nuevamente en la misma fila
         } else {
           setFilaSeleccionada(id);
-          console.log("ok")
+          openDisenoColoresHandler();
         }
       };
 
     const handleClickElemento = (id) => {
         if (id === 1) {
             openDisenoLogotipoHandler();
-        }
+        } else if (id === 2) {
+
+            openDisenoPiePaginaHandler();
+        } else if (id === 3) {
+
+            openDisenoFuentesHandler();
+        }  else if (id === 4) {
+
+            openDisenoDisposicionHandler();
+        } else if (id === 5) {
+
+            openDisenoFondoHandler();
+        } else if (id === 6) {
+
+            openDisenoTransicionHandler();
+        } 
+
+        
 
     };
 
@@ -211,6 +272,36 @@ const DisenoEncuestaLateralPrincipal = () => {
         {openDisenoLogotipo && (
             <DisenoEncuestaLaterallogotipo />
         )    
+        }
+
+        {openDisenoPiePagina && (
+            <DisenoEncuestaLateralPiePagina />
+        )  
+        }
+
+        {openDisenoFuentes && (
+            <DisenoEncuestaLateralFuentes />
+        )
+        }
+
+        {openDisenoDisposicion && (
+            <DisenoEncuestaLateralDisposicion />
+        )
+        }
+
+        {openDisenoFondo && (
+            <DisenoEncuestaLateralFondo />
+        )
+        }
+
+        {openDisenoTransicion && (
+            <DisenoEncuestaLateralTransicion />
+        )
+        }
+
+        {openDisenoColores && (
+            <DisenoEncuestaLateralColores />
+        )
         }
 
         

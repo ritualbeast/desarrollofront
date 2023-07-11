@@ -11,7 +11,7 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLateralPiePagina = () => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -116,7 +116,7 @@ const DisenoEncuestaLaterallogotipo = () => {
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
+                            <span className='cabeceraTitle'>Pie de página</span>
                         </div>
                         <div className="contenedorLogotipo">
                             <img src={Logo} width={160} height={72} alt="Logo" />
@@ -171,4 +171,4 @@ const DisenoEncuestaLaterallogotipo = () => {
   )
 }
 
-export default DisenoEncuestaLaterallogotipo
+export default DisenoEncuestaLateralPiePagina

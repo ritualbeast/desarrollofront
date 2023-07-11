@@ -1,45 +1,17 @@
 import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
-import '../../styles/disenoEncuestaLogo.css'
-import Logo from '../../assets/img/LOGO_VERIS.jpg'
-import { RadioGroup } from '@material-ui/core';
-import { FormControlLabel } from '@material-ui/core';
-import { Radio } from '@material-ui/core';
+import '../../styles/disenoEncuestaFuente.css'
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLateralColores = () => {
 
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     
-    const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-    const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
 
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
-    const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
-    };
-    
-
-    const RadioButton = ({ id, value, checked, onChange, label }) => (
-        <label className="radioButton">
-            <input
-            type="radio"
-            id={id}
-            value={value}
-            checked={checked}
-            onChange={onChange}
-            />
-            <span className="checkmark"></span>
-            {label}
-        </label>
-        );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -78,7 +50,20 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    
+    // lista de colores de encuesta
+
+    const colorEncuesta = [
+        "Título de encuesta",
+        "Descripción de encuesta",
+        "Título de sección",
+        "Descripción de sección",
+        "Preguntas",
+        "Opciones de respuesta",
+        "Fondo",
+        "Texto de pie de página",
+        "Botones",
+        "Texto de botón",
+      ];
     
     
   return (
@@ -116,49 +101,23 @@ const DisenoEncuestaLaterallogotipo = () => {
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
+                            <span className='cabeceraTitle'>Colores</span>
                         </div>
-                        <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
-                        
-                        </div>
-                        <div className="contenedorContenedorTamano">
-                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-                            <div className="contenedortamanoLogotipo">
-                                <div className='radioLogotipo'>
-                                {tamano.map((opcion) => (
-                                    <div key={opcion.id} className="radioOption">
-                                    <RadioButton
-                                        id={opcion.id.toString()}
-                                        value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
-                                        onChange={handleChangeTamano}
-                                        label={opcion.nombre}
-                                    />
-                                    </div>
-                                ))}
+                        <div>
+                            {colorEncuesta.map((color, index) => (
+                                <div className="contenedorFuenteTitulo" key={index}>
+                                <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">{color}</span>
                                 </div>
-                            </div>
+
+                                </div>
+                            ))}
                         </div>
 
-                        <div className="contenedorContenedorPosicion">
-                            <span className='contenedorPosicionLabel'>Posición</span>
-                            
-                            <div className="contenedorPosicion">
-                                <select className="selectPosicion">
-                                    <option value="1">Izquierda</option>
-                                    <option value="2">Derecha</option>
-                                    <option value="3">Centro</option>
-                                    <option value="4">Arriba</option>
-                                    <option value="5">Abajo</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                   
-                    
                     
                     </div>
+                    <br />
+                    <br />
                 </div>
                 </div>
             
@@ -171,4 +130,4 @@ const DisenoEncuestaLaterallogotipo = () => {
   )
 }
 
-export default DisenoEncuestaLaterallogotipo
+export default DisenoEncuestaLateralColores
