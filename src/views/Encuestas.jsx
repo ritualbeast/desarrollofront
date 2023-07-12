@@ -9,6 +9,7 @@ import { Dropdown } from 'react-bootstrap';
 import svgManager from '../assets/svg';
 import CrearEncuestas from './Encuestas/CrearEncuestas';
 import ModalCrearEncuestas from './Encuestas/ModalCrearEncuestas';
+import { ListarEncuestas } from '../services/EncuestasServices';
 
 const pagination = makeStyles({
   root: {
@@ -60,6 +61,27 @@ const Encuestas = () => {
 
 const  [currentPage, setCurrentPage] = useState(0);
 
+// funcion  buscar por nombre
+
+const [inputValue, setInputValue] = useState('');
+
+const handleChange = (e) => {
+  setInputValue(e.target.value);
+};
+
+const handleClick = () => {
+  buscarPorNombre(inputValue);
+};
+
+const [busNombre, setBusNombre] = useState([]);
+const buscarPorNombre = async (nombre) => {
+  console.log(nombre);
+  const response = await ListarEncuestas("", "", nombre);
+  console.log(response);
+
+}
+
+
 
   return (
     <>
@@ -70,14 +92,18 @@ const  [currentPage, setCurrentPage] = useState(0);
           </Col>
 
           <Col xs={7} className="encuestas__colinput">
-            <div className="input-container">
-              <input
-                type="text"
-                placeholder="Buscar por nombre"
-                className="input-filtro"
-              />
-              <SearchIcon className="search-icon" />
-            </div>
+          <div className="input-container" > 
+            <input
+              type="text"
+              placeholder="Buscar por nombre"
+              className="input-filtro"
+              value={inputValue}
+              onChange={handleChange}
+            />
+            <SearchIcon className="search-icon" onClick={handleClick} />
+            
+          </div>
+          
           </Col>
 
           <Col xs={3} className="encuestas__colbutton">

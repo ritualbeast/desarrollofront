@@ -51,8 +51,8 @@ const EliminarEncuesta = async (idEncuesta) => {
   }
 };
 
-const ListarEncuestas = async (tipo, valor) => {
-  console.log(tipo, valor);
+const ListarEncuestas = async (tipo, valor, nombre) => {
+  console.log(tipo, valor, nombre);
   try {
     const canales = '808cd0b9-141f-4132-81e9-c3822436191b';
     const headers = {
@@ -63,7 +63,7 @@ const ListarEncuestas = async (tipo, valor) => {
       method: 'GET',
       headers
     };
-    const response = await fetch(`http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas?nombre=&categoriaEncuestas=${valor}&fechaInicio&fechaFin&formatoPresentacion=&esPublica=&tipoVigencia&tipoEncuesta&estadoEncuesta=${tipo}&pagina=&size=`, requestOptions);
+    const response = await fetch(`http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas?nombre=${nombre}&categoriaEncuestas=${valor}&fechaInicio&fechaFin&formatoPresentacion=&esPublica=&tipoVigencia&tipoEncuesta&estadoEncuesta=${tipo}&pagina=&size=`, requestOptions);
     const data = await response.json();
     return data;
   } catch (error) {
