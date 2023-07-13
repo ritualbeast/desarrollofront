@@ -44,15 +44,25 @@ const Encuestas = () => {
   const paginationClass = pagination();
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
-  const [tipo, setTipo] = useState('');
+  const [tipo, setTipo] = useState('A');
   const [valor, setValor] = useState('');
+  
+const [refreshComponent, setRefreshComponent] = useState(false);
+const [openFiltronombre, setOpenFiltroNombre] = useState(false);
+const [openFiltronombre2, setOpenFiltroNombre2] = useState(true);
+const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+const [inputValue, setInputValue] = useState('');
 
 
 
   const handleFiltroClick = (opcion, valor) => {
+    console.log('entro a la funcion')
+    setInputValue('');
     setOpcionFiltro(opcion);
     setTipo(opcion);
     setValor(valor);
+    setOpenFiltroNombre(!openFiltronombre);
+    setOpenFiltroNombre2(!openFiltronombre2);
   };
 
   const handleOpenCrearEncuesta = () => {
@@ -61,25 +71,35 @@ const Encuestas = () => {
 
 const  [currentPage, setCurrentPage] = useState(0);
 
+// funcion buscar por nombre filtro
+
+const handleCategoriaChange = (event) => {
+  setCategoriaSeleccionada(event.target.value);
+  console.log(event.target.value);
+  setInputValue('');
+  setOpcionFiltro('');
+  setTipo('');
+  setValor('');
+  setOpenFiltroNombre(!openFiltronombre);
+  setOpenFiltroNombre2(!openFiltronombre2);
+};
 // funcion  buscar por nombre
 
-const [inputValue, setInputValue] = useState('');
 
 const handleChange = (e) => {
   setInputValue(e.target.value);
 };
-
 const handleClick = () => {
-  buscarPorNombre(inputValue);
+  setTipo('');
+  setValor('');
+  setOpenFiltroNombre2(!openFiltronombre2);
+  setOpenFiltroNombre(!openFiltronombre);
+  setRefreshComponent(!refreshComponent);
+  console.log(inputValue);
+  console.log(opcionFiltro);
+  
 };
 
-const [busNombre, setBusNombre] = useState([]);
-const buscarPorNombre = async (nombre) => {
-  console.log(nombre);
-  const response = await ListarEncuestas("", "", nombre);
-  console.log(response);
-
-}
 
 
 
@@ -135,17 +155,23 @@ const buscarPorNombre = async (nombre) => {
 
           <Col xs={6} className="encuestas-ordenarpor">
             <h4>Ordenar por:</h4>
-            <select className="encuestas-ordenarpor__select">
-              <option value="default">Seleccionar Categoría</option>
+            <select className="encuestas-ordenarpor__select" value={categoriaSeleccionada} onChange={handleCategoriaChange}>
+              <option value="">Seleccionar Categoría</option>
               <option value="nombre">Nombre</option>
-              <option value="fecha">Fecha de creación</option>
+              <option value="fechaCreacion">Fecha de creación</option>
             </select>
+
           </Col>
         </Row>
 
-        {(opcionFiltro === 'A' || opcionFiltro === 'C' || opcionFiltro === 'T') && (
-          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor}/>
+        {(openFiltronombre) && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor} nombrefiltro = {inputValue} orden={categoriaSeleccionada} />
         )}
+
+        {openFiltronombre2 && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor} nombrefiltro = {inputValue} orden= {categoriaSeleccionada} />
+        )  
+        }
         
       </Container>
       

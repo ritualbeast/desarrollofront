@@ -54,7 +54,6 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
    const ListarCategoriaEncuesta = async () => {
      try {
        const response = await  ListarCategoriasService();
-       console.log(response);
        setListarCategoriaEncuestas(response.data.row);
      } catch (error) {
        console.error(error);
