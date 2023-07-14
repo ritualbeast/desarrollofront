@@ -7,7 +7,7 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralFuentes = () => {
+const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -86,6 +86,11 @@ const DisenoEncuestaLateralFuentes = () => {
         "Texto de cierre de encuestas",
         "Texto de botones"
       ];
+
+      const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuFuentes(false);
+    }
     
     
   return (
@@ -122,7 +127,7 @@ const DisenoEncuestaLateralFuentes = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>  
                             <span className='cabeceraTitle'>Fuentes</span>
                         </div>
                         <div>

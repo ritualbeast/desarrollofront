@@ -270,37 +270,62 @@ const DisenoEncuestaLateralPrincipal = () => {
        
 
         {openDisenoLogotipo && (
-            <DisenoEncuestaLaterallogotipo />
+            <DisenoEncuestaLaterallogotipo 
+              openMenuPrincipal={setOpenDisenoPrincipal}
+              closeMenuLogotipo={setOpenDisenoLogotipo}
+            />
         )    
         }
 
         {openDisenoPiePagina && (
-            <DisenoEncuestaLateralPiePagina />
+            <DisenoEncuestaLateralPiePagina 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuPiePagina={setOpenDisenoPiePagina}
+            
+            />
         )  
         }
 
         {openDisenoFuentes && (
-            <DisenoEncuestaLateralFuentes />
+            <DisenoEncuestaLateralFuentes 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFuentes={setOpenDisenoFuentes}
+            />
         )
         }
 
         {openDisenoDisposicion && (
-            <DisenoEncuestaLateralDisposicion />
+            <DisenoEncuestaLateralDisposicion
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuDisposicion={setOpenDisenoDisposicion}
+            
+            />
         )
         }
 
         {openDisenoFondo && (
-            <DisenoEncuestaLateralFondo />
+            <DisenoEncuestaLateralFondo 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFondo={setOpenDisenoFondo}
+            
+            />
         )
         }
 
         {openDisenoTransicion && (
-            <DisenoEncuestaLateralTransicion />
+            <DisenoEncuestaLateralTransicion 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuTransicion={setOpenDisenoTransicion}
+            />
         )
         }
 
         {openDisenoColores && (
-            <DisenoEncuestaLateralColores />
+            <DisenoEncuestaLateralColores
+            
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuColores={setOpenDisenoColores}
+             />
         )
         }
 

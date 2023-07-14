@@ -5,7 +5,7 @@ import '../../styles/añadirLogo.css';
 
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 
-const ModalAñadirLogo = () => {
+const ModalAgregarFondo = () => {
 
   return (
     <>
@@ -27,4 +27,4 @@ const ModalAñadirLogo = () => {
   )
 }
 
-export default ModalAñadirLogo
+export default ModalAgregarFondo

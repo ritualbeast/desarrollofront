@@ -1,4 +1,8 @@
 
+.contenedorCabeceraLogotipo {
+  display: flex;
+  align-items: center;
+}
 .contenedorFuenteTitulo{
   width: Hug (292px);
   height: Hug (164px);

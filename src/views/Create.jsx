@@ -218,7 +218,7 @@ const Create = () => {
                                         >
                                             <span
                                             ref={targetRef}
-                                            style={{ marginLeft: '150px' }}
+                                            style={{ marginLeft: '70px' }}
                                             dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
                                             />
                                         </div>
@@ -264,14 +264,12 @@ const Create = () => {
                             
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                                {activeIcon === 'Banco de Preguntas' && (
+                                {activeIcon !== '' && (
                                 <NuevaEncuesta/>
                                 )
                                 }
-                                {activeIcon === 'Estilo' && (
-                                    <DisenoEncuesta/>
-                                )
-                                    }
+                                
+                                    
                             </Col>
                         </Col>
                     </Row>

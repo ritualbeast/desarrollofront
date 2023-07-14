@@ -11,7 +11,7 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralPiePagina = () => {
+const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -78,7 +78,10 @@ const DisenoEncuestaLateralPiePagina = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuPiePagina(false);
+    }
     
     
   return (
@@ -115,7 +118,7 @@ const DisenoEncuestaLateralPiePagina = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
                         <div className="contenedorLogotipo">

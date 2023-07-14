@@ -1,3 +1,7 @@
+.contenedorCabeceraLogotipo {
+  display: flex;
+  align-items: center;
+}
 .buttonLogotipo {
     width: 107px;
     height: 20px;

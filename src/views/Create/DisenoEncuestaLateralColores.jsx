@@ -15,7 +15,7 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralColores = () => {
+const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -113,7 +113,12 @@ const DisenoEncuestaLateralColores = () => {
 
     // lista de colores de encuesta
 
-   
+       
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuColores(false);
+    }
+    
     
   return (
     <>
@@ -149,7 +154,7 @@ const DisenoEncuestaLateralColores = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Colores</span>
                         </div>
                         <div className='contenedorColorPrincipal'>

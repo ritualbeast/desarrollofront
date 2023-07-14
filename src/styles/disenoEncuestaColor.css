@@ -1,3 +1,7 @@
+.contenedorCabeceraLogotipo {
+  display: flex;
+  align-items: center;
+}
 .contenedorFuenteColor {
   display: grid;
   grid-template-columns: 1fr auto;

@@ -6,19 +6,28 @@ import Logo from '../../assets/img/LOGO_VERIS.jpg'
 import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
+import ModalFondo from './ModalFondo';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 const uploadSVG = svgManager.getSVG('upload');
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
+    const [openFondo, setOpenFondo] = useState(false);
+
+    const handleCloseFondo = () => {
+        setOpenFondo(false);
+    }
+    const handleOpenFondo = () => {
+        setOpenFondo(true);
+    }
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
@@ -80,10 +89,18 @@ const DisenoEncuestaLaterallogotipo = () => {
     ];
 
     
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuFondo(false);
+    }
     
     
   return (
     <>
+        <ModalFondo open={openFondo}
+         onClose={handleCloseFondo}
+           />
+
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -116,11 +133,11 @@ const DisenoEncuestaLaterallogotipo = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}  onClick={volverMenuPrincipal}/> 
                             <span className='cabeceraTitle'>Fondo</span>
                         </div>
                         <div className="contenedorLogotipo">
-                            <div className='buttonLogotipo'>
+                            <div className='buttonLogotipo' onClick={handleOpenFondo}>
                                 <span className='buttonLogotipoText'>Imagen</span>
                                 <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
                             </div>

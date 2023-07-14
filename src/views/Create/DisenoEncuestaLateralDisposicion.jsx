@@ -11,7 +11,7 @@ const alignLeftSVG = svgManager.getSVG('align-left');
 const alignRightSVG = svgManager.getSVG('align-right');
 
 
-const DisenoEncuestaLateralDisposicion = () => {
+const DisenoEncuestaLateralDisposicion = ({openMenuPrincipal, closeMenuDisposicion}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -90,6 +90,11 @@ const DisenoEncuestaLateralDisposicion = () => {
         }
       };
     
+       
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuDisposicion(false);
+    }
     
     
   return (
@@ -126,7 +131,7 @@ const DisenoEncuestaLateralDisposicion = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>  
                             <span className='cabeceraTitle'>Disposición</span>
                         </div>
                         

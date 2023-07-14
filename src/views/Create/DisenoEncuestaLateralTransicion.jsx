@@ -11,7 +11,7 @@ const chevronsrightSVG = svgManager.getSVG('chevrons-right');
 const chevronsdownSVG = svgManager.getSVG('chevrons-down');
 
 
-const DisenoEncuestaLateralTransicion = () => {
+const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -90,6 +90,13 @@ const DisenoEncuestaLateralTransicion = () => {
         }
       };
     
+
+          
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuTransicion(false);
+    }
+    
     
     
   return (
@@ -126,7 +133,7 @@ const DisenoEncuestaLateralTransicion = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Disposición</span>
                         </div>
                         

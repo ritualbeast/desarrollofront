@@ -11,7 +11,7 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -78,7 +78,10 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuLogotipo(false);
+    }
     
     
   return (
@@ -115,7 +118,7 @@ const DisenoEncuestaLaterallogotipo = () => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Cabezera</span>
                         </div>
                         <div className="contenedorLogotipo">
