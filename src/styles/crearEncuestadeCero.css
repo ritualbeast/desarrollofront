@@ -38,11 +38,11 @@
     margin-bottom: 0;
   }
 
-  label {
+  /* label {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-  }
+  } */
   
   label > span {
     margin-bottom: 0.5rem;

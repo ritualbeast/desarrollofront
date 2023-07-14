@@ -1,4 +1,4 @@
-.container-cargaDatos{
+.container-cuadroComentarios{
     border: solid 1px;
     width: 95.9%;
     margin-left: 2%;
@@ -7,36 +7,36 @@
     padding-top: 1.5%;
     margin-top: 2%;
 }
-.seccion1-cargaDatos{
+.seccion1-cuadroComentarios{
     display: flex;
 }
-.editar-cargaDatos{
+.editar-cuadroComentarios{
     margin-left: 2%;
     padding-left: 1%;
     padding-right: 1%;
 }
-.configurar-cargaDatos,
-.logica-cargaDatos{
+.configurar-cuadroComentarios,
+.logica-cuadroComentarios{
     padding-left: 1%;
     padding-right: 1%;
 }
-.editar-cargaDatos:hover,
-.configurar-cargaDatos:hover,
-.logica-cargaDatos:hover{
+.editar-cuadroComentarios:hover,
+.configurar-cuadroComentarios:hover,
+.logica-cuadroComentarios:hover{
     cursor: pointer;
 }
-.editar-cargaDatos.editar-cargaDatos.inactive,
-.configurar-cargaDatos.configurar-cargaDatos.inactive,
-.logica-cargaDatos.logica-cargaDatos.inactive{
+.editar-cuadroComentarios.editar-cuadroComentarios.inactive,
+.configurar-cuadroComentarios.configurar-cuadroComentarios.inactive,
+.logica-cuadroComentarios.logica-cuadroComentarios.inactive{
     border-bottom: 3px solid rgba(255, 199, 0, 1);
 }
-.seccion6-cargaDatos{
+.seccion6-cuadroComentarios{
     display: flex;
     justify-content: flex-end;
     margin-right: 0.8%;
     margin-top: 1%;
 }
-.cancelarCargaDatos{
+.cancelarCuadroComentarios{
     width: 10%;
     color: rgba(32, 32, 32, 1);
     background: rgba(255, 240, 199, 1);
@@ -44,10 +44,10 @@
     padding-top: 1%;
     padding-bottom: 1%;
 }
-.cancelarCargaDatos:hover{
+.cancelarCuadroComentarios:hover{
     cursor: pointer;
 }
-.guardarCargaDatos{
+.guardarCuadroComentarios{
     width: 10%;
     color: rgba(32, 32, 32, 1);
     background: rgba(255, 199, 0, 1);
@@ -55,12 +55,12 @@
     padding-top: 1%;
     padding-bottom: 1%;
 }
-.guardarCargaDatos:hover{
+.guardarCuadroComentarios:hover{
     cursor: pointer;
 }
 
 /* Contenido de Editar */
-.cargaDatos-container-editar{
+.cuadroComentarios-container-editar{
     background-color: rgba(245, 245, 245, 1);
     padding-top: 2%;
     padding-bottom: 2%;
@@ -76,48 +76,79 @@
   }
 select:hover {
     border-color: rgba(194, 194, 194, 1);
-}
+  }
 select:focus {
     outline: none;
     border-color: #333;
-}
-.textoAgradecimiento{
-    padding: 0.5%;
-}
-.seccion3-cargaDatos-editar{
-    margin-left: 2%;
-    margin-top: 2%;
-    margin-bottom: 1%;
-}
-.seccion4-cargaDatos-editar{
-    display: flex;
-    margin-left: 2%;
-}
-.seccion4-1-cargaDatos-editar{
-    display: flex;
+  }
+.custom-checkbox {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    cursor: pointer;
     margin-bottom: unset;
+    margin-right: 2%;
+    margin-top: 1.2%;
+    border: rgba(194, 194, 194, 1);
+  }
+  .custom-checkbox.checked {
+    background-color: #2196F3;
+  }
+  .custom-checkbox .checkmark {
+    display: none;
+    width: 10px;
+    height: 10px;
+    margin: 3px;
+    background-color: white;
+    border-radius: 2px;
+  }
+  .custom-checkbox.checked .checkmark {
+    display: block;
+  }
+.numeracionRespuesta{
+    margin-top: 0.5%;
     margin-left: 2%;
-    width: 7%;
+    padding: 1% 1.6% 1% 1.6%;
+    border: 1px solid rgba(194, 194, 194, 1);
+    background-color: white;
+    border-radius: 5px;
 }
-.seccion4-2-cargaDatos-editar{
-    display: flex;
-    margin-bottom: unset;
-    margin-left: 2%;
-    width: 15%;
-}
-.seccion4-3-cargaDatos-editar,
-.seccion4-4-cargaDatos-editar,
-.seccion4-5-cargaDatos-editar{
-    display: flex;
-    margin-bottom: unset;
-    margin-left: 1%;
-    width: 8%;
-}
-.seccion5-cargaDatos-editar{
+.seccion4-cuadroComentarios-editar{
     display: flex;
     margin-left: 2%;
 }
-.seccion6-cargaDatos-editar{
+.seccion4-1-opcionMulriple-editar{
+    width: 34%;
+}
+.seccion4-2-opcionMulriple-editar{
+    display: flex;
+    width: 22%;
+}
+.seccion4-3-opcionMulriple-editar{
+    display: flex;
+    width: 20%;
+}
+.inputRadio{
+    margin-top: 11.9%; 
+    margin-right: unset;
+    width: 18.9px;
+    height: 18.7px;
+    border: 2px solid rgba(194, 194, 194, 1);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+.inputRadio:checked {
+    border: 2px solid rgba(194, 194, 194, 1);
+    border-color: rgba(255, 199, 0, 1);
+}
+.inputRadio:checked:before {
+    border: 2px solid rgba(194, 194, 194, 1);
+    background-color: rgba(255, 199, 0, 1);
+}
+.seccion5-cuadroComentarios-editar{
+    display: flex;
     margin-left: 2%;
 }
 .switch {
@@ -167,24 +198,19 @@ input:checked + .slider:before {
 }
 
 /* Contenido de modificar */
-.cargaDatos-container-configuracion{
+.cuadroComentarios-container-configuracion{
     background-color: rgba(245, 245, 245, 0.306);
     padding-top: 2%;
     padding-bottom: 2%;
 }
-.seccion1-cargaDatos-configuracion,
-.seccion2-cargaDatos-configuracion,
-.seccion3-cargaDatos-configuracion,
-.seccion4-cargaDatos-configuracion,
-.seccion5-cargaDatos-configuracion{
+.seccion1-cuadroComentarios-configuracion,
+.seccion2-cuadroComentarios-configuracion{
     display: flex;
     margin-left: 2%;
     margin-bottom: 1%;
 }
-.seccion1-1-cargaDatos-configuracion,
-.seccion1-2-cargaDatos-configuracion,
-.seccion1-4-cargaDatos-configuracion,
-.seccion1-5-cargaDatos-configuracion{
+.seccion1-1-cuadroComentarios-configuracion,
+.seccion1-2-cuadroComentarios-configuracion{
     margin-left: 2%;
     margin-bottom: 2%;
 }
@@ -196,7 +222,7 @@ input:checked + .slider:before {
     width: 96%;
     margin-top: unset;
 }
-.seccion1-5-2-cargaDatos-configuracion{
+.seccion1-5-2-cuadroComentarios-configuracion{
     display: flex;
 }
 .contenedorConfigurarTamaño{

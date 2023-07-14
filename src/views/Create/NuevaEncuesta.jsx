@@ -9,9 +9,9 @@ import ModalSeccionCierre from './ModalSeccionCierre';
 import OpcionMultiple from './OpcionMultiple';
 import VariacionEstrellas from './VariacionEstrellas';
 import $ from 'jquery'
-import { keys } from '@material-ui/core/styles/createBreakpoints';
-import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
 import CargaDatos from './CargaDatos';
+import CuadroComentarios from './CuadroComentarios';
+import ModalEliminarSeccion from './ModalEliminarSeccion';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -26,12 +26,14 @@ const editSVG = svgManager.getSVG('edit');
 const starSVG = svgManager.getSVG('star');
 const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
+const warningLightSVG = svgManager.getSVG('warning-light');
 
 const NuevaEncuesta = () => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [openDuplicarSeccion, setOpenDuplicarSeccion] = useState(false);
+    const [openEliminarSeccion, setOpenEliminarSeccion] = useState(false);
     const buttonRef = useRef(null);
     const containerRef = useRef(null);
     const [isActive, setIsActive] = useState(false);
@@ -40,9 +42,12 @@ const NuevaEncuesta = () => {
     const [showModal, setShowModal] = useState(false);
     const [showOpcionMultiple, setShowOpcionMultiple] = useState(false);
     const [contentCont, setContentCont] = useState([{tipo:'C', contentPreg:[]}]);
+    const [contentOpt, setContentOpt] = useState([]);
     const [contentVari, setContentVari] = useState([]);
     const [contentCarg, setContentCarg] = useState([]);
+    const [contentCuadro, setContentCuadro] = useState([]);
     const [mostrarResultado, setMostrarResultado] = useState(false);
+    const [indexEliminar, setIndexEliminar] = useState(null);
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -56,6 +61,13 @@ const NuevaEncuesta = () => {
         setIsModalVisible(false);
     }
 
+    const handleEliminarSeccion = (index) => {
+      setOpenEliminarSeccion(true)
+      setBlurBackground(false);
+      setIsModalVisible(false);
+      setIndexEliminar(index);
+    }
+
     const handleNewContenedor = () => {
       let obj={
         tipo:'C',
@@ -63,8 +75,8 @@ const NuevaEncuesta = () => {
       }
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
+      console.log(contentCont)
     };
-    console.log(contentCont);
 
     const handleSeccionCierre = () => {
       setShowModal(true);
@@ -84,7 +96,7 @@ const NuevaEncuesta = () => {
       nuevoEstado[index].contentPreg = contenidoActual;
 
       console.log('nuevoEstado', nuevoEstado)
-      setContentCont(nuevoEstado);
+      setContentOpt(nuevoEstado);
 
       $(`#NuevaPreg${index +1}`).removeClass("active");
       $(`#NuevaPreg${index +1}`).addClass("inactive");
@@ -132,13 +144,28 @@ const NuevaEncuesta = () => {
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
-    const handleCuadroComentarios = () => {
-      setNuevaPreguntaVisible(false);
+    const handleCuadroComentarios = (index) => {
+      let obj={
+        tipo:'CC',
+      }
+
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      contenidoActual.push(obj);
+
+      nuevoEstado[index].contentPreg = contenidoActual;
+
+      setContentCuadro((prevVari) => [...prevVari, obj]);
+      $(`#NuevaPreg${index +1}`).removeClass("active");
+      $(`#NuevaPreg${index +1}`).addClass("inactive");
+      $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
+      $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
     const handleCloseEliminar = () => {
         setOpenAñadirLogo(false);
         setOpenDuplicarSeccion(false);
+        setOpenEliminarSeccion(false);
         setBlurBackground(false);
         setIsModalVisible(false);
     };
@@ -147,14 +174,12 @@ const NuevaEncuesta = () => {
       $(`#editSec${index +1}`).removeClass("oculto");
       $(`#editSec${index +1}`).addClass("visible");
       $(`#Sec${index +1}`).addClass("editar-visible");
-      // setEditarSeccionVisible(true);
     };
 
     const handleMouseLeaveEditar = (index) => {
       $(`#editSec${index +1}`).removeClass("visible");
       $(`#editSec${index +1}`).addClass("oculto");
       $(`#Sec${index +1}`).removeClass("editar-visible");
-      // setEditarSeccionVisible(false);
     };
 
     const handleButtonClick = () => {
@@ -176,7 +201,6 @@ const NuevaEncuesta = () => {
       };
     
       document.addEventListener('mousedown', handleClickOutside);
-    
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
@@ -199,33 +223,63 @@ const NuevaEncuesta = () => {
       }
     };
     
-    const handleCerrarOpcionMultiple = (dato, index) => {
-      console.log(dato);
-      //setShowOpcionMultiple(dato);
-      console.log("index ", index);
-    
+    const handleCerrarOpcionMultiple = (index) => {
       let variable
       let obj={
         tipo:'M',
       }
       const nuevoEstado = [...contentCont];
-        const contenidoActual = [...nuevoEstado[0].contentPreg];
-     $.each(contentCont, function(index2, elemento) {
-      //if(index2 !== index){
-        console.log(1);
-        //handleOptionMultiple()
+      const contenidoActual = [...nuevoEstado[0].contentPreg];
+      $.each(contentCont, function(index2, elemento) {
         variable = elemento.contentPreg.splice(index, 1)
-        
-        //contenidoActual.push(obj);
-
-      //}
-     });
-     contentCont.contentPreg=variable;
-     console.log(contentCont);
-     //setContentCont(contenidoActual);
+      });
+      contentCont.contentPreg=variable;
+      setContentOpt(nuevoEstado);
     };
 
-    let dato = false;
+    const handleCerrarVariacionEntrellas = (index) => {
+      let variable
+      let obj={
+        tipo:'V',
+      }
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[0].contentPreg];
+      $.each(contentCont, function(index2, elemento) {
+        console.log(1);
+        variable = elemento.contentPreg.splice(index, 1)
+      });
+      contentCont.contentPreg=variable;
+      setContentVari(nuevoEstado);
+    }
+
+    const handleCerrarCargaArchivos = (index) => {
+      let variable
+      let obj={
+        tipo:'V',
+      }
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[0].contentPreg];
+      $.each(contentCont, function(index2, elemento) {
+        console.log(1);
+        variable = elemento.contentPreg.splice(index, 1)
+      });
+      contentCont.contentPreg=variable;
+      setContentCarg(nuevoEstado);
+    }
+
+    const handleCerrarCuadroComentarios = (index) => {
+      let variable
+      let obj={
+        tipo:'CC',
+      }
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[0].contentPreg];
+      $.each(contentCont, function(index2, elemento) {
+        variable = elemento.contentPreg.splice(index, 1)
+      });
+      contentCont.contentPreg=variable;
+      setContentCuadro(nuevoEstado);
+    }
 
     const handleAceptarOpcionMultiple = () => {
       setMostrarResultado(true);
@@ -235,9 +289,27 @@ const NuevaEncuesta = () => {
       setMostrarResultado(true);
     };
 
+    const handleAceptarCargaArchivos = () => {
+      setMostrarResultado(true);
+    };
+
+    const handleAceptarCuadroComentarios = () => {
+      setMostrarResultado(true);
+    };
+
+    const handleEliminar = (index) => {
+      const nuevoEstado = [...contentCont];
+      const contenedorEliminado = nuevoEstado.splice(index, 1)[0];
+      setContentCont(nuevoEstado);
+      setOpenEliminarSeccion(false)
+      console.log(contenedorEliminado)
+      console.log(contentCont)
+    }
+
   return (
     <>
         <Container className='encuesta-Tercerocuerpo2-1'>
+        
             <Col>
                 <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
             </Col>
@@ -252,8 +324,9 @@ const NuevaEncuesta = () => {
                               className={`contenedor-editar-seccion`}
                           >
                               <p className='titulo-editarEncuesta'>Editar</p>
-                              <span style={{ marginRight: '2.7%' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
-                              <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
+                              <div style={{width: '81.6%'}}></div>
+                              <span style={{ marginRight: '2.7%', cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
+                              <span style={{cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => handleEliminarSeccion(index)}/>
                           </Col>
                           <Col 
                               id={`Sec${index +1}`}
@@ -276,16 +349,37 @@ const NuevaEncuesta = () => {
                           </Button>
                       </Col>
                       
-                      {console.log(seccion)}
                       {seccion.contentPreg.map((preg, indexp) => { 
                         if (preg.tipo == 'M') {
-                          return <OpcionMultiple id='miModal' indice={indexp} indiceSec = {index}  closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} onAceptar={handleAceptarOpcionMultiple} />
+                          return <OpcionMultiple 
+                            id='miModal' 
+                            indice={indexp} 
+                            indiceSec = {index}  
+                            closeopmul={() => handleCerrarOpcionMultiple(false, indexp)} 
+                            onAceptar={handleAceptarOpcionMultiple} 
+                          />
                         }  
                         if (preg.tipo == 'V') {
-                          return <VariacionEstrellas indice={index} indiceSec = {index} onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}/>
+                          return <VariacionEstrellas 
+                            indice={index} 
+                            indiceSec = {index} 
+                            closeVariacionEstrellas={() => handleCerrarVariacionEntrellas(false, indexp)}
+                            onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
+                          />
                         }
                         if (preg.tipo == 'CA') {
-                          return <CargaDatos indice={index}/>
+                          return <CargaDatos 
+                            indice={indexp} 
+                            closeCargaArchivos={() => handleCerrarCargaArchivos(false, indexp)}
+                            onAceptarCargaArchivos={handleAceptarCargaArchivos}
+                          />
+                        }
+                        if (preg.tipo == 'CC') {
+                          return <CuadroComentarios
+                            indice={indexp}
+                            closeCuadroComentarios={() => handleCerrarCuadroComentarios(false, indexp)}
+                            onAceptarCuadroComentarios={handleAceptarCuadroComentarios}
+                          />
                         }
                         return '';
                       })}
@@ -303,41 +397,39 @@ const NuevaEncuesta = () => {
                           </Button>
                       </Col>
                       
-                      {/* {nuevaPreguntaVisible && ( */}
-                            <div
-                              ref={containerRef}
-                              id={`NuevaPregVisi${index + 1}`}
-                              className="container-newContendorPregunta ocultar"
+                      <div
+                        ref={containerRef}
+                        id={`NuevaPregVisi${index + 1}`}
+                        className="container-newContendorPregunta ocultar"
+                        
+                      >
+                        <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
+                          <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
+                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
+                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
+                          </Col>
                               
-                            >
-                              <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
-                                <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
-                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
-                                </Col>
-                                
-                                <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
-                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
-                                </Col>
+                          <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
+                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
+                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
+                          </Col>
       
-                                <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
-                                  <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
-                                </Col>
+                          <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
+                            <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
+                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
+                          </Col>
                                 
-                                <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
-                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
-                                </Col>
+                          <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
+                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
+                          </Col>
       
-                                <Col className='container-newContendorPregunta-pt5' onClick={handleCuadroComentarios}>
-                                  <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
-                                </Col>
-                              </Row>
-                            </div>
-                      {/* )} */}
+                          <Col className='container-newContendorPregunta-pt5' onClick={() => handleCuadroComentarios(index)}>
+                            <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
+                            <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
+                          </Col>
+                        </Row>
+                      </div>
       
                       <Col className='seccion3-nuevaEcuesta'>
                           <Button className='boton-Imgpie'>
@@ -475,6 +567,51 @@ const NuevaEncuesta = () => {
                                 // onClick={handleDuplicar}
                             >
                                 <span className='duplicar'>Duplicar</span>
+                            </Button>
+                        </Col>
+                    </Box>
+                </div>
+            </Box>
+        </Modal>
+
+        <Modal
+            open={openEliminarSeccion}
+            onClose={() => setOpenEliminarSeccion(false)}
+            sx={{
+            width: '60%',
+            height: '60%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: 'auto',
+            marginTop: '5%',
+            }}
+            BackdropProps={{
+            onClick: () => {
+                setOpenEliminarSeccion(false);
+                setBlurBackground(false);
+                setIsModalVisible(false);
+              },
+            }}
+        >
+            <Box className="encuesta_modalEliminarSeccion" sx={{ marginTop: '12%', width: '50%', height: '43%' }}>
+                <div className="encuesta_modalDuplciar_closeicon">
+                    <span style={{marginTop: '5.8%'}} dangerouslySetInnerHTML={{ __html: warningLightSVG }}/>
+                    <p className="encuesta_modalElimninar__title">Eliminar Sección</p>
+                </div>
+                    
+                <ModalEliminarSeccion/>
+
+                <div className='encuesta_modal_cerrarEliminar'>
+                    <Box sx={{ width: '50%', display: 'contents'}}>
+                        <Col className="d-flex justify-content-center">
+                            <Button className='buttonCancelarEliminar' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                                <span className='cancelar-eliminar'>Cancelar</span>
+                            </Button>
+                            <Button className='buttonDeleteEliminar' variant="contained" color="primary"
+                                onClick={() => handleEliminar(indexEliminar)}
+                            >
+                                <span className='eliminar'>Eliminar</span>
                             </Button>
                         </Col>
                     </Box>

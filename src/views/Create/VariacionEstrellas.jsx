@@ -21,7 +21,7 @@ const opciones = [
     { id: 4, icono: 'triangle' },
   ];
 
-const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValoracionEstrellas}) => {
+const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracionEstrellas}) => {
     const [mostrarContenedor, setMostrarContenedor] = useState(true);
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -52,13 +52,11 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
     const [showColorPicker, setShowColorPicker] = useState({});
     const [selectedColor, setSelectedColor] = useState({});
     const [mostrarResultado, setMostrarResultado] = useState(false);
-    const [selectedIcono, setSelectedIcono] = useState(starFillSVG);
     const [selectedIcon, setSelectedIcon] = useState({});
-
-    
-    // const handleCancelarOpcionMultiple = () => {
-    //     closeopmul(false);
-    // }
+    const [seccion, setSeccion] = useState({
+        tipo: 'CPVE',
+        contentPreg: [] // Agrega tu array de preguntas aquí
+    });
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -95,7 +93,7 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
             type: 'checkbox',
             seccionValue: '',
             preguntaValue: '',
-            icono: selectedIcono,
+            icono: starFillSVG,
         };
 
         console.log("Nueva opción de respuesta:", newOpcion);
@@ -206,9 +204,21 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
         });
     };
 
+    const handleCancelarVariacionEstrellas = () => {
+        closeVariacionEstrellas(false);
+    }
+
     const handleGuardarValoracionEstrellas = () => {
+        const nuevaPregunta = {
+            tipo: 'CPVE',
+            pregunta: pregunta,
+            opciones: opcionesRespuesta,
+            color: selectedColor,
+            selectedIcon: selectedIcon
+        };
+        const newContentPreg = [...seccion.contentPreg, nuevaPregunta];
+        setSeccion({ ...seccion, contentPreg: newContentPreg });
         setMostrarResultado(true);
-        onAceptarValoracionEstrellas();
         setMostrarContenedor(false);
     };
 
@@ -232,10 +242,20 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
           [id]: false,
         }));
     };
+
+    const handleIconChange = (e, opcionId) => {
+        const value = e.target.value;
+        setSelectedIcon((prevSelectedIcon) => ({
+          ...prevSelectedIcon,
+          [opcionId]: value,
+        }));
+        console.log(opcionId)
+    };
     
-    const handleIconChange = (event) => {
-        const selectedValue = event.target.value;
-        setSelectedIcono(selectedValue);
+    const handleEliminarPregunta = (index) => {
+        const newContentPreg = [...seccion.contentPreg];
+        newContentPreg.splice(index, 1);
+        setSeccion({ ...seccion, contentPreg: newContentPreg });
     };
 
     useEffect(() => {
@@ -317,7 +337,7 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
                                                                     <select
                                                                         className="selectTipoGrafico"
                                                                         style={{ width: '20%' }}
-                                                                        value={selectedIcon[opcion.id] || 'star'}
+                                                                        value={selectedIcon[opcion.id]}
                                                                         onChange={(e) => handleIconChange(e, opcion.id)}
                                                                     >
                                                                         <option value="star">Estrella</option>
@@ -568,10 +588,7 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
                 )}
 
                 <Col className='seccion6-variacionEstrellas'>
-                    <Button 
-                        className='cancelarvariacionEstrellas' 
-                        // onClick={handleCancelarOpcionMultiple}
-                    >
+                    <Button className='cancelarvariacionEstrellas' onClick={handleCancelarVariacionEstrellas}>
                         Cancelar
                     </Button>
                         
@@ -584,16 +601,22 @@ const VariacionEstrellas = ({closeopmul, onPreguntaChange, indice, onAceptarValo
         
         {mostrarResultado && (
             <Container>
-                <ResultadoValoracionEstrellas
-                index={indice}
-                pregunta={pregunta}
-                opciones={opcionesRespuesta.map((opcion) => ({
-                    ...opcion,
-                    icono: opcion.icono,
-                }))}
-                color={selectedColor}
-                selectedIcon={selectedIcon}
-                />
+                {seccion.contentPreg.map((preg, index) => { 
+                    if (preg.tipo == 'CPVE') {
+                            return <ResultadoValoracionEstrellas
+                                key={index} 
+                                index={indice}
+                                pregunta={pregunta}
+                                opciones={opcionesRespuesta.map((opcion) => ({
+                                    ...opcion,
+                                    icono: opcion.icono,
+                                }))}
+                                color={selectedColor}
+                                selectedIcon={selectedIcon}
+                                handleEliminarPreguntaVE={() => handleEliminarPregunta(index)}
+                            />
+                    }  return '';
+                })}
             </Container>
         )}
     </>

@@ -38,10 +38,6 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState('');
     const [mostrarResultado, setMostrarResultado] = useState(false);
-    
-    const handleCancelarOpcionMultiple = () => {
-        closeopmul(false);
-    }
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -150,8 +146,9 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
     };
 
     const handleDragEnd = (result) => {
+        console.log('DragDropContext result:', result);
         if (!result.destination) return; // No se soltó en una ubicación válida
-      
+        
         const sourceIndex = result.source.index;
         const destinationIndex = result.destination.index;
       
@@ -210,6 +207,10 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
         });
     };
 
+    const handleCancelarOpcionMultiple = () => {
+        closeopmul();
+    }
+    
     const handleGuardarOpcionMultiple = () => {
         setMostrarResultado(true);
         onAceptar();
@@ -265,7 +266,9 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
                             <DragDropContext onDragEnd={handleDragEnd}>
                                 <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
                                     {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                                        console.log('Droppable droppableId:', `drop_${indiceSec}_${indice}`),
+                                        console.log('Droppable provided:', provided),
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
                                             {opcionesRespuesta.map((opcion, index) => {
                                                 return (
                                                     <Draggable
@@ -305,7 +308,6 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
                                                                                 className="numeracionRespuesta"
                                                                                 style={{ width: '2.5%', textAlign: 'center' }}
                                                                                 key={inputNum}
-                                                                                // placeholder={index + 1}
                                                                                 type="text"
                                                                             />
                                                                         ))

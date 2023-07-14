@@ -1,0 +1,575 @@
+.cabeceraTitle{ 
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+
+}
+.contenedorLogotipo{
+    width: Fill (292px);
+    height: Hug (124px);
+    padding: 16px 24px 16px 24px;
+    border-radius: 10px;
+    border: 1px;
+    justify: space-between;
+    background-color: #FFFFFF;
+    border: 1px  #B1B1B1;
+    border-style: dashed;
+    text-align: center;
+
+}
+.contenedortamanoLogotipo{
+    text-align: left !important;
+}
+.tamanoLogotipo{
+    text-align: left !important;
+}
+.radioLogotipo{
+    text-align: left !important;
+}
+
+.radioOption {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #B1B1B1;
+    width: Fill (292px);
+    height: Hug (52px);
+    padding: 8px 8px 8px 8px;
+    border: 0px 0px 1px 0px;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .radioButton {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    color: #3B3B3B;
+  }
+  
+  .radioButton input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+  }
+
+  
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background-color: white;
+  }
+  
+  .radioButton input[type="radio"]:checked ~ .checkmark {
+    background-color: white;
+    border-color: white;
+    border: 2px solid #ccc;
+  }
+  
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  .radioButton input[type="radio"]:checked ~ .checkmark:after {
+    display: block;
+    width: 10px;
+    height: 10px;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background: rgb(255, 210, 7);
+  }
+  
+  .radioButton .checkmark:after {
+    top: 5px;
+    left: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+  
+  
+  .selectPosicion{
+    border: 1px solid #D8D8D8;
+    width: Fill (292px);
+    height: Hug (40px);
+    padding: 10px 12px 10px 12px;
+    border-radius: 8px;
+    justify: space-between;
+
+  }
+  .contenedorContenedorPosicion{
+    width: 292px;
+    gap: 16px;
+
+  }
+  .contenedorPosicionLabel{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 50px;
+    letter-spacing: 0em;
+    text-align: left;
+
+  }
+  
+
+  .contenedortamanoLogotipoTamano{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+
+
+  }
+  
+  .selectPosicion{
+    color: #3B3B3B;
+
+  }
+
+.fila{
+    display: flex;
+    width:100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+.elemento{
+    width: 100%;
+    height: 100px;
+}
+
+.svg-div{
+    width: 80%;
+    height: Hug (72px);
+    padding: 24px 10px 24px 10px;
+    border-radius: 10px;
+    border: 1px;
+    gap: 10px;
+    background-color: #FFFFFF;
+    border: 1px solid #C5C5C5
+}
+.svg-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    
+}
+.disenobar-nombre{
+    padding: 10px;
+}
+
+.contenedorfilas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Crea 3 columnas de tamaño igual */
+    grid-gap: 10px; /* Espacio entre elementos */
+  }
+  
+  .fila2 {
+    display: flex;
+    flex-wrap: wrap;
+    border-style: solid;
+    border-radius: 10px;
+    width: 87px;
+    height: 134px;
+    border-radius: 10px;
+    gap: 8px;
+    border: 1px solid #C5C5C5
+
+  }
+
+  .fila2.seleccionada {
+    border: 2px solid black;
+  }
+  
+  
+  .elemento2 {
+    flex: 1 0 calc(33.33% - 10px); /* Tamaño del elemento, con un margen de 10px */
+    margin: 5px; /* Margen entre elementos */
+    
+  }
+  .elementoColores{
+    border-radius: 10px;
+    margin: 8%;
+    height: 2%;
+    border: 0.5px solid #202020
+  }
+  
+
+
+
+/*ESTILOS DE DISENO */
+.encuesta-titulo-create {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgba(255, 65, 151, 1);
+    margin: 0;
+    flex-basis: 25%;
+    margin-top: 5px;
+    margin-left: 27px;
+    margin-bottom: 5px;
+  }
+  .encuestas_colsg_create {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+  }
+  .encuestas_colsg_create_1{
+    display: flex;
+    align-items: center;
+    flex-basis: 80%;
+  }
+  .encuestas_colsg1{
+    display: flex;
+    align-items: center;
+  }
+  .imgcircle{
+    margin-right: 5px;
+  }
+  .imgchevron{
+    margin-left: 5px;
+    margin-right: 15px;
+  }
+  .encuesta-sg-create_1_1{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(32, 32, 32, 1);
+    margin: 0;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-right: 15px;
+    margin-bottom: 2px;
+  }
+  .encuesta-sg-create_1_2{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: rgba(32, 32, 32, 1);
+    margin: 0;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    margin-right: 10px;
+    margin-bottom: 2px;
+  }
+  .encuestas_colsg_create_2 {
+    display: flex;
+    align-items: center;
+  }
+  .encuesta-sg-buttonv-create{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 152px;
+    height: 40px;
+    background: #FFFFFF;
+    border: 1px solid #202020;
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .encuesta-sg-buttonv-create:hover{
+    cursor: pointer;
+  }
+  .encuesta-sg-buttons-create{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 108px;
+    height: 40px;
+    color: rgba(194, 194, 194, 1);
+    background: #F5F5F5;
+    border-radius: 40px;
+    border-color: #F5F5F5;
+    flex: none;
+    flex-grow: 0;
+  }
+  .encuesta-sg-buttons-create:hover{
+    cursor: pointer;
+    background-color: #ececec;
+  }
+  .contenedor-create {
+      position: static;
+      display: flex;
+      justify-content: space-between;
+  }
+    .menu-reporte-create{
+      cursor: pointer;
+      border: 1px solid #4e4e4e;
+      padding: 20px;
+    }
+  
+    /* Cuerpo del create */
+    .encuesta-cuerpo{
+      display: flex;
+      align-items: flex-start;
+    }
+    .encuesta-cuerpo2{
+      display: block;
+      align-items: center;
+    }
+    .encuestas_colsubtitulo_create{
+      display: flex;
+      align-items: center;
+    }
+    .encuesta-subtitulo1{
+      display: flex;
+      align-items: center;
+    }
+    .encuesta-subtitulo1:hover{
+      cursor: pointer;
+    }
+    .encuesta-subtitulo2{
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .encuesta-subtitulo-1{
+      font-family: 'Poppins', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #FF4197;
+      margin-top: unset;
+      margin-bottom: unset;
+    }
+    .encuesta-subtitulo-2 {
+      font-family: 'Poppins', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #270089;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      margin-top: 9px;
+      margin-left: 25px;
+      margin-bottom: 10px;
+    }
+    .help-icon{
+        width: 100%;
+    }
+    .help-icon svg{
+        width: 80%;
+    }
+    .lista-2 {
+      background: rgba(245, 245, 245, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 8px;
+      gap: 4px;
+      width: 70px;
+      height: 238px;
+      border-radius: 16px;
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+    }
+    .lista-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .lista-container.inactive {
+      background-color: rgba(245, 245, 245, 1);
+    }  
+    .juntar-lista-nombre {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      gap: 12px;
+      width: 54px;
+      height: 62px;
+      background: rgba(245, 245, 245, 1);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+    .juntar-lista-nombre.active {
+      background-color: #FFFFFF; /* O el color original que desees mantener */
+    }
+    .lista-nombre {
+      font-family: 'Poppins', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 15px;
+      color: #202020;
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+    }
+    .fondo-lista2:hover{
+      cursor: pointer;
+    }
+    .juntar-lista-nombre .fondo-lista2 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .juntar-lista-nombre .fondo-lista2 .lista-nombre {
+      margin-top: 4px; /* Ajusta el margen superior según sea necesario */
+    }
+    .lista-container .icono,
+    .lista-container .lista-nombre {
+      color: rgba(177, 177, 177, 1);
+    }
+    .juntar-lista-nombre.active {
+      background-color: #FFFFFF; /* O el color original que desees mantener */
+      box-shadow: none; /* Elimina el sombreado en el elemento seleccionado */
+    }
+    .juntar-lista-nombre:not(.active) {
+      box-shadow: none; /* Elimina el sombreado en los elementos no seleccionados */
+    }
+    .lista-container.active .icono,
+    .lista-container.active .lista-nombre {
+      color: initial; /* O el color original que desees mantener */
+    }
+    .lista-container:not(.active) svg {
+      color: rgba(177, 177, 177, 1);
+    }
+    #button-tooltip {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-left: 10px;
+      padding: 18px;
+      width: 220px;
+      height: 180px;
+      background: #FFFFFF;
+      border-radius: 16px;
+      box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+      flex: none;
+      order: 1;
+      flex-grow: 1;
+    }
+    .btnX:hover{
+      cursor: pointer;
+    }
+  
+    /* Segunda columna */
+    .encuesta-Segundocuerpo2{
+      display: block;
+      align-items: center;
+      margin-left: 10px;
+    }
+    .listaBancoPreguntas-2{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 4px 16px;
+      width: 326px;
+      height: 650px;
+      overflow: auto;
+      background: #F5F5F5;
+      border-radius: 20px;
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+    .listaBancoPreguntas-2::-webkit-scrollbar {
+      width: 10px;
+      background-color: #F5F5F5;
+    }
+    .listaBancoPreguntas-2::-webkit-scrollbar-track {
+      background-color: #ddd;
+    }
+    .listaBancoPreguntas-2::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 5px;
+    }
+    .listaBancoPreguntas-2::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
+    .juntar-listaBancoPreguntas-nombre{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      gap: 12px;
+      width: 300px;
+      height: 20px;
+      background: rgba(245, 245, 245, 1);
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+    .listaBancoPreguntas-nombre{
+      font-family: 'Poppins', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #000000;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      padding-left: 10px;
+    }
+    .encuesta-nombrelista{
+      margin-top: 25px;
+    }
+    .fondo-listaBancoPreguntas2{
+      width: 320px;
+    }
+  
+    /* Tercera columna */
+    .encuesta-Tercerocuerpo2.encuesta-abierto {
+      width: 100%;
+    }
+    
+    .encuesta-Tercerocuerpo2.encuesta-cerrado {
+      width: 132.8%;
+    }
+
+    .fondo-lista{
+        width: 100%;
+    }

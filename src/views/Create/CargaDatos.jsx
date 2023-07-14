@@ -1,31 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import '../../styles/cargaDatos.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
-import svgManager from '../../assets/svg';
-import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
+import ResultadoCargaDatos from './ResultadoCargaDatos';
 
-const minusCircleSVG = svgManager.getSVG('minus-circle');
-const plushCircleSVG = svgManager.getSVG('plush-circle');
-const trashSVG = svgManager.getSVG('trash-mini');
-
-const CargaDatos = (closeopmul, indice, onAceptar) => {
+const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
     const [mostrarContenedor, setMostrarContenedor] = useState(true);
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
-    const [isChecked, setIsChecked] = useState(false);
+    const [isCheckedPDF, setIsCheckedPDF] = useState(false);
+    const [isCheckedDOC, setIsCheckedDOC] = useState(false);
+    const [isCheckedPNG, setIsCheckedPNG] = useState(false);
+    const [isCheckedJPG, setIsCheckedJPG] = useState(false);
+    const [isCheckedGIF, setIsCheckedGIF] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
-    const [configuracion2, setConfiguracion2] = useState(false);
-    const [configuracion3, setConfiguracion3] = useState(false);
-    const [configuracion4, setConfiguracion4] = useState(false); 
-    const [configuracion5, setConfiguracion5] = useState(false);
-    const [pregunta, setPregunta] = useState('');
+    const [pregunta, setPregunta] = useState('Adjunte su CV');
+    const [pregunta2, setPregunta2] = useState('Suba archivos PDF, PNG');
     const [mostrarResultado, setMostrarResultado] = useState(false);
-    
-    const handleCancelarOpcionMultiple = () => {
-        closeopmul(false);
-    }
+    const [seccion, setSeccion] = useState({
+        tipo: 'CPCD',
+        contentPreg: [] // Agrega tu array de preguntas aquí
+    });
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -41,34 +37,50 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
         setIsActiveEditar(true);
     };
 
-    const handleCheckboxChange = (event) => {
-        setIsChecked(event.target.checked);
+    const handleCheckboxPDF = (event) => {
+        setIsCheckedPDF(event.target.checked);
+    };
+
+    const handleCheckboxDOC = (event) => {
+        setIsCheckedDOC(event.target.checked);
+    };
+
+    const handleCheckboxPNG = (event) => {
+        setIsCheckedPNG(event.target.checked);
+    };
+
+    const handleCheckboxJPG = (event) => {
+        setIsCheckedJPG(event.target.checked);
+    };
+
+    const handleCheckboxGIF = (event) => {
+        setIsCheckedGIF(event.target.checked);
     };
 
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
     };
 
-    const handleSwitchConfigurar2 = () => {
-        setConfiguracion2(!configuracion2);
-    };
+    const handleCancelarCargaArchivo = () => {
+        closeCargaArchivos(false);
+    }
 
-    const handleSwitchConfigurar3 = () => {
-        setConfiguracion3(!configuracion3);
-    };            
-
-    const handleSwitchConfigurar4 = () => {
-        setConfiguracion4(!configuracion4);
-    };
-
-    const handleSwitchConfigurar5 = () => {
-        setConfiguracion5(!configuracion5);
-    };
-
-    const handleGuardarOpcionMultiple = () => {
+    const handleGuardarCargaDatos = () => {
+        const nuevaPregunta = {
+            tipo: 'CPCD',
+            pregunta: pregunta,
+            pregunta2: pregunta2
+        };
+        const newContentPreg = [...seccion.contentPreg, nuevaPregunta];
+        setSeccion({ ...seccion, contentPreg: newContentPreg });
         setMostrarResultado(true);
-        onAceptar();
         setMostrarContenedor(false);
+    };
+
+    const handleEliminarPregunta = (index) => {
+        const newContentPreg = [...seccion.contentPreg];
+        newContentPreg.splice(index, 1);
+        setSeccion({ ...seccion, contentPreg: newContentPreg });
     };
 
     return (
@@ -102,7 +114,6 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
                                 style={{ width: '94.8%', border: '1px solid #ccc' }}
                                 className="textoAgradecimiento"
                                 value={pregunta}
-                                placeholder="Adjunte su CV"
                                 onChange={(e) => setPregunta(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />
@@ -115,10 +126,9 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
                                 style={{ width: '95.32%', border: '1px solid #ccc' }} 
                                 className= '' 
                                 type="text"
-                                value={pregunta}
-                                placeholder="Suba archivos PDF, PNG" 
+                                value={pregunta2}
                                 readOnly
-                                onChange={(e) => setPregunta(e.target.value)}
+                                onChange={(e) => setPregunta2(e.target.value)}
                             />
                         </Col>
 
@@ -126,32 +136,88 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
                             <p style={{ cursor: 'default' }}>Tipos de archivos permitidos</p>
 
                             <Col className='seccion4-1-cargaDatos-editar'>
-                                <label >
+                                <label style={{marginTop: '11%', width: '100%'}}>
                                     <input
-                                        style={{width: '2%'}}
                                         type="checkbox"
-                                        checked={isChecked}
-                                        onChange={handleCheckboxChange}
+                                        style={{width: '70%', height: '70%'}}
+                                        checked={isCheckedPDF}
+                                        onChange={handleCheckboxPDF}
                                     />
                                 </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>PDF</p>
                             </Col>
 
-                            <Col>
-                                <p style={{ marginBottom: '1%', cursor: 'default' }}>DOC, DOCX</p>
+                            <Col className='seccion4-2-cargaDatos-editar'>
+                                <label style={{marginTop: '5.6%', width: '55%'}}>
+                                    <input
+                                        type="checkbox"
+                                        style={{width: '70%', height: '70%'}}
+                                        checked={isCheckedDOC}
+                                        onChange={handleCheckboxDOC}
+                                    />
+                                </label>
+                                <p style={{ width: '170%', marginBottom: '1%', cursor: 'default' }}>DOC, DOCX</p>
                             </Col>
 
-                            <Col>
+                            <Col className='seccion4-3-cargaDatos-editar'>
+                                <label style={{marginTop: '11%', width: '48%'}}>
+                                    <input
+                                        type="checkbox"
+                                        style={{width: '70%', height: '70%'}}
+                                        checked={isCheckedPNG}
+                                        onChange={handleCheckboxPNG}
+                                    />
+                                </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>PNG</p>
                             </Col>
 
-                            <Col>
+                            <Col className='seccion4-4-cargaDatos-editar'>
+                                <label style={{marginTop: '11%', width: '48%'}}>
+                                    <input
+                                        type="checkbox"
+                                        style={{width: '70%', height: '70%'}}
+                                        checked={isCheckedJPG}
+                                        onChange={handleCheckboxJPG}
+                                    />
+                                </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>JPG</p>
                             </Col>
 
-                            <Col>
+                            <Col className='seccion4-5-cargaDatos-editar'>
+                                <label style={{marginTop: '11%', width: '48%'}}>
+                                    <input
+                                        type="checkbox"
+                                        style={{width: '70%', height: '70%'}}
+                                        checked={isCheckedGIF}
+                                        onChange={handleCheckboxGIF}
+                                    />
+                                </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>GIF</p>
                             </Col>
+                        </Col>
+
+                        <Col className='seccion5-cargaDatos-editar'>
+                            <p style={{ marginBottom: '1%', marginTop: '1.3%', cursor: 'default' }}>Peso máximo</p>
+                            
+                            <input
+                                className="numeracionRespuesta"
+                                style={{ width: '2.2%', height: '2.2%', textAlign: 'center' }}
+                                type="text"
+                            />
+
+                            <p style={{ marginBottom: '1%', marginLeft: '2%', marginTop: '1.3%', cursor: 'default' }}>Mb</p>
+                        </Col>
+
+                        <Col className='seccion6-cargaDatos-editar'>
+                            <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
+                            <textarea
+                                style={{ width: '96.8%', border: '1px solid #ccc' }}
+                                className="textoMensajeError"
+                                value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
+                                readOnly
+                                onChange={(e) => setPregunta(e.target.value)}
+                                rows={5} // Ajusta el número de filas según tus necesidades
+                            />
                         </Col>
                     </Container>
                 )}
@@ -171,103 +237,15 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
                                 <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
                             </Col>
                         )}
-
-                        <Col className='seccion2-cargaDatos-configuracion'>
-                            <label class="switch">
-                                <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
-                                <span className="slider round"></span>
-                            </label>
-                            <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que esta pregunta sea complementaria</p>
-                        </Col>
-                        {configuracion2 && (
-                            <Col className='seccion1-2-cargaDatos-configuracion'>
-                                <select className='selectConfigurar'>
-                                    <option value="" selected disabled hidden>Seleccionar Pregunta</option>
-                                    <option value="option1">Opción 1</option>
-                                    <option value="option2">Opción 2</option>
-                                    <option value="option3">Opción 3</option>
-                                </select>
-                            </Col>
-                        )}
-
-                        <Col className='seccion3-cargaDatos-configuracion'>
-                            <label class="switch">
-                                <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
-                                <span className="slider round"></span>
-                            </label>
-                            <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que la pregunta resiva multiples respuestas</p>
-                        </Col>
-                        
-                        <Col className='seccion4-cargaDatos-configuracion'>
-                            <label class="switch">
-                                <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
-                                <span className="slider round"></span>
-                            </label>
-                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar como opción de respuesta "Ninguna de las anteriores"</p>
-                        </Col>
-                        {configuracion4 && (
-                            <Col className='seccion1-4-cargaDatos-configuracion'>
-                                <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
-                            </Col>
-                        )}
-
-                        <Col className='seccion5-cargaDatos-configuracion'>
-                            <label class="switch">
-                                <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
-                                <span className="slider round"></span>
-                            </label>
-                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar "otra" como opción de respuesta para comentarios</p>
-                        </Col>
-                        {configuracion5 && (
-                            <Col className='seccion1-5-cargaDatos-configuracion'>
-                                <Col>
-                                    <p style={{margin: 'unset' }}>Etiqueta</p>
-                                    <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
-                                </Col>
-                                <Col className='seccion1-5-2-cargaDatos-configuracion'>
-                                    <Col style={{ width: '55%' }}>
-                                        <Col>
-                                            <p className='configurarTamaño'>Tamaño</p>
-                                        </Col>
-                                        <Col className='contenedorConfigurarTamaño'>
-                                            <select className='selectConfigurarTamaño1'>
-                                                <option value="" selected disabled hidden>Una sola linea de texto</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
-                                            </select>
-
-                                            <select className='selectConfigurarTamaño2'>
-                                                <option value="" selected disabled hidden>50 caracteres</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
-                                            </select>
-                                        </Col>
-                                    </Col>
-                                    <Col style={{ width: '41.12%', marginLeft: '2%' }}>
-                                        <p className='configurarValidacion'>Validación</p>
-
-                                        <select className='selectConfigurarValidacion'>
-                                            <option value="" selected disabled hidden>No validar esta respuesta</option>
-                                            <option value="option1">Opción 1</option>
-                                            <option value="option2">Opción 2</option>
-                                            <option value="option3">Opción 3</option>
-                                        </select>
-                                    </Col>
-                                </Col>
-                            </Col>
-                        )}
                     </Container>
                 )}
 
                 <Col className='seccion6-cargaDatos'>
-                    <Button className='cancelarCargaDatos' onClick={handleCancelarOpcionMultiple}>
+                    <Button className='cancelarCargaDatos' onClick={handleCancelarCargaArchivo}>
                         Cancelar
                     </Button>
                         
-                    <Button className='guardarCargaDatos' onClick={handleGuardarOpcionMultiple}>
+                    <Button className='guardarCargaDatos' onClick={handleGuardarCargaDatos}>
                         Guardar
                     </Button>
                 </Col>
@@ -276,7 +254,17 @@ const CargaDatos = (closeopmul, indice, onAceptar) => {
 
         {mostrarResultado && (
             <Container>
-                <ResultadoOpcionMultiple index={indice} pregunta={pregunta} />
+                {seccion.contentPreg.map((preg, index) => { 
+                    if (preg.tipo == 'CPCD') {
+                            return <ResultadoCargaDatos 
+                                key={index} 
+                                index={indice} 
+                                pregunta={pregunta} 
+                                pregunta2={pregunta2}
+                                handleEliminarPreguntaCD={() => handleEliminarPregunta(index)}
+                            />
+                    }  return '';
+                })}
             </Container>
         )}
     </>

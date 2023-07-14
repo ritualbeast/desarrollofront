@@ -1,0 +1,80 @@
+.titulo-revision{
+    color: rgba(255, 65, 151, 1);
+}
+.revision-seccion2,
+.revision-seccion3{
+    width: 100%;
+    display: flex;
+}
+.revision-seccion2-1{
+    width: 48.6%;
+    margin-right: 3%;
+}
+.revision-seccion3-1{
+    width: 47.9%; 
+    margin-right: 3%;
+}
+.revision-seccion2-2{
+    width: 50%;
+}
+.revision-seccion3-2{
+    width: 47.9%;
+}
+.revision-seccion4{
+    width: 100%;
+}
+.revision-seccion4-1{
+    width: 48.5%; 
+    margin-right: 3%;
+}
+.revision-seccion4-2{
+    width: 100%;
+    display: flex;
+}
+.revision-seccion4-2-1{
+    width: 52.1%;
+    border: solid 1px rgba(224, 224, 224, 1); 
+    margin-right: 1.8%; 
+    border-radius: 4px;
+}
+.revision-seccion4-2-1:hover{
+    cursor: pointer;
+}
+.revision-seccion4-2-2{
+    width: 52.1%;
+    border: solid 1px rgba(224, 224, 224, 1); 
+    border-radius: 4px;
+}
+.revision-seccion4-2-2:hover{
+    cursor: pointer;
+}
+.texto-revision-1,
+.texto-revision-2{
+    width: 100%;
+}
+.revision-seccion5{
+    display: flex;
+    margin-top: 2%;
+}
+.revision-Regresar{
+    background-color: rgba(255, 240, 199, 1);
+    color: rgba(32, 32, 32, 1);
+    border-radius: 40px;
+    padding: 0.8% 1.3% 0.8% 1.3%;
+}
+.revision-Regresar:hover{
+    cursor: pointer;
+}
+.revision-Finalizar{
+    background-color: rgba(255, 199, 0, 1);
+    color: rgba(32, 32, 32, 1);
+    border-radius: 40px;
+    padding: 0.5% 1.2% 0.5% 1.2%;
+}
+.revision-Finalizar:hover{
+    cursor: pointer;
+}
+.seleccionado {
+    border: 1px solid #212121;
+  }
+  

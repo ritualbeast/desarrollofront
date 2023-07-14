@@ -9,6 +9,7 @@ import CrearEncuestas from './views/IPN/CrearEncuestas';
 import Create from './views/Create';
 import Login from './components/master/Login';
 import globalServices from './services/global'
+import CreateFin from './views/CreateFin';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem('loggedUser'))
@@ -75,6 +76,10 @@ function App() {
 
           <Route path="/create" element={<Layouts />} >
             <Route index element={<Create />} />
+          </Route>
+
+          <Route path="/create/finalizar" element={<Layouts />}>
+            <Route index element={<CreateFin />}/>
           </Route>
         </Routes>
       </Router>
