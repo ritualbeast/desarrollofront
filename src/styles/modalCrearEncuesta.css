@@ -1,12 +1,45 @@
+.comentario {
+    margin-left: 2.8%;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #616161;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}
 .modalCrearEncuesta_Contenedorbutton{
     display: flex;
+    margin-left: 1.5%;
 }
 .modalCrearEncuesta_button{
     margin: 0.5rem;
     padding: 0.5rem;
-    border: solid 1px;
-    border-radius: 0.5rem;
+    border: solid 2px;
+    border-color: #c6c4c4;
+    border-radius: 1rem;
     background-color: #fff;
     color: #3F3F3F;
     cursor: pointer;
+    width: 43.7%;
+    display: flex;
+}
+.modalCrearEncuesta_button:hover{
+    border-color: #565656;
+}
+.modalCrearEncuesta_button.selected {
+    border-color: #565656;
+  }  
+.modal1Comentario, .modal2Comentario{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #3F3F3F;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
 }

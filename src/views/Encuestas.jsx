@@ -142,13 +142,13 @@ const handleClick = () => {
             <h4>Filtrar por:</h4>
             <ul className="encuestas-filtrarpor__ul">
               <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'A' ? 'active' : ''}`} onClick={() => handleFiltroClick('A', 1)}>
-                <a >Abiertas</a>
+                <a className={opcionFiltro === 'A' ? 'active' : ''}>Abiertas</a>
               </li>
               <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'C' ? 'active' : ''}`} onClick={() => handleFiltroClick('C',1)}>
-                <a >Cerradas</a>
+                <a  className={opcionFiltro === 'C' ? 'active' : ''}>Cerradas</a>
               </li>
               <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'T' ? 'active' : ''}`} onClick={() => handleFiltroClick('T',1)}>
-                <a>Todas</a>
+                <a className={opcionFiltro === 'T' ? 'active' : ''}>Todas</a>
               </li>
             </ul>
           </Col>
