@@ -2,6 +2,9 @@
     border-start-start-radius: 20px;
     border-start-end-radius: 20px;
 }
+.imagenColModal img{
+    height: 110px;
+}
 .modalEncuestasPersonalizadas_container {
     width: 90%;
     max-height: 310px;
