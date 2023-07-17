@@ -76,7 +76,6 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
           borderRadius: '8px',
           width: '80%',
           height: '80%',
-          overflow: 'auto',
           resize: 'both',
           minWidth: '40%',
         }}

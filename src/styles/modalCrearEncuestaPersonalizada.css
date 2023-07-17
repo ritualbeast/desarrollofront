@@ -1,3 +1,27 @@
+.imagenModal{
+    border-start-start-radius: 20px;
+    border-start-end-radius: 20px;
+}
+.modalEncuestasPersonalizadas_container {
+    width: 90%;
+    max-height: 310px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5%;
+    flex-grow: 1; /* Permite que el container se expanda verticalmente */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical si el contenido excede la altura máxima */
+  }
+.modalCrearEncuestaPersonalizada_rowpreguntas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Agrupa en filas de tres elementos */
+  grid-gap: 10px;
+  /* Ajusta el ancho máximo del contenedor para evitar que las columnas se salgan */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+  
 .comentario {
     margin-left: 2.8%;
     font-family: 'Poppins', sans-serif;
@@ -10,32 +34,37 @@
     order: 2;
     flex-grow: 0;
 }
-
+.input-container{
+    padding: 10px;
+    padding-left: 20px !important;
+}
+.input-filtroPersonalizado{
+    width: 98% !important;
+    border: 1px solid #E0E0E0 !important;
+}
 .modalCrearEncuesta_Contenedorbutton {
     display: flex;
     justify-content: space-between;
     margin-left: 1.5%;
   }
-.modalCrearEncuesta_button_ {
-    flex: 1;
+.modalCrearEncuesta_button{
     margin: 0.5rem;
     padding: 0.5rem;
     border: solid 2px;
     border-color: #c6c4c4;
-    border-radius: 1rem;
+    border-radius: 4px;
     background-color: #fff;
     color: #3F3F3F;
     cursor: pointer;
+    width: 43.7%;
     display: flex;
-    align-items: center;
-    /* Ajusta el tamaño del texto para que se ajuste correctamente */
-    font-size: 0.8rem;
-  }
+    width: 335px;
+}
 
-.modalCrearEncuesta_button_.selected {
+.modalCrearEncuesta_button.selected {
     border-color: #565656;
   }  
-  .modal1Comentario, .modal2Comentario{
+.modal1Comentario, .modal2Comentario{
     font-family: Poppins;
     font-size: 14px;
     font-weight: 400;
@@ -96,4 +125,7 @@
 
 .disabled span{
     color: #C2C2C2;
+}
+.search-icon{
+    width: 3rem !important;
 }

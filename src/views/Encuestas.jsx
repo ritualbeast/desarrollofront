@@ -8,8 +8,8 @@ import { makeStyles } from "@material-ui/core";
 import { Dropdown } from 'react-bootstrap';
 import svgManager from '../assets/svg';
 import CrearEncuestas from './Encuestas/CrearEncuestas';
-import ModalCrearEncuestas from './Encuestas/ModalCrearEncuestas';
 import { ListarEncuestas } from '../services/EncuestasServices';
+import ModalCrearEncuesta from './Encuestas/ModalCrearEncuesta';
 
 const pagination = makeStyles({
   root: {
@@ -44,6 +44,7 @@ const Encuestas = () => {
   const paginationClass = pagination();
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
+  const [openModalCrearEncuesta, setOpenModalCrearEncuesta] = useState(false);
   const [tipo, setTipo] = useState('A');
   const [valor, setValor] = useState('');
   
@@ -66,7 +67,7 @@ const [inputValue, setInputValue] = useState('');
   };
 
   const handleOpenCrearEncuesta = () => {
-  setOpenCrearEncuesta(true);
+    setOpenModalCrearEncuesta(true);
 };
 
 const  [currentPage, setCurrentPage] = useState(0);
@@ -175,32 +176,8 @@ const handleClick = () => {
         
       </Container>
       
-      <Modal
-        open={openCrearEncuesta}
-        onClose={() => setOpenCrearEncuesta(false)}
-        sx={{
-          width: '60%',
-          height: '60%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: 'auto',
-          marginTop: '5%',
-        }}
-      >
-        <Box className="encuesta_modalcrear" sx={{ width: '50%' }}>
-          <div className="encuesta_modalcrear_closeicon">
-            <p className="encuesta_modalcrear__title">Crear encuesta</p>
-            <span
-              dangerouslySetInnerHTML={{ __html: closeSVG }}
-              onClick={() => setOpenCrearEncuesta(false)}
-              className="encuesta_modalcrear__close"
-              style={{ marginLeft: 'auto' }}
-            />
-          </div>   
-          <ModalCrearEncuestas />
-        </Box>
-      </Modal>    
+      
+      <ModalCrearEncuesta open = {openModalCrearEncuesta} onClose={() => setOpenModalCrearEncuesta(false)} /> 
     </>  
   );
 };
