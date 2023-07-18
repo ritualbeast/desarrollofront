@@ -9,6 +9,8 @@ import svgManager from '../assets/svg';
 import NuevaEncuesta from './Create/NuevaEncuesta';
 import DisenoEncuesta from './Create/DiseñoEncuesta';
 import DisenoEncuestaLateralPrincipal from './Create/DisenoEncuestaLateralPrincipal';
+import DefinicionEncuestaLateral from './Definicion/DefinicionEncuestaLateral';
+import DefinicionEncuestaCuerpo from './Definicion/DefinicionEncuestaCuerpo';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -102,7 +104,7 @@ const Create = () => {
                         
                         <Col xs={2} className="encuestas_colsg_create">
                             <div className='encuestas_colsg_create_1'>
-                                <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
+                            <div className='encuestas_colsg1' style={{position: 'relative', width: '220px', height: '50px'}}>
                                     <div style={{ 
                                         position: 'absolute', 
                                         top: '0', 
@@ -118,6 +120,32 @@ const Create = () => {
                                         fontWeight: 'bold'
                                     }}>
                                         1
+                                    </div>
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
+                                    <h2 className='encuesta-sg-create_1_1'>Definición de Encuesta</h2>
+                                </div>
+                                
+                                <div>
+                                    <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
+                                </div>
+
+
+                                <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
+                                    <div style={{ 
+                                        position: 'absolute', 
+                                        top: '0', 
+                                        left: '0', 
+                                        width: '17.2%', 
+                                        height: '92%', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center',
+                                        fontFamily: 'Poppins, sans-serif',
+                                        fontStyle: 'normal',
+                                        color: 'rgba(32, 32, 32, 1)',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        2
                                     </div>
                                     <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                     <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
@@ -142,7 +170,7 @@ const Create = () => {
                                         color: 'rgba(32, 32, 32, 1)',
                                         fontWeight: 'bold'
                                     }}>
-                                        2
+                                        3
                                     </div>
                                     <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                     <h2 className='encuesta-sg-create_1_2'>Revisión</h2>
@@ -261,13 +289,22 @@ const Create = () => {
                                 <DisenoEncuestaLateralPrincipal/>
                                 )}
 
+                            {activeIcon === 'Formato' && (
+                                <DefinicionEncuestaLateral/>   
+                                )}
+
                             
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                                {activeIcon !== '' && (
-                                <NuevaEncuesta/>
+                                {/*{activeIcon !== '' && (
+                                    <NuevaEncuesta/>
+                                )
+                                }*/}
+                                {activeIcon === 'Formato' && (
+                                    <DefinicionEncuestaCuerpo/>
                                 )
                                 }
+                                
                                 
                                     
                             </Col>
