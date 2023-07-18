@@ -77,11 +77,6 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
       };
     
 
-
-  
-
-  
-
   return (
     <Modal
     open={open}
