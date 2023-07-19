@@ -1,0 +1,13 @@
+.inputFechaInicio, .inputFechaFin{
+    max-width: 95% !important;; 
+    height: Hug (40px) !important;
+    top: 30px;
+    padding: 10px 12px 10px 12px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 5px;
+    border: 1px solid rgba(224, 224, 224, 1) !important;
+    color: rgba(59, 59, 59, 1) !important;
+
+
+}

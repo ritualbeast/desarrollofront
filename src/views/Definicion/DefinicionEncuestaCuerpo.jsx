@@ -2,23 +2,24 @@ import React, {useState, useEffect} from 'react'
 
 
 import svgManager from '../../assets/svg'
-import { useEstadoContext } from '../../context/EstadoContext'
 import '../../styles/definicionEncuestaCuerpo.css'
 
 
 const chevronupSVG = svgManager.getSVG('chevron-up');
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 
-const DefinicionEncuestaCuerpo = () => {
+const DefinicionEncuestaCuerpo = ({estado,posicion}) => {
 
-  const { estado, posicionSeleccionada } = useEstadoContext(); // Obtén los estados del contexto
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [posicionSeleccionada, setPosicionSeleccionada] = useState(null);
+  const [leerEstado, setLeerEstado] = useState(estado);
 
 
 
   useEffect(() => {
+    console.log('estado',leerEstado)
     if (!selectedFile) {
       setPreview(null);
       return;
@@ -39,16 +40,11 @@ const DefinicionEncuestaCuerpo = () => {
     }
   };
 
-  const probar = () => {
-    console.log(estado, posicionSeleccionada);
-  }
 
 
   return (
     <>
-      <button onClick={probar}>Probar
-
-      </button>
+      
       <div className="tituloDefinicionEncuesta">
          <span 
          > Crear  de Encuesta </span>
@@ -118,7 +114,7 @@ const DefinicionEncuestaCuerpo = () => {
             
           </div>
           <div className="contenedorbuttonPieDePagina">
-            <button className='buttonPieDePagina'>Agregar</button>
+            <button className='buttonPieDePagina'>{leerEstado}</button>
           </div>
       <br />
       <br />

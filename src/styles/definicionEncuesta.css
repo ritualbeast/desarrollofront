@@ -443,12 +443,12 @@
         padding: 8px;
         gap: 4px;
         width: 70px;
-        height: 238px;
         border-radius: 16px;
         flex: none;
         order: 1;
         flex-grow: 0;
-      }
+    }
+    
       .lista-container {
         position: relative;
         display: flex;

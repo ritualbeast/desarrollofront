@@ -7,7 +7,6 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import DefinicionEncuestaCuerpo from './DefinicionEncuestaCuerpo';
-import { useEstadoContext } from '../../context/EstadoContext';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -23,9 +22,12 @@ const DefinicionEncuestaLateral = ({openMenuPrincipal, closeMenuLogotipo}) => {
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
-    const { estado, setEstado, posicionSeleccionada, setPosicionSeleccionada } = useEstadoContext();
+    const [estado, setEstado] = useState('');
+    const [posicionSeleccionada, setPosicionSeleccionada] = useState('');
+    const [showDefinicionEncuesta, setShowDefinicionEncuesta] = useState(false);
+    
 
-    const [showDefinicionEncuestaCuerpo, setShowDefinicionEncuestaCuerpo] = useState(false);
+    const [ showDefinicionEncuestaCuerpo, setShowDefinicionEncuestaCuerpo] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
 
@@ -163,7 +165,7 @@ const DefinicionEncuestaLateral = ({openMenuPrincipal, closeMenuLogotipo}) => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} />
                             <span className='cabeceraTitle'>Cargar archivos</span>
                         </div>
                        

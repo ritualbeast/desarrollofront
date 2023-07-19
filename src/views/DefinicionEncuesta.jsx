@@ -11,7 +11,6 @@ import DisenoEncuesta from './Create/DiseñoEncuesta';
 import DisenoEncuestaLateralPrincipal from './Create/DisenoEncuestaLateralPrincipal';
 import DefinicionEncuestaLateral from './Definicion/DefinicionEncuestaLateral';
 import DefinicionEncuestaCuerpo from './Definicion/DefinicionEncuestaCuerpo';
-import DefinicionEncuestaConfiguracion from './Definicion/DefinicionEncuestaConfiguracion';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -21,10 +20,9 @@ const chevronsRightSVG = svgManager.getSVG('chevrons-right');
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
-const circle2SVG = svgManager.getSVG('circle2');
 
-const Create = () => {
-    const [activeIcon, setActiveIcon] = useState('Definicion');
+const DefinicionEncuesta = () => {
+    const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
     const targetRef = useRef(null);
@@ -32,7 +30,6 @@ const Create = () => {
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [pasos, setPasos] = useState(1);
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -91,14 +88,6 @@ const Create = () => {
     //     window.location.href = "/login";
     //     }
     // }
-    const nextPasos = () => {
-        if(pasos === 1){
-            setPasos(2);
-        }
-        setActiveIcon('Banco de Preguntas')
-    }
-
-      
 
     return (
         <>
@@ -115,7 +104,6 @@ const Create = () => {
                         
                         <Col xs={2} className="encuestas_colsg_create">
                             <div className='encuestas_colsg_create_1'>
-                                
                             <div className='encuestas_colsg1' style={{position: 'relative', width: '220px', height: '50px'}}>
                                     <div style={{ 
                                         position: 'absolute', 
@@ -133,8 +121,7 @@ const Create = () => {
                                     }}>
                                         1
                                     </div>
-                                    {pasos === 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
-                                    {pasos !== 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                     <h2 className='encuesta-sg-create_1_1'>Definición de Encuesta</h2>
                                 </div>
                                 
@@ -160,9 +147,7 @@ const Create = () => {
                                     }}>
                                         2
                                     </div>
-                                    {pasos === 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
-                                    {pasos !== 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
-                               
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                     <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
                                 </div>
 
@@ -187,9 +172,7 @@ const Create = () => {
                                     }}>
                                         3
                                     </div>
-                                    {pasos === 3 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
-                                    {pasos !== 3 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
-                               
+                                    <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>
                                     <h2 className='encuesta-sg-create_1_2'>Revisión</h2>
                                 </div>
                             </div>
@@ -198,8 +181,7 @@ const Create = () => {
                                     <p style={{ marginLeft: '3px', marginRight: '2px'}}>Vista previa</p>
                                     <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: eyeSVG }}/>
                                 </Button>
-                                <Button className='encuesta-sg-buttons_create' onClick={nextPasos}
-                                >Siguiente</Button>
+                                <Button className='encuesta-sg-buttons-create'>Siguiente</Button>
                             </div>
                         </Col>
                         <hr />
@@ -222,27 +204,23 @@ const Create = () => {
                                     </div>
                                 </Col>
                                 <Col>
-                                    <div className="lista_2">
+                                    <div className="lista-2">
                                             <div className="fondo-lista">
                                                 {lista.map((item) => (
-                                                   pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
-                                                    pasos === 2 && item.nombre === "Configuracion" ? null : (
-                                                    <div
-                                                        key={item.nombre}
-                                                        className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
-                                                        onClick={() => handleClick(item.nombre)}
-                                                    >
-                                                        <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
-                                                            <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
-                                                                {item.icono && (
-                                                                    <span dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                                )}
-                                                                <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                            </div>
+                                                <div
+                                                    key={item.nombre}
+                                                    className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
+                                                    onClick={() => handleClick(item.nombre)}
+                                                >
+                                                    <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
+                                                        <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
+                                                            {item.icono && (
+                                                                <span dangerouslySetInnerHTML={{ __html: item.icono }} />
+                                                            )}
+                                                            <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
                                                         </div>
                                                     </div>
-                                                    ) 
-                                                    )
+                                                </div>
                                                 ))}
                                             </div>
                                         </div>
@@ -308,35 +286,25 @@ const Create = () => {
                                 )}
 
                             {activeIcon === 'Estilo'  && (
-                                <DisenoEncuestaLateralPrincipal
-                                    datapasos={pasos}
-                                    />
+                                <DisenoEncuestaLateralPrincipal/>
                                 )}
 
-                            {activeIcon === 'Definicion' && (
+                            {activeIcon === 'Formato' && (
                                 <DefinicionEncuestaLateral/>   
-                                )}
-
-                            {activeIcon === 'Configuracion' && (
-                                <DefinicionEncuestaConfiguracion
-                                closeMenuConfiguracion={handleClick}
-
-                                
-                                />
-
-
                                 )}
 
                             
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                            {pasos === 1 
-                             ? (
-                                <DefinicionEncuestaCuerpo/>
-                            ) : activeIcon !== '' && (
-                                <NuevaEncuesta/>
-                            )}
-
+                                {/*{activeIcon !== '' && (
+                                    <NuevaEncuesta/>
+                                )
+                                }*/}
+                                {activeIcon === 'Formato' && (
+                                    <DefinicionEncuestaCuerpo/>
+                                )
+                                }
+                                
                                 
                                     
                             </Col>
@@ -349,4 +317,4 @@ const Create = () => {
     )  
 }
 
-export default Create
+export default DefinicionEncuesta
