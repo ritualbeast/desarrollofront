@@ -20,7 +20,7 @@ const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -34,6 +34,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
+    const [preview, setPreview] = useState(preview3);
     
 
     const openDisenoLogotipoHandler = () => {
@@ -110,9 +111,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
         {nombre: 'Logotipo', id: 1, SSVG: imageSVG},
         {nombre: 'Pie de página', id: 2, SSVG: sidebarSVG},
         {nombre: 'Fuentes', id: 3 , SSVG: italicSVG},
-        {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
-        {nombre: 'Fondo', id: 5 , SSVG: dropletSVG},
-        {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
+        // {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
+        {nombre: 'Fondo', id: 4 , SSVG: dropletSVG},
+        // {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
     ];
 
     const elementosPorFila = 2;
@@ -179,7 +180,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
 
     };
 
-    
     
   return (
     <>
@@ -285,6 +285,8 @@ const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
             <DisenoEncuestaLateralPiePagina 
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuPiePagina={setOpenDisenoPiePagina}
+                preview4={preview}
+                paso={pasos}
             
             />
         )  
@@ -294,6 +296,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos}) => {
             <DisenoEncuestaLateralFuentes 
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuFuentes={setOpenDisenoFuentes}
+                paso={pasos}
             />
         )
         }

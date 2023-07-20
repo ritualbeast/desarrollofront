@@ -24,7 +24,7 @@ const xSVG = svgManager.getSVG('x');
 const circle2SVG = svgManager.getSVG('circle2');
 
 const Create = () => {
-    const [activeIcon, setActiveIcon] = useState('Definicion');
+    const [activeIcon, setActiveIcon] = useState('Configuracion');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
     const targetRef = useRef(null);
@@ -33,6 +33,7 @@ const Create = () => {
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [pasos, setPasos] = useState(1);
+    const [previeww, setPrevieww] = useState(null);
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -97,6 +98,11 @@ const Create = () => {
         }
         setActiveIcon('Banco de Preguntas')
     }
+
+    const [Ispreview, setIspreview] = useState('');
+    const enviarPreview = (previe) => {
+        setIspreview(previe)
+        }
 
       
 
@@ -310,6 +316,7 @@ const Create = () => {
                             {activeIcon === 'Estilo'  && (
                                 <DisenoEncuestaLateralPrincipal
                                     datapasos={pasos}
+                                    preview3= {Ispreview}
                                     />
                                 )}
 
@@ -332,7 +339,9 @@ const Create = () => {
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
                             {pasos === 1 
                              ? (
-                                <DefinicionEncuestaCuerpo/>
+                                <DefinicionEncuestaCuerpo 
+                                preview2={(previe) => enviarPreview(previe)}
+                                />
                             ) : activeIcon !== '' && (
                                 <NuevaEncuesta/>
                             )}

@@ -10,14 +10,23 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const edit2SVG = svgManager.getSVG('edit-2');
+const trashSVG = svgManager.getSVG('trash');
+const uploadSVG = svgManager.getSVG('upload');
 
-const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina}) => {
+
+const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, preview4, sendEstado,paso}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
+    const [selectedFile, setSelectedFile] = useState();
+    const [previeww, setPreview] = useState(preview4);
+    const [estado, setEstado] = useState('Guardar');
+    const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
+    const [pasos, setPasos] = useState(paso);
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
@@ -82,10 +91,22 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina})
         openMenuPrincipal(true);
         closeMenuPiePagina(false);
     }
+
+    const handleEnviarFotoPiePagina = () => {
+    }
+
+    const handleEstadoClick = (estado) => {
+        sendEstado(estado);
+    }
+
+    const handlePosicionClick = (posicion) => {
+        setPosicionSeleccionada(posicion);
+    }
     
     
   return (
     <>
+       
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -121,10 +142,16 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina})
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
-                        <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
-                        
-                        </div>
+                        {preview4 != null ? (
+                        <img
+                            src={preview4}
+                            alt="preview"
+                            style={{ height: '92px', width: '100%' }}
+                            className="imagenLogotipoEncuesta"
+                        />
+                        ) : null 
+                        }
+
                         <div className="contenedorContenedorTamano">
                             <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
                             <div className="contenedortamanoLogotipo">
@@ -157,6 +184,47 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina})
                                 </select>
                             </div>
                         </div>
+
+                        {pasos === 1 ? (
+                            <>
+                                <div className="contenedorCabeceraLogotipo">
+                                    <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                                    <span className='cabeceraTitle'>Agregar botón pie de pagina</span>
+                                </div>
+
+                                <div className="contenedorbuton">
+                                    <button className="botonGuardar" onClick={() => handleEstadoClick('Guardar')}>
+                                    Guardar
+                                    </button>
+                                    <button className="botonEnviar" onClick={() => handleEstadoClick('Enviar')}>
+                                    Enviar
+                                    </button>
+                                    <button className="botonActualizar" onClick={() => handleEstadoClick('Actualizar')}>
+                                    Actualizar
+                                    </button>
+                                </div>
+
+                                <div className="contenedorContenedorPosicion">
+                                    <span className='contenedorPosicionLabel'>Posición</span>
+                                    
+                                    <div className="contenedorPosicion">
+                                        <select className="selectPosicion"  onChange={(e) => handlePosicionClick(e.target.value)}>
+                                            <option value="1">Izquierda</option>
+                                            <option value="2">Derecha</option>
+                                            <option value="3">Centro</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                            </>
+                        ) : null
+                        }
+
+
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <div> </div>
                         
                    
                     

@@ -62,6 +62,23 @@
     height: 200px;
 
 }
+.agregarImagenDefinicionEncuesta2 {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos en el centro */
+    width: Fill (856px);
+    height: 134px;
+    padding: 0%;
+    border-radius: 10px;
+    border: 1px;
+    border: 1px solid #B1B1B1;
+    border-style: dashed;
+  }
+  
+  .imagenContainer {
+    flex: 1; /* La imagen ocupará el espacio disponible */
+    margin-right: 10px; /* Espacio entre la imagen y el subcontenedor */
+  }
+  
 
 .subtituloDefinicionEncuesta, .subtituloDefinicionEncuesta2{
     font-family: Poppins;

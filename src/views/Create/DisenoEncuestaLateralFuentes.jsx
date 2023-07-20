@@ -7,13 +7,15 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes}) => {
+const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
+    const [pasos, setPasos] = useState(paso);
+    console.log('pasofuente',pasos)
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
@@ -77,14 +79,16 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes}) => 
     // lista de titulos de fuentes
 
     const titulos = [
-        "Título de encuesta",
+        "Nombre de encuesta",
         "Descripción de encuesta",
+        "Leyenda",
+        "Texto de botones",
         "Título de sección",
         "Descripción de sección",
         "Preguntas",
         "Opciones de respuesta",
         "Texto de cierre de encuestas",
-        "Texto de botones"
+        
       ];
 
       const volverMenuPrincipal = () => {
@@ -132,32 +136,39 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes}) => 
                         </div>
                         <div>
                             {titulos.map((titulo, index) => (
-                                <div className="contenedorFuenteTitulo" key={index}>
-                                <div className="subcontenedorFuenteTitulo">
-                                    <span className="fuenteTitulo">{titulo}</span>
-                                </div>
+                                pasos === 2 && (titulos.nombre === "Nombre de encuesta" || 
+                                titulos.nombre === "Descripción de encuesta" || titulos.nombre === "Leyenda" 
+                                || titulos.nombre === "Texto de botones") ? null : (
 
-                                <div className="subcontenedorFuenteTituloselect">
-                                    <select className="fuenteTituloSelect">
-                                    <option value="">Seleccionar tipografía</option>
-                                    <option value="1">Arial</option>
-                                    <option value="2">Arial Black</option>
-                                    </select>
-                                </div>
+                                    
+                                    <div className="contenedorFuenteTitulo" key={index}>
+                                    <div className="subcontenedorFuenteTitulo">
+                                        <span className="fuenteTitulo">{titulo}</span>
+                                    </div>
 
-                                <div className="subcontenedorFuenteTituloselect2">
-                                    <select className="fuenteTituloSelect2">
-                                    <option value="">Grosor</option>
-                                    <option value="1">Normal</option>
-                                    <option value="2">Negrita</option>
-                                    </select>
-                                    <select className="fuenteTituloSelect3">
-                                    <option value="">Tamaño</option>
-                                    <option value="1">10</option>
-                                    <option value="2">12</option>
-                                    </select>
-                                </div>
-                                </div>
+                                    <div className="subcontenedorFuenteTituloselect">
+                                        <select className="fuenteTituloSelect">
+                                        <option value="">Seleccionar tipografía</option>
+                                        <option value="1">Arial</option>
+                                        <option value="2">Arial Black</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="subcontenedorFuenteTituloselect2">
+                                        <select className="fuenteTituloSelect2">
+                                        <option value="">Grosor</option>
+                                        <option value="1">Normal</option>
+                                        <option value="2">Negrita</option>
+                                        </select>
+                                        <select className="fuenteTituloSelect3">
+                                        <option value="">Tamaño</option>
+                                        <option value="1">10</option>
+                                        <option value="2">12</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                )
+
                             ))}
                         </div>
 

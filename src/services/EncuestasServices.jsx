@@ -44,6 +44,7 @@ const EliminarEncuesta = async (idEncuesta) => {
     };
     const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/eliminarEncuesta', requestOptions);
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

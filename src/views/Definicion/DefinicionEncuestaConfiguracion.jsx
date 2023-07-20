@@ -128,8 +128,6 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                 <div className="listaBancoPreguntas-2">
                     <div className="fondo-lista">
                         <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}  onClick={volverMenuPrincipal}/> 
-                            <span className='cabeceraTitle'>Seleccionar</span>
                         </div>
                         
                         <div className="subcontenedorFuenteTitulo">
