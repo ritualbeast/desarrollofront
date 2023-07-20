@@ -9,8 +9,7 @@ const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
-    const [mostrarContenedor, setMostrarContenedor] = useState(true);
+const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAceptar, handleCargaPreg, handleEditarPregunta}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -25,7 +24,7 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
             type: 'checkbox',
             seccionValue: '',
             preguntaValue: '',
-          }
+        }
     ]);
     const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
@@ -37,7 +36,10 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
     const [configuracion5, setConfiguracion5] = useState(false);
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState('');
-    const [mostrarResultado, setMostrarResultado] = useState(false);
+    const [seccion, setSeccion] = useState({
+        tipo: 'CPM',
+        contentPreg: [] // Agrega tu array de preguntas aquí
+    });
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -207,14 +209,17 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
         });
     };
 
-    const handleCancelarOpcionMultiple = () => {
-        closeopmul();
+    const handleCancelarOpcionMultiple = (indice) => {
+        closeopmul(indice);
     }
     
     const handleGuardarOpcionMultiple = () => {
-        setMostrarResultado(true);
-        onAceptar();
-        setMostrarContenedor(false);
+        const nuevaPregunta = {
+            tipo: 'CPM',
+            pregunta: pregunta,
+            save: true
+        };
+        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta);
     };
 
     useEffect(() => {
@@ -223,7 +228,7 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
 
     return (
     <>
-        {mostrarContenedor && (
+        {!save && (
             <Container className='container-opcionMultiple'>
                 <Col className='seccion1-opcionMultiple'>
                     <Col className={`editar-opcionMultiple ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
@@ -266,8 +271,6 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
                             <DragDropContext onDragEnd={handleDragEnd}>
                                 <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
                                     {(provided) => (
-                                        console.log('Droppable droppableId:', `drop_${indiceSec}_${indice}`),
-                                        console.log('Droppable provided:', provided),
                                         <div ref={provided.innerRef} {...provided.droppableProps}>
                                             {opcionesRespuesta.map((opcion, index) => {
                                                 return (
@@ -528,9 +531,16 @@ const OpcionMultiple = ({closeopmul, indice, indiceSec, onAceptar}) => {
             </Container>
         )}
 
-        {mostrarResultado && (
+        {save && (
             <Container>
-                <ResultadoOpcionMultiple index={indice} pregunta={pregunta} opciones={opcionesRespuesta} />
+                <ResultadoOpcionMultiple 
+                    index={indice}
+                    indexSec={indiceSec}
+                    pregunta={pregunta} 
+                    opciones={opcionesRespuesta}
+                    handleEditarPregunta={handleEditarPregunta}
+                    closeEliminarCPM={handleCancelarOpcionMultiple}
+                />
             </Container>
         )}
     </>

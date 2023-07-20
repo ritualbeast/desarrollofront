@@ -21,8 +21,7 @@ const opciones = [
     { id: 4, icono: 'triangle' },
   ];
 
-const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracionEstrellas}) => {
-    const [mostrarContenedor, setMostrarContenedor] = useState(true);
+const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacionEstrellas, onAceptarValoracionEstrellas, handleCargaPreg, handleEditarPregunta}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -51,12 +50,7 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
     const [pregunta, setPregunta] = useState('');
     const [showColorPicker, setShowColorPicker] = useState({});
     const [selectedColor, setSelectedColor] = useState({});
-    const [mostrarResultado, setMostrarResultado] = useState(false);
     const [selectedIcon, setSelectedIcon] = useState({});
-    const [seccion, setSeccion] = useState({
-        tipo: 'CPVE',
-        contentPreg: [] // Agrega tu array de preguntas aquí
-    });
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -204,8 +198,8 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
         });
     };
 
-    const handleCancelarVariacionEstrellas = () => {
-        closeVariacionEstrellas(false);
+    const handleCancelarVariacionEstrellas = (indice) => {
+        closeVariacionEstrellas(indice);
     }
 
     const handleGuardarValoracionEstrellas = () => {
@@ -216,10 +210,7 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
             color: selectedColor,
             selectedIcon: selectedIcon
         };
-        const newContentPreg = [...seccion.contentPreg, nuevaPregunta];
-        setSeccion({ ...seccion, contentPreg: newContentPreg });
-        setMostrarResultado(true);
-        setMostrarContenedor(false);
+        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon);
     };
 
     const handleIconClick = (id) => {
@@ -251,12 +242,6 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
         }));
         console.log(opcionId)
     };
-    
-    const handleEliminarPregunta = (index) => {
-        const newContentPreg = [...seccion.contentPreg];
-        newContentPreg.splice(index, 1);
-        setSeccion({ ...seccion, contentPreg: newContentPreg });
-    };
 
     useEffect(() => {
         setMoreContendorLogica([true]);
@@ -264,7 +249,7 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
 
     return (
     <>
-        {mostrarContenedor && (
+        {!save && (
             <Container className='container-variacionEstrellas'>
                 <Col className='seccion1-variacionEstrellas'>
                     <Col className={`editar-variacionEstrellas ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
@@ -599,24 +584,21 @@ const VariacionEstrellas = ({closeVariacionEstrellas, indice, onAceptarValoracio
             </Container>
         )}
         
-        {mostrarResultado && (
+        {save && (
             <Container>
-                {seccion.contentPreg.map((preg, index) => { 
-                    if (preg.tipo == 'CPVE') {
-                            return <ResultadoValoracionEstrellas
-                                key={index} 
-                                index={indice}
-                                pregunta={pregunta}
-                                opciones={opcionesRespuesta.map((opcion) => ({
-                                    ...opcion,
-                                    icono: opcion.icono,
-                                }))}
-                                color={selectedColor}
-                                selectedIcon={selectedIcon}
-                                handleEliminarPreguntaVE={() => handleEliminarPregunta(index)}
-                            />
-                    }  return '';
-                })}
+                <ResultadoValoracionEstrellas
+                    index={indice}
+                    indexSec={indiceSec}
+                    pregunta={pregunta}
+                    opciones={opcionesRespuesta.map((opcion) => ({
+                        ...opcion,
+                        icono: opcion.icono,
+                    }))}
+                    color={selectedColor}
+                    selectedIcon={selectedIcon}
+                    handleEditarPregunta={handleEditarPregunta}
+                    closeEliminarCPVE={handleCancelarVariacionEstrellas}
+                />
             </Container>
         )}
     </>

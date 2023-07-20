@@ -15,7 +15,7 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 
-const DiseñaEncuesta = () => {
+const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -24,12 +24,15 @@ const DiseñaEncuesta = () => {
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [IscontentCont, setIscontentCont] = useState();
+    const [vari, setVar] = useState();
+    
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
     };
     
-      const handleNestedClick = (nombre) => {
+    const handleNestedClick = (nombre) => {
         // Lógica para manejar el clic en las opciones desplegadas
     };
 
@@ -71,6 +74,11 @@ const DiseñaEncuesta = () => {
         }
     };
 
+    const setConstentCont = (newVar) => {
+        console.log(newVar)
+        setIscontentCont(newVar);
+    }
+    
     return (
         <div
             id="modal-container"
@@ -187,7 +195,10 @@ const DiseñaEncuesta = () => {
 
                 <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
                     {activeIcon !== '' && (
-                        <NuevaEncuesta/>
+                        <NuevaEncuesta 
+                            openVistaPrevia={openVistaPrevia}
+                            handleCloseVistaPrevia={handleCloseVistaPrevia}
+                        />
                         )
                     }
                 </Col>

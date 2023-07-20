@@ -83,6 +83,13 @@ const FormatoEncuestaLateralPrincipal = () => {
                                 </Col>
 
                                 <hr />
+
+                                <Col style={{padding: '2%'}}>
+                                    <input type="radio" id="opcion2" name="opciones" value="opcion2"/>
+                                    <label for="opcion2">Una pregunta a la vez editable</label><br/>
+                                </Col>
+
+                                <hr />
                             </div>
                         </div>
                     </div>

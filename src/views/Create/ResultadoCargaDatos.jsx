@@ -9,7 +9,7 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const ResultadoCargaDatos = ({index, pregunta, pregunta2, handleEliminarPreguntaCD}) => {
+const ResultadoCargaDatos = ({index, indexSec, pregunta, pregunta2, handleEditarPregunta, handleEliminarPregunta, }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [blurBackground, setBlurBackground] = useState(false);
@@ -39,7 +39,7 @@ const ResultadoCargaDatos = ({index, pregunta, pregunta2, handleEliminarPregunta
 };
 
   const handleCloseEliminarPregunta = () => {
-    handleEliminarPreguntaCD(index);
+    handleEliminarPregunta(index, indexSec);
     setOpenEliminarPregunta(false)
   }
   
@@ -51,7 +51,7 @@ const ResultadoCargaDatos = ({index, pregunta, pregunta2, handleEliminarPregunta
                 id={`editPreg${index +1}`}
                 className={`contenedor-editar-pregunta`}
             >
-                <p className='titulo-editarPregunta'>Editar</p>
+                <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
                 <p className='titulo-editarOpciones'>Opciones</p>
                 <p className='titulo-editarMover'>Mover</p>
                 <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -67,7 +67,7 @@ const ResultadoCargaDatos = ({index, pregunta, pregunta2, handleEliminarPregunta
             >
                 <p>{index + 1}. {pregunta}</p>
             </Col>
-        </Col>
+      </Col>
       
       <p>{pregunta2}</p>
 
@@ -118,7 +118,7 @@ const ResultadoCargaDatos = ({index, pregunta, pregunta2, handleEliminarPregunta
                     </Box>
                 </div>
             </Box>
-        </Modal>
+      </Modal>
     </Container>
   )
 }

@@ -1,40 +1,64 @@
 import React, { useState } from 'react'
 import '../../styles/cargaDatos.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
+import svgManager from '../../assets/svg';
 import ResultadoCargaDatos from './ResultadoCargaDatos';
+import { useEffect } from 'react';
 
-const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
-    const [mostrarContenedor, setMostrarContenedor] = useState(true);
+const trashSVG = svgManager.getSVG('trash-mini');
+
+const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, handleCargaArchivos, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
+    const [mostrarLogica, setMostrarLogica] = useState(false);
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
+    const [isActiveLogica, setIsActiveLogica] = useState(true);
+    const [seccionValue, setSeccionValue] = useState('');
+    const [preguntaValue, setPreguntaValue] = useState('');
     const [isCheckedPDF, setIsCheckedPDF] = useState(false);
     const [isCheckedDOC, setIsCheckedDOC] = useState(false);
     const [isCheckedPNG, setIsCheckedPNG] = useState(false);
     const [isCheckedJPG, setIsCheckedJPG] = useState(false);
     const [isCheckedGIF, setIsCheckedGIF] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
-    const [pregunta, setPregunta] = useState('Adjunte su CV');
-    const [pregunta2, setPregunta2] = useState('Suba archivos PDF, PNG');
-    const [mostrarResultado, setMostrarResultado] = useState(false);
-    const [seccion, setSeccion] = useState({
-        tipo: 'CPCD',
-        contentPreg: [] // Agrega tu array de preguntas aquí
-    });
+    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
+    const [pregunta2, setPregunta2] = useState(contentPreg.pregunta2);
+    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
+    const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
 
+    const [cancelar, setCancelar] = useState('true');
+
+    useEffect(()=>{
+        console.log('pregInit',contentPreg.pregunta)
+        console.log('pregInit2',contentPreg.pregunta2)
+
+    },[])
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
+        setMostrarLogica(false);
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
+        setIsActiveLogica(true);
     };
 
     const handleConfiguracion = () => {
         setMostrarConfiguracion(!mostrarConfiguracion);
         setMostrarEditar(false);
+        setMostrarLogica(false);
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
+        setIsActiveLogica(true);
+    };
+
+    const handleLogica = () => {
+        setMostrarLogica(!mostrarLogica);
+        setMostrarEditar(false);
+        setMostrarConfiguracion(false);
+        setIsActiveLogica(false);
+        setIsActiveEditar(true);
+        setIsActiveConfiguracion(true);
     };
 
     const handleCheckboxPDF = (event) => {
@@ -61,31 +85,51 @@ const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
         setConfiguracion1(!configuracion1);
     };
 
+    const handleClearOpcion = () => {
+        setSeccionValue('');
+        setPreguntaValue('');
+    }
+
+    const handleSeccionChange = (event) => {
+        const selectedValue = event.target.value;
+        setSeccionValue(selectedValue);
+    };
+
+    const handlePreguntaChange = (event) => {
+        const selectedValue = event.target.value;
+        setPreguntaValue(selectedValue);
+    };
+
     const handleCancelarCargaArchivo = () => {
-        closeCargaArchivos(false);
+        setPregunta(preguntaTemp)
+        setPregunta2(pregunta2Temp)
+        console.log('preguntaTemp', preguntaTemp)
+        console.log('pregunta2Temp', pregunta2Temp)
+
+        closeCargaArchivos(indice, indiceSec);
+    }
+
+    const handleEliminarCargaArchivo = () => {
+        handleEliminarPregunta(indice, indiceSec)
     }
 
     const handleGuardarCargaDatos = () => {
         const nuevaPregunta = {
-            tipo: 'CPCD',
+            tipo: 'CA',
             pregunta: pregunta,
-            pregunta2: pregunta2
+            pregunta2: pregunta2,
+            save: true,
+            cancelar: cancelar
         };
-        const newContentPreg = [...seccion.contentPreg, nuevaPregunta];
-        setSeccion({ ...seccion, contentPreg: newContentPreg });
-        setMostrarResultado(true);
-        setMostrarContenedor(false);
-    };
+        setPreguntaTemp(pregunta)
+        setPregunta2Temp(pregunta2)
 
-    const handleEliminarPregunta = (index) => {
-        const newContentPreg = [...seccion.contentPreg];
-        newContentPreg.splice(index, 1);
-        setSeccion({ ...seccion, contentPreg: newContentPreg });
+        handleCargaArchivos(indice,indiceSec, pregunta, pregunta2, cancelar);
     };
 
     return (
     <>
-        {mostrarContenedor && (
+        {!save  && (
             <Container className='container-cargaDatos'>
                 <Col className='seccion1-cargaDatos'>
                     <Col className={`editar-cargaDatos ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
@@ -94,6 +138,10 @@ const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
 
                     <Col className={`configurar-cargaDatos ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
                         Configuración
+                    </Col>
+
+                    <Col className={`logica-opcionMultiple ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
+                        Lógica
                     </Col>
                 </Col>
                 
@@ -113,6 +161,7 @@ const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
                             <textarea
                                 style={{ width: '94.8%', border: '1px solid #ccc' }}
                                 className="textoAgradecimiento"
+                                id='idTextoAgradecimiento'
                                 value={pregunta}
                                 onChange={(e) => setPregunta(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
@@ -240,6 +289,58 @@ const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
                     </Container>
                 )}
 
+                {mostrarLogica && (
+                    <Container className='opcionMultiple-container-logica'>
+                        <Col className='seccion1-opcionMultiple-logica'>
+                            <p style={{margin: 'unset'}}>Si la respuesta es...</p>
+                            <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
+                        </Col>
+
+                        <div>
+                            <div>
+                                <Col className='seccion2-opcionMultiple-logica'>
+                                    <div style={{ width: '29%' }}>
+                                        <p style={{ margin: 'unset', width: '20%' }}>Respuesta</p>
+                                    </div>
+
+                                    <Col style={{ width: '100%' }}>
+                                        <div></div>
+                                            <select
+                                                className='select1Logica1'
+                                                value={seccionValue}
+                                                onChange={handleSeccionChange}
+                                            >
+                                                <option value='' disabled hidden>Seleccionar Sección</option>
+                                                <option value='option1'>Sección 1</option>
+                                                <option value='option2'>Sección 2</option>
+                                                <option value='option3'>Sección 3</option>
+                                            </select>
+
+                                            <select
+                                                className='select1Logica2'
+                                                value={preguntaValue}
+                                                onChange={(event) => handlePreguntaChange(event)}
+                                            >
+                                                <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                <option value='option1'>Pregunta 1</option>
+                                                <option value='option2'>Pregunta 2</option>
+                                                <option value='option3'>Pregunta 3</option>
+                                            </select>
+
+                                            <Button className='borrarLogica'>
+                                                <span
+                                                    style={{ marginTop: '1.3%', cursor: 'pointer' }}
+                                                    dangerouslySetInnerHTML={{ __html: trashSVG }}
+                                                    onClick={() => handleClearOpcion()}
+                                                />
+                                            </Button>
+                                    </Col>
+                                </Col>
+                            </div>
+                        </div>
+                    </Container> 
+                )}
+
                 <Col className='seccion6-cargaDatos'>
                     <Button className='cancelarCargaDatos' onClick={handleCancelarCargaArchivo}>
                         Cancelar
@@ -252,19 +353,16 @@ const CargaDatos = ({closeCargaArchivos, indice, onAceptarCargaArchivos}) => {
             </Container>
         )}
 
-        {mostrarResultado && (
+        {save  && (
             <Container>
-                {seccion.contentPreg.map((preg, index) => { 
-                    if (preg.tipo == 'CPCD') {
-                            return <ResultadoCargaDatos 
-                                key={index} 
-                                index={indice} 
-                                pregunta={pregunta} 
-                                pregunta2={pregunta2}
-                                handleEliminarPreguntaCD={() => handleEliminarPregunta(index)}
-                            />
-                    }  return '';
-                })}
+                 <ResultadoCargaDatos                
+                    index={indice} 
+                    indexSec={indiceSec}
+                    pregunta={pregunta} 
+                    pregunta2={pregunta2}
+                    handleEditarPregunta={handleEditarPregunta}
+                    handleEliminarPregunta={handleEliminarCargaArchivo}
+                />
             </Container>
         )}
     </>

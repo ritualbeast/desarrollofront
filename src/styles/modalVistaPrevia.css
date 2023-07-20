@@ -1,0 +1,81 @@
+.ModalVistaPrevia{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Box-ModalVistaPrevia{
+    background: white;
+    border-radius: 8px;
+    max-width: 680px;
+    max-height: 430px;
+    /* overflow: auto; */
+    min-width: 95%;
+    min-height: 95%;
+    z-index: 3;
+}
+.ObtenerUrl{
+    color:rgba(39, 0, 137, 1);
+    margin-bottom: unset;
+    margin-top: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Container-ModalVistaPrevia.windows {
+    min-width: 96.8%;
+    min-height: 95%;
+    max-width: 680px;
+    max-height: 500px;
+    border: solid 6px black;
+    border-radius: 10px;
+    margin-left: 1.2%;
+    margin-bottom: 1%;
+    padding-bottom: 1.1%;
+    overflow: auto;
+  }
+  
+  .Container-ModalVistaPrevia.tablet {
+    min-width: 50%;
+    min-height: 95%;
+    max-width: 680px;
+    max-height: 500px;
+    border: solid 6px black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1%;
+    padding-bottom: 1.1%;
+    overflow: auto;
+  }
+  
+  .Container-ModalVistaPrevia.smartphone {
+    min-width: 20%;
+    min-height: 100%;
+    max-width: 240px;
+    max-height: 500px;
+    border: solid 6px black;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1%;
+    padding-bottom: 1.1%;
+    overflow: auto;
+  }
+  
+.Container-ModalVistaPrevia::-webkit-scrollbar {
+    width: 10px;
+}
+  
+.Container-ModalVistaPrevia::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+  
+.Container-ModalVistaPrevia::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+  
+.Container-ModalVistaPrevia::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}

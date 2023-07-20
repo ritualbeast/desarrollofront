@@ -6,6 +6,7 @@ import svgManager from '../../assets/svg';
 
 const fileSVG = svgManager.getSVG('file');
 const listRosaSVG = svgManager.getSVG('list-rosa');
+const editRosaSVG = svgManager.getSVG('edit-rosa');
 
 const Revision = () => {
     const [selectedDate, setSelectedDate] = useState('');
@@ -64,21 +65,35 @@ const Revision = () => {
                         onClick={() => setContenedorSeleccionado('contenedor1')}
                     >
                         <Col style={{display:'flex'}}>
-                            <span dangerouslySetInnerHTML={{ __html: fileSVG }} style={{display:'flex', alignItems:'center', padding:'2%'}}/>
+                            <span dangerouslySetInnerHTML={{ __html: fileSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>
                             <div className='texto-revision-1'>
-                                <p style={{marginBottom:'unset', marginTop:'3.5%'}}>Clásico</p>
+                                <h4 style={{marginBottom:'unset', marginTop:'3.5%'}}>Clásico</h4>
                                 <p style={{marginTop:'unset', marginBottom:'3.5%'}}>Muestra todas las preguntas en una página al mismo tiempo</p>
                             </div>
                         </Col>
                     </Col>
+
                     <Col
                         className={`revision-seccion4-2-2 ${contenedorSeleccionado === 'contenedor2' ? 'seleccionado' : ''}`}
                         onClick={() => setContenedorSeleccionado('contenedor2')}
                     >
                         <Col style={{display:'flex'}}>
-                            <span dangerouslySetInnerHTML={{ __html: listRosaSVG }} style={{display:'flex', alignItems:'center', padding:'2%'}}/>
+                            <span dangerouslySetInnerHTML={{ __html: listRosaSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>
                             <div className='texto-revision-2'>
-                                <p style={{marginBottom:'unset', marginTop:'3.5%'}}>Una pregunta a la vez</p>
+                                <h4 style={{marginBottom:'unset', marginTop:'3.5%'}}>Una pregunta a la vez</h4>
+                                <p style={{marginTop:'unset', marginBottom:'3.5%'}}>Pasa de forma automática a la siguiente pregunta</p>
+                            </div>
+                        </Col>
+                    </Col>
+
+                    <Col
+                        className={`revision-seccion4-2-3 ${contenedorSeleccionado === 'contenedor3' ? 'seleccionado' : ''}`}
+                        onClick={() => setContenedorSeleccionado('contenedor3')}
+                    >
+                        <Col style={{display:'flex'}}>
+                            <span dangerouslySetInnerHTML={{ __html: editRosaSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>
+                            <div className='texto-revision-3'>
+                                <h4 style={{marginBottom:'unset', marginTop:'3.5%'}}>Una pregunta a la vez editable</h4>
                                 <p style={{marginTop:'unset', marginBottom:'3.5%'}}>Pasa de forma automática a la siguiente pregunta</p>
                             </div>
                         </Col>

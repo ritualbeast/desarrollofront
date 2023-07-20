@@ -9,7 +9,7 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-function ResultadoValoracionEstrellas({ index, pregunta, opciones, color, selectedIcon, handleEliminarPreguntaVE }) {
+function ResultadoValoracionEstrellas({ index, indexSec, pregunta, opciones, color, selectedIcon, handleEditarPregunta, closeEliminarCPVE }) {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -29,43 +29,43 @@ function ResultadoValoracionEstrellas({ index, pregunta, opciones, color, select
     };
 
     const handleMouseEnterEditar = (index) => {
-        $(`#editPregVE${index +1}`).removeClass("oculto");
-        $(`#editPregVE${index +1}`).addClass("visible");
-        $(`#PregVE${index +1}`).addClass("editar-visible");
-    };
-
-    const handleMouseLeaveEditar = (index) => {
-        $(`#editPregVE${index +1}`).removeClass("visible");
-        $(`#editPregVE${index +1}`).addClass("oculto");
-        $(`#PregVE${index +1}`).removeClass("editar-visible");
-    };
-
-    const handleOpenEliminarPregunta = () => {
+        $(`#editPreg${index +1}`).removeClass("oculto");
+        $(`#editPreg${index +1}`).addClass("visible");
+        $(`#Preg${index +1}`).addClass("editar-visible");
+      };
+    
+      const handleMouseLeaveEditar = (index) => {
+        $(`#editPreg${index +1}`).removeClass("visible");
+        $(`#editPreg${index +1}`).addClass("oculto");
+        $(`#Preg${index +1}`).removeClass("editar-visible");
+      };
+    
+      const handleOpenEliminarPregunta = () => {
         setOpenEliminarPregunta(true)
         setBlurBackground(false);
         setIsModalVisible(false);
-    }
-
-    const handleCloseEliminar = () => {
+      }
+    
+      const handleCloseEliminar = () => {
         setOpenEliminarPregunta(false);
         setBlurBackground(false);
         setIsModalVisible(false);
     };
-
-    const handleCloseEliminarPregunta = () => {
-        handleEliminarPreguntaVE(index);
+    
+      const handleCloseEliminarPregunta = () => {
+        closeEliminarCPVE(index);
         setOpenEliminarPregunta(false)
-    }
+      }
 
     return (
         <Container className='container-resultadoOpcionMultiple'>
             <Col>
                 <Col 
                     style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
-                    id={`editPregVE${index +1}`}
+                    id={`editPreg${index +1}`}
                     className={`contenedor-editar-pregunta`}
                 >
-                    <p className='titulo-editarPregunta'>Editar</p>
+                    <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
                     <p className='titulo-editarOpciones'>Opciones</p>
                     <p className='titulo-editarMover'>Mover</p>
                     <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -74,7 +74,7 @@ function ResultadoValoracionEstrellas({ index, pregunta, opciones, color, select
                 </Col>
                 <Col 
                     style={{marginLeft: 'unset', marginRight: 'unset'}}
-                    id={`PregVE${index +1}`}
+                    id={`Preg${index +1}`}
                     className={`contenedor-tituloNuevaEncuesta `} 
                     onMouseEnter={() => handleMouseEnterEditar(index)}
                     onMouseLeave={() => handleMouseLeaveEditar(index)}

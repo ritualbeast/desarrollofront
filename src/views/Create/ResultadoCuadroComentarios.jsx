@@ -9,7 +9,7 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const ResultadoCuadroComentarios = ({index, pregunta, handleEliminarPreguntaCC}) => {
+const ResultadoCuadroComentarios = ({index, indexSec, pregunta, handleEliminarPregunta, handleEditarPregunta}) => {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -39,8 +39,8 @@ const ResultadoCuadroComentarios = ({index, pregunta, handleEliminarPreguntaCC})
     };
 
     const handleCloseEliminarPregunta = () => {
-        handleEliminarPreguntaCC(index);
         setOpenEliminarPregunta(false)
+        handleEliminarPregunta(index, indexSec)
     }
 
   return (
@@ -51,7 +51,7 @@ const ResultadoCuadroComentarios = ({index, pregunta, handleEliminarPreguntaCC})
                 id={`editPreg${index +1}`}
                 className={`contenedor-editar-pregunta`}
             >
-                <p className='titulo-editarPregunta'>Editar</p>
+                <p className='titulo-editarPregunta'onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
                 <p className='titulo-editarOpciones'>Opciones</p>
                 <p className='titulo-editarMover'>Mover</p>
                 <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -110,7 +110,7 @@ const ResultadoCuadroComentarios = ({index, pregunta, handleEliminarPreguntaCC})
                                 <span className='cancelar-eliminar'>Cancelar</span>
                             </Button>
                             <Button className='buttonDeleteEliminar' variant="contained" color="primary"
-                                onClick={handleCloseEliminarPregunta}
+                                onClick={() => {handleCloseEliminarPregunta(indexSec, index)}}
                             >
                                 <span className='eliminar'>Eliminar</span>
                             </Button>

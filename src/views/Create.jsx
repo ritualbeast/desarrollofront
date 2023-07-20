@@ -4,13 +4,23 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import svgManager from '../assets/svg';
 import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import Revision from './Create/Revision';
+import ModalVistaPrevia from './Create/ModalVistaPrevia';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
 
-const Create = () => {
+const Create = ({ contentCont }) => {
     const [activeTab, setActiveTab] = useState('diseña');
+    const [openVistaPrevia, setVistaPrevia] = useState(false);
+
+    const handleCloseVistaPrevia = () => {
+        setVistaPrevia(false);
+    }
+
+    const handleVistaPrevia = () => {
+        setVistaPrevia(true);
+    }
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -92,7 +102,7 @@ const Create = () => {
                         </div>
 
                         <div className='encuestas_colsg_create_2'>
-                            <Button className='encuesta-sg-buttonv-create'>
+                            <Button className='encuesta-sg-buttonv-create' onClick={handleVistaPrevia}>
                                 <p style={{ marginLeft: '3px', marginRight: '2px'}}>Vista previa</p>
                                 <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: eyeSVG }}/>
                             </Button>
@@ -109,10 +119,10 @@ const Create = () => {
                     </Col>
                     <hr />
                     
-                    {activeTab === 'diseña' ? <DiseñaEncuesta /> : null}
+                    {activeTab === 'diseña' ? <DiseñaEncuesta openVistaPrevia={openVistaPrevia} handleCloseVistaPrevia={handleCloseVistaPrevia} /> : null}
                     {activeTab === 'revision' ? <Revision /> : null}
                 </Row>
-            </Container> 
+            </Container>
         </>
     )  
 }

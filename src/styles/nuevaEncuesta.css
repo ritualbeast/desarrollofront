@@ -1,12 +1,35 @@
-.encuesta-Tercerocuerpo2-1{
-    border: solid 1px;
-    border-color: #b8b8b8;
-    width: 99%;
-    border-radius: 10px;
-    margin-left: 1%;
-    margin-top: 0.5%;
-    overflow: auto;
-  }
+.encuesta-Tercerocuerpo2-1 {
+  border: solid 1px;
+  border-color: #b8b8b8;
+  width: 98%;
+  border-radius: 10px;
+  margin-left: 1.5%;
+  margin-top: 0.5%;
+  overflow: auto;
+  /* min-width: 98.3%;
+  min-height: 100%;
+  max-width: 680px;
+  max-height: 720px; */
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar {
+  width: 10px;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
   .titulo-encuesta-tercero{
     font-family: 'Poppins', sans-serif;
     font-style: normal;

@@ -1,34 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import '../../styles/cuadroComentarios.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
+import svgManager from '../../assets/svg';
 import ResultadoCuadroComentarios from './ResultadoCuadroComentarios';
 
-const CuadroComentarios = ({handleCerrarCuadroComentarios, handleAceptarCuadroComentarios, indice, onAceptarCuadroComentarios, closeCuadroComentarios}) => {
-    const [mostrarContenedor, setMostrarContenedor] = useState(true);
+const trashSVG = svgManager.getSVG('trash-mini');
+
+const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroComentarios, handleCuadroComentarios, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
+    const [mostrarLogica, setMostrarLogica] = useState(false);
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
-    const [moreContendorLogica, setMoreContendorLogica] = useState([]);
+    const [isActiveLogica, setIsActiveLogica] = useState(true);
+    const [seccionValue, setSeccionValue] = useState('');
+    const [preguntaValue, setPreguntaValue] = useState('');
     const [configuracion1, setConfiguracion1] = useState(false);
     const [configuracion2, setConfiguracion2] = useState(false);
     const [pregunta, setPregunta] = useState('Añada un comentario sobre la charla');
-    const [mostrarResultado, setMostrarResultado] = useState(false);
-    const [contentCuadro, setContentCuadro] = useState([]);
-    console.log(indice);
+    const [cancelar, setCancelar] = useState('true');
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
+        setMostrarLogica(false);
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
+        setIsActiveLogica(true);
     };
 
     const handleConfiguracion = () => {
         setMostrarConfiguracion(!mostrarConfiguracion);
         setMostrarEditar(false);
+        setMostrarLogica(false);
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
+        setIsActiveLogica(true);
+    };
+
+    const handleLogica = () => {
+        setMostrarLogica(!mostrarLogica);
+        setMostrarEditar(false);
+        setMostrarConfiguracion(false);
+        setIsActiveLogica(false);
+        setIsActiveEditar(true);
+        setIsActiveConfiguracion(true);
     };
 
     const handleSwitchConfigurar1 = () => {
@@ -39,33 +55,42 @@ const CuadroComentarios = ({handleCerrarCuadroComentarios, handleAceptarCuadroCo
         setConfiguracion2(!configuracion2);
     };
 
+    const handleClearOpcion = () => {
+        setSeccionValue('');
+        setPreguntaValue('');
+    }
+
+    const handleSeccionChange = (event) => {
+        const selectedValue = event.target.value;
+        setSeccionValue(selectedValue);
+    };
+
+    const handlePreguntaChange = (event) => {
+        const selectedValue = event.target.value;
+        setPreguntaValue(selectedValue);
+    };
+
     const handleCancelarCuadroComentarios = () => {
-        closeCuadroComentarios();   
+        closeCuadroComentarios(indice, indiceSec);   
+    }
+
+    const handleEliminarCuadroComentarios = () => {
+        handleEliminarPregunta(indice, indiceSec)
     }
 
     const handleGuardarCuadroComentarios = () => {
         const nuevaPregunta = {
-          tipo: 'CPCC',
-          pregunta: pregunta
+          tipo: 'CC',
+          pregunta: pregunta,
+          save: true,
+          cancelar: cancelar
         };
-        setContentCuadro((prevContentCuadro) => [...prevContentCuadro, nuevaPregunta]);
-        setMostrarResultado(true);
-        setMostrarContenedor(false);
-      };      
-
-    // useEffect(() => {
-    //     setSeccion({ ...seccion, contentPreg: [] }); // Inicializa el contenido de la sección aquí
-    // }, []);
-
-    const handleEliminarPregunta = (index) => {
-        const newContentCuadro = [...contentCuadro];
-        newContentCuadro.splice(index, 1);
-        setContentCuadro(newContentCuadro);
-    };            
+        handleCuadroComentarios(indice,indiceSec, pregunta, cancelar);
+    }; 
 
     return (
     <>
-        {mostrarContenedor && (
+        {!save && (
             <Container className='container-cuadroComentarios'>
                 <Col className='seccion1-cuadroComentarios'>
                     <Col className={`editar-cuadroComentarios ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
@@ -74,6 +99,10 @@ const CuadroComentarios = ({handleCerrarCuadroComentarios, handleAceptarCuadroCo
 
                     <Col className={`configurar-cuadroComentarios ${isActiveConfiguracion ? 'active' : 'inactive'}`} onClick={handleConfiguracion}>
                         Configuración
+                    </Col>
+
+                    <Col className={`logica-opcionMultiple ${isActiveLogica ? 'active' : 'inactive'}`} onClick={handleLogica}>
+                        Lógica
                     </Col>
                 </Col>
                 
@@ -137,6 +166,58 @@ const CuadroComentarios = ({handleCerrarCuadroComentarios, handleAceptarCuadroCo
                     </Container>
                 )}
 
+                {mostrarLogica && (
+                    <Container className='opcionMultiple-container-logica'>
+                        <Col className='seccion1-opcionMultiple-logica'>
+                            <p style={{margin: 'unset'}}>Si la respuesta es...</p>
+                            <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
+                        </Col>
+
+                        <div>
+                            <div>
+                                <Col className='seccion2-opcionMultiple-logica'>
+                                    <div style={{ width: '29%' }}>
+                                        <p style={{ margin: 'unset', width: '20%' }}>Respuesta</p>
+                                    </div>
+
+                                    <Col style={{ width: '100%' }}>
+                                        <div></div>
+                                            <select
+                                                className='select1Logica1'
+                                                value={seccionValue}
+                                                onChange={handleSeccionChange}
+                                            >
+                                                <option value='' disabled hidden>Seleccionar Sección</option>
+                                                <option value='option1'>Sección 1</option>
+                                                <option value='option2'>Sección 2</option>
+                                                <option value='option3'>Sección 3</option>
+                                            </select>
+
+                                            <select
+                                                className='select1Logica2'
+                                                value={preguntaValue}
+                                                onChange={(event) => handlePreguntaChange(event)}
+                                            >
+                                                <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                <option value='option1'>Pregunta 1</option>
+                                                <option value='option2'>Pregunta 2</option>
+                                                <option value='option3'>Pregunta 3</option>
+                                            </select>
+
+                                            <Button className='borrarLogica'>
+                                                <span
+                                                    style={{ marginTop: '1.3%', cursor: 'pointer' }}
+                                                    dangerouslySetInnerHTML={{ __html: trashSVG }}
+                                                    onClick={() => handleClearOpcion()}
+                                                />
+                                            </Button>
+                                    </Col>
+                                </Col>
+                            </div>
+                        </div>
+                    </Container> 
+                )}
+
                 <Col className='seccion6-cuadroComentarios'>
                     <Button className='cancelarCuadroComentarios' onClick={handleCancelarCuadroComentarios}>
                         Cancelar
@@ -149,31 +230,15 @@ const CuadroComentarios = ({handleCerrarCuadroComentarios, handleAceptarCuadroCo
             </Container>
         )}
 
-        {mostrarResultado && (
+        {save && (
             <Container>
-                {contentCuadro.map((preg, index) => {
-                if (preg.tipo === 'CC') {
-                    return (
-                    <CuadroComentarios
-                        key={index}
-                        closeopmul={handleCerrarCuadroComentarios}
-                        indice={index}
-                        onAceptarCuadroComentarios={handleAceptarCuadroComentarios}
-                        closeCuadroComentarios={closeCuadroComentarios}
-                    />
-                    );
-                } else if (preg.tipo === 'CPCC') {
-                    return (
-                    <ResultadoCuadroComentarios
-                        key={index}
-                        index={index}
-                        pregunta={preg.pregunta}
-                        handleEliminarPreguntaCC={() => handleEliminarPregunta(index)}
-                    />
-                    );
-                }
-                return null;
-                })}
+                <ResultadoCuadroComentarios
+                    index={indice}
+                    indexSec={indiceSec}
+                    pregunta={pregunta}
+                    handleEditarPregunta={handleEditarPregunta}
+                    handleEliminarPregunta = {handleEliminarCuadroComentarios}
+                />
             </Container>
         )}
     </>
