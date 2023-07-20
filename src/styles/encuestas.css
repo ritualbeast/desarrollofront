@@ -1,6 +1,9 @@
-/* .encuesta-container{
+.input-container__icon{
+  width: 100%;
+}
+.encuesta-container{
   margin: 4%;
-} */
+}
 /*encabezado filtro y crear*/
 #encuestas-Row {
   display: flex;
@@ -72,7 +75,390 @@
   right: 0.5rem; /* Ajusta el valor según sea necesario para posicionar el icono */
   transform: translateY(-50%);
   color: #888; /* Color del icono */
-  pointer-events: none; /* Evita que el icono sea interactivo */
+  
+}
+
+
+
+
+
+
+  /*css para filtros*/
+  
+  .encuestasFiltros {
+    display: flex;
+    align-items: center;
+  }
+  
+  .encuestas-filtrarpor,
+  .encuestas-ordenarpor {
+    display: flex;
+    align-items: center;
+    flex-basis: 47%;
+    margin-bottom: 1rem;
+  }
+  
+  .encuestas-filtrarpor h4,
+  .encuestas-ordenarpor h4 {
+    margin-right: 5%;
+    color: #270089;
+  }
+  
+  .encuestas-filtrarpor__ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 70%;
+  }
+  
+  .encuestas-filtrarpor__li {
+    display: inline-block;
+  }
+
+  .encuestas-filtrarpor__li a {
+    text-decoration: none;
+    color: #000;
+    padding: 0.3rem;
+    border-bottom: 1px solid #000;
+  }
+  .encuestas-filtrarpor__li a.active {
+    border-bottom: 2px solid yellow;
+    box-shadow: 0px -3px 0px 0px #FFC700 inset;
+
+  }
+  
+  
+  
+  
+  
+  .encuestas-ordenarpor__select {
+    width: 70%;
+    border: solid 1px rgb(150, 148, 148);
+  }
+  
+  
+  /* css para paginacion*/
+  .encuestas-paginacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  /* css para cuerpo encuesta */
+  .encuestas-cuerpo {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2%;
+  }
+  
+  .encuestas-cuerpo__col {
+    flex-basis: calc(28% - 2%);
+    padding: 1rem;
+    border: 1px solid #ccc;
+    position: relative;
+    border-radius: 3%;
+    margin: 1%;
+  }
+  
+  .encuestas-cuerpo__col::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background-color: #FFC700;
+  }
+  
+  .encuestas-cuerpo__col h4 {
+    margin: 0;
+  }
+  
+  .encuestas-cuerpo__col p {
+    margin-bottom: 1rem;
+  }
+  
+  .encuestas-editarbutton {
+    border-radius: 20px;
+    background-color: #fff;
+    width: 100%;
+    padding: 1%;
+    border: 1px solid #090909
+  }
+  
+
+
+  /*posicionar el icono menu*/
+  .encuestas-dropdownmenu{
+    background-color: #fff;
+  }
+
+  .encuestas-icon{
+    background-color: #fff;
+  }
+  .encuestas-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .encuestas-titulo h4 {
+    margin: 0;
+  }
+  
+  .encuestas-dropdownmenu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+  
+  .encuestas-icon {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 40px !important;
+    justify-content: initial !important;
+    
+     
+  }
+  .modalbancopreguntas_checkicon{
+    margin-left: 7%;
+    margin-top: 7%;
+  }
+  
+  .encuestas-icon:hover{
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 40px !important;
+    justify-content: initial !important;
+    border-style: solid;
+    border-width: 3px;
+
+    border-color: #FFC700 !important;
+    border-radius: 5px;
+  }
+  
+  .MuiSelect-encuestas-icon.encuestas-icon:focus {
+    /* Estilos personalizados */
+    outline: none;
+    box-shadow: none;
+  }
+  .dropdown-menu-right {
+    background-color: #fff;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .encuesta-item{
+    text-decoration: none;
+    color: #000;
+    display: flex;
+    padding: 0.5rem;
+    background-color: #ffffff !important;
+  }
+  .encuesta-item span{
+    margin-right: 1rem;
+  }
+  
+  
+  /*Estilos para modal*/
+
+  .encuesta_modalcrear{
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  .encuesta_modalcrear_closeicon{
+    text-align: right;
+    display: flex;
+  }
+  .encuesta_modalcrear_closeicon span{
+    margin: 1rem;
+    cursor: pointer;
+  }
+
+  .encuesta_modalcrear__title{
+    font: poppins;
+    color: gray;
+    margin: 1rem;
+  }
+
+  /*Estilos para modal eliminar*/
+
+ .buttondeleteEncuesta{
+  padding: 8px 16px;
+  background: #CE0000;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+ 
+  font-family: 'Circular Std';
+  font-style: normal;
+  color: #FFFFFF;
+  border-style: none;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  font-weight: 600;
+ }
+
+ .buttoncancelarEncuesta{
+  padding: 8px 16px;
+  background: #FFF5F5;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+ 
+  font-family: 'Circular Std';
+  font-weight: 600;
+  font-style: normal;
+  color: #CE0000;
+  border-style: none;
+  margin-bottom: 5%;
+  margin-top: 5%;
+ }
+
+ .modalEliminarencuesta_titulo{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 550;
+  color: #3B3B3B;
+  margin-left: 5%;
+ }
+ .modalEliminarencuesta_titulo2{
+  text-align: center;
+
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+
+  /* Gray_02/8O */
+
+  color: #616161;
+ }
+
+ .modalEliminarencuesta_encabezado{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin:0%
+  
+ }
+ .modalEliminarencuesta_encabezado span{
+  margin-left: 5%;
+ }
+ .modalEliminarencuesta_row1{
+  display: flex;
+  flex-direction: row;
+  
+ }
+
+
+ .encuestas-titulo__h4 {
+  text-transform: lowercase;
+}
+
+.encuestas-titulo__h4::first-letter {
+  text-transform: uppercase;
+}
+
+
+
+/* Nuevos estilos para encuestas */
+/* .encuesta-container{
+  margin: 4%;
+} */
+/*encabezado filtro y crear*/
+#encuestas-Row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.encuestas__col {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.encuestas__coltitulo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: #270089;
+  margin: 0;
+  flex-basis: 25%;
+}
+
+.encuestas__colinput{
+  flex-basis: 60%;
+  margin-right: 1rem;
+}
+
+.encuestas__colbutton{
+  flex-basis: 15%;
+  margin: 1%;
+}
+
+.input-filtro{
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #E0E0E0 !important;
+}
+
+.btn-notisurvey {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 4px;
+  background: #FFC700;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-filtro {
+  padding-right: 2.5rem; /* Ajusta el valor según sea necesario para dar espacio al icono */
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem; /* Ajusta el valor según sea necesario para posicionar el icono */
+  transform: translateY(-50%);
+  color: #888; /* Color del icono */
+  
 }
 
 

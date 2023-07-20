@@ -10,32 +10,29 @@
     order: 2;
     flex-grow: 0;
 }
-
 .modalCrearEncuesta_Contenedorbutton {
     display: flex;
     justify-content: space-between;
     margin-left: 1.5%;
   }
-.modalCrearEncuesta_button_ {
-    flex: 1;
+.modalCrearEncuesta_button{
     margin: 0.5rem;
     padding: 0.5rem;
     border: solid 2px;
     border-color: #c6c4c4;
-    border-radius: 1rem;
+    border-radius: 4px;
     background-color: #fff;
     color: #3F3F3F;
     cursor: pointer;
+    width: 43.7%;
     display: flex;
-    align-items: center;
-    /* Ajusta el tamaño del texto para que se ajuste correctamente */
-    font-size: 0.8rem;
-  }
+    width: 335px;
+}
 
-.modalCrearEncuesta_button_.selected {
+.modalCrearEncuesta_button.selected {
     border-color: #565656;
   }  
-  .modal1Comentario, .modal2Comentario{
+.modal1Comentario, .modal2Comentario{
     font-family: Poppins;
     font-size: 14px;
     font-weight: 400;
