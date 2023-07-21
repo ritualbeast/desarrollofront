@@ -373,17 +373,13 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     };
 
     const handleEliminarCargaArchivos = (indicePreg, indiceSec) => {
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
-      const cancelarValor = contenidoActual[indicePreg].cancelar;
-    
-      if (cancelarValor === 'true') {
+      setContentCont((prevContent) => {
+        const nuevoEstado = [...prevContent];
+        const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
         contenidoActual.splice(indicePreg, 1);
-      }
-    
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
+        nuevoEstado[indiceSec].contentPreg = contenidoActual;
+        return nuevoEstado;
+      });
     };
 
     const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar) => {
@@ -514,8 +510,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
                                 <span style={{ display: 'flex', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: chevronUpSVG }} />
                             </Col>
                         </Col>
-        
-                        <Col className='seccion3-nuevaEcuesta'>
+
+                        <div>
+                          <Col className='seccion3-nuevaEcuesta'>
                             <Button 
                                 className='boton-logotipo'
                                 onClick={handleOpenAñadirLogo}
@@ -523,117 +520,119 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
                                 <p className='textoLogotipo'>Logotipo</p>
                                 <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                             </Button>
-                        </Col>
-                        
-                        {seccion.contentPreg.map((preg, indexp) => { 
-                          if (preg.tipo == 'M') {
-                            return <OpcionMultiple 
-                              indice={indexp} 
-                              indiceSec = {index} 
-                              save={preg.save}
-                              contentPreg = {preg}
-                              closeopmul={handleCancelarOpcionMultiple} 
-                              onAceptar={handleAceptarOpcionMultiple} 
-                              handleCargaPreg={handleGuardarOpcionMultiple}
-                              handleEditarPregunta={handleEditarOpcionMultiple}
-                              handleEliminarPregunta={handleEliminarOpcionMultiple}
-                            />
-                          }  
-                          if (preg.tipo == 'V') {
-                            return <VariacionEstrellas 
-                              indice={indexp} 
-                              indiceSec = {index} 
-                              save={preg.save}
-                              contentPreg = {preg}
-                              closeVariacionEstrellas={handleCancelarValoracionEstrellas}
-                              onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
-                              handleCargaPreg={handleGuardarValoracionEstrellas}
-                              handleEditarPregunta={handleEditarValoracionEstrellas}
-                              handleEliminarPregunta={handleEliminarValoracionEstrellas}
-                            />
-                          }
-                          if (preg.tipo == 'CA') {
-                            return <CargaDatos 
-                              indice={indexp} 
-                              indiceSec = {index}
-                              save={preg.save}
-                              contentPreg = {preg}
-                              closeCargaArchivos={handleCancelarCargaArchivos}
-                              handleCargaArchivos={handleAceptarCargaArchivos}
-                              handleCargaPreg={handleGuardarCargaDatos}
-                              handleEditarPregunta={handleEditarCargaDatos}
-                              handleEliminarPregunta={handleEliminarCargaArchivos}
-                            />
-                          }
-                          if (preg.tipo == 'CC') {
-                            return <CuadroComentarios
-                              indice={indexp}
-                              indiceSec = {index}
-                              save={preg.save}
-                              contentPreg = {preg}
-                              closeCuadroComentarios={handleCancelarCuadroComentarios}
-                              handleCuadroComentarios={handleAceptarCuadroComentarios}
-                              handleCargaPreg={handleGuardarCuadroComentarios}
-                              handleEditarPregunta={handleEditarCuadroComentarios}
-                              handleEliminarPregunta={handleEliminarCuadroComentarios}
-                            />
-                          }
-                          return '';
-                        })}
-                        
-                        <Col className='seccion4-nuevaEcuesta'>
-                            <Button
-                              id={`NuevaPreg${index + 1}`}
-                              ref={buttonRef}
-                              className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : 'inactive'}`}
-                              onClick={() => handleButtonNuevaPregunta(index)}
-                            >
-                                <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
-                                <hr className='hr'/>
-                                <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
-                            </Button>
-                        </Col>
-                        
-                        <div
-                          ref={containerRef}
-                          id={`NuevaPregVisi${index + 1}`}
-                          className="container-newContendorPregunta ocultar"
+                          </Col>
                           
-                        >
-                          <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
-                            <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
-                              <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
-                              <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
-                            </Col>
-                                
-                            <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
-                              <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
-                              <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
-                            </Col>
-        
-                            <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
-                              <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
-                              <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
-                            </Col>
+                          {seccion.contentPreg.map((preg, indexp) => { 
+                            if (preg.tipo == 'M') {
+                              return <OpcionMultiple 
+                                indice={indexp} 
+                                indiceSec = {index} 
+                                save={preg.save}
+                                contentPreg = {preg}
+                                closeopmul={handleCancelarOpcionMultiple} 
+                                onAceptar={handleAceptarOpcionMultiple} 
+                                handleCargaPreg={handleGuardarOpcionMultiple}
+                                handleEditarPregunta={handleEditarOpcionMultiple}
+                                handleEliminarPregunta={handleEliminarOpcionMultiple}
+                              />
+                            }  
+                            if (preg.tipo == 'V') {
+                              return <VariacionEstrellas 
+                                indice={indexp} 
+                                indiceSec = {index} 
+                                save={preg.save}
+                                contentPreg = {preg}
+                                closeVariacionEstrellas={handleCancelarValoracionEstrellas}
+                                onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
+                                handleCargaPreg={handleGuardarValoracionEstrellas}
+                                handleEditarPregunta={handleEditarValoracionEstrellas}
+                                handleEliminarPregunta={handleEliminarValoracionEstrellas}
+                              />
+                            }
+                            if (preg.tipo == 'CA') {
+                              return <CargaDatos 
+                                indice={indexp} 
+                                indiceSec = {index}
+                                save={preg.save}
+                                contentPreg = {preg}
+                                closeCargaArchivos={handleCancelarCargaArchivos}
+                                handleCargaArchivos={handleAceptarCargaArchivos}
+                                handleCargaPreg={handleGuardarCargaDatos}
+                                handleEditarPregunta={handleEditarCargaDatos}
+                                handleEliminarPregunta={handleEliminarCargaArchivos}
+                              />
+                            }
+                            if (preg.tipo == 'CC') {
+                              return <CuadroComentarios
+                                indice={indexp}
+                                indiceSec = {index}
+                                save={preg.save}
+                                contentPreg = {preg}
+                                closeCuadroComentarios={handleCancelarCuadroComentarios}
+                                handleCuadroComentarios={handleAceptarCuadroComentarios}
+                                handleCargaPreg={handleGuardarCuadroComentarios}
+                                handleEditarPregunta={handleEditarCuadroComentarios}
+                                handleEliminarPregunta={handleEliminarCuadroComentarios}
+                              />
+                            }
+                            return '';
+                          })}
+                          
+                          <Col className='seccion4-nuevaEcuesta'>
+                              <Button
+                                id={`NuevaPreg${index + 1}`}
+                                ref={buttonRef}
+                                className={`boton-NuevaPregunta ${nuevaPreguntaVisible ? 'editar-visible' : ''} ${isActive ? 'active' : 'inactive'}`}
+                                onClick={() => handleButtonNuevaPregunta(index)}
+                              >
+                                  <p className='textoNuevaPregunta'>Nueva Pregunta</p> 
+                                  <hr className='hr'/>
+                                  <span style={{marginTop: '3px'}} dangerouslySetInnerHTML={{ __html: chevronDownBSVG }}/>
+                              </Button>
+                          </Col>
+                          
+                          <div
+                            ref={containerRef}
+                            id={`NuevaPregVisi${index + 1}`}
+                            className="container-newContendorPregunta ocultar"
+                            
+                          >
+                            <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
+                              <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
+                                <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
+                                <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
+                              </Col>
                                   
-                            <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
-                              <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                              <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
-                            </Col>
-        
-                            <Col className='container-newContendorPregunta-pt5' onClick={() => handleCuadroComentarios(index)}>
-                              <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
-                              <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
-                            </Col>
-                          </Row>
+                              <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
+                                <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
+                                <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
+                              </Col>
+          
+                              <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
+                                <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
+                                <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
+                              </Col>
+                                    
+                              <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
+                                <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                                <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
+                              </Col>
+          
+                              <Col className='container-newContendorPregunta-pt5' onClick={() => handleCuadroComentarios(index)}>
+                                <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
+                                <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
+                              </Col>
+                            </Row>
+                          </div>
+          
+                          <Col className='seccion3-nuevaEcuesta'>
+                              <Button className='boton-Imgpie'>
+                                  <p className='textoLogotipo'>Imagen de pie</p>
+                                  <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                              </Button>
+                          </Col>
                         </div>
-        
-                        <Col className='seccion3-nuevaEcuesta'>
-                            <Button className='boton-Imgpie'>
-                                <p className='textoLogotipo'>Imagen de pie</p>
-                                <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                            </Button>
-                        </Col>
+                        
                       </Col>
                       <br />
                     </Col>

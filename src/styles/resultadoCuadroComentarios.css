@@ -20,8 +20,6 @@
     padding-bottom: 0.3%;
     background-color: rgba(237, 237, 237, 1);
   }
-  .contenedor-editar-pregunta.oculto {
-  }
   .contenedor-editar-pregunta.visible {
     transform: translateY(0);
   }
@@ -110,9 +108,9 @@
   }
   .contenedor-tituloNuevaEncuesta:hover{
     background-color: rgba(237, 237, 237, 1);
-    cursor: pointer;
+    /* cursor: pointer; */
   }
   .contenedor-tituloNuevaEncuesta.editar-visible{
     background-color: rgba(245, 245, 245, 1);
-    cursor: pointer;
+    /* cursor: pointer; */
   }
