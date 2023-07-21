@@ -9,7 +9,7 @@ const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAceptar, handleCargaPreg, handleEditarPregunta}) => {
+const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAceptar, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -35,11 +35,9 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
     const [configuracion4, setConfiguracion4] = useState(false); 
     const [configuracion5, setConfiguracion5] = useState(false);
     const [inputs, setInputs] = useState([]);
-    const [pregunta, setPregunta] = useState('');
-    const [seccion, setSeccion] = useState({
-        tipo: 'CPM',
-        contentPreg: [] // Agrega tu array de preguntas aquí
-    });
+    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
+    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
+    const [cancelar, setCancelar] = useState('true');
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -209,17 +207,24 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
         });
     };
 
-    const handleCancelarOpcionMultiple = (indice) => {
-        closeopmul(indice);
+    const handleCancelarOpcionMultiple = () => {
+        setPregunta(preguntaTemp)
+        closeopmul(indice, indiceSec);
     }
+
+    const handleEliminarOpcionMultiple = () => (
+        handleEliminarPregunta(indice, indiceSec)
+    )
     
     const handleGuardarOpcionMultiple = () => {
         const nuevaPregunta = {
-            tipo: 'CPM',
+            tipo: 'M',
             pregunta: pregunta,
-            save: true
+            save: true,
+            cancelar: cancelar
         };
-        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta);
+        setPreguntaTemp(pregunta)
+        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
     };
 
     useEffect(() => {
@@ -539,7 +544,7 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
                     pregunta={pregunta} 
                     opciones={opcionesRespuesta}
                     handleEditarPregunta={handleEditarPregunta}
-                    closeEliminarCPM={handleCancelarOpcionMultiple}
+                    closeEliminarCPM={handleEliminarOpcionMultiple}
                 />
             </Container>
         )}

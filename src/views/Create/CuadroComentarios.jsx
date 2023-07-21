@@ -17,7 +17,8 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
     const [preguntaValue, setPreguntaValue] = useState('');
     const [configuracion1, setConfiguracion1] = useState(false);
     const [configuracion2, setConfiguracion2] = useState(false);
-    const [pregunta, setPregunta] = useState('Añada un comentario sobre la charla');
+    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
+    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
     
     const handleEditar = () => {
@@ -71,6 +72,7 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
     };
 
     const handleCancelarCuadroComentarios = () => {
+        setPregunta(preguntaTemp)
         closeCuadroComentarios(indice, indiceSec);   
     }
 
@@ -85,7 +87,8 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
           save: true,
           cancelar: cancelar
         };
-        handleCuadroComentarios(indice,indiceSec, pregunta, cancelar);
+        setPreguntaTemp(pregunta)
+        handleCuadroComentarios(indice, indiceSec, pregunta, cancelar);
     }; 
 
     return (

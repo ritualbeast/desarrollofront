@@ -21,7 +21,7 @@ const opciones = [
     { id: 4, icono: 'triangle' },
   ];
 
-const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacionEstrellas, onAceptarValoracionEstrellas, handleCargaPreg, handleEditarPregunta}) => {
+const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacionEstrellas, onAceptarValoracionEstrellas, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -47,10 +47,12 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
     const [configuracion4, setConfiguracion4] = useState(false); 
     const [configuracion5, setConfiguracion5] = useState(false);
     const [inputs, setInputs] = useState([]);
-    const [pregunta, setPregunta] = useState('');
+    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
+    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [showColorPicker, setShowColorPicker] = useState({});
     const [selectedColor, setSelectedColor] = useState({});
     const [selectedIcon, setSelectedIcon] = useState({});
+    const [cancelar, setCancelar] = useState('true');
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -198,8 +200,13 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
         });
     };
 
-    const handleCancelarVariacionEstrellas = (indice) => {
-        closeVariacionEstrellas(indice);
+    const handleCancelarVariacionEstrellas = () => {
+        setPregunta(preguntaTemp)
+        closeVariacionEstrellas(indice, indiceSec);
+    }
+
+    const handleEliminarVariacionEstrellas = () => {
+        handleEliminarPregunta(indice, indiceSec)
     }
 
     const handleGuardarValoracionEstrellas = () => {
@@ -208,9 +215,11 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
             pregunta: pregunta,
             opciones: opcionesRespuesta,
             color: selectedColor,
-            selectedIcon: selectedIcon
+            selectedIcon: selectedIcon,
+            cancelar: cancelar
         };
-        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon);
+        setPreguntaTemp(pregunta)
+        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar);
     };
 
     const handleIconClick = (id) => {
@@ -597,7 +606,7 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
                     color={selectedColor}
                     selectedIcon={selectedIcon}
                     handleEditarPregunta={handleEditarPregunta}
-                    closeEliminarCPVE={handleCancelarVariacionEstrellas}
+                    closeEliminarCPVE={handleEliminarVariacionEstrellas}
                 />
             </Container>
         )}

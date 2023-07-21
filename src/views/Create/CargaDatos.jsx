@@ -26,14 +26,8 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
     const [pregunta2, setPregunta2] = useState(contentPreg.pregunta2);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
-
     const [cancelar, setCancelar] = useState('true');
 
-    useEffect(()=>{
-        console.log('pregInit',contentPreg.pregunta)
-        console.log('pregInit2',contentPreg.pregunta2)
-
-    },[])
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -103,14 +97,7 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
     const handleCancelarCargaArchivo = () => {
         setPregunta(preguntaTemp)
         setPregunta2(pregunta2Temp)
-        console.log('preguntaTemp', preguntaTemp)
-        console.log('pregunta2Temp', pregunta2Temp)
-
         closeCargaArchivos(indice, indiceSec);
-    }
-
-    const handleEliminarCargaArchivo = () => {
-        handleEliminarPregunta(indice, indiceSec)
     }
 
     const handleGuardarCargaDatos = () => {
@@ -124,7 +111,7 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
         setPreguntaTemp(pregunta)
         setPregunta2Temp(pregunta2)
 
-        handleCargaArchivos(indice,indiceSec, pregunta, pregunta2, cancelar);
+        handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar);
     };
 
     return (
@@ -361,7 +348,7 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
                     pregunta={pregunta} 
                     pregunta2={pregunta2}
                     handleEditarPregunta={handleEditarPregunta}
-                    handleEliminarPregunta={handleEliminarCargaArchivo}
+                    handleEliminarPregunta={handleEliminarPregunta}
                 />
             </Container>
         )}

@@ -9,7 +9,7 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const ResultadoCargaDatos = ({index, indexSec, pregunta, pregunta2, handleEditarPregunta, handleEliminarPregunta, }) => {
+const ResultadoCargaDatos = ({index, indexSec, pregunta, pregunta2, handleEditarPregunta, handleEliminarPregunta}) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [blurBackground, setBlurBackground] = useState(false);
@@ -36,7 +36,7 @@ const ResultadoCargaDatos = ({index, indexSec, pregunta, pregunta2, handleEditar
     setOpenEliminarPregunta(false);
     setBlurBackground(false);
     setIsModalVisible(false);
-};
+  };
 
   const handleCloseEliminarPregunta = () => {
     handleEliminarPregunta(index, indexSec);

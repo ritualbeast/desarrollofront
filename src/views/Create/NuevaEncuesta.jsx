@@ -90,6 +90,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
         tipo:'M',
         save:false,
         pregunta:'',
+        cancelar:'',
       }
 
       const nuevoEstado = [...contentCont];
@@ -111,7 +112,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
       let obj={
         tipo:'V',
         save:false,
-        pregunta:''
+        pregunta:'',
+        cancelar:'',
       }
 
       const nuevoEstado = [...contentCont];
@@ -235,56 +237,44 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
         $(`#NuevaPreg${index +1}`).addClass("editar-visible");
       }
     };
-    
-    const handleCerrarOpcionMultiple = (index) => {
-      let variable
-      let obj={
-        tipo:'M',
-      }
+
+    const handleCancelarOpcionMultiple = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[0].contentPreg];
-      $.each(contentCont, function(index2, elemento) {
-        variable = elemento.contentPreg.splice(index, 1)
-      });
-      contentCont.contentPreg=variable;
-      setContentOpt(nuevoEstado);
+      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const cancelarValor = contenidoActual[indicePreg].cancelar;
+    
+      if (cancelarValor === '') {
+        contenidoActual.splice(indicePreg, 1);
+      } else if (cancelarValor === 'true') {
+        contenidoActual[indicePreg].save = true;
+      }
+    
+      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      setContentCont(nuevoEstado);
+      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
-    const handleCerrarVariacionEntrellas = (index) => {
-      let variable
-      let obj={
-        tipo:'V',
-      }
+    const handleEliminarOpcionMultiple = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[0].contentPreg];
-      $.each(contentCont, function(index2, elemento) {
-        console.log(1);
-        variable = elemento.contentPreg.splice(index, 1)
-      });
-      contentCont.contentPreg=variable;
-      setContentVari(nuevoEstado);
-    }
+      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const cancelarValor = contenidoActual[indicePreg].cancelar;
     
-    const handleCerrarCuadroComentarios = (index) => {
-      let variable
-      let obj={
-        tipo:'CC',
+      if (cancelarValor === 'true') {
+        contenidoActual.splice(indicePreg, 1);
       }
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[0].contentPreg];
-      $.each(contentCont, function(index2, elemento) {
-        variable = elemento.contentPreg.splice(index, 1)
-      });
-      contentCont.contentPreg=variable;
-      setContentCuadro(nuevoEstado);
-    }
+    
+      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      setContentCont(nuevoEstado);
+      console.log('cancelar - nuevoEstado', nuevoEstado)
+    };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
       contenidoActual[indicePreg].save = true
+      contenidoActual[indicePreg].cancelar = cancelar
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log(nuevoEstado);
       setContentCont(nuevoEstado);
@@ -306,13 +296,44 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
       setContentCont(tempCont);
     }
 
-    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon) => {
+    const handleCancelarValoracionEstrellas = (indicePreg, indiceSec) => {
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const cancelarValor = contenidoActual[indicePreg].cancelar;
+    
+      if (cancelarValor === '') {
+        contenidoActual.splice(indicePreg, 1);
+      } else if (cancelarValor === 'true') {
+        contenidoActual[indicePreg].save = true;
+      }
+    
+      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      setContentCont(nuevoEstado);
+      console.log('cancelar - nuevoEstado', nuevoEstado)
+    };
+
+    const handleEliminarValoracionEstrellas = (indicePreg, indiceSec) => {
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const cancelarValor = contenidoActual[indicePreg].cancelar;
+    
+      if (cancelarValor === 'true') {
+        contenidoActual.splice(indicePreg, 1);
+      }
+    
+      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      setContentCont(nuevoEstado);
+      console.log('cancelar - nuevoEstado', nuevoEstado)
+    };
+
+    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
       contenidoActual[indicePreg].selectedColor = selectedColor
       contenidoActual[indicePreg].selectedIcon = selectedIcon
+      contenidoActual[indicePreg].cancelar = cancelar
       contenidoActual[indicePreg].save = true
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log(nuevoEstado);
@@ -348,7 +369,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - contenidoActual', contenidoActual)
       console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
@@ -363,7 +383,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - contenidoActual', contenidoActual)
       console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
@@ -410,7 +429,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - contenidoActual', contenidoActual)
       console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
@@ -425,7 +443,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - contenidoActual', contenidoActual)
       console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
@@ -515,10 +532,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
                               indiceSec = {index} 
                               save={preg.save}
                               contentPreg = {preg}
-                              closeopmul={() => handleCerrarOpcionMultiple(indexp)} 
+                              closeopmul={handleCancelarOpcionMultiple} 
                               onAceptar={handleAceptarOpcionMultiple} 
                               handleCargaPreg={handleGuardarOpcionMultiple}
                               handleEditarPregunta={handleEditarOpcionMultiple}
+                              handleEliminarPregunta={handleEliminarOpcionMultiple}
                             />
                           }  
                           if (preg.tipo == 'V') {
@@ -527,10 +545,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
                               indiceSec = {index} 
                               save={preg.save}
                               contentPreg = {preg}
-                              closeVariacionEstrellas={() => handleCerrarVariacionEntrellas(indexp)}
+                              closeVariacionEstrellas={handleCancelarValoracionEstrellas}
                               onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
                               handleCargaPreg={handleGuardarValoracionEstrellas}
                               handleEditarPregunta={handleEditarValoracionEstrellas}
+                              handleEliminarPregunta={handleEliminarValoracionEstrellas}
                             />
                           }
                           if (preg.tipo == 'CA') {
