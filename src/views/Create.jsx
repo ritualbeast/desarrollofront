@@ -36,6 +36,9 @@ const Create = () => {
     const [previeww, setPrevieww] = useState(null);
     const [estados, setEstados] = useState('');
     const [posicion, setPosicion] = useState('');
+    const [tamano, setTamano] = useState('');
+    const [grosor, setGrosor] = useState('');
+    const [tipografia, setTipografia] = useState('');
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -107,14 +110,25 @@ const Create = () => {
         }
 
         const handleSendEstado = (estado) => {
-            console.log('estado2',estado)
             setEstados(estado)
         }
 
         const handleSendPosicion = (posicion) => {
-            console.log('posicion',posicion)
             setPosicion(posicion)
         }
+
+        const handleSendTamano = (tamano) => {
+            setTamano(tamano)
+        }
+
+        const handleSendGrosor = (grosor) => {
+            setGrosor(grosor)
+        }
+
+        const handleSendTipografia = (tipografia) => {
+            setTipografia(tipografia)
+        }
+
     
 
       
@@ -332,6 +346,9 @@ const Create = () => {
                                     preview3= {Ispreview}
                                     sendEstado2={(estado) =>  handleSendEstado(estado)}
                                     sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
+                                    sendTamano2={(tamano) =>  handleSendTamano(tamano)}
+                                    sendGrosor2={(grosor) =>  handleSendGrosor(grosor)}
+                                    sendTipografia2={(tipografia) =>  handleSendTipografia(tipografia)}
 
                                     />
                                 )}
@@ -359,6 +376,11 @@ const Create = () => {
                                 preview2={(previe) => enviarPreview(previe)}
                                 sendEstado3={estados}
                                 sendPosicion3={posicion}
+                                sendTamano3={tamano}
+                                sendGrosor3={grosor}
+                                sendTipografia3={tipografia}
+
+
                                 />
                             ) : activeIcon !== '' && (
                                 <NuevaEncuesta/>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaLogo.css'
@@ -6,6 +6,7 @@ import Logo from '../../assets/img/LOGO_VERIS.jpg'
 import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
+import { ListarEnumeradosService } from '../../services/EstilosServices';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -27,6 +28,11 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const [estado, setEstado] = useState('Guardar');
     const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
     const [pasos, setPasos] = useState(paso);
+
+    useEffect(() => {
+        ListarPosicionImagen();
+    }, []);
+
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
@@ -102,6 +108,20 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const handlePosicionClick = (posicion) => {
         sendPosicion(posicion);
     }
+
+    // consumo de posicion de pie de pagina
+
+    const [posicionImagen, setPosicionImagen] = useState([]);
+
+    const ListarPosicionImagen = async () => {
+        try {
+            const response = await  ListarEnumeradosService(10)
+            setPosicionImagen(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     
     
   return (
@@ -176,11 +196,10 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             
                             <div className="contenedorPosicion">
                                 <select className="selectPosicion">
-                                    <option value="1">Izquierda</option>
-                                    <option value="2">Derecha</option>
-                                    <option value="3">Centro</option>
-                                    <option value="4">Arriba</option>
-                                    <option value="5">Abajo</option>
+                                    {posicionImagen.map((opcion) => (
+                                        <option key={opcion.id} value={opcion.etiqueta}>{opcion.etiqueta}</option>
+                                    ))    
+                                    }
                                 </select>
                             </div>
                         </div>
@@ -210,8 +229,8 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                     <div className="contenedorPosicion">
                                         <select className="selectPosicion"  onChange={(e) => handlePosicionClick(e.target.value)}>
                                             <option value="1">Izquierda</option>
-                                            <option value="2">Derecha</option>
-                                            <option value="3">Centro</option>
+                                            <option value="2">Centro</option>
+                                            <option value="3">Derecha</option>
                                         </select>
                                     </div>
                                 </div> 

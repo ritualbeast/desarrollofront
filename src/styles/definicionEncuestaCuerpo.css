@@ -131,14 +131,44 @@
     margin-bottom: 5px;
 }
 
-.contenedorbuttonPieDePagina {
-    display: flex;
+.contenedorbuttonPieDePagina{
     margin-top: 10px;
     width: 100%;
+    display: flex;
+    height: 100%;
+
+  }
+  .contenedorbuttonPieDePagina2{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    text-align: left;
+    justify-content: left;
+  }
+  .contenedorbuttonPieDePagina3{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .contenedorbuttonPieDePagina4{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    height: 100%;
+    text-align: right;
+    justify-content: right;
   }
   
+  
+
+
+  
+  
   .buttonPieDePagina {
-    margin-left: auto;
     width: Hug (103px);
     height: Hug (36px);
     padding: 8px 16px 8px 16px;

@@ -1,13 +1,16 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFuente.css'
+import { ListarEnumeradosService } from '../../services/EstilosServices';
+
+
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}) => {
+const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -15,13 +18,27 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [pasos, setPasos] = useState(paso);
-    console.log('pasofuente',pasos)
+
+    useEffect(() => {
+        ListarFuenteGrosorEncuesta();
+        ListarFuenteTamanoEncuesta();
+        ListarFuenteTipografiaEncuesta();
+    }, []);
+
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
     }
     const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
+        sendTamano(event.target.value);
+    };
+
+    const handleChangeGrosor = (event) => {
+        sendGrosor(event.target.value);
+    };
+
+    const handleChangeTipografia = (event) => {
+        sendTipografia(event.target.value);
     };
     
 
@@ -95,6 +112,45 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}
         openMenuPrincipal(true);
         closeMenuFuentes(false);
     }
+
+
+    //consumo de grosor de fuentes
+    const [GrosorApi, setGrosorApi] = useState([]);
+    const ListarFuenteGrosorEncuesta = async () => {
+        try {
+          const response = await  ListarEnumeradosService(9)
+            setGrosorApi(response.data.listaEnumerados);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+    // consumo de tamano de fuentes
+
+    const [TamanoApi, setTamanoApi] = useState([]);
+    const ListarFuenteTamanoEncuesta = async () => {
+        try {
+            const response = await  ListarEnumeradosService(8)
+            setTamanoApi(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // consumo de tipografia de fuentes
+
+    const [TipografiaApi, setTipografiaApi] = useState([]);
+
+    const ListarFuenteTipografiaEncuesta = async () => {
+        try {
+            const response = await  ListarEnumeradosService(7)
+            setTipografiaApi(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
     
     
   return (
@@ -149,23 +205,29 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}
                                     </div>
 
                                     <div className="subcontenedorFuenteTituloselect">
-                                        <select className="fuenteTituloSelect">
+                                        <select className="fuenteTituloSelect" onChange={handleChangeTipografia}>
                                         <option value="">Seleccionar tipografía</option>
-                                        <option value="1">Arial</option>
-                                        <option value="2">Arial Black</option>
+                                        {TipografiaApi.map((item) => (
+                                            <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
+                                        ))}
+
                                         </select>
                                     </div>
 
                                     <div className="subcontenedorFuenteTituloselect2">
-                                        <select className="fuenteTituloSelect2">
+                                        <select className="fuenteTituloSelect2" onChange={handleChangeGrosor}>
                                         <option value="">Grosor</option>
-                                        <option value="1">Normal</option>
-                                        <option value="2">Negrita</option>
+                                        {GrosorApi.map((item) => (
+                                            <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
+                                        ))}
+
                                         </select>
-                                        <select className="fuenteTituloSelect3">
+                                        <select className="fuenteTituloSelect3" onChange={handleChangeTamano}>
                                         <option value="">Tamaño</option>
-                                        <option value="1">10</option>
-                                        <option value="2">12</option>
+                                        {TamanoApi.map((item) => (
+                                            <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
+                                        ))}
+
                                         </select>
                                     </div>
                                     </div>

@@ -20,7 +20,7 @@ const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPosicion2}) => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPosicion2, sendTamano2, sendGrosor2, sendTipografia2}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -185,6 +185,18 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
     const handleSendPosicion = (posicion) => {
         sendPosicion2(posicion);
     }
+
+    const handleSendTamano = (tamano) => {
+        sendTamano2(tamano);
+    }
+
+    const handleSendGrosor = (grosor) => {
+        sendGrosor2(grosor);
+    }
+
+    const handleSendTipografia = (tipografia) => {
+        sendTipografia2(tipografia);
+    }
     
   return (
     <>
@@ -303,6 +315,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuFuentes={setOpenDisenoFuentes}
                 paso={pasos}
+                sendTamano={(tamano) => handleSendTamano(tamano)}
+                sendGrosor={(grosor) => handleSendGrosor(grosor)}
+                sendTipografia={(tipografia) => handleSendTipografia(tipografia)}
             />
         )
         }
