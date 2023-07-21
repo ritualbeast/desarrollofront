@@ -96,7 +96,7 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
                     </select>
                 </Col>
                 <Col className='revision-seccion3-2'>
-                    <p style={{marginBottom:'unset'}}>Numero de preguntas</p>
+                    <p style={{marginBottom:'unset', color:'rgba(158, 158, 158, 1)'}}>Numero de preguntas</p>
                     <FormControl 
                         style={{
                             background:'rgba(245, 245, 245, 1)', 

@@ -140,7 +140,6 @@ const Create = () => {
                     {activeTab === 'revision' ? <Revision 
                         regresar={regresarRevision}
                         handleTotalPreguntas={contentCont}
-                        
                     /> : null}
                 </Row>
             </Container>
