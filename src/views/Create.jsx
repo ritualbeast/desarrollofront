@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import svgManager from '../assets/svg';
@@ -10,9 +10,10 @@ const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
 
-const Create = ({ contentCont }) => {
+const Create = () => {
     const [activeTab, setActiveTab] = useState('diseña');
     const [openVistaPrevia, setVistaPrevia] = useState(false);
+    const [contentCont, setContentCont] = useState([{ tipo: 'C', contentPreg: [] }]);
 
     const handleCloseVistaPrevia = () => {
         setVistaPrevia(false);
@@ -28,6 +29,18 @@ const Create = ({ contentCont }) => {
 
     const getIconStrokeColor = (tab) => {
         return activeTab === tab ? 'rgba(255, 199, 0, 1)' : 'rgba(216, 216, 216, 1)';
+    }
+
+    const regresarRevision = () => {
+        setActiveTab('diseña');
+    }
+
+    const recibirTotalPreguntas = (contentCont) => {
+        setContentCont(contentCont);
+    }
+
+    const enviarTotalPreguntas = () => {
+        setContentCont(contentCont);
     }
 
     return (
@@ -119,8 +132,16 @@ const Create = ({ contentCont }) => {
                     </Col>
                     <hr />
                     
-                    {activeTab === 'diseña' ? <DiseñaEncuesta openVistaPrevia={openVistaPrevia} handleCloseVistaPrevia={handleCloseVistaPrevia} /> : null}
-                    {activeTab === 'revision' ? <Revision /> : null}
+                    {activeTab === 'diseña' ? <DiseñaEncuesta 
+                        openVistaPrevia={openVistaPrevia} 
+                        handleCloseVistaPrevia={handleCloseVistaPrevia}
+                        handleTotalPreguntas={recibirTotalPreguntas}
+                    /> : null}
+                    {activeTab === 'revision' ? <Revision 
+                        regresar={regresarRevision}
+                        handleTotalPreguntas={contentCont}
+                        
+                    /> : null}
                 </Row>
             </Container>
         </>

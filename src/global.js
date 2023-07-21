@@ -25,7 +25,7 @@ global.URL_REDIS = 'http://desa.goitsa.me:8991/goit-redis-manager/v1/'
 global.URL_NOTIFY = 'http://desa.goitsa.me:8990/goit-notify-api/v1/'
 
 // SECURITY API
-global.SECUTIRY_API = "http://desa.goitsa.me:8988/goit-security-api/v2/";
+global.SECUTIRY_API = "http://desa.goitsa.me:8989/goit-security-api/v2/";
 global.CANAL_SECURITY = "5b538d10-fcb3-11ed-be56-0242ac120002";
 global.CANAL = "49a5f60a-9f56-4feb-bcf1-5377c6152ef8"
 global.LOGIN_METHOD = global.SECUTIRY_API + "autenticacion/login";

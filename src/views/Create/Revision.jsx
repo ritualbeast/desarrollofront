@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../styles/revision.css'
 import { FormControl, Col, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,15 +8,60 @@ const fileSVG = svgManager.getSVG('file');
 const listRosaSVG = svgManager.getSVG('list-rosa');
 const editRosaSVG = svgManager.getSVG('edit-rosa');
 
-const Revision = () => {
+const Revision = ({regresar, handleTotalPreguntas,}) => {
     const [selectedDate, setSelectedDate] = useState('');
+    const [selectedDateInicio, setSelectedDateInicio] = useState('');
+    const [selectedDateFin, setSelectedDateFin] = useState('');
     const [contenedorSeleccionado, setContenedorSeleccionado] = useState(null);
     const location = useLocation();
+    const [totalConteo, setTotalConteo] = useState()
+    const [selectedOption, setSelectedOption] = useState('Seleccione');
+    const [Opcion1, setOpcion1] = useState(false);
+    const [Opcion2, setOpcion2] = useState(false);
+    const [Opcion3, setOpcion3] = useState(false);
 
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
     }
 
+    const handleDateIF = (event) => {
+        const selectedDate = event.target.value;
+        
+        if (selectedDateInicio && !selectedDateFin) {
+          // Si ya se seleccionó una fecha de inicio y aún no se ha seleccionado la fecha final, establecer la fecha final.
+          setSelectedDateFin(selectedDate);
+        } else {
+          // En cualquier otro caso, establecer la fecha de inicio.
+          setSelectedDateInicio(selectedDate);
+          setSelectedDateFin(''); // Reiniciar la fecha final cuando se selecciona una nueva fecha de inicio.
+        }
+      };
+
+    const handleOptionChange = (event) => {
+        const selectedValue = event.target.value;
+        setSelectedOption(selectedValue);
+        setOpcion1(selectedValue === 'option1');
+        setOpcion2(selectedValue === 'option2');
+        setOpcion3(selectedValue === 'option3');
+    };
+    
+    const total = () => {
+        let totalContenedoresC = 0;
+        let totalDatosContentPreg = 0;
+
+        handleTotalPreguntas.forEach((item) => {
+        if (item.tipo === 'C') {
+            totalContenedoresC++;
+            totalDatosContentPreg += item.contentPreg.length;
+        }
+        });
+        setTotalConteo(totalDatosContentPreg)
+    }
+
+    useEffect(() => {
+        total();
+    }, [])
+    
     return (
         <div>
             <Col>
@@ -41,18 +86,60 @@ const Revision = () => {
             </Col>
                 
             <Col className='revision-seccion3'>
+                <Col className='select-vigencia'>
+                    <p style={{marginBottom:'unset'}}>Vigencia</p>
+                    <select value={selectedOption} onChange={handleOptionChange}>
+                        <option value="Seleccione">--Seleccione--</option>
+                        <option value="option1">Número de respuestas</option>
+                        <option value="option2">Fecha inicio</option>
+                        <option value="option3">Fecha inicio/fin</option>
+                    </select>
+                </Col>
+                <Col className='revision-seccion3-2'>
+                    <p style={{marginBottom:'unset'}}>Numero de preguntas</p>
+                    <FormControl 
+                        style={{
+                            background:'rgba(245, 245, 245, 1)', 
+                            color:'rgba(158, 158, 158, 1)', 
+                            borderColor:'rgba(224, 224, 224, 1)', 
+                            cursor:'default'
+                        }} 
+                        type="text" 
+                        readOnly 
+                        value={totalConteo} 
+                    />
+                </Col>
+            </Col>
+
+            <Col>
+            {Opcion1 && (
                 <Col className='revision-seccion3-1'>
-                    <p style={{marginBottom:'unset'}}>Fecha inicio/fin</p>
+                    <p style={{marginBottom:'unset'}}>Número de respuestas</p>
+                    <FormControl  
+                        type="text" 
+                    />
+                </Col>
+            )}
+            {Opcion2 && (
+                <Col className='revision-seccion3-1'>
+                    <p style={{marginBottom:'unset'}}>Fecha inicio</p>
                     <input
                         type="date"
                         value={selectedDate}
                         onChange={handleDateChange}
                     />
                 </Col>
-                <Col className='revision-seccion3-2'>
-                    <p style={{marginBottom:'unset'}}>Numero de preguntas</p>
-                    <FormControl type="text" placeholder="Ingrese su texto" />
+            )}
+            {Opcion3 && (
+                <Col className='revision-seccion3-1'>
+                    <p style={{marginBottom:'unset'}}>Fecha inicio/fin</p>
+                    <input
+                        type="date"
+                        value={selectedDateInicio || selectedDateFin}
+                        onChange={handleDateIF}
+                    />
                 </Col>
+            )}
             </Col>
 
             <Col className='revision-seccion4'>
@@ -103,7 +190,10 @@ const Revision = () => {
             </Col>
 
             <Col className='revision-seccion5'>
-                <Button className='revision-Regresar'>
+                <Button 
+                    className='revision-Regresar'
+                    onClick={regresar}
+                >
                     Regresar
                 </Button>
                 <Link 

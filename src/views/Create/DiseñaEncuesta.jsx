@@ -15,7 +15,7 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 
-const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
+const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -24,9 +24,6 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [IscontentCont, setIscontentCont] = useState();
-    const [vari, setVar] = useState();
-    
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -73,11 +70,6 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
             setIsModalVisible(false);
         }
     };
-
-    const setConstentCont = (newVar) => {
-        console.log(newVar)
-        setIscontentCont(newVar);
-    }
     
     return (
         <div
@@ -198,6 +190,7 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia}) => {
                         <NuevaEncuesta 
                             openVistaPrevia={openVistaPrevia}
                             handleCloseVistaPrevia={handleCloseVistaPrevia}
+                            handleTotalPreguntas={handleTotalPreguntas}
                         />
                         )
                     }
