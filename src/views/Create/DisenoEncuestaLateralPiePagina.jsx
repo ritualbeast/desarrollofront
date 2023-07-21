@@ -15,7 +15,7 @@ const trashSVG = svgManager.getSVG('trash');
 const uploadSVG = svgManager.getSVG('upload');
 
 
-const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, preview4, sendEstado,paso}) => {
+const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, preview4, sendEstado,sendPosicion,paso}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -100,7 +100,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     }
 
     const handlePosicionClick = (posicion) => {
-        setPosicionSeleccionada(posicion);
+        sendPosicion(posicion);
     }
     
     

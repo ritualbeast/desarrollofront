@@ -95,6 +95,7 @@ const Login = () => {
               username,
               password
             })
+            console.log('userDatas', userData)
             setTimeout(function () {
               setSpiner(false)
               window.location.href = userData.url

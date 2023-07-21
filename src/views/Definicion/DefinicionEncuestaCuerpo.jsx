@@ -11,7 +11,7 @@ const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const edit2SVG = svgManager.getSVG('edit2');
 const trashSVG = svgManager.getSVG('trash');
 
-const DefinicionEncuestaCuerpo = ({estado,posicion,preview2}) => {
+const DefinicionEncuestaCuerpo = ({estado,posicion,preview2, sendEstado3, sendPosicion3}) => {
 
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -19,6 +19,7 @@ const DefinicionEncuestaCuerpo = ({estado,posicion,preview2}) => {
   const [preview, setPreview] = useState(null);
   const [posicionSeleccionada, setPosicionSeleccionada] = useState(null);
   const [leerEstado, setLeerEstado] = useState(estado);
+  const [leerEstadoPiePagina, setLeerEstadoPiePagina] = useState(sendEstado3);
   const enviarPreview = (previe) => {
     preview2(previe)
   }
@@ -66,11 +67,15 @@ const DefinicionEncuestaCuerpo = ({estado,posicion,preview2}) => {
     
   };
 
+  const leerEstado2 = () => {
+    console.log(leerEstadoPiePagina)
+    
+  }
+
 
 
   return (
     <>
-      
       <div className="tituloDefinicionEncuesta">
          <span 
          > Crear  de Encuesta </span>
@@ -174,9 +179,14 @@ const DefinicionEncuestaCuerpo = ({estado,posicion,preview2}) => {
           
             
           </div>
-          <div className="contenedorbuttonPieDePagina">
-            <button className='buttonPieDePagina'>{leerEstado}</button>
-          </div>
+          {sendEstado3 === '' ? null : (
+            
+            <div className="contenedorbuttonPieDePagina">
+              <button className='buttonPieDePagina'>{sendEstado3}</button>
+            </div>
+
+          ) }
+          
       <br />
       <br />
       <div></div>

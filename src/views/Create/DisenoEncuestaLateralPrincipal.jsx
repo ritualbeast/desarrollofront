@@ -20,7 +20,7 @@ const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPosicion2}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -35,7 +35,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
     const [preview, setPreview] = useState(preview3);
-    
 
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
@@ -165,10 +164,10 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
         } else if (id === 3) {
 
             openDisenoFuentesHandler();
-        }  else if (id === 4) {
+        }  else if (id === 5) {
 
             openDisenoDisposicionHandler();
-        } else if (id === 5) {
+        } else if (id === 4) {
 
             openDisenoFondoHandler();
         } else if (id === 6) {
@@ -179,7 +178,13 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
         
 
     };
-
+    const handleSendEstado = (estado) => {
+        sendEstado2(estado);
+    }
+    
+    const handleSendPosicion = (posicion) => {
+        sendPosicion2(posicion);
+    }
     
   return (
     <>
@@ -287,7 +292,8 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3}) => {
                 closeMenuPiePagina={setOpenDisenoPiePagina}
                 preview4={preview}
                 paso={pasos}
-            
+                sendEstado={(estado) => handleSendEstado(estado)}
+                sendPosicion={(posicion) => handleSendPosicion(posicion)}
             />
         )  
         }

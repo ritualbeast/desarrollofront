@@ -136,9 +136,11 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso}
                         </div>
                         <div>
                             {titulos.map((titulo, index) => (
-                                pasos === 2 && (titulos.nombre === "Nombre de encuesta" || 
-                                titulos.nombre === "Descripción de encuesta" || titulos.nombre === "Leyenda" 
-                                || titulos.nombre === "Texto de botones") ? null : (
+                                pasos === 2 && (titulo === "Nombre de encuesta" || titulo === "Descripción de encuesta" ||
+                                 titulo === "Leyenda" || titulo === "Texto de botones") ||
+                                pasos === 1 && (titulo === "Título de sección" || titulo === "Descripción de sección" || 
+                                titulo === "Preguntas" || titulo === "Opciones de respuesta" || titulo === "Texto de cierre de encuestas")
+                                 ? null : (
 
                                     
                                     <div className="contenedorFuenteTitulo" key={index}>

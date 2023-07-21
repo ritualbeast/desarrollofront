@@ -34,6 +34,8 @@ const Create = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [pasos, setPasos] = useState(1);
     const [previeww, setPrevieww] = useState(null);
+    const [estados, setEstados] = useState('');
+    const [posicion, setPosicion] = useState('');
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -103,6 +105,17 @@ const Create = () => {
     const enviarPreview = (previe) => {
         setIspreview(previe)
         }
+
+        const handleSendEstado = (estado) => {
+            console.log('estado2',estado)
+            setEstados(estado)
+        }
+
+        const handleSendPosicion = (posicion) => {
+            console.log('posicion',posicion)
+            setPosicion(posicion)
+        }
+    
 
       
 
@@ -317,6 +330,9 @@ const Create = () => {
                                 <DisenoEncuestaLateralPrincipal
                                     datapasos={pasos}
                                     preview3= {Ispreview}
+                                    sendEstado2={(estado) =>  handleSendEstado(estado)}
+                                    sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
+
                                     />
                                 )}
 
@@ -341,6 +357,8 @@ const Create = () => {
                              ? (
                                 <DefinicionEncuestaCuerpo 
                                 preview2={(previe) => enviarPreview(previe)}
+                                sendEstado3={estados}
+                                sendPosicion3={posicion}
                                 />
                             ) : activeIcon !== '' && (
                                 <NuevaEncuesta/>
