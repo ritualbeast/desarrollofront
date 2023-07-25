@@ -1,19 +1,19 @@
-// Archivo: EstadoContext.js
-// import React, { createContext, useContext, useState } from 'react';
 
-// const EstadoContext = createContext();
+import React, { useContext, useState } from 'react';
 
-// export const EstadoProvider = ({ children }) => {
-//   const [estado, setEstado] = useState('Guardar');
-//   const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
+const EstadoContext = React.createContext();
 
-//   return (
-//     <EstadoContext.Provider value={{ estado, setEstado, posicionSeleccionada, setPosicionSeleccionada }}>
-//       {children}
-//     </EstadoContext.Provider>
-//   );
-// };
+export const EstadoProvider = (props) => {
 
-// export const useEstadoContext = () => {
-//   return useContext(EstadoContext);
-// };
+  const [previewContext, setPreviewContext]  = useState(null);
+
+  return (
+    <EstadoContext.Provider value={{ previewContext }}>
+      {props.children}
+    </EstadoContext.Provider>
+  );
+};
+
+export const useEstadoContext = () => {
+  return useContext(EstadoContext);
+};

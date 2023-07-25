@@ -7,6 +7,8 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
+import { EstadoProvider } from '../../context/EstadoContext';
+import DefinicionEncuestaCuerpo from '../Definicion/DefinicionEncuestaCuerpo';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -126,7 +128,9 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     
   return (
     <>
-       
+       <EstadoProvider>
+            <DefinicionEncuestaCuerpo />
+        </EstadoProvider>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -162,14 +166,25 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
-                        {preview4 != null ? (
+                        
+                        {preview4 != '' ? (
                         <img
                             src={preview4}
                             alt="preview"
                             style={{ height: '92px', width: '100%' }}
                             className="imagenLogotipoEncuesta"
                         />
-                        ) : null 
+                        ) : 
+                        <div className="contenedorLogotipo">
+                            <div className='buttonLogotipo'>
+                                <span className='buttonLogotipoText'>Imagen</span>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                            </div>
+                        
+                        </div>
+
+
+
                         }
 
                         <div className="contenedorContenedorTamano">

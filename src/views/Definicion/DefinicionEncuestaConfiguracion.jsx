@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFondo.css'
@@ -7,6 +7,8 @@ import Logo from '../../assets/img/LOGO_VERIS.jpg'
 import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
+import { ListarEnumeradosService } from '../../services/EstilosServices';
+
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -21,6 +23,11 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [openFondo, setOpenFondo] = useState(false);
+
+    useEffect(() => {  
+        ListarVigencia();
+    }, []);
+
 
     const handleCloseFondo = () => {
         setOpenFondo(false);
@@ -92,6 +99,18 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const volverMenuPrincipal = () => {
         closeMenuConfiguracion('Definicion');
     }
+
+    // consumo de vigencia
+
+    const [Vigencia, setVigencia] = useState([]);
+    const ListarVigencia = async () => {
+        try {
+            const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
+            setVigencia(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     
     
   return (
@@ -150,9 +169,9 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                         <div className="subcontenedorFuenteTituloselect">
                             <select className="fuenteTituloSelect">
                                 <option value="">Seleccionar tipo de vigencia</option>
-                                <option value="fecha">Fecha específica</option>
-                                <option value="periodo">Período de tiempo</option>
-                                <option value="continua">Vigencia continua</option>
+                                {Vigencia.map((item, index) => (
+                                    <option key={index} value={item.etiqueta}>{item.etiqueta}</option>
+                                ))}
                             </select>
                         </div>
 

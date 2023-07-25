@@ -1,25 +1,7 @@
-const ListarCategoriasService = async () => {
-    try {
-      const canal = '808cd0b9-141f-4132-81e9-c3822436191b';
-      const headers = {
-        'Content-Type': 'application/json',
-        Canal: canal
-      };
-      const requestOptions = {
-        method: 'GET',
-        headers,
-      };
-      const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/categoria/listarCategorias', requestOptions);
-      const data = await response.json();
-  
-      return data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+
 
   const ListarEnumeradosService = async (idTipoEnumerado) => {
+    console.log('idTipoEnumerado', idTipoEnumerado);
     try {
       const canal = '808cd0b9-141f-4132-81e9-c3822436191b';
       const headers = {
@@ -27,7 +9,7 @@ const ListarCategoriasService = async () => {
         Canal: canal
       };
       
-      const url = `http://desa.goitsa.me:3001/goit-notisurvey-api/v2/enumerados/listarEnumerados?nemonicoTipoEnumerado=&idTipoEnumerado=${idTipoEnumerado}`;
+      const url = `http://desa.goitsa.me:3001/goit-notisurvey-api/v2/enumerados/listarEnumerados?nemonicoTipoEnumerado=${idTipoEnumerado}&idTipoEnumerado=`;
   
       const requestOptions = {
         method: 'GET',
@@ -45,7 +27,6 @@ const ListarCategoriasService = async () => {
   };
 
   export {
-    ListarCategoriasService,
     ListarEnumeradosService
     };
   

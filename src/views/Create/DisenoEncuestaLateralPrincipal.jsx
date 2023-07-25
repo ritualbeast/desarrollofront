@@ -186,16 +186,16 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
         sendPosicion2(posicion);
     }
 
-    const handleSendTamano = (tamano) => {
-        sendTamano2(tamano);
+    const handleSendTamano = (tamano, titulo) => {
+        sendTamano2(tamano, titulo);
     }
 
-    const handleSendGrosor = (grosor) => {
-        sendGrosor2(grosor);
+    const handleSendGrosor = (grosor, titulo) => {
+        sendGrosor2(grosor, titulo);
     }
 
-    const handleSendTipografia = (tipografia) => {
-        sendTipografia2(tipografia);
+    const handleSendTipografia = (tipografia, titulo) => {
+        sendTipografia2(tipografia, titulo);
     }
     
   return (
@@ -315,9 +315,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuFuentes={setOpenDisenoFuentes}
                 paso={pasos}
-                sendTamano={(tamano) => handleSendTamano(tamano)}
-                sendGrosor={(grosor) => handleSendGrosor(grosor)}
-                sendTipografia={(tipografia) => handleSendTipografia(tipografia)}
+                sendTamano={(tamano, titulo) => handleSendTamano(tamano, titulo)}
+                sendGrosor={(grosor, titulo) => handleSendGrosor(grosor, titulo)}
+                sendTipografia={(tipografia, titulo) => handleSendTipografia(tipografia, titulo)}
             />
         )
         }

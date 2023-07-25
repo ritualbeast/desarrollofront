@@ -11,8 +11,9 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const uploadSVG = svgManager.getSVG('upload');
 
-const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo}) => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,preview4}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -141,10 +142,25 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo}) =
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Cabezera</span>
                         </div>
+                        {preview4 != undefined ? (
+                        <img
+                            src={preview4}
+                            alt="preview"
+                            style={{ height: '92px', width: '100%' }}
+                            className="imagenLogotipoEncuesta"
+                        />
+                        ) : 
                         <div className="contenedorLogotipo">
-                            <img src={Logo} width={160} height={72} alt="Logo" />
+                            <div className='buttonLogotipo'>
+                                <span className='buttonLogotipoText'>Imagen</span>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                            </div>
                         
                         </div>
+
+
+
+                        }
                         <div className="contenedorContenedorTamano">
                             <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
                             <div className="contenedortamanoLogotipo">

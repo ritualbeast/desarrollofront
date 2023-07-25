@@ -36,9 +36,9 @@ const Create = () => {
     const [previeww, setPrevieww] = useState(null);
     const [estados, setEstados] = useState('');
     const [posicion, setPosicion] = useState('');
-    const [tamano, setTamano] = useState('');
-    const [grosor, setGrosor] = useState('');
-    const [tipografia, setTipografia] = useState('');
+    const [tamanos, setTamano] = useState({tamano: '', titulo: ''});
+    const [grosor, setGrosor] = useState({grosor: '', titulo: ''});
+    const [tipografia, setTipografia] = useState({tipografia: '', titulo: ''});
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
@@ -117,16 +117,16 @@ const Create = () => {
             setPosicion(posicion)
         }
 
-        const handleSendTamano = (tamano) => {
-            setTamano(tamano)
+        const handleSendTamano = (tamano, titulo) => {
+            setTamano({ tamano: tamano, titulo: titulo });
         }
 
-        const handleSendGrosor = (grosor) => {
-            setGrosor(grosor)
+        const handleSendGrosor = (grosor, titulo) => {
+            setGrosor({ grosor: grosor, titulo: titulo });  
         }
 
-        const handleSendTipografia = (tipografia) => {
-            setTipografia(tipografia)
+        const handleSendTipografia = (tipografia, titulo) => {
+            setTipografia({ tipografia: tipografia, titulo: titulo });
         }
 
     
@@ -346,9 +346,9 @@ const Create = () => {
                                     preview3= {Ispreview}
                                     sendEstado2={(estado) =>  handleSendEstado(estado)}
                                     sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
-                                    sendTamano2={(tamano) =>  handleSendTamano(tamano)}
-                                    sendGrosor2={(grosor) =>  handleSendGrosor(grosor)}
-                                    sendTipografia2={(tipografia) =>  handleSendTipografia(tipografia)}
+                                    sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
+                                    sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
+                                    sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
 
                                     />
                                 )}
@@ -376,7 +376,7 @@ const Create = () => {
                                 preview2={(previe) => enviarPreview(previe)}
                                 sendEstado3={estados}
                                 sendPosicion3={posicion}
-                                sendTamano3={tamano}
+                                sendTamano3={tamanos}
                                 sendGrosor3={grosor}
                                 sendTipografia3={tipografia}
 

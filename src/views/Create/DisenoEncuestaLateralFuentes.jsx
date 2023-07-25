@@ -29,16 +29,17 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
     }
-    const handleChangeTamano = (event) => {
-        sendTamano(event.target.value);
+    const handleChangeTamano = (event, titulo) => {
+        console.log(event.target.value, titulo);
+        sendTamano(event.target.value, titulo);
     };
 
-    const handleChangeGrosor = (event) => {
-        sendGrosor(event.target.value);
+    const handleChangeGrosor = (event, titulo) => {
+        sendGrosor(event.target.value, titulo);
     };
 
-    const handleChangeTipografia = (event) => {
-        sendTipografia(event.target.value);
+    const handleChangeTipografia = (event, titulo) => {
+        sendTipografia(event.target.value, titulo);
     };
     
 
@@ -118,7 +119,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const [GrosorApi, setGrosorApi] = useState([]);
     const ListarFuenteGrosorEncuesta = async () => {
         try {
-          const response = await  ListarEnumeradosService(9)
+          const response = await  ListarEnumeradosService('GROSOR_LETRA')
             setGrosorApi(response.data.listaEnumerados);
         } catch (error) {
           console.error(error);
@@ -130,7 +131,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const [TamanoApi, setTamanoApi] = useState([]);
     const ListarFuenteTamanoEncuesta = async () => {
         try {
-            const response = await  ListarEnumeradosService(8)
+            const response = await  ListarEnumeradosService('TAMANIO_LETRA')
             setTamanoApi(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
@@ -143,7 +144,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
 
     const ListarFuenteTipografiaEncuesta = async () => {
         try {
-            const response = await  ListarEnumeradosService(7)
+            const response = await  ListarEnumeradosService('TIPOGRAFIA')
             setTipografiaApi(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
@@ -205,7 +206,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                     </div>
 
                                     <div className="subcontenedorFuenteTituloselect">
-                                        <select className="fuenteTituloSelect" onChange={handleChangeTipografia}>
+                                        <select className="fuenteTituloSelect" onChange={ (event) => handleChangeTipografia(event, titulo)}>
                                         <option value="">Seleccionar tipografía</option>
                                         {TipografiaApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
@@ -215,14 +216,14 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                     </div>
 
                                     <div className="subcontenedorFuenteTituloselect2">
-                                        <select className="fuenteTituloSelect2" onChange={handleChangeGrosor}>
+                                        <select className="fuenteTituloSelect2" onChange={(event) =>handleChangeGrosor(event, titulo)}>
                                         <option value="">Grosor</option>
                                         {GrosorApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
                                         ))}
 
                                         </select>
-                                        <select className="fuenteTituloSelect3" onChange={handleChangeTamano}>
+                                        <select className="fuenteTituloSelect3" onChange={(event) => handleChangeTamano(event, titulo)}>
                                         <option value="">Tamaño</option>
                                         {TamanoApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
