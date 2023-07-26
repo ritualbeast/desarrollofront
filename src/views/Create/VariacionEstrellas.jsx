@@ -5,6 +5,7 @@ import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { SketchPicker } from 'react-color';
 import ResultadoValoracionEstrellas from './ResultadoValoracionEstrellas';
+import { ListarTipoPregunta } from '../../services/PreguntaServices';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
@@ -21,7 +22,18 @@ const opciones = [
     { id: 4, icono: 'triangle' },
   ];
 
-const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacionEstrellas, onAceptarValoracionEstrellas, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
+const VariacionEstrellas = ({
+    indice, 
+    indiceSec, 
+    save, 
+    contentPreg, 
+    closeVariacionEstrellas, 
+    onAceptarValoracionEstrellas, 
+    handleCargaPreg, 
+    handleEditarPregunta, 
+    handleEliminarPregunta,
+    handleCambiarPregunta
+}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -53,6 +65,7 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
     const [selectedColor, setSelectedColor] = useState({});
     const [selectedIcon, setSelectedIcon] = useState({});
     const [cancelar, setCancelar] = useState('true');
+    const [tipoPregunta, setTipoPregunta] = useState([]);
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -256,6 +269,25 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
         setMoreContendorLogica([true]);
     }, []);
 
+    const listarTipoPregunta = async () => {
+        try {
+            const response = await ListarTipoPregunta();
+            console.log(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas)
+        } catch (error) {
+            console.error(error);
+        }
+      };
+    
+      useEffect(() => {
+        listarTipoPregunta();
+      }, [])
+
+    const handlePregunta = (value) => {
+        console.log(value)
+        handleCambiarPregunta(indice, indiceSec, value)
+    }
+
     return (
     <>
         {!save && (
@@ -277,11 +309,19 @@ const VariacionEstrellas = ({indice, indiceSec, save, contentPreg, closeVariacio
                 {mostrarEditar && (
                     <Container className='variacionEstrellas-container-editar'>
                         <Col>
-                            <select className='selectEditar'>
-                                <option value="" selected disabled hidden>Variación por Estrella</option>
-                                <option value="option1">Opción 1</option>
-                                <option value="option2">Opción 2</option>
-                                <option value="option3">Opción 3</option>
+                            <select 
+                                className='selectEditar'
+                                onChange={(e) => handlePregunta(e.target.value)}
+                            >
+                                {tipoPregunta.map((item) => (
+                                    <option
+                                        key={item.idTipoPregunta}
+                                        value={item.tipo}
+                                        selected={item.idTipoPregunta === 2}
+                                    >
+                                        {item.descripcion}
+                                    </option>
+                                ))}
                             </select>
                         </Col>
 

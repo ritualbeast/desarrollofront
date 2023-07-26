@@ -3,10 +3,22 @@ import '../../styles/cuadroComentarios.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import ResultadoCuadroComentarios from './ResultadoCuadroComentarios';
+import { ListarTipoPregunta } from '../../services/PreguntaServices';
 
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroComentarios, handleCuadroComentarios, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
+const CuadroComentarios = ({
+    indice, 
+    indiceSec, 
+    save, 
+    contentPreg, 
+    closeCuadroComentarios, 
+    handleCuadroComentarios, 
+    handleCargaPreg, 
+    handleEditarPregunta, 
+    handleEliminarPregunta, 
+    handleCambiarPregunta
+}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -20,6 +32,7 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
+    const [tipoPregunta, setTipoPregunta] = useState([]);
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -91,6 +104,24 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
         handleCuadroComentarios(indice, indiceSec, pregunta, cancelar);
     }; 
 
+    const listarTipoPregunta = async () => {
+        try {
+            const response = await ListarTipoPregunta();
+            console.log(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas)
+        } catch (error) {
+            console.error(error);
+        }
+      };
+    
+      useEffect(() => {
+        listarTipoPregunta();
+      }, [])
+
+    const handlePregunta = (value) => {
+        handleCambiarPregunta(indice, indiceSec, value)
+    }
+
     return (
     <>
         {!save && (
@@ -112,11 +143,19 @@ const CuadroComentarios = ({indice, indiceSec, save, contentPreg, closeCuadroCom
                 {mostrarEditar && (
                     <Container className='cuadroComentarios-container-editar'>
                         <Col>
-                            <select className='selectEditar'>
-                                <option value="" selected disabled hidden>Cuadro para Comentario</option>
-                                <option value="option1">Opción 1</option>
-                                <option value="option2">Opción 2</option>
-                                <option value="option3">Opción 3</option>
+                            <select 
+                                className='selectEditar'
+                                onChange={(e) => handlePregunta(e.target.value)}
+                            >
+                                {tipoPregunta.map((item) => (
+                                    <option
+                                        key={item.idTipoPregunta}
+                                        value={item.tipo}
+                                        selected={item.idTipoPregunta === 5}
+                                    >
+                                        {item.descripcion}
+                                    </option>
+                                ))}
                             </select>
                         </Col>
 

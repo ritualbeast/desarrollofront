@@ -15,7 +15,7 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 
-const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas}) => {
+const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -189,6 +189,7 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
                     {activeIcon !== '' && (
                         <NuevaEncuesta 
                             openVistaPrevia={openVistaPrevia}
+                            contentInit={contentInit}
                             handleCloseVistaPrevia={handleCloseVistaPrevia}
                             handleTotalPreguntas={handleTotalPreguntas}
                         />

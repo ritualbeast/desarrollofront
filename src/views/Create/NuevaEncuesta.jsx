@@ -14,6 +14,7 @@ import CuadroComentarios from './CuadroComentarios';
 import ModalEliminarSeccion from './ModalEliminarSeccion';
 import ModalVistaPrevia from './ModalVistaPrevia';
 import EditarTituloSeccion from './EditarTituloSeccion';
+import { ListarTipoPregunta } from '../../services/PreguntaServices';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -31,7 +32,7 @@ const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas}) => {
+const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit}) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
@@ -43,8 +44,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [showOpcionMultiple, setShowOpcionMultiple] = useState(false);
-    const [contentCont, setContentCont] = useState([{tipo:'C', contentPreg:[]}]);
+    const [contentCont, setContentCont] = useState(contentInit);
     const [contentOpt, setContentOpt] = useState([]);
     const [contentVari, setContentVari] = useState([]);
     const [contentCarg, setContentCarg] = useState([]);
@@ -54,6 +54,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [isUp, setIsUp] = useState(true);
     const [seccionVisible, setSeccionVisible] = useState(true)
     const [editarTituloVisible, setEditarTituloVisible] = useState(false);
+    const [tipoPregunta, setTipoPregunta] = useState([]);
+    const [titulo, setTitulo] = useState("Seccion ");
+    const [comentario, setComentario] = useState("");
+    const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(false));
+
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -77,6 +82,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const handleNewContenedor = () => {
       let obj={
         tipo:'C',
+        titulo:titulo,
+        comentario:'',
         contentPreg:[]
       }
       setContentCont((prevCont) => [...prevCont, obj]);
@@ -91,9 +98,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     };    
 
     const handleOptionMultiple = (index) => {
-      setShowOpcionMultiple(true);
       let obj={
-        tipo:'M',
+        tipo:'OM',
         save:false,
         pregunta:'',
         cancelar:'',
@@ -116,7 +122,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
     const handleValoracionEstrellas = (index) => {
       let obj={
-        tipo:'V',
+        tipo:'VE',
         save:false,
         pregunta:'',
         cancelar:'',
@@ -184,48 +190,64 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     };
 
     const handleEditarTitulo = (index) => {
-      let obj={
-        tipo:'E',
-        titulo:'Seccion ' + (index+1),
-        comentario:'',
-      }
-
+      setMostrarContenedorC((prevState) => {
+        const newState = [...prevState];
+        newState[index] = !newState[index];
+        return newState;
+      });
+    
+      const seccionActual = contentCont[index];
+      const previoTitulo = seccionActual.titulo;
+      const previoComentario = seccionActual.comentario;
+    
+      setTitulo(previoTitulo);
+      setComentario(previoComentario);
+    
+      let obj = {
+        tipo: 'C',
+        titulo: previoTitulo,
+        comentario: previoComentario,
+        contentPreg: []
+      };
+    
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].contentPreg];
-      contenidoActual.push(obj);
-
-      nuevoEstado[index].contentPreg = contenidoActual;
-      setContentEdit((prevVari) => [...prevVari, obj]);
-      $(`#editTitulo${index +1}`).addClass("ocultar");
+      nuevoEstado[index] = obj;
+      setContentCont(nuevoEstado);
+      $(`#editTitulo${index + 1}`).addClass("ocultar");
     };
     
-    const handleCancelarEditarTitulo = (indiceSec, indicePreg) => {
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
-      contenidoActual.splice(indicePreg, 1);
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      setContentCont(nuevoEstado);
+    const handleCancelarEditarTitulo = (indiceSec) => {
+      // Obtiene la sección actual del estado "contentCont" en el índice "indiceSec"
+      const seccionActual = contentCont[indiceSec];
+    
+      // Obtiene los datos previos de "titulo" y "comentario" desde la sección actual
+      const previoTitulo = seccionActual.titulo;
+      const previoComentario = seccionActual.comentario;
+    
+      // Actualiza los estados del formulario o componente con los datos previos
+      setTitulo(previoTitulo);
+      setComentario(previoComentario);
+    
+      setMostrarContenedorC((prevState) => {
+        const newState = [...prevState];
+        newState[indiceSec] = !newState[indiceSec];
+        return newState;
+      });
+    
       setEditarTituloVisible(!editarTituloVisible)
     };
-
-    const handleAceptarEditarTitulo = (indiceSec, indicePreg, titulo, comentario) => {
+    
+    const handleAceptarEditarTitulo = (indiceSec, titulo, comentario) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
-      contenidoActual[indicePreg].titulo = titulo
-      contenidoActual[indicePreg].comentario = comentario
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log(nuevoEstado);
+      nuevoEstado[indiceSec] = {
+        ...nuevoEstado[indiceSec],
+        titulo: titulo,
+        comentario: comentario
+      };
       setContentCont(nuevoEstado);
-    };
-
-    const handleGuardarEditarTitulo = (indiceSeccion, indicePreg, nuevaPregunta) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
-      contPregTemp[indicePreg] = nuevaPregunta; 
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
-      setContentCont(tempCont);
-      setEditarTituloVisible(editarTituloVisible)
-      console.log(editarTituloVisible)
+        
+      setMostrarContenedorC(false, indiceSec)
+      setEditarTituloVisible(!editarTituloVisible)
     };
 
     const handleCloseEliminar = () => {
@@ -519,6 +541,23 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(tempCont);
     }
 
+    const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      contenidoActual[indicePreg].tipo = value
+      
+      if (value === 'OM') contenidoActual[indicePreg].pregunta = '';
+      if (value === 'VE') contenidoActual[indicePreg].pregunta = '';
+      if (value === 'MV') contenidoActual[indicePreg].pregunta = '';
+      if (value === 'CA') contenidoActual[indicePreg].pregunta = 'Adjunte su CV';
+      if (value === 'CA') contenidoActual[indicePreg].pregunta2 = 'Suba archivos PDF, PNG';
+      if (value === 'CC') contenidoActual[indicePreg].pregunta = 'Añada un comentario sobre la charla';
+      
+      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      console.log(nuevoEstado);
+      setContentCont(nuevoEstado);
+    }
+
     const handleEliminar = (index) => {
       const nuevoEstado = [...contentCont];
       const contenedorEliminado = nuevoEstado.splice(index, 1)[0];
@@ -539,6 +578,20 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     };
 
     handleTotalPreguntas(contentCont);
+
+    const listarTipoPregunta = async () => {
+      try {
+          const response = await ListarTipoPregunta();
+          console.log(response.data.listTipoPreguntas)
+          setTipoPregunta(response.data.listTipoPreguntas)
+      } catch (error) {
+          console.error(error);
+      }
+    };
+  
+    useEffect(() => {
+        listarTipoPregunta();
+    }, [])
 
   return (
     <>
@@ -571,7 +624,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 onMouseEnter={() => handleMouseEnterEditar(index)}
                                 onMouseLeave={() => handleMouseLeaveEditar(index)}
                             >
-                                <p className='titulo-nuevaEncuesta'>Sección {index +1}</p>
+                                <div style={{width:'96%'}}>
+                                  <p className='titulo-nuevaEncuesta'> {seccion.titulo + (index +1)}</p>
+                                  <p style={{marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                </div>
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
                                   onClick={() => {cambioIcono(index); visibleSeccion(index);}}
@@ -592,9 +648,21 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                               </Button>
                             </Col>
+
+                            <div>
+                              {mostrarContenedorC[index] && seccion.tipo === 'C' && (
+                                <EditarTituloSeccion
+                                  indiceSec={index}
+                                  contentSec={seccion}
+                                  handleEditarCancelar={handleCancelarEditarTitulo}
+                                  handleEditarAceptar={handleAceptarEditarTitulo}
+                                />
+                              )}
+                            </div>
+                            
                             
                             {seccion.contentPreg.map((preg, indexp) => { 
-                              if (preg.tipo == 'M') {
+                              if (preg.tipo == 'OM') {
                                 return <OpcionMultiple 
                                   indice={indexp} 
                                   indiceSec = {index} 
@@ -605,9 +673,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleCargaPreg={handleGuardarOpcionMultiple}
                                   handleEditarPregunta={handleEditarOpcionMultiple}
                                   handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                  handleCambiarPregunta={handleCambiarPregunta}
                                 />
                               }  
-                              if (preg.tipo == 'V') {
+                              if (preg.tipo == 'VE') {
                                 return <VariacionEstrellas 
                                   indice={indexp} 
                                   indiceSec = {index} 
@@ -618,6 +687,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleCargaPreg={handleGuardarValoracionEstrellas}
                                   handleEditarPregunta={handleEditarValoracionEstrellas}
                                   handleEliminarPregunta={handleEliminarValoracionEstrellas}
+                                  handleCambiarPregunta={handleCambiarPregunta}
                                 />
                               }
                               if (preg.tipo == 'CA') {
@@ -631,6 +701,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleCargaPreg={handleGuardarCargaDatos}
                                   handleEditarPregunta={handleEditarCargaDatos}
                                   handleEliminarPregunta={handleEliminarCargaArchivos}
+                                  handleCambiarPregunta={handleCambiarPregunta}
                                 />
                               }
                               if (preg.tipo == 'CC') {
@@ -644,16 +715,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleCargaPreg={handleGuardarCuadroComentarios}
                                   handleEditarPregunta={handleEditarCuadroComentarios}
                                   handleEliminarPregunta={handleEliminarCuadroComentarios}
-                                />
-                              }
-                              if (preg.tipo == 'E') {
-                                return <EditarTituloSeccion
-                                  indice={indexp}
-                                  indiceSec = {index}
-                                  contentPreg = {preg}
-                                  handleEditarCancelar={handleCancelarEditarTitulo}
-                                  handleEditarAceptar={handleAceptarEditarTitulo}
-                                  handleEditarGuardar={handleGuardarEditarTitulo}
+                                  handleCambiarPregunta={handleCambiarPregunta}
                                 />
                               }
                               return '';
@@ -681,27 +743,27 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                               <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
                                 <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Opción multiple</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'OM')?.descripcion}</p>
                                 </Col>
                                     
                                 <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Valoración por estrellas</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'VE')?.descripcion}</p>
                                 </Col>
             
                                 <Col className='container-newContendorPregunta-pt3' onClick={handleMatrizValoracion}>
                                   <span style={{ marginTop: '2%', marginLeft:'5.5%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: tableSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Matríz de valoración</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'MV')?.descripcion}</p>
                                 </Col>
                                       
                                 <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Carga de archivo</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'CA')?.descripcion}</p>
                                 </Col>
             
                                 <Col className='container-newContendorPregunta-pt5' onClick={() => handleCuadroComentarios(index)}>
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>Cuadro para comentarios</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'CC')?.descripcion}</p>
                                 </Col>
                               </Row>
                             </div>

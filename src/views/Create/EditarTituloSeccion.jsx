@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import '../../styles/cuadroComentarios.css';
+import '../../styles/editarTituloSeccion.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 
-const EditarTituloSeccion = ({indice, indiceSec, contentPreg, handleEditarCancelar, handleEditarAceptar, handleEditarGuardar}) => {
+const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handleEditarAceptar, handleEditarGuardar}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [isActiveEditar, setIsActiveEditar] = useState(false);
-    const [titulo, setTitulo] = useState(contentPreg.titulo);
-    const [comentario, setComentario] = useState(contentPreg.comentario);
-    const [tituloTemp, setTituloTemp] = useState(contentPreg.titulo);
-    const [comentarioTemp, setComentarioTemp] = useState(contentPreg.titulo);
+    const [titulo, setTitulo] = useState(contentSec.titulo);
+    const [comentario, setComentario] = useState(contentSec.comentario);
+    const [tituloTemp, setTituloTemp] = useState(contentSec.titulo);
+    const [comentarioTemp, setComentarioTemp] = useState(contentSec.comentario);
+    const [isInputFilled, setIsInputFilled] = useState(false);
+    const [hasChanges, setHasChanges] = useState(false);
     
     const handleEditar = () => {
         setMostrarEditar(true);
@@ -18,32 +20,32 @@ const EditarTituloSeccion = ({indice, indiceSec, contentPreg, handleEditarCancel
     const handleCancelarEditar = () => {
         setTitulo(tituloTemp)
         setComentario(comentarioTemp)
-        handleEditarCancelar(indice, indiceSec);   
+        handleEditarCancelar(indiceSec);   
     }
 
     const handleGuardarEditar = () => {
-        const nuevaPregunta = {
-            tipo:'E',
-            save:false,
-            titulo:titulo,
-            comentario:comentario,
-        };
+        if (!hasChanges) {
+            // No guardar si no hay cambios en el FormControl
+            return;
+          }
         setTituloTemp(titulo)
+        setTitulo('');
+        setIsInputFilled(false);
         setComentarioTemp(comentario)
-        handleEditarAceptar(indice, indiceSec, titulo, comentario);
-    }; 
+        handleEditarAceptar(indiceSec, titulo, comentario);
+    };    
 
     return (
     <>
-        <Container className='container-cuadroComentarios'>
-            <Col className='seccion1-cuadroComentarios'>
-                <Col className={`editar-cuadroComentarios ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
+        <Container className='container-tituloSeccion'>
+            <Col className='seccion1-tituloSeccion'>
+                <Col className={`editar-tituloSeccion ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
                     Editar
                 </Col>
             </Col>
             
             {mostrarEditar && (
-                <Container className='cuadroComentarios-container-editar'>
+                <Container className='tituloSeccion-container-editar'>
                     <Col>
                         <p style={{ marginLeft: '2%', marginBottom: '1%', marginTop:'unset', cursor: 'default' }}>Nombre descripción</p>
                         <FormControl 
@@ -56,7 +58,12 @@ const EditarTituloSeccion = ({indice, indiceSec, contentPreg, handleEditarCancel
                         }} 
                         id='titulo-editar'
                         value={titulo}
-                        onChange={(e) => setTitulo(e.target.value)}
+                        onChange={(e) => {
+                            const inputValue = e.target.value.trim();
+                            setTitulo(e.target.value);
+                            setIsInputFilled(e.target.value.trim() !== '');
+                            setHasChanges(inputValue !== contentSec.titulo);
+                          }}
                         placeholder='Descripción'
                         />
                     </Col>
@@ -82,12 +89,15 @@ const EditarTituloSeccion = ({indice, indiceSec, contentPreg, handleEditarCancel
                 </Container>
             )}
 
-            <Col className='seccion6-cuadroComentarios'>
-                <Button className='cancelarCuadroComentarios' onClick={handleCancelarEditar}>
+            <Col className='seccion6-tituloSeccion'>
+                <Button className='cancelartituloSeccion' onClick={handleCancelarEditar}>
                     Cancelar
                 </Button>
                     
-                <Button className='guardarCuadroComentarios' onClick={handleGuardarEditar}>
+                <Button 
+                    className={isInputFilled ? 'guardartituloSeccion filled' : 'guardartituloSeccion'} 
+                    onClick={handleGuardarEditar}
+                >
                     Guardar
                 </Button>
             </Col>

@@ -4,12 +4,24 @@ import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
+import { ListarTipoPregunta } from '../../services/PreguntaServices';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAceptar, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta}) => {
+const OpcionMultiple = ({
+    indice, 
+    indiceSec, 
+    save, 
+    contentPreg, 
+    closeopmul, 
+    onAceptar, 
+    handleCargaPreg, 
+    handleEditarPregunta, 
+    handleEliminarPregunta,
+    handleCambiarPregunta
+}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -38,6 +50,7 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
+    const [tipoPregunta, setTipoPregunta] = useState([]);
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -231,6 +244,25 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
         setMoreContendorLogica([true]);
     }, []);
 
+    const listarTipoPregunta = async () => {
+        try {
+            const response = await ListarTipoPregunta();
+            console.log(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    useEffect(() => {
+        listarTipoPregunta();
+    }, [])
+
+    const handlePregunta = (value) => {
+        console.log(value)
+        handleCambiarPregunta(indice, indiceSec, value)
+    }
+
     return (
     <>
         {!save && (
@@ -252,11 +284,19 @@ const OpcionMultiple = ({indice, indiceSec, save, contentPreg, closeopmul, onAce
                 {mostrarEditar && (
                     <Container className='opcionMultiple-container-editar'>
                         <Col>
-                            <select className='selectEditar'>
-                                <option value="" selected disabled hidden>Opcion multiple</option>
-                                <option value="option1">Opción 1</option>
-                                <option value="option2">Opción 2</option>
-                                <option value="option3">Opción 3</option>
+                            <select 
+                                className='selectEditar'
+                                onChange={(e) => handlePregunta(e.target.value)}
+                            >
+                                {tipoPregunta.map((item) => (
+                                    <option
+                                        key={item.idTipoPregunta}
+                                        value={item.tipo}
+                                        selected={item.idTipoPregunta === 1}
+                                    >
+                                        {item.descripcion}
+                                    </option>
+                                ))}
                             </select>
                         </Col>
 

@@ -4,7 +4,6 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import svgManager from '../assets/svg';
 import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import Revision from './Create/Revision';
-import ModalVistaPrevia from './Create/ModalVistaPrevia';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -13,7 +12,7 @@ const eyeSVG = svgManager.getSVG('eye');
 const Create = () => {
     const [activeTab, setActiveTab] = useState('diseña');
     const [openVistaPrevia, setVistaPrevia] = useState(false);
-    const [contentCont, setContentCont] = useState([{ tipo: 'C', contentPreg: [] }]);
+    const [contentCont, setContentCont] = useState([{tipo:'C', titulo:'Seccion ', comentario:'', contentPreg:[]}]);
 
     const handleCloseVistaPrevia = () => {
         setVistaPrevia(false);
@@ -37,11 +36,17 @@ const Create = () => {
 
     const recibirTotalPreguntas = (contentCont) => {
         setContentCont(contentCont);
+        console.log(contentCont)
     }
 
     const enviarTotalPreguntas = () => {
         setContentCont(contentCont);
+        console.log(contentCont)
     }
+
+    useEffect(() => {
+        recibirTotalPreguntas();
+    }, [])
 
     return (
         <>
@@ -136,6 +141,7 @@ const Create = () => {
                         openVistaPrevia={openVistaPrevia} 
                         handleCloseVistaPrevia={handleCloseVistaPrevia}
                         handleTotalPreguntas={recibirTotalPreguntas}
+                        contentInit={contentCont}
                     /> : null}
                     {activeTab === 'revision' ? <Revision 
                         regresar={regresarRevision}

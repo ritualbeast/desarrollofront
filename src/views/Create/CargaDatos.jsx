@@ -4,10 +4,24 @@ import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import ResultadoCargaDatos from './ResultadoCargaDatos';
 import { useEffect } from 'react';
+import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import VariacionEstrellas from './VariacionEstrellas';
+import CuadroComentarios from './CuadroComentarios';
 
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, handleCargaArchivos, handleCargaPreg, handleEditarPregunta, handleEliminarPregunta }) => {
+const CargaDatos = ({
+    indice, 
+    indiceSec, 
+    save, 
+    contentPreg, 
+    closeCargaArchivos, 
+    handleCargaArchivos, 
+    handleCargaPreg, 
+    handleEditarPregunta, 
+    handleEliminarPregunta,
+    handleCambiarPregunta
+ }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
     const [mostrarLogica, setMostrarLogica] = useState(false);
@@ -27,6 +41,7 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
     const [cancelar, setCancelar] = useState('true');
+    const [tipoPregunta, setTipoPregunta] = useState([]);
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -114,6 +129,25 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
         handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar);
     };
 
+    const listarTipoPregunta = async () => {
+        try {
+            const response = await ListarTipoPregunta();
+            console.log(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    useEffect(() => {
+        listarTipoPregunta();
+    }, [])
+
+    const handlePregunta = (value) => {
+        console.log(value)
+        handleCambiarPregunta(indice, indiceSec, value)
+    }
+
     return (
     <>
         {!save  && (
@@ -135,13 +169,26 @@ const CargaDatos = ({indice, indiceSec, save, contentPreg, closeCargaArchivos, h
                 {mostrarEditar && (
                     <Container className='cargaDatos-container-editar'>
                         <Col>
-                            <select className='selectEditar'>
-                                <option value="" selected disabled hidden>Carga de archivos</option>
-                                <option value="option1">Opción 1</option>
-                                <option value="option2">Opción 2</option>
-                                <option value="option3">Opción 3</option>
+                            <select 
+                                className='selectEditar'
+                                onChange={(e) => handlePregunta(e.target.value)}
+                            >
+                                {tipoPregunta.map((item) => (
+                                    <option
+                                        key={item.idTipoPregunta}
+                                        value={item.tipo}
+                                        selected={item.idTipoPregunta === 4}
+                                    >
+                                        {item.descripcion}
+                                    </option>
+                                ))}
                             </select>
                         </Col>
+                        {/* {openVE && (
+                            <CuadroComentarios />
+                        )
+
+                        } */}
 
                         <Col>
                             <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>

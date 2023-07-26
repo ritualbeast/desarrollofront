@@ -3,6 +3,7 @@ import '../../styles/revision.css'
 import { FormControl, Col, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import svgManager from '../../assets/svg';
+import { ListarEnumeradosService } from '../../services/EnumeradosServices';
 
 const fileSVG = svgManager.getSVG('file');
 const listRosaSVG = svgManager.getSVG('list-rosa');
@@ -15,10 +16,11 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
     const [contenedorSeleccionado, setContenedorSeleccionado] = useState(null);
     const location = useLocation();
     const [totalConteo, setTotalConteo] = useState()
-    const [selectedOption, setSelectedOption] = useState('Seleccione');
+    const [selectedOption, setSelectedOption] = useState('');
     const [Opcion1, setOpcion1] = useState(false);
     const [Opcion2, setOpcion2] = useState(false);
     const [Opcion3, setOpcion3] = useState(false);
+    const [tipoVigencia, setTipoVigencia] = useState([]);
 
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
@@ -38,11 +40,11 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
       };
 
     const handleOptionChange = (event) => {
-        const selectedValue = event.target.value;
-        setSelectedOption(selectedValue);
-        setOpcion1(selectedValue === 'option1');
-        setOpcion2(selectedValue === 'option2');
-        setOpcion3(selectedValue === 'option3');
+        const selectedId = parseInt(event.target.value);
+        setOpcion1(selectedId === 3);
+        setOpcion2(selectedId === 4);
+        setOpcion3(selectedId === 5);
+        setSelectedOption(event.target.value);
     };
     
     const total = () => {
@@ -60,7 +62,18 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
 
     useEffect(() => {
         total();
+        listarEnumeradosVigencia();
     }, [])
+
+    const listarEnumeradosVigencia = async () => {
+        try {
+            const response = await ListarEnumeradosService('TIPO_VIGENCIA');
+            console.log(response.data.listaEnumerados)
+            setTipoVigencia([{ id: '2', etiqueta: '--Seleccione--' }, ...response.data.listaEnumerados])
+        } catch (error) {
+            console.error(error);
+        }
+    };
     
     return (
         <div>
@@ -88,15 +101,16 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
             <Col className='revision-seccion3'>
                 <Col className='select-vigencia'>
                     <p style={{marginBottom:'unset'}}>Vigencia</p>
-                    <select value={selectedOption} onChange={handleOptionChange}>
-                        <option value="Seleccione">--Seleccione--</option>
-                        <option value="option1">Número de respuestas</option>
-                        <option value="option2">Fecha inicio</option>
-                        <option value="option3">Fecha inicio/fin</option>
+                    <select onChange={handleOptionChange}>
+                        {tipoVigencia.map((item) => (
+                            <option key={item.id} value={item.id} selectedOption>
+                                {item.etiqueta}
+                            </option>
+                        ))}
                     </select>
                 </Col>
                 <Col className='revision-seccion3-2'>
-                    <p style={{marginBottom:'unset', color:'rgba(158, 158, 158, 1)'}}>Numero de preguntas</p>
+                    <p style={{marginBottom:'unset', color:'rgba(158, 158, 158, 1)'}}>Número de preguntas</p>
                     <FormControl 
                         style={{
                             background:'rgba(245, 245, 245, 1)', 
@@ -112,17 +126,17 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
             </Col>
 
             <Col>
-            {Opcion1 && (
+            {Opcion2 && (
                 <Col className='revision-seccion3-1'>
-                    <p style={{marginBottom:'unset'}}>Número de respuestas</p>
+                    <p style={{marginBottom:'unset'}}>{tipoVigencia && tipoVigencia.find(item => item.id === 4)?.etiqueta}</p>
                     <FormControl  
                         type="text" 
                     />
                 </Col>
             )}
-            {Opcion2 && (
-                <Col className='revision-seccion3-1'>
-                    <p style={{marginBottom:'unset'}}>Fecha inicio</p>
+            {Opcion1 && (
+                <Col className='revision-seccion3-2'>
+                    <p style={{marginBottom:'unset'}}>{tipoVigencia && tipoVigencia.find(item => item.id === 3)?.etiqueta}</p>
                     <input
                         type="date"
                         value={selectedDate}
@@ -131,13 +145,23 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
                 </Col>
             )}
             {Opcion3 && (
-                <Col className='revision-seccion3-1'>
-                    <p style={{marginBottom:'unset'}}>Fecha inicio/fin</p>
-                    <input
+                <Col className='revision-seccion3-3'>
+                    <p style={{marginBottom:'unset'}}>{tipoVigencia && tipoVigencia.find(item => item.id === 5)?.etiqueta}</p>
+                    <div style={{display:'flex', width: '102.6%'}}>
+                        <input
                         type="date"
-                        value={selectedDateInicio || selectedDateFin}
+                        value={selectedDateInicio}
                         onChange={handleDateIF}
-                    />
+                        style={{width:'50%', marginRight:'2%'}}
+                        />
+                        <input
+                            type="date"
+                            value={selectedDateFin}
+                            onChange={handleDateIF}
+                            style={{width:'50%'}}
+                        />
+                    </div>
+                    
                 </Col>
             )}
             </Col>
