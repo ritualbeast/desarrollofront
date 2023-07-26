@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/resultadoOpcionMultiple.css'
+import '../../styles/resultadoCuadroComentarios.css'
 import { Button, Container, Col } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import $ from 'jquery'
@@ -9,48 +9,49 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEliminarCPM, handleEditarPregunta }) => {
-  const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [blurBackground, setBlurBackground] = useState(false);
+const ResultadoCuadroComentarios = ({index, indexSec, pregunta, handleEliminarPregunta, handleEditarPregunta}) => {
+    const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [blurBackground, setBlurBackground] = useState(false);
 
-  const handleMouseEnterEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("oculto");
-    $(`#editPreg${index +1}`).addClass("visible");
-    $(`#Preg${index +1}`).addClass("editar-visible");
-  };
+    const handleMouseEnterEditar = (index) => {
+        $(`#editPreg${index +1}`).removeClass("oculto");
+        $(`#editPreg${index +1}`).addClass("visible");
+        $(`#Preg${index +1}`).addClass("editar-visible");
+    };
 
-  const handleMouseLeaveEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("visible");
-    $(`#editPreg${index +1}`).addClass("oculto");
-    $(`#Preg${index +1}`).removeClass("editar-visible");
-  };
+    const handleMouseLeaveEditar = (index) => {
+        $(`#editPreg${index +1}`).removeClass("visible");
+        $(`#editPreg${index +1}`).addClass("oculto");
+        $(`#Preg${index +1}`).removeClass("editar-visible");
+    };
 
-  const handleOpenEliminarPregunta = () => {
-    setOpenEliminarPregunta(true)
-    setBlurBackground(false);
-    setIsModalVisible(false);
-  }
+    const handleOpenEliminarPregunta = () => {
+        setOpenEliminarPregunta(true)
+        setBlurBackground(false);
+        setIsModalVisible(false);
+    }
 
-  const handleCloseEliminar = () => {
-    setOpenEliminarPregunta(false);
-    setBlurBackground(false);
-    setIsModalVisible(false);
-};
+    const handleCloseEliminar = () => {
+        setOpenEliminarPregunta(false);
+        setBlurBackground(false);
+        setIsModalVisible(false);
+    };
 
-  const handleCloseEliminarPregunta = () => {
-    closeEliminarCPM(index);
-    setOpenEliminarPregunta(false)
-  }
+    const handleCloseEliminarPregunta = () => {
+        setOpenEliminarPregunta(false)
+        handleEliminarPregunta(index, indexSec)
+    }
+
   return (
-    <Container className='container-resultadoOpcionMultiple'>
-      <Col>
+    <Container className='container-resultadoCuadroComentarios'>
+        <Col>
             <Col 
                 style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
                 id={`editPreg${index +1}`}
                 className={`contenedor-editar-pregunta`}
             >
-                <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
+                <p className='titulo-editarPregunta'onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
                 <p className='titulo-editarOpciones'>Opciones</p>
                 <p className='titulo-editarMover'>Mover</p>
                 <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -66,25 +67,15 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
             >
                 <p>{index + 1}. {pregunta}</p>
             </Col>
-      </Col>
-      
-      {opciones.map((opcion) => (
-        <Col key={opcion.id} style={{ display: 'flex'}}>
-          <input
-            type={opcion.type}
-            name={`opcion_${index}`}
-            value={opcion.id}
-            checked={opcion.checked}
-            onChange={() => {}}
-            style={{marginRight: '2%'}}
-          />
-          <div style={{ marginBottom: '0.4%'}}>
-            {opcion.text}
-          </div>
         </Col>
-      ))}
+        
+        <textarea
+            style={{ width: '98.8%', border: '1px solid #ccc' }}
+            className="textodePregunta"
+            rows={5} // Ajusta el número de filas según tus necesidades
+        />
 
-      <Modal
+        <Modal
             open={openEliminarPregunta}
             onClose={() => setOpenEliminarPregunta(false)}
             sx={{
@@ -119,7 +110,7 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
                                 <span className='cancelar-eliminar'>Cancelar</span>
                             </Button>
                             <Button className='buttonDeleteEliminar' variant="contained" color="primary"
-                                onClick={handleCloseEliminarPregunta}
+                                onClick={() => {handleCloseEliminarPregunta(indexSec, index)}}
                             >
                                 <span className='eliminar'>Eliminar</span>
                             </Button>
@@ -127,9 +118,9 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
                     </Box>
                 </div>
             </Box>
-      </Modal>
+        </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default ResultadoOpcionMultiple;
+export default ResultadoCuadroComentarios

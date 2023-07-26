@@ -1,0 +1,229 @@
+.container-cargaDatos{
+    border: solid 1px;
+    width: 95.9%;
+    margin-left: 2%;
+    border-radius: 5px;
+    padding-bottom: 2%;
+    padding-top: 1.5%;
+    margin-top: 2%;
+}
+.seccion1-cargaDatos{
+    display: flex;
+}
+.editar-cargaDatos{
+    margin-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.configurar-cargaDatos,
+.logica-cargaDatos{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.editar-cargaDatos:hover,
+.configurar-cargaDatos:hover,
+.logica-cargaDatos:hover{
+    cursor: pointer;
+}
+.editar-cargaDatos.editar-cargaDatos.inactive,
+.configurar-cargaDatos.configurar-cargaDatos.inactive,
+.logica-cargaDatos.logica-cargaDatos.inactive{
+    border-bottom: 3px solid rgba(255, 199, 0, 1);
+}
+.seccion6-cargaDatos{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0.8%;
+    margin-top: 1%;
+}
+.cancelarCargaDatos{
+    width: 10%;
+    color: rgba(32, 32, 32, 1);
+    background: rgba(255, 240, 199, 1);
+    border-radius: 50px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.cancelarCargaDatos:hover{
+    cursor: pointer;
+}
+.guardarCargaDatos{
+    width: 10%;
+    color: rgba(32, 32, 32, 1);
+    background: rgba(255, 199, 0, 1);
+    border-radius: 50px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.guardarCargaDatos:hover{
+    cursor: pointer;
+}
+
+/* Contenido de Editar */
+.cargaDatos-container-editar{
+    background-color: rgba(245, 245, 245, 1);
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.selectEditar {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 96%;
+    margin-left: 2%;
+    margin-top: unset;
+  }
+select:hover {
+    border-color: rgba(194, 194, 194, 1);
+}
+select:focus {
+    outline: none;
+    border-color: #333;
+}
+.textoAgradecimiento{
+    padding: 0.5%;
+}
+.seccion3-cargaDatos-editar{
+    margin-left: 2%;
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+.seccion4-cargaDatos-editar{
+    display: flex;
+    margin-left: 2%;
+}
+.seccion4-1-cargaDatos-editar{
+    display: flex;
+    margin-bottom: unset;
+    margin-left: 2%;
+    width: 7%;
+}
+.seccion4-2-cargaDatos-editar{
+    display: flex;
+    margin-bottom: unset;
+    margin-left: 2%;
+    width: 15%;
+}
+.seccion4-3-cargaDatos-editar,
+.seccion4-4-cargaDatos-editar,
+.seccion4-5-cargaDatos-editar{
+    display: flex;
+    margin-bottom: unset;
+    margin-left: 1%;
+    width: 8%;
+}
+.seccion5-cargaDatos-editar{
+    display: flex;
+    margin-left: 2%;
+}
+.seccion6-cargaDatos-editar{
+    margin-left: 2%;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 37px;
+    height: 29px;
+    margin-bottom: unset;
+    margin-right: 1%;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: rgba(255, 199, 0, 1);
+}
+input:focus + .slider {
+    box-shadow: 0 0 1px rgba(255, 199, 0, 1);
+}
+input:checked + .slider:before {
+    transform: translateX(15px);
+}
+.slider.round {
+    border-radius: 34px;
+}
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Contenido de modificar */
+.cargaDatos-container-configuracion{
+    background-color: rgba(245, 245, 245, 0.306);
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+.seccion1-cargaDatos-configuracion,
+.seccion2-cargaDatos-configuracion,
+.seccion3-cargaDatos-configuracion,
+.seccion4-cargaDatos-configuracion,
+.seccion5-cargaDatos-configuracion{
+    display: flex;
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+.seccion1-1-cargaDatos-configuracion,
+.seccion1-2-cargaDatos-configuracion,
+.seccion1-4-cargaDatos-configuracion,
+.seccion1-5-cargaDatos-configuracion{
+    margin-left: 2%;
+    margin-bottom: 2%;
+}
+.selectConfigurar{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 96%;
+    margin-top: unset;
+}
+.seccion1-5-2-cargaDatos-configuracion{
+    display: flex;
+}
+.contenedorConfigurarTamaño{
+    display: flex;
+}
+.selectConfigurarTamaño1{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 96%;
+    margin-top: unset;
+}
+.selectConfigurarTamaño2{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 96%;
+    margin-left: 2%;
+    margin-top: unset;
+}
+.selectConfigurarValidacion{
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 95%;
+    margin-top: unset;
+}

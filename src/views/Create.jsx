@@ -13,6 +13,7 @@ import DefinicionEncuestaLateral from './Definicion/DefinicionEncuestaLateral';
 import DefinicionEncuestaCuerpo from './Definicion/DefinicionEncuestaCuerpo';
 import DefinicionEncuestaConfiguracion from './Definicion/DefinicionEncuestaConfiguracion';
 
+
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
@@ -373,7 +374,7 @@ const Create = () => {
                             {pasos === 1 
                              ? (
                                 <DefinicionEncuestaCuerpo 
-                                preview2={(previe) => enviarPreview(previe)}
+                                sendPreview={(previe) => enviarPreview(previe)}
                                 sendEstado3={estados}
                                 sendPosicion3={posicion}
                                 sendTamano3={tamanos}

@@ -1,19 +1,15 @@
 
-import React, { useContext, useState } from 'react';
+// import React, { useContext, useState } from 'react';
 
-const EstadoContext = React.createContext();
+// const EstadoContext = React.createContext();
 
-export const EstadoProvider = (props) => {
+// export const useEstadoContext = () => useContext(EstadoContext);
 
-  const [previewContext, setPreviewContext]  = useState(null);
-
-  return (
-    <EstadoContext.Provider value={{ previewContext }}>
-      {props.children}
-    </EstadoContext.Provider>
-  );
-};
-
-export const useEstadoContext = () => {
-  return useContext(EstadoContext);
-};
+// export const EstadoProvider = ({ children }) => {
+//   const  [previewContext, setPreviewContext]  = useEstadoContext();
+//   return (
+//     <EstadoContext.Provider value={{ previewContext }}>
+//       {children}
+//     </EstadoContext.Provider>
+//   );
+// };

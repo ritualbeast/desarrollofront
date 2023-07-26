@@ -7,8 +7,6 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
-import { EstadoProvider } from '../../context/EstadoContext';
-import DefinicionEncuestaCuerpo from '../Definicion/DefinicionEncuestaCuerpo';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -22,7 +20,6 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
-    
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [selectedFile, setSelectedFile] = useState();
@@ -30,6 +27,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const [estado, setEstado] = useState('Guardar');
     const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
     const [pasos, setPasos] = useState(paso);
+    console.log(preview4)
 
     useEffect(() => {
         ListarPosicionImagen();
@@ -128,9 +126,6 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     
   return (
     <>
-       <EstadoProvider>
-            <DefinicionEncuestaCuerpo />
-        </EstadoProvider>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">

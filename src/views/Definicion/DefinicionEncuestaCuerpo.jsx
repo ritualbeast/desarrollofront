@@ -3,33 +3,32 @@ import React, {useState, useEffect, useContext,useRef} from 'react'
 
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
-import { useEstadoContext } from '../../context/EstadoContext';
 import DisenoEncuestaLateralPiePagina from '../Create/DisenoEncuestaLateralPiePagina';
-
+import { crearEncuesta } from '../../services/EncuestasServices';
 
 const chevronupSVG = svgManager.getSVG('chevron-up');
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const edit2SVG = svgManager.getSVG('edit2');
 const trashSVG = svgManager.getSVG('trash');
 
-const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3 }) => {
+const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3, sendPreview }) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
   // const [preview, setPreview] = useState(null);
-  var previewContext = useEstadoContext();
 
   const [posicionSeleccionada, setPosicionSeleccionada] = useState(null);
   const [leerEstado, setLeerEstado] = useState(estado);
   const [leerEstadoPiePagina, setLeerEstadoPiePagina] = useState(sendEstado3);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
-  const tamano = sendTamano3.tamano;
-  const titulotamano = sendTamano3.titulo;
-  const grosor = sendGrosor3.grosor;
-  const tituloGrosor = sendGrosor3.titulo;
-  const tipografia = sendTipografia3.tipografia;
-  const tituloTipografia = sendTipografia3.titulo;
+  
+  const tamano = sendTamano3?.tamano ;
+  const titulotamano = sendTamano3?.titulo;
+  const grosor = sendGrosor3?.grosor;
+  const tituloGrosor = sendGrosor3?.titulo;
+  const tipografia = sendTipografia3?.tipografia;
+  const tituloTipografia = sendTipografia3?.titulo;
   const inputNombreRef = useRef(null);
   const inputDescripcionRef = useRef(null);
   const inputLeyendaRef = useRef(null);
@@ -80,15 +79,19 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
         inputBotonElement.style.fontFamily = tipografia;
       }
 
-    enviarPreview(preview1);
+   enviarPreview(preview1);
+    //enviarPreview2(preview2);
     setLeerPosicion(sendPosicion3);
   }, [preview1, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano]);
 
   const enviarPreview = (previe) => {
     // Verifica que el valor de preview1 sea diferente del valor previo antes de enviarlo
-    previewContext = previe
-    // setPreviewContext(previe);
+    sendPreview(previe);
   };
+  const enviarPreview2 = (previe) => { 
+    //sendPreview2(previe);
+  };
+    
 
   const onSelectFile1 = (e) => {
     const file = e.target.files[0];
@@ -114,9 +117,21 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
     }
   };
 
+  const enviarEncuesta = async () => {
+    try {
+      const response = await  crearEncuesta();
+      console.log(response);
+  } catch (error) {
+      console.error(error);
+  }
+  }
+
 
   return (
     <>
+      <button className="buttonEnviarEncuesta" onClick={enviarEncuesta}>
+        Enviar encuesta
+      </button>
       <div className="tituloDefinicionEncuesta">
          <span 
          > Crear  de Encuesta </span>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../styles/resultadoOpcionMultiple.css'
+import '../../styles/resultadoCargaDatos.css'
 import { Button, Container, Col } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import $ from 'jquery'
@@ -9,7 +9,7 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEliminarCPM, handleEditarPregunta }) => {
+const ResultadoCargaDatos = ({index, indexSec, pregunta, pregunta2, handleEditarPregunta, handleEliminarPregunta}) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [blurBackground, setBlurBackground] = useState(false);
@@ -36,14 +36,15 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
     setOpenEliminarPregunta(false);
     setBlurBackground(false);
     setIsModalVisible(false);
-};
+  };
 
   const handleCloseEliminarPregunta = () => {
-    closeEliminarCPM(index);
+    handleEliminarPregunta(index, indexSec);
     setOpenEliminarPregunta(false)
   }
+  
   return (
-    <Container className='container-resultadoOpcionMultiple'>
+    <Container className='container-resultadoCargaDatos'>
       <Col>
             <Col 
                 style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
@@ -68,21 +69,11 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
             </Col>
       </Col>
       
-      {opciones.map((opcion) => (
-        <Col key={opcion.id} style={{ display: 'flex'}}>
-          <input
-            type={opcion.type}
-            name={`opcion_${index}`}
-            value={opcion.id}
-            checked={opcion.checked}
-            onChange={() => {}}
-            style={{marginRight: '2%'}}
-          />
-          <div style={{ marginBottom: '0.4%'}}>
-            {opcion.text}
-          </div>
-        </Col>
-      ))}
+      <p>{pregunta2}</p>
+
+      <Button className='buttonElegirArchivo'>
+        Elegir archivo
+      </Button>
 
       <Modal
             open={openEliminarPregunta}
@@ -129,7 +120,7 @@ const ResultadoOpcionMultiple = ({ index, indexSec, pregunta, opciones, closeEli
             </Box>
       </Modal>
     </Container>
-  );
-};
+  )
+}
 
-export default ResultadoOpcionMultiple;
+export default ResultadoCargaDatos
