@@ -73,6 +73,7 @@ const ListarEncuestas = async (tipo, valor, nombre= '', orden, pagina, size) => 
 };
 
 const crearEncuesta = async () => {
+  const opcionCrearEncuesta = localStorage.getItem('opcionCrearEncuesta');
   const canal = '808cd0b9-141f-4132-81e9-c3822436191b'; 
 
   const headers = {
@@ -90,7 +91,7 @@ const crearEncuesta = async () => {
     "descripcion": "Comparte tu currículum para consideración de empleo",
     "fechaInicio": "2023-07-11 10:00:00",
     "fechaFin": "2023-07-12 10:00:00",
-    "formatoPresentacion": "C",
+    "formatoPresentacion": opcionCrearEncuesta,
     "enumTipoVigencia": "3",
     "esPublica": "S",
     "cantidadRespuesta": 3,

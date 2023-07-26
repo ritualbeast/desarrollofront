@@ -8,6 +8,7 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
+import { ListarCategoriasService } from '../../services/EncuestasServices';
 
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
@@ -26,6 +27,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
 
     useEffect(() => {  
         ListarVigencia();
+        ListarCategoriaEncuesta();
     }, []);
 
 
@@ -111,7 +113,46 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
             console.error(error);
         }
     };
+
+    // consumo de categorias 
+
+    const [ListarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
+    const ListarCategoriaEncuesta = async () => {
+        try {
+          const response = await  ListarCategoriasService();
+          setListarCategoriaEncuestas(response.data.row);
+        } catch (error) {
+          console.error(error);
+        }
+      };  
+
+    // seleccion de categoria
     
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+    const handleChangeCategoria = (event) => {
+        setCategoriaSeleccionada(event.target.value);
+    };
+
+    // seleccion de vigencia
+
+    const [vigenciaSeleccionada, setVigenciaSeleccionada] = useState(null);
+    const handleChangeVigencia = (event) => {
+        setVigenciaSeleccionada(event.target.value);
+    };
+    
+    // seleccion de fecha inicio
+
+    const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
+    const handleChangeFechaInicio = (event) => {
+        setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
+    };
+
+    // seleccion de fecha fin
+
+    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
+    const handleChangeFechaFin = (event) => {
+        setFechaFinSeleccionada(event.target.value + ' 23:59:59');
+    };
     
   return (
     <>
@@ -153,11 +194,11 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                             <span className="fuenteTitulo">Categoria</span>
                         </div>
                         <div className="subcontenedorFuenteTituloselect">
-                            <select className="fuenteTituloSelect">
-                            <option value="">Desempeño del empleado </option>
-                            <option value="1">Bueno </option>
-                            <option value="2">Malo </option>
-                            <option value="3">Regular </option>
+                            <select className="fuenteTituloSelect" onChange={handleChangeCategoria}>
+                            <option value="">Categoria de encuesta </option>
+                            {ListarCategoriaEncuestas.map((item, index) => (
+                               <option key={index} value={item.idCategoriaEncuesta}>{item.nombre}</option>
+                            ))}
                             </select>
                         </div>
                         <div className="subcontenedorFuenteTitulo">
@@ -167,10 +208,10 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                         
 
                         <div className="subcontenedorFuenteTituloselect">
-                            <select className="fuenteTituloSelect">
+                            <select className="fuenteTituloSelect" onChange={handleChangeVigencia}>
                                 <option value="">Seleccionar tipo de vigencia</option>
                                 {Vigencia.map((item, index) => (
-                                    <option key={index} value={item.etiqueta}>{item.etiqueta}</option>
+                                    <option key={index} value={item.id}>{item.etiqueta}</option>
                                 ))}
                             </select>
                         </div>
@@ -180,7 +221,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                             
                         </div>
                         <div className="subcontenedorFuenteTitulo">
-                            <input type="date" className="inputFechaInicio" />
+                            <input type="date" className="inputFechaInicio" onChange={handleChangeFechaInicio}/>
                         </div>
 
                         <div className="subcontenedorFuenteTitulo">
@@ -189,7 +230,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                         </div>
 
                         <div className="subcontenedorFuenteTitulo">
-                            <input type="date" className="inputFechaFin" />
+                            <input type="date" className="inputFechaFin" onChange={handleChangeFechaFin}/>
                         </div>
                         
                         

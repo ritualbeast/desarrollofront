@@ -5,6 +5,7 @@ import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
 import DisenoEncuestaLateralPiePagina from '../Create/DisenoEncuestaLateralPiePagina';
 import { crearEncuesta } from '../../services/EncuestasServices';
+import { event } from 'jquery';
 
 const chevronupSVG = svgManager.getSVG('chevron-up');
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
@@ -126,6 +127,32 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
   }
   }
 
+  // enviar nombre
+
+  const [capturarNombre, setCapturarNombre] = useState('');
+  const handleEnviarNombre = (e) => {
+    setCapturarNombre(e.target.value);
+    console.log(e.target.value);
+  }
+
+  // enviar descripcion
+
+  const [capturarDescripcion, setCapturarDescripcion] = useState('');
+
+  const handleEnviarDescripcion = (e) => {
+    setCapturarDescripcion(e.target.value);
+    console.log(e.target.value);
+  }
+
+  // enviar leyenda
+
+  const [capturarLeyenda, setCapturarLeyenda] = useState('');
+
+  const handleEnviarLeyenda = (e) => {
+    setCapturarLeyenda(e.target.value);
+    console.log(e.target.value);
+  }
+
 
   return (
     <>
@@ -171,7 +198,7 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
               <input type="text" placeholder=" Ej: Encuesta a personal" 
               id="nombre"
               ref={inputNombreRef}
-              
+              onChange={handleEnviarNombre}
 
               />
           </div>
@@ -182,6 +209,7 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
               <textarea type="text" placeholder="Ingrese una descripción"
               id='descripcion'
               ref={inputDescripcionRef}
+              onChange={handleEnviarDescripcion}
               
               />
           </div>
@@ -204,6 +232,7 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
               <textarea type="text" placeholder="Ingrese una leyenda" 
               id='leyenda'
               ref={inputLeyendaRef}
+              onChange={handleEnviarLeyenda}
               />
           </div>
           

@@ -56,8 +56,10 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
 
     }
 
-    const handleOptionClick = (option) => {
+    const handleOptionClick = (option, optionCrearEncuesta) => {
         setSelectedOption((prevSelectedOption) => (prevSelectedOption === option ? null : option));
+        localStorage.setItem('opcionCrearEncuesta', optionCrearEncuesta);
+        console.log(optionCrearEncuesta);
       };
 
         const handleGoToDefinicion = () => {
@@ -104,7 +106,7 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
           <div className='comentario'>Selecciona una opcion</div>
                 <div className='modalCrearEncuesta_Contenedorbutton'>
                 <div className={`modalCrearEncuesta_button ${selectedOption === 'opcion1' ? 'selected' : ''}`}
-                    onClick={() => handleOptionClick('opcion1')}
+                    onClick={() => handleOptionClick('opcion1','C')}
                 >
                     <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
                     <div className='ContenedorModalComentario'>
@@ -119,7 +121,7 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
 
                 <div
                     className={`modalCrearEncuesta_button ${selectedOption === 'opcion2' ? 'selected' : ''}`}
-                    onClick={() => handleOptionClick('opcion2')}
+                    onClick={() => handleOptionClick('opcion2','P')}
                 >
                     <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: trelloSVG }} />
                     <div className='ContenedorModalComentario'>
@@ -131,7 +133,7 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
                     </div>
                 </div>
                 <div className={`modalCrearEncuesta_button ${selectedOption === 'opcion3' ? 'selected' : ''}`}
-                    onClick={() => handleOptionClick('opcion3')}
+                    onClick={() => handleOptionClick('opcion3','P')}
                 >
                     <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
                     
