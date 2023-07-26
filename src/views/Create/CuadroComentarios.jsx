@@ -17,7 +17,8 @@ const CuadroComentarios = ({
     handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta, 
-    handleCambiarPregunta
+    handleCambiarPregunta,
+    contentCont,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -29,10 +30,14 @@ const CuadroComentarios = ({
     const [preguntaValue, setPreguntaValue] = useState('');
     const [configuracion1, setConfiguracion1] = useState(false);
     const [configuracion2, setConfiguracion2] = useState(false);
+    const [configuracion3, setConfiguracion3] = useState(false);
+    const [configuracion4, setConfiguracion4] = useState(false);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
+    const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
+    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -69,6 +74,14 @@ const CuadroComentarios = ({
         setConfiguracion2(!configuracion2);
     };
 
+    const handleSwitchConfigurar3 = () => {
+        setConfiguracion3(!configuracion3);
+    };
+
+    const handleSwitchConfigurar4 = () => {
+        setConfiguracion4(!configuracion4);
+    };
+
     const handleClearOpcion = () => {
         setSeccionValue('');
         setPreguntaValue('');
@@ -94,14 +107,9 @@ const CuadroComentarios = ({
     }
 
     const handleGuardarCuadroComentarios = () => {
-        const nuevaPregunta = {
-          tipo: 'CC',
-          pregunta: pregunta,
-          save: true,
-          cancelar: cancelar
-        };
         setPreguntaTemp(pregunta)
         handleCuadroComentarios(indice, indiceSec, pregunta, cancelar);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     }; 
 
     const listarTipoPregunta = async () => {
@@ -205,6 +213,35 @@ const CuadroComentarios = ({
                                 </select>
                             </Col>
                         )}
+
+                        <Col className='seccion3-cuadroComentarios-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar información sobre la pregunta</p>
+                        </Col>
+                        {configuracion3 && (
+                            <Col className='seccion1-1-cuadroComentarios-configuracion'>
+                                <p style={{margin: 'unset' }}>Información sobre pregunta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                            </Col>
+                        )}
+
+                        <Col className='seccion3-cuadroComentarios-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Alimentar a banco de preguntas</p>
+                        </Col>
+                        {configuracion4 && (
+                            <Col className='seccion1-1-cuadroComentarios-configuracion'>
+                                <p style={{margin: 'unset' }}>Etiqueta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
+                            </Col>
+                        )}
                     </Container>
                 )}
 
@@ -280,6 +317,9 @@ const CuadroComentarios = ({
                     pregunta={pregunta}
                     handleEditarPregunta={handleEditarPregunta}
                     handleEliminarPregunta = {handleEliminarCuadroComentarios}
+                    informacion = {informacionPregunta}
+                    configuracion3Activa={configuracion3}
+                    preguntaVisibleC={preguntaVisible}
                 />
             </Container>
         )}

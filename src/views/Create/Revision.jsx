@@ -137,6 +137,7 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
             {Opcion1 && (
                 <Col className='revision-seccion3-2'>
                     <p style={{marginBottom:'unset'}}>{tipoVigencia && tipoVigencia.find(item => item.id === 3)?.etiqueta}</p>
+                    <p style={{marginBottom:'unset', marginTop:'0.5%'}}>Inicio</p>
                     <input
                         type="date"
                         value={selectedDate}
@@ -148,18 +149,24 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
                 <Col className='revision-seccion3-3'>
                     <p style={{marginBottom:'unset'}}>{tipoVigencia && tipoVigencia.find(item => item.id === 5)?.etiqueta}</p>
                     <div style={{display:'flex', width: '102.6%'}}>
-                        <input
-                        type="date"
-                        value={selectedDateInicio}
-                        onChange={handleDateIF}
-                        style={{width:'50%', marginRight:'2%'}}
-                        />
-                        <input
-                            type="date"
-                            value={selectedDateFin}
-                            onChange={handleDateIF}
-                            style={{width:'50%'}}
-                        />
+                        <div style={{width:'112%'}}>
+                            <p style={{width:'85%', marginBottom:'unset', marginTop:'1%'}}>Inicio</p>
+                            <input
+                                type="date"
+                                value={selectedDateInicio}
+                                onChange={handleDateIF}
+                                style={{width:'85%', marginRight:'2%'}}
+                            />
+                        </div>
+                        <div style={{width:'100%'}}>
+                            <p style={{width:'85%', marginBottom:'unset', marginTop:'1%'}}>Fin</p>
+                            <input
+                                type="date"
+                                value={selectedDateFin}
+                                onChange={handleDateIF}
+                                style={{width:'95%'}}
+                            />
+                        </div>
                     </div>
                     
                 </Col>

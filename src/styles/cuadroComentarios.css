@@ -204,7 +204,8 @@ input:checked + .slider:before {
     padding-bottom: 2%;
 }
 .seccion1-cuadroComentarios-configuracion,
-.seccion2-cuadroComentarios-configuracion{
+.seccion2-cuadroComentarios-configuracion,
+.seccion3-cuadroComentarios-configuracion{
     display: flex;
     margin-left: 2%;
     margin-bottom: 1%;

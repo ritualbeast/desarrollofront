@@ -52,13 +52,12 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [contentEdit, setContentEdit] = useState([]);
     const [indexEliminar, setIndexEliminar] = useState(null);
     const [isUp, setIsUp] = useState(true);
-    const [seccionVisible, setSeccionVisible] = useState(true)
+    const [seccionVisible, setSeccionVisible] = useState(Array(contentCont.length).fill(true));
     const [editarTituloVisible, setEditarTituloVisible] = useState(false);
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [titulo, setTitulo] = useState("Seccion ");
     const [comentario, setComentario] = useState("");
     const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(false));
-
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -88,6 +87,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
+      setSeccionVisible((prevVisibility) => [...prevVisibility, true]);
 
       console.log(contentCont)
     };
@@ -571,10 +571,14 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setIsUp(!isUp);
     };
 
-    const currentIcon = seccionVisible ? chevronUpSVG : chevronDownBlackSVG;
+    const currentIcon = (index) => (seccionVisible[index] ? chevronUpSVG : chevronDownBlackSVG);
 
     const visibleSeccion = (index) => {
-      setSeccionVisible(!seccionVisible);
+      setSeccionVisible((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[index] = !newVisibility[index];
+        return newVisibility;
+      });
     };
 
     handleTotalPreguntas(contentCont);
@@ -631,13 +635,13 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
                                   onClick={() => {cambioIcono(index); visibleSeccion(index);}}
-                                  dangerouslySetInnerHTML={{ __html: currentIcon }} 
+                                  dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
                                 />
 
                             </Col>
                         </Col>
 
-                        {seccionVisible && (
+                        {seccionVisible[index] && (
                           <div>
                             <Col className='seccion3-nuevaEcuesta'>
                               <Button 
@@ -674,6 +678,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleEditarPregunta={handleEditarOpcionMultiple}
                                   handleEliminarPregunta={handleEliminarOpcionMultiple}
                                   handleCambiarPregunta={handleCambiarPregunta}
+                                  contentCont={contentCont}
                                 />
                               }  
                               if (preg.tipo == 'VE') {
@@ -688,6 +693,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleEditarPregunta={handleEditarValoracionEstrellas}
                                   handleEliminarPregunta={handleEliminarValoracionEstrellas}
                                   handleCambiarPregunta={handleCambiarPregunta}
+                                  contentCont={contentCont}
                                 />
                               }
                               if (preg.tipo == 'CA') {
@@ -702,6 +708,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleEditarPregunta={handleEditarCargaDatos}
                                   handleEliminarPregunta={handleEliminarCargaArchivos}
                                   handleCambiarPregunta={handleCambiarPregunta}
+                                  contentCont={contentCont}
                                 />
                               }
                               if (preg.tipo == 'CC') {
@@ -716,6 +723,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleEditarPregunta={handleEditarCuadroComentarios}
                                   handleEliminarPregunta={handleEliminarCuadroComentarios}
                                   handleCambiarPregunta={handleCambiarPregunta}
+                                  contentCont={contentCont}
                                 />
                               }
                               return '';

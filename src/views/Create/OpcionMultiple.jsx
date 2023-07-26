@@ -20,7 +20,8 @@ const OpcionMultiple = ({
     handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta,
-    handleCambiarPregunta
+    handleCambiarPregunta,
+    contentCont,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -46,11 +47,15 @@ const OpcionMultiple = ({
     const [configuracion3, setConfiguracion3] = useState(false);
     const [configuracion4, setConfiguracion4] = useState(false); 
     const [configuracion5, setConfiguracion5] = useState(false);
+    const [configuracion6, setConfiguracion6] = useState(false);
+    const [configuracion7, setConfiguracion7] = useState(false);
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
+    const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
+    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -158,6 +163,14 @@ const OpcionMultiple = ({
         setConfiguracion5(!configuracion5);
     };
 
+    const handleSwitchConfigurar6 = () => {
+        setConfiguracion6(!configuracion6);
+    };
+
+    const handleSwitchConfigurar7 = () => {
+        setConfiguracion7(!configuracion7);
+    };
+
     const handleDragEnd = (result) => {
         console.log('DragDropContext result:', result);
         if (!result.destination) return; // No se soltó en una ubicación válida
@@ -230,14 +243,9 @@ const OpcionMultiple = ({
     )
     
     const handleGuardarOpcionMultiple = () => {
-        const nuevaPregunta = {
-            tipo: 'M',
-            pregunta: pregunta,
-            save: true,
-            cancelar: cancelar
-        };
         setPreguntaTemp(pregunta)
         onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     useEffect(() => {
@@ -500,6 +508,35 @@ const OpcionMultiple = ({
                                 </Col>
                             </Col>
                         )}
+
+                        <Col className='seccion1-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar6} checked={configuracion6}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar información sobre la pregunta</p>
+                        </Col>
+                        {configuracion6 && (
+                            <Col className='seccion1-1-opcionMultiple-configuracion'>
+                                <p style={{margin: 'unset' }}>Información sobre pregunta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                            </Col>
+                        )}
+
+                        <Col className='seccion1-opcionMultiple-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar7} checked={configuracion7}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Alimentar a banco de preguntas</p>
+                        </Col>
+                        {configuracion7 && (
+                            <Col className='seccion1-1-opcionMultiple-configuracion'>
+                                <p style={{margin: 'unset' }}>Etiqueta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
+                            </Col>
+                        )}
                     </Container>
                 )}
 
@@ -585,6 +622,9 @@ const OpcionMultiple = ({
                     opciones={opcionesRespuesta}
                     handleEditarPregunta={handleEditarPregunta}
                     closeEliminarCPM={handleEliminarOpcionMultiple}
+                    informacion = {informacionPregunta}
+                    configuracion6Activa={configuracion6}
+                    preguntaVisibleC={preguntaVisible}
                 />
             </Container>
         )}
