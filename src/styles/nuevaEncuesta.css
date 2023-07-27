@@ -1,12 +1,35 @@
-.encuesta-Tercerocuerpo2-1{
-    border: solid 1px;
-    border-color: #b8b8b8;
-    width: 99%;
-    border-radius: 10px;
-    margin-left: 1%;
-    margin-top: 0.5%;
-    overflow: auto;
-  }
+.encuesta-Tercerocuerpo2-1 {
+  border: solid 1px;
+  border-color: #b8b8b8;
+  width: 98%;
+  border-radius: 10px;
+  margin-left: 1.5%;
+  margin-top: 0.5%;
+  overflow: auto;
+  /* min-width: 98.3%;
+  min-height: 100%;
+  max-width: 680px;
+  max-height: 720px; */
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar {
+  width: 10px;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.encuesta-Tercerocuerpo2-1::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
   .titulo-encuesta-tercero{
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -49,8 +72,6 @@
     padding-bottom: 0.3%;
     background-color: rgba(237, 237, 237, 1);
   }
-  .contenedor-editar-seccion.oculto {
-  }
   .contenedor-editar-seccion.visible {
     transform: translateY(0);
   }
@@ -65,17 +86,8 @@
   .contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-seccion,
   .contenedor-editar-seccion:hover {
     display: flex;
-  }
-  
-  /* 
-  .contenedor-editar-seccion:hover {
     cursor: pointer;
   }
-  
-  .iconcoCopyRosa:hover {
-    cursor: pointer;
-  }
-  */
   
   .contenedor-tituloNuevaEncuesta{
     display: flex;
@@ -93,11 +105,9 @@
   }
   .contenedor-tituloNuevaEncuesta:hover{
     background-color: rgba(237, 237, 237, 1);
-    cursor: pointer;
   }
   .contenedor-tituloNuevaEncuesta.editar-visible{
     background-color: rgba(245, 245, 245, 1);
-    cursor: pointer;
   }
   .titulo-editarEncuesta{
     font-family: 'Poppins', sans-serif;
@@ -107,7 +117,10 @@
     line-height: 24px;
     color: rgba(255, 65, 151, 1);
     margin-left: 1.5%;
-    width: 87%;
+    width: 5.4%;
+  }
+  .titulo-editarEncuesta:hover{
+    cursor: pointer;
   }
   .titulo-nuevaEncuesta{
     font-family: 'Poppins', sans-serif;
@@ -323,7 +336,7 @@
     background-color: rgba(245, 245, 245, 1);
   }
 
-  /*Estilos para modal*/
+  /*Estilos para modal Duplicar*/
   .encuesta_modalDuplicarSeccion{
     background-color: #fff;
     border-radius: 15px;
@@ -525,4 +538,99 @@
 
   .ocultar{
     display: none;
+  }
+
+  /*Estilos para modal Elininar*/
+  .encuesta_modalEliminarSeccion{
+    background-color: #fff;
+    border-radius: 15px;
+  }
+  .encuesta_modalEliminar_closeicon{
+    text-align: left;
+    display: flex;
+    margin-left: 17px;
+  }
+  .encuesta_modalEliminar_closeicon span{
+    margin-top: 1.3rem;
+    cursor: pointer;
+    margin-right: 4%;
+  }
+
+  .encuesta_modalElimninar__title{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 2;
+    color: #3B3B3B;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    margin-bottom: unset;
+  }
+  .encuesta_modal_cerrarEliminar {
+    float: right;
+    margin-right: 10px;
+    margin-top: 4%;
+    width: 60%;
+  }
+  .buttonCancelarEliminar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 97px;
+    height: 36px;
+    background: rgba(255, 245, 245, 1);
+    border-radius: 40px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin-left: 15%;
+  }
+  .buttonCancelarEliminar:hover{
+    cursor: pointer;
+  }
+  .cancelar-eliminar{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(206, 0, 0, 1);
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  .buttonDeleteEliminar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 4px;
+    width: 123px;
+    height: 36px;
+    background: rgba(206, 0, 0, 1);
+    border-radius: 40px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    width: 36%;
+  }
+  .buttonDeleteEliminar:hover{
+    cursor: pointer;
+  }
+  .eliminar{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: rgba(255, 255, 255, 1);
+    flex: none;
+    order: 0;
+    flex-grow: 0;
   }

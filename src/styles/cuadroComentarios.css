@@ -1,4 +1,4 @@
-.container-opcionMultiple{
+.container-cuadroComentarios{
     border: solid 1px;
     width: 95.9%;
     margin-left: 2%;
@@ -7,36 +7,36 @@
     padding-top: 1.5%;
     margin-top: 2%;
 }
-.seccion1-opcionMultiple{
+.seccion1-cuadroComentarios{
     display: flex;
 }
-.editar-opcionMultiple{
+.editar-cuadroComentarios{
     margin-left: 2%;
     padding-left: 1%;
     padding-right: 1%;
 }
-.configurar-opcionMultiple,
-.logica-opcionMultiple{
+.configurar-cuadroComentarios,
+.logica-cuadroComentarios{
     padding-left: 1%;
     padding-right: 1%;
 }
-.editar-opcionMultiple:hover,
-.configurar-opcionMultiple:hover,
-.logica-opcionMultiple:hover{
+.editar-cuadroComentarios:hover,
+.configurar-cuadroComentarios:hover,
+.logica-cuadroComentarios:hover{
     cursor: pointer;
 }
-.editar-opcionMultiple.editar-opcionMultiple.inactive,
-.configurar-opcionMultiple.configurar-opcionMultiple.inactive,
-.logica-opcionMultiple.logica-opcionMultiple.inactive{
+.editar-cuadroComentarios.editar-cuadroComentarios.inactive,
+.configurar-cuadroComentarios.configurar-cuadroComentarios.inactive,
+.logica-cuadroComentarios.logica-cuadroComentarios.inactive{
     border-bottom: 3px solid rgba(255, 199, 0, 1);
 }
-.seccion6-opcionMultiple{
+.seccion6-cuadroComentarios{
     display: flex;
     justify-content: flex-end;
     margin-right: 0.8%;
     margin-top: 1%;
 }
-.cancelarOpcionMultiple{
+.cancelarCuadroComentarios{
     width: 10%;
     color: rgba(32, 32, 32, 1);
     background: rgba(255, 240, 199, 1);
@@ -44,10 +44,10 @@
     padding-top: 1%;
     padding-bottom: 1%;
 }
-.cancelarOpcionMultiple:hover{
+.cancelarCuadroComentarios:hover{
     cursor: pointer;
 }
-.guardarOpcionMultiple{
+.guardarCuadroComentarios{
     width: 10%;
     color: rgba(32, 32, 32, 1);
     background: rgba(255, 199, 0, 1);
@@ -55,12 +55,12 @@
     padding-top: 1%;
     padding-bottom: 1%;
 }
-.guardarOpcionMultiple:hover{
+.guardarCuadroComentarios:hover{
     cursor: pointer;
 }
 
 /* Contenido de Editar */
-.opcionMultiple-container-editar{
+.cuadroComentarios-container-editar{
     background-color: rgba(245, 245, 245, 1);
     padding-top: 2%;
     padding-bottom: 2%;
@@ -74,25 +74,13 @@
     margin-left: 2%;
     margin-top: unset;
   }
-  select:hover {
+select:hover {
     border-color: rgba(194, 194, 194, 1);
   }
-  select:focus {
+select:focus {
     outline: none;
     border-color: #333;
   }
-.seccion3-opcionMultiple-editar{
-    margin-left: 2%;
-    margin-top: 2%;
-    margin-bottom: 1%;
-}
-.seccion3-1-opcionMultiple-editar,
-.seccion3-2-opcionMultiple-editar,
-.seccion3-3-opcionMultiple-editar,
-.seccion3-4-opcionMultiple-editar{
-    display: flex;
-    margin-bottom: 1%;
-}
 .custom-checkbox {
     display: inline-block;
     width: 18px;
@@ -127,7 +115,7 @@
     background-color: white;
     border-radius: 5px;
 }
-.seccion4-opcionMultiple-editar{
+.seccion4-cuadroComentarios-editar{
     display: flex;
     margin-left: 2%;
 }
@@ -159,7 +147,7 @@
     border: 2px solid rgba(194, 194, 194, 1);
     background-color: rgba(255, 199, 0, 1);
 }
-.seccion5-opcionMultiple-editar{
+.seccion5-cuadroComentarios-editar{
     display: flex;
     margin-left: 2%;
 }
@@ -210,24 +198,20 @@ input:checked + .slider:before {
 }
 
 /* Contenido de modificar */
-.opcionMultiple-container-configuracion{
+.cuadroComentarios-container-configuracion{
     background-color: rgba(245, 245, 245, 0.306);
     padding-top: 2%;
     padding-bottom: 2%;
 }
-.seccion1-opcionMultiple-configuracion,
-.seccion2-opcionMultiple-configuracion,
-.seccion3-opcionMultiple-configuracion,
-.seccion4-opcionMultiple-configuracion,
-.seccion5-opcionMultiple-configuracion{
+.seccion1-cuadroComentarios-configuracion,
+.seccion2-cuadroComentarios-configuracion,
+.seccion3-cuadroComentarios-configuracion{
     display: flex;
     margin-left: 2%;
     margin-bottom: 1%;
 }
-.seccion1-1-opcionMultiple-configuracion,
-.seccion1-2-opcionMultiple-configuracion,
-.seccion1-4-opcionMultiple-configuracion,
-.seccion1-5-opcionMultiple-configuracion{
+.seccion1-1-cuadroComentarios-configuracion,
+.seccion1-2-cuadroComentarios-configuracion{
     margin-left: 2%;
     margin-bottom: 2%;
 }
@@ -239,7 +223,7 @@ input:checked + .slider:before {
     width: 96%;
     margin-top: unset;
 }
-.seccion1-5-2-opcionMultiple-configuracion{
+.seccion1-5-2-cuadroComentarios-configuracion{
     display: flex;
 }
 .contenedorConfigurarTamaño{
@@ -269,55 +253,4 @@ input:checked + .slider:before {
     border-radius: 4px;
     width: 95%;
     margin-top: unset;
-}
-
-/* Contenido de logica */
-.opcionMultiple-container-logica{
-    background-color: rgba(245, 245, 245, 0.306);
-    padding-top: 2%;
-    padding-bottom: 2%;
-}
-.seccion1-opcionMultiple-logica,
-.seccion2-opcionMultiple-logica,
-.seccion3-opcionMultiple-logica,
-.seccion4-opcionMultiple-logica,
-.seccion5-opcionMultiple-logica{
-    display: flex;
-    margin-left: 2%;
-    margin-bottom: 2%;
-}
-.select1Logica1,
-.select2Logica1,
-.select3Logica1,
-.select4Logica1{
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 41.5%;
-    margin-top: unset;
-    margin-right: 4%;
-}
-.select1Logica2,
-.select2Logica2,
-.select3Logica2,
-.select4Logica2{
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 41.5%;
-    margin-top: unset;
-    margin-right: 4%;
-}
-.borrarLogica{
-    width: 6%;
-    color: rgba(206, 0, 0, 1);
-    background-color: #cccccc0e;
-    border-radius: 50px;
-    margin-right: 2%;
-    float: none;
-}
-.borrarLogica:hover{
-    cursor: pointer;
 }

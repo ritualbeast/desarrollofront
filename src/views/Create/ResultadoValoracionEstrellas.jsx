@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef  } from 'react';
 import '../../styles/resultadoOpcionMultiple.css';
 import { Button, Container, Col } from 'react-bootstrap';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import svgManager from '../../assets/svg';
 import $ from 'jquery'
 import { Box, Modal } from '@mui/material';
@@ -8,11 +10,32 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
+const helpCircleSVG = svgManager.getSVG('help-circle');
+const infoSVG = svgManager.getSVG('info');
+const xSVG = svgManager.getSVG('x');
+const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
+const chevronUpSVG = svgManager.getSVG('chevron-up');
 
-function ResultadoValoracionEstrellas({ index, indexSec, pregunta, opciones, color, selectedIcon, handleEditarPregunta, closeEliminarCPVE }) {
+function ResultadoValoracionEstrellas({ 
+    index, 
+    indexSec, 
+    pregunta, 
+    opciones, 
+    color, 
+    selectedIcon, 
+    handleEditarPregunta, 
+    closeEliminarCPVE,
+    informacion,
+    configuracion6Activa,
+    preguntaVisibleC,
+}) {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const targetRef = useRef(null);
+    const [isUp, setIsUp] = useState(true);
+    const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
 
     const ningunaOpcion = {
         id: 'ninguna',
@@ -32,30 +55,64 @@ function ResultadoValoracionEstrellas({ index, indexSec, pregunta, opciones, col
         $(`#editPreg${index +1}`).removeClass("oculto");
         $(`#editPreg${index +1}`).addClass("visible");
         $(`#Preg${index +1}`).addClass("editar-visible");
-      };
+    };
     
       const handleMouseLeaveEditar = (index) => {
         $(`#editPreg${index +1}`).removeClass("visible");
         $(`#editPreg${index +1}`).addClass("oculto");
         $(`#Preg${index +1}`).removeClass("editar-visible");
-      };
+    };
     
-      const handleOpenEliminarPregunta = () => {
+    const handleOpenEliminarPregunta = () => {
         setOpenEliminarPregunta(true)
         setBlurBackground(false);
         setIsModalVisible(false);
-      }
+    };
     
-      const handleCloseEliminar = () => {
+    const handleCloseEliminar = () => {
         setOpenEliminarPregunta(false);
         setBlurBackground(false);
         setIsModalVisible(false);
     };
     
-      const handleCloseEliminarPregunta = () => {
+    const handleCloseEliminarPregunta = () => {
         closeEliminarCPVE(index);
         setOpenEliminarPregunta(false)
-      }
+    };
+
+    const handleIconClick = () => {
+        setShowTooltip(false);
+    };
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltipC" {...props}>
+            <Col>
+                <span dangerouslySetInnerHTML={{ __html: infoSVG }}/>
+                <span
+                    className='btnX'
+                    ref={targetRef} 
+                    onClick={handleIconClick} 
+                    style={{float: 'right'}} 
+                    dangerouslySetInnerHTML={{ __html: xSVG }}
+                />
+            </Col>
+            <Col>{informacion}</Col>
+        </Tooltip>
+    );
+
+    const cambioIcono = (index) => {
+        setIsUp(!isUp);
+    };
+    
+    const currentIcon = (index) => (preguntaVisible[index] ? chevronUpSVG : chevronDownBSVG);
+
+    const visiblePregunta = (index) => {
+      setPreguntaVisible((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[index] = !newVisibility[index];
+        return newVisibility;
+      });
+    };
 
     return (
         <Container className='container-resultadoOpcionMultiple'>
@@ -79,69 +136,104 @@ function ResultadoValoracionEstrellas({ index, indexSec, pregunta, opciones, col
                     onMouseEnter={() => handleMouseEnterEditar(index)}
                     onMouseLeave={() => handleMouseLeaveEditar(index)}
                 >
-                    <p>{index + 1}. {pregunta}</p>
+                    <Col style={{width:'95%', display:'flex'}}>
+                        <p>{index + 1}. {pregunta}</p>
+                        {configuracion6Activa && (
+                            <OverlayTrigger
+                                trigger="click"
+                                show={showTooltip}
+                                target={targetRef.current}
+                                placement="right"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={renderTooltip}
+                                onHide={() => setShowTooltip(false)}
+                            >
+                                <div
+                                    className='help-icon-r'
+                                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                                >
+                                    <span
+                                        ref={targetRef}
+                                        style={{display:'flex', alignItems:'center', justifyContent:'center'}}
+                                        dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                    />
+                                </div>
+                            </OverlayTrigger>
+                        )}
+                    </Col>
+                    <Col style={{width:'5%'}}>
+                        <span 
+                            style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
+                            onClick={() => {cambioIcono(index); visiblePregunta(index);}}
+                            dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
+                        />
+                    </Col>
                 </Col>
             </Col>
 
-            <Col style={{ display: 'flex' }}>
-                {opciones.map((opcion) => (
-                    <Col key={opcion.id} style={{ marginRight: '2%' }}>
-                        <Col>
-                        <div style={{ marginBottom: '25%', textAlign: 'center' }}>
-                            {opcion.text}
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'center'}}>
-                            <span
-                                style={{
-                                    marginLeft: '2%',
-                                    cursor: 'pointer',
-                                    marginTop: '0.8%',
-                                    fill: color[opcion.icono],
-                                    stroke: color[opcion.icono],
-                                }}
-                                dangerouslySetInnerHTML={{
-                                    __html: selectedIcon[opcion.icono] || opcion.icono,
-                                }}
-                            />
-                        </div>
+            {preguntaVisible[index] && (
+                <div>
+                    <Col style={{ display: 'flex' }}>
+                        {opciones.map((opcion) => (
+                            <Col key={opcion.id} style={{ marginRight: '2%' }}>
+                                <Col>
+                                <div style={{ marginBottom: '25%', textAlign: 'center' }}>
+                                    {opcion.text}
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                    <span
+                                        style={{
+                                            marginLeft: '2%',
+                                            cursor: 'pointer',
+                                            marginTop: '0.8%',
+                                            fill: color[opcion.icono],
+                                            stroke: color[opcion.icono],
+                                        }}
+                                        dangerouslySetInnerHTML={{
+                                            __html: selectedIcon[opcion.icono] || opcion.icono,
+                                        }}
+                                    />
+                                </div>
+                                </Col>
+                            </Col>
+                        ))}
+                    </Col>
+
+                    <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                        <Col style={{display: 'flex'}}>
+                            <div>
+                                <input
+                                    type={ningunaOpcion.type}
+                                    name={`opcion_${ningunaOpcion.id}`}
+                                    value={ningunaOpcion.id}
+                                    checked={ningunaOpcion.checked}
+                                    onChange={() => {}}
+                                />
+                            </div>
+                            <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                {ningunaOpcion.text}
+                            </div>
                         </Col>
                     </Col>
-                ))}
-            </Col>
 
-            <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                <Col style={{display: 'flex'}}>
-                    <div>
-                        <input
-                            type={ningunaOpcion.type}
-                            name={`opcion_${ningunaOpcion.id}`}
-                            value={ningunaOpcion.id}
-                            checked={ningunaOpcion.checked}
-                            onChange={() => {}}
-                        />
-                    </div>
-                    <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                        {ningunaOpcion.text}
-                    </div>
-                </Col>
-            </Col>
-
-            <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                <Col style={{display: 'flex'}}>
-                    <div>
-                        <input
-                            type={otro.type}
-                            name={`opcion_${otro.id}`}
-                            value={otro.id}
-                            checked={otro.checked}
-                            onChange={() => {}}
-                        />
-                    </div>
-                    <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                        {otro.text}
-                    </div>
-                </Col>
-            </Col>
+                    <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                        <Col style={{display: 'flex'}}>
+                            <div>
+                                <input
+                                    type={otro.type}
+                                    name={`opcion_${otro.id}`}
+                                    value={otro.id}
+                                    checked={otro.checked}
+                                    onChange={() => {}}
+                                />
+                            </div>
+                            <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                {otro.text}
+                            </div>
+                        </Col>
+                    </Col>
+                </div>
+            )}
 
             <Modal
                 open={openEliminarPregunta}

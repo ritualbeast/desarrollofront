@@ -51,6 +51,8 @@
     gap: 8px;
     border: 1px solid #C5C5C5;
     background-color: #FFFFFF;
+    border: 1px solid #C5C5C5
+
   }
 
   .fila2.seleccionada {
@@ -68,6 +70,7 @@
     margin: 8%;
     height: 2%;
     border: 0.5px solid #202020;
+    border: 0.5px solid #202020
   }
   
 

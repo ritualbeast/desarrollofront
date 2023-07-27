@@ -21,6 +21,9 @@
   align-items: center;
   flex-basis: 80%;
 }
+.encuestas_colsg_create_1.inactive {
+  flex-basis: 90%;
+}
 .encuestas_colsg1{
   display: flex;
   align-items: center;

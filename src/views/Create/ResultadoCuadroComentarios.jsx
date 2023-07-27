@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../../styles/resultadoCuadroComentarios.css'
 import { Button, Container, Col } from 'react-bootstrap';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import svgManager from '../../assets/svg';
 import $ from 'jquery'
 import { Box, Modal } from '@mui/material';
@@ -8,11 +10,29 @@ import ModalEliminarPregunta from './ModalEliminarPregunta';
 
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
+const helpCircleSVG = svgManager.getSVG('help-circle');
+const infoSVG = svgManager.getSVG('info');
+const xSVG = svgManager.getSVG('x');
+const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
+const chevronUpSVG = svgManager.getSVG('chevron-up');
 
-const ResultadoCuadroComentarios = ({index, indexSec, pregunta, handleEliminarPregunta, handleEditarPregunta}) => {
+const ResultadoCuadroComentarios = ({
+    index, 
+    indexSec, 
+    pregunta, 
+    handleEliminarPregunta, 
+    handleEditarPregunta,
+    informacion,
+    configuracion3Activa,
+    preguntaVisibleC,
+}) => {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
+    const targetRef = useRef(null);
+    const [isUp, setIsUp] = useState(true);
+    const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
 
     const handleMouseEnterEditar = (index) => {
         $(`#editPreg${index +1}`).removeClass("oculto");
@@ -43,6 +63,40 @@ const ResultadoCuadroComentarios = ({index, indexSec, pregunta, handleEliminarPr
         handleEliminarPregunta(index, indexSec)
     }
 
+    const handleIconClick = () => {
+        setShowTooltip(false);
+    };
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltipC" {...props}>
+            <Col>
+                <span dangerouslySetInnerHTML={{ __html: infoSVG }}/>
+                <span
+                    className='btnX'
+                    ref={targetRef} 
+                    onClick={handleIconClick} 
+                    style={{float: 'right'}} 
+                    dangerouslySetInnerHTML={{ __html: xSVG }}
+                />
+            </Col>
+            <Col>{informacion}</Col>
+        </Tooltip>
+    );
+
+    const cambioIcono = (index) => {
+        setIsUp(!isUp);
+    };
+    
+    const currentIcon = (index) => (preguntaVisible[index] ? chevronUpSVG : chevronDownBSVG);
+
+    const visiblePregunta = (index) => {
+        setPreguntaVisible((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[index] = !newVisibility[index];
+        return newVisibility;
+      });
+    };
+
   return (
     <Container className='container-resultadoCuadroComentarios'>
         <Col>
@@ -65,15 +119,48 @@ const ResultadoCuadroComentarios = ({index, indexSec, pregunta, handleEliminarPr
                 onMouseEnter={() => handleMouseEnterEditar(index)}
                 onMouseLeave={() => handleMouseLeaveEditar(index)}
             >
-                <p>{index + 1}. {pregunta}</p>
+                <Col style={{width:'95%', display:'flex'}}>
+                    <p>{index + 1}. {pregunta}</p>
+                    {configuracion3Activa && (
+                        <OverlayTrigger
+                            trigger="click"
+                            show={showTooltip}
+                            target={targetRef.current}
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                            onHide={() => setShowTooltip(false)}
+                        >
+                            <div
+                                className='help-icon-r'
+                                onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                            >
+                                <span
+                                    ref={targetRef}
+                                    style={{display:'flex', alignItems:'center', justifyContent:'center'}}
+                                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                />
+                            </div>
+                        </OverlayTrigger>
+                    )}
+                </Col>
+                <Col style={{width:'5%'}}>
+                    <span 
+                        style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
+                        onClick={() => {cambioIcono(index); visiblePregunta(index);}}
+                        dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
+                    />
+                </Col>
             </Col>
         </Col>
         
-        <textarea
-            style={{ width: '98.8%', border: '1px solid #ccc' }}
-            className="textodePregunta"
-            rows={5} // Ajusta el número de filas según tus necesidades
-        />
+        {preguntaVisible[index] && (
+            <textarea
+                style={{ width: '98.8%', border: '1px solid #ccc' }}
+                className="textodePregunta"
+                rows={5} // Ajusta el número de filas según tus necesidades
+            />
+        )}
 
         <Modal
             open={openEliminarPregunta}

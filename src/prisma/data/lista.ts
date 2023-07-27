@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import menuFill from '@iconify-icons/eva/pie-chart-outline';
 import surveyFill from '@iconify-icons/eva/clipboard-outline';
 import ipnFill from '@iconify-icons/eva/radio-button-on-outline';
