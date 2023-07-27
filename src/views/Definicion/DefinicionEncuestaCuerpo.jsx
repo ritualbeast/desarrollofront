@@ -12,7 +12,10 @@ const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const edit2SVG = svgManager.getSVG('edit2');
 const trashSVG = svgManager.getSVG('trash');
 
-const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3, sendPreview }) => {
+const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3, 
+  sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, sendDatosDefinicionEncuesta,
+  sendPosicionLogotipo, sendTamanoLogotipo
+}) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
@@ -23,6 +26,27 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
   const [leerEstado, setLeerEstado] = useState(estado);
   const [leerEstadoPiePagina, setLeerEstadoPiePagina] = useState(sendEstado3);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
+  const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState({nombre: '', descripcion: '', leyenda: ''});
+  const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
+  const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
+  // capturar tamaño de letra para enviar a create
+  const [tamanoNombreDefinicion, setTamanoNombreDefinicion] = useState(0);
+  const [tamanoDescripcionDefinicion, setTamanoDescripcionDefinicion] = useState(0);
+  const [tamanoLeyendaDefinicion, setTamanoLeyendaDefinicion] = useState(0);
+  const [tamanoBotonDefinicion, setTamanoBotonDefinicion] = useState(0);
+  // capturar grosor de letra para enviarl a create
+  const [grosorNombreDefinicion, setGrosorNombreDefinicion] = useState('');
+  const [grosorDescripcionDefinicion, setGrosorDescripcionDefinicion] = useState('');
+  const [grosorLeyendaDefinicion, setGrosorLeyendaDefinicion] = useState('');
+  const [grosorBotonDefinicion, setGrosorBotonDefinicion] = useState('');
+  // capturar tipografia de letra para enviar a create
+  const [tipografiaNombreDefinicion, setTipografiaNombreDefinicion] = useState('');
+  const [tipografiaDescripcionDefinicion, setTipografiaDescripcionDefinicion] = useState('');
+  const [tipografiaLeyendaDefinicion, setTipografiaLeyendaDefinicion] = useState('');
+  const [tipografiaBotonDefinicion, setTipografiaBotonDefinicion] = useState('');
+
+
+
   
   const tamano = sendTamano3?.tamano ;
   const titulotamano = sendTamano3?.titulo;
@@ -34,7 +58,6 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
   const inputDescripcionRef = useRef(null);
   const inputLeyendaRef = useRef(null);
   const inputBotonRef = useRef(null);
-  console.log( 'gro',tituloGrosor,'typ', tituloTipografia,'tam', titulotamano);
 
   useEffect(() => {
     // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
@@ -45,52 +68,74 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
 
       if (titulotamano === 'Nombre de encuesta') {
         inputNombreElement.style.fontSize = `${tamano}px`;
+        setTamanoNombreDefinicion(tamano);
       }   
       if ( tituloGrosor === 'Nombre de encuesta' ) {
         inputNombreElement.style.fontWeight = grosor;
+        setGrosorNombreDefinicion(grosor);
       }   
       if ( tituloTipografia === 'Nombre de encuesta') {
         inputNombreElement.style.fontFamily = tipografia;
+        setTipografiaNombreDefinicion(tipografia);
       } 
        if (titulotamano === 'Descripción de encuesta') {
         inputDescripcionElement.style.fontSize = `${tamano}px`;
+        setTamanoDescripcionDefinicion(tamano);
+
       } 
        if ( tituloGrosor === 'Descripción de encuesta' ) {
         inputDescripcionElement.style.fontWeight = grosor;
+        setGrosorDescripcionDefinicion(grosor);
       }  
       if (tituloTipografia === 'Descripción de encuesta') {
         inputDescripcionElement.style.fontFamily = tipografia;
+        setTipografiaDescripcionDefinicion(tipografia);
       }
       if (titulotamano === 'Leyenda') {
         inputLeyendaElement.style.fontSize = `${tamano}px`;
+        setTamanoLeyendaDefinicion(tamano);
       }
       if ( tituloGrosor === 'Leyenda' ) {
         inputLeyendaElement.style.fontWeight = grosor;
+        setGrosorLeyendaDefinicion(grosor);
       }
       if (tituloTipografia === 'Leyenda') {
         inputLeyendaElement.style.fontFamily = tipografia;
+        setTipografiaLeyendaDefinicion(tipografia);
       }
       if (titulotamano === 'Texto de botones') {
         inputBotonElement.style.fontSize = `${tamano}px`;
+        setTamanoBotonDefinicion(tamano);
       }
       if ( tituloGrosor === 'Texto de botones' ) {
         inputBotonElement.style.fontWeight = grosor;
+        setGrosorBotonDefinicion(grosor);
       }
       if (tituloTipografia === 'Texto de botones') {
         inputBotonElement.style.fontFamily = tipografia;
+        setTipografiaBotonDefinicion(tipografia);
       }
 
-   enviarPreview(preview1);
-    //enviarPreview2(preview2);
+   enviarPreview(preview2);
+    enviarPreview2(preview1);
+    sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
     setLeerPosicion(sendPosicion3);
-  }, [preview1, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano]);
+    setLeerPosicionLogotipo(sendPosicionLogotipo);
+    setLeerTamanoLogotipo(sendTamanoLogotipo);
+
+  }, [preview1, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
+    tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
+    sendPosicionLogotipo, sendTamanoLogotipo
+  ]);
 
   const enviarPreview = (previe) => {
     // Verifica que el valor de preview1 sea diferente del valor previo antes de enviarlo
+    console.log('previe1', previe);
     sendPreview(previe);
   };
   const enviarPreview2 = (previe) => { 
-    //sendPreview2(previe);
+    console.log('previe2', previe);
+    sendPreview2(previe);
   };
     
 
@@ -129,29 +174,24 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
 
   // enviar nombre
 
-  const [capturarNombre, setCapturarNombre] = useState('');
   const handleEnviarNombre = (e) => {
-    setCapturarNombre(e.target.value);
-    console.log(e.target.value);
+    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, nombre: e.target.value });
   }
 
   // enviar descripcion
 
-  const [capturarDescripcion, setCapturarDescripcion] = useState('');
 
   const handleEnviarDescripcion = (e) => {
-    setCapturarDescripcion(e.target.value);
-    console.log(e.target.value);
+    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, descripcion: e.target.value });
   }
 
   // enviar leyenda
 
-  const [capturarLeyenda, setCapturarLeyenda] = useState('');
 
   const handleEnviarLeyenda = (e) => {
-    setCapturarLeyenda(e.target.value);
-    console.log(e.target.value);
+    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, leyenda: e.target.value });
   }
+
 
 
   return (
@@ -170,8 +210,10 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
           
           {selectedFile1 ? (
             <div className="agregarImagenDefinicionEncuesta2">
-              <div className="imagenContainer">
-                <img src={preview1} alt="preview" style={{ maxWidth: '100%', maxHeight: '130px' }} className="imagenLogotipoEncuesta" />
+              <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
+                <img src={preview1} alt="preview" 
+                className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                />
               </div>
               <div className="subcontenedorLogotipo">
                 <div className="buttonLogotipoeditar">

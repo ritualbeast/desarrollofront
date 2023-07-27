@@ -103,32 +103,68 @@ const Create = () => {
             setPasos(2);
         }
         setActiveIcon('Banco de Preguntas')
+
     }
 
     const [Ispreview, setIspreview] = useState('');
     const enviarPreview = (previe) => {
+        console.log(previe)
         setIspreview(previe)
-        }
+    }
 
-        const handleSendEstado = (estado) => {
-            setEstados(estado)
-        }
+    const [Ispreview2, setIspreview2] = useState('');
 
-        const handleSendPosicion = (posicion) => {
-            setPosicion(posicion)
-        }
+    const enviarPreview2 = (previe2) => {
+        setIspreview2(previe2)
+    }
 
-        const handleSendTamano = (tamano, titulo) => {
-            setTamano({ tamano: tamano, titulo: titulo });
-        }
 
-        const handleSendGrosor = (grosor, titulo) => {
-            setGrosor({ grosor: grosor, titulo: titulo });  
-        }
+    const handleSendEstado = (estado) => {
+        setEstados(estado)
+    }
 
-        const handleSendTipografia = (tipografia, titulo) => {
-            setTipografia({ tipografia: tipografia, titulo: titulo });
-        }
+    const handleSendPosicion = (posicion) => {
+        setPosicion(posicion)
+    }
+
+    const handleSendTamano = (tamano, titulo) => {
+        setTamano({ tamano: tamano, titulo: titulo });
+    }
+
+    const handleSendGrosor = (grosor, titulo) => {
+        setGrosor({ grosor: grosor, titulo: titulo });  
+    }
+
+    const handleSendTipografia = (tipografia, titulo) => {
+        setTipografia({ tipografia: tipografia, titulo: titulo });
+    }
+
+
+    // recibir datos de definicion de encuesta cuerpo
+
+    const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(null);
+
+    const handleSendDatosDefinicionEncuesta = (datos) => {
+        // console.log(datos)
+    }
+
+
+    // enviar posicion de logotipo
+
+    const [posicionLogotipo, setPosicionLogotipo] = useState('');
+
+    const handleSendPosicionLogotipo = (posicion) => {
+        setPosicionLogotipo(posicion)
+    }
+
+    // enviar tamaño de logotipo
+
+    const [tamanoLogotipo, setTamanoLogotipo] = useState('');
+
+    const handleSendTamanoLogotipo = (tamano) => {
+        setTamanoLogotipo(tamano)
+    }
+
 
     
 
@@ -345,11 +381,14 @@ const Create = () => {
                                 <DisenoEncuestaLateralPrincipal
                                     datapasos={pasos}
                                     preview3= {Ispreview}
+                                    sendPreviewLogotipo= {Ispreview2}
                                     sendEstado2={(estado) =>  handleSendEstado(estado)}
                                     sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
                                     sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
                                     sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
                                     sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
+                                    sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
+                                    sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
 
                                     />
                                 )}
@@ -375,11 +414,16 @@ const Create = () => {
                              ? (
                                 <DefinicionEncuestaCuerpo 
                                 sendPreview={(previe) => enviarPreview(previe)}
+                                sendPreview2={(previe2) => enviarPreview2(previe2)}
                                 sendEstado3={estados}
                                 sendPosicion3={posicion}
                                 sendTamano3={tamanos}
                                 sendGrosor3={grosor}
                                 sendTipografia3={tipografia}
+                                sendDatosDefinicionEncuesta={(datos) =>  handleSendDatosDefinicionEncuesta(datos)}
+                                sendPosicionLogotipo = {posicionLogotipo}
+                                sendTamanoLogotipo = {tamanoLogotipo}
+
 
 
                                 />

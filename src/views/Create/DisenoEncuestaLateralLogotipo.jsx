@@ -13,7 +13,7 @@ const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 const uploadSVG = svgManager.getSVG('upload');
 
-const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,preview4}) => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,preview4, sendPreviewLogo,sendPosicionImagen, sendTamanoImagen}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -32,6 +32,7 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
 
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
+          sendTamanoImagen(event.target.value);
     };
     
 
@@ -97,11 +98,18 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
 
     const ListarPosicionImagen = async () => {
         try {
-            const response = await  ListarEnumeradosService(10)
+            const response = await  ListarEnumeradosService('POSICION_IMAGEN')
             setPosicionImagen(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
         }
+    };
+
+    // enviar posicion de pie de pagina
+
+
+    const handleChangePosicion = (event) => {
+        sendPosicionImagen(event.target.value);
     };
 
     
@@ -142,9 +150,9 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
                             <span className='cabeceraTitle'>Cabezera</span>
                         </div>
-                        {preview4 != undefined ? (
+                        {sendPreviewLogo != undefined ? (
                         <img
-                            src={preview4}
+                            src={sendPreviewLogo}
                             alt="preview"
                             style={{ height: '92px', width: '100%' }}
                             className="imagenLogotipoEncuesta"
@@ -184,7 +192,7 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
                             <span className='contenedorPosicionLabel'>Posición</span>
                             
                             <div className="contenedorPosicion">
-                                <select className="selectPosicion">
+                                <select className="selectPosicion" onChange={handleChangePosicion}>
                                     {posicionImagen.map((opcion) => (
                                         <option key={opcion.id} value={opcion.etiqueta}>{opcion.etiqueta}</option>
                                     ))    

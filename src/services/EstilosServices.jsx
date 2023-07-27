@@ -1,7 +1,6 @@
 
 
   const ListarEnumeradosService = async (idTipoEnumerado) => {
-    console.log('idTipoEnumerado', idTipoEnumerado);
     try {
       const canal = '808cd0b9-141f-4132-81e9-c3822436191b';
       const headers = {

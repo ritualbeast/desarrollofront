@@ -115,7 +115,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
 
     const ListarPosicionImagen = async () => {
         try {
-            const response = await  ListarEnumeradosService(10)
+            const response = await  ListarEnumeradosService('POSICION_IMAGEN')
             setPosicionImagen(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
@@ -162,7 +162,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
                         
-                        {preview4 != '' ? (
+                        {preview4 != undefined ? (
                         <img
                             src={preview4}
                             alt="preview"
@@ -239,7 +239,6 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                     <div className="contenedorPosicion">
                                         <select className="selectPosicion"  onChange={(e) => handlePosicionClick(e.target.value)}>
                                             <option value="1">Izquierda</option>
-                                            <option value="2">Centro</option>
                                             <option value="3">Derecha</option>
                                         </select>
                                     </div>

@@ -20,7 +20,8 @@ const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPosicion2, sendTamano2, sendGrosor2, sendTipografia2}) => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
+    sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -35,6 +36,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
     const [preview, setPreview] = useState(preview3);
+    const [previewLogotipo, setPreviewLogotipo] = useState(sendPreviewLogotipo); 
+    
+    console.log('preview', preview3);
 
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
@@ -197,6 +201,18 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
     const handleSendTipografia = (tipografia, titulo) => {
         sendTipografia2(tipografia, titulo);
     }
+
+    // enviar posicion de imagen de logotipo
+
+    const handleSendPosicionLogotipo = (posicion) => {
+        sendPosicionLogotipo(posicion);
+    }
+
+    // enviar tamaño de imagen de logotipo
+
+    const handleSendTamanoLogotipo = (tamano) => {
+        sendTamanoLogotipo(tamano);
+    }
     
   return (
     <>
@@ -294,6 +310,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendEstado2,sendPos
             <DisenoEncuestaLaterallogotipo 
               openMenuPrincipal={setOpenDisenoPrincipal}
               closeMenuLogotipo={setOpenDisenoLogotipo}
+              sendPosicionImagen={(posicion) => handleSendPosicionLogotipo(posicion)}
+              sendTamanoImagen={(tamano) => handleSendTamanoLogotipo(tamano)}
+              sendPreviewLogo = {previewLogotipo}
             />
         )    
         }
