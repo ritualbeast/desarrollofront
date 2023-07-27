@@ -1,11 +1,13 @@
-/* .encuesta-container{
-  margin: 4%;
-} */
+.input-container__icon{
+  width: 100%;
+}
+
 /*encabezado filtro y crear*/
 #encuestas-Row {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  margin-top: 3%;
 }
 
 .encuestas__col {
@@ -31,6 +33,7 @@
 .encuestas__colbutton{
   flex-basis: 15%;
   margin: 1%;
+  margin-right: unset;
 }
 
 .input-filtro{
@@ -72,8 +75,11 @@
   right: 0.5rem; /* Ajusta el valor según sea necesario para posicionar el icono */
   transform: translateY(-50%);
   color: #888; /* Color del icono */
-  pointer-events: none; /* Evita que el icono sea interactivo */
+  
 }
+
+
+
 
 
 
@@ -84,11 +90,17 @@
     align-items: center;
   }
   
-  .encuestas-filtrarpor,
-  .encuestas-ordenarpor {
+  .encuestas-filtrarpor {
     display: flex;
     align-items: center;
-    flex-basis: 47%;
+    flex-basis: 50%;
+    margin-bottom: 1rem;
+  }
+
+  .encuestas-ordenarpor{
+    display: flex;
+    align-items: center;
+    flex-basis: 50%;
     margin-bottom: 1rem;
   }
   
@@ -104,19 +116,25 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    width: 70%;
+    width: 81%;
   }
   
   .encuestas-filtrarpor__li {
     display: inline-block;
+    padding-left: 10%;
+    padding-right: 10%;
+    border-bottom: 1px solid #000
   }
 
   .encuestas-filtrarpor__li a {
     text-decoration: none;
     color: #000;
     padding: 0.3rem;
-    border-bottom: 1px solid #000;
+  }
+  .encuestas-filtrarpor__li.active {
+    border-bottom: 2px solid yellow;
+    box-shadow: 0px -3px 0px 0px #FFC700 inset;
+
   }
   
   
@@ -124,7 +142,7 @@
   
   
   .encuestas-ordenarpor__select {
-    width: 70%;
+    width: 80.6%;
     border: solid 1px rgb(150, 148, 148);
   }
   
@@ -134,22 +152,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 1rem;
+    margin-bottom: 3%;
   }
   /* css para cuerpo encuesta */
   .encuestas-cuerpo {
     display: flex;
     flex-wrap: wrap;
-    margin: 2%;
+    width: 101.1%;
   }
   
   .encuestas-cuerpo__col {
-    flex-basis: calc(28% - 2%);
+    flex-basis: 29.85%;
     padding: 1rem;
     border: 1px solid #ccc;
     position: relative;
     border-radius: 3%;
-    margin: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
   }
   
   .encuestas-cuerpo__col::before {
@@ -160,6 +179,7 @@
     width: 10px;
     height: 100%;
     background-color: #FFC700;
+    border-radius: 10px;
   }
   
   .encuestas-cuerpo__col h4 {
@@ -175,6 +195,7 @@
     background-color: #fff;
     width: 100%;
     padding: 1%;
+    border: 1px solid #090909
   }
   
 
@@ -186,7 +207,6 @@
 
   .encuestas-icon{
     background-color: #fff;
-    border-style: none;
   }
   .encuestas-titulo {
     display: flex;
@@ -205,17 +225,38 @@
   }
   
   .encuestas-icon {
-    border: none;
-    padding: 2px;
-    padding-left: 5px;
-    padding-right: 5px;
     cursor: pointer;
+    position: unset !important;
+    display: flex;
+    flex-direction: column;
+    height: 40px !important;
+    justify-content: center !important;
+    padding: unset !important;
+    width: 10%;
   }
+  .modalbancopreguntas_checkicon{
+    margin-left: 7%;
+    margin-top: 7%;
+  }
+  
   .encuestas-icon:hover{
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 40px !important;
+    justify-content: initial !important;
     border-style: solid;
     border-width: 3px;
-    border-color: #FFC700;
+
+    border-color: #FFC700 !important;
     border-radius: 5px;
+  }
+  
+  .MuiSelect-encuestas-icon.encuestas-icon:focus {
+    /* Estilos personalizados */
+    outline: none;
+    box-shadow: none;
   }
   .dropdown-menu-right {
     background-color: #fff;
@@ -227,6 +268,7 @@
     color: #000;
     display: flex;
     padding: 0.5rem;
+    background-color: #ffffff !important;
   }
   .encuesta-item span{
     margin-right: 1rem;
@@ -237,12 +279,11 @@
 
   .encuesta_modalcrear{
     background-color: #fff;
-    border-radius: 15px;
+    border-radius: 5px;
   }
   .encuesta_modalcrear_closeicon{
-    text-align: left;
+    text-align: right;
     display: flex;
-    margin-left: 17px;
   }
   .encuesta_modalcrear_closeicon span{
     margin: 1rem;
@@ -250,78 +291,161 @@
   }
 
   .encuesta_modalcrear__title{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 28px;
-    color: #3B3B3B;
-    flex: none;
-    order: 0;
-    flex-grow: 1;
+    font: poppins;
+    color: gray;
+    margin: 1rem;
   }
-  /* .button-container {
-    display: flex;
-    justify-content: center;
-  }   */
-  .buttoncancelaruser{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 8px 16px;
-    gap: 4px;
-    width: 97px;
-    height: 36px;
-    background: #FFF0C7;
-    border-radius: 40px;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-  }
-  .buttoncancelaruser:hover{
-    cursor: pointer;
-  }
-  .buttondeleteuser{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 8px 16px;
-    gap: 4px;
-    width: 103px;
-    height: 36px;
-    background: #FFC700;
-    border-radius: 40px;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-  }
-  .buttondeleteuser:hover{
-    cursor: pointer;
-  }
-  .cancelar-encuesta, .continuar-encuesta{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 20px;
-    color: #202020;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-  }
-  .encuesta-blur {
-    filter: blur(5px); /* Ajusta el valor de desenfoque según tus preferencias */
-    pointer-events: none; /* Para evitar interacciones con los elementos desenfocados */
-    opacity: 0.7;
-  }
-  .encuesta-blur * {
-    pointer-events: auto;
-  }
+
+  /*Estilos para modal eliminar*/
+
+ .buttondeleteEncuesta{
+  padding: 8px 16px;
+  background: #CE0000;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+ 
+  font-family: 'Circular Std';
+  font-style: normal;
+  color: #FFFFFF;
+  border-style: none;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  font-weight: 600;
+ }
+
+ .buttoncancelarEncuesta{
+  padding: 8px 16px;
+  background: #FFF5F5;
+  border-radius: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+ 
+  font-family: 'Circular Std';
+  font-weight: 600;
+  font-style: normal;
+  color: #CE0000;
+  border-style: none;
+  margin-bottom: 5%;
+  margin-top: 5%;
+ }
+
+ .modalEliminarencuesta_titulo{
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 550;
+  color: #3B3B3B;
+  margin-left: 5%;
+ }
+ .modalEliminarencuesta_titulo2{
+  text-align: center;
+
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+
+  /* Gray_02/8O */
+
+  color: #616161;
+ }
+
+ .modalEliminarencuesta_encabezado{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin:0%
   
-  /* Estilos para cerrar modal */
-  .encuesta_modal_cerrar {
-    float: right;
-    margin-right: 10px;
-  }
+ }
+ .modalEliminarencuesta_encabezado span{
+  margin-left: 5%;
+ }
+ .modalEliminarencuesta_row1{
+  display: flex;
+  flex-direction: row;
+  
+ }
+
+
+ .encuestas-titulo__h4 {
+  text-transform: lowercase;
+}
+
+.encuestas-titulo__h4::first-letter {
+  text-transform: uppercase;
+}
+
+.encuestas__col {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.encuestas__coltitulo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  color: #270089;
+  margin: 0;
+  flex-basis: 25%;
+}
+
+.encuestas__colinput{
+  flex-basis: 60%;
+  margin-right: 1rem;
+}
+
+.input-filtro{
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #E0E0E0 !important;
+}
+
+.btn-notisurvey {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 4px;
+  background: #FFC700;
+  border: none;
+  border-radius: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-filtro {
+  padding-right: 2.5rem; /* Ajusta el valor según sea necesario para dar espacio al icono */
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem; /* Ajusta el valor según sea necesario para posicionar el icono */
+  transform: translateY(-50%);
+  color: #888; /* Color del icono */
+  
+}

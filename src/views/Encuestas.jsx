@@ -1,14 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import '../styles/encuestas.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { BiPlus } from 'react-icons/bi';
-import { Select, Pagination, Box, Modal} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { makeStyles } from "@material-ui/core";
-import { Dropdown } from 'react-bootstrap';
 import svgManager from '../assets/svg';
 import CrearEncuestas from './Encuestas/CrearEncuestas';
-import ModalCrearEncuestas from './Encuestas/ModalCrearEncuestas';
+import ModalCrearEncuesta from './Encuestas/ModalCrearEncuesta';
 
 const pagination = makeStyles({
   root: {
@@ -38,71 +36,84 @@ const paginationStyle = {
   },
 };
 
-  
 const Encuestas = () => {
   const paginationClass = pagination();
   const [opcionFiltro, setOpcionFiltro] = useState('');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
-  const [blurBackground, setBlurBackground] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [openModalCrearEncuesta, setOpenModalCrearEncuesta] = useState(false);
+  const [tipo, setTipo] = useState('A');
+  const [publica, setPublica] = useState('S')
+  const [valor, setValor] = useState('');
+  const [refreshComponent, setRefreshComponent] = useState(false);
+  const [openFiltronombre, setOpenFiltroNombre] = useState(false);
+  const [openFiltronombre2, setOpenFiltroNombre2] = useState(true);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
-  const handleFiltroClick = (opcion) => {
+  const handleFiltroClick = (opcion, valor) => {
+    console.log('entro a la funcion')
+    setInputValue('');
     setOpcionFiltro(opcion);
+    setTipo(opcion);
+    setValor(valor);
+    setOpenFiltroNombre(!openFiltronombre);
+    setOpenFiltroNombre2(!openFiltronombre2);
   };
 
   const handleOpenCrearEncuesta = () => {
-    setOpenCrearEncuesta(true);
-    setBlurBackground(true);
-    setIsModalVisible(true);
+    setOpenModalCrearEncuesta(true);
   };
 
-  const handleCloseEliminar = () => {
-    setOpenCrearEncuesta(false);
-    setBlurBackground(false);
-    setIsModalVisible(false);
+  const  [currentPage, setCurrentPage] = useState(0);
+
+// funcion buscar por nombre filtro
+
+  const handleCategoriaChange = (event) => {
+    setCategoriaSeleccionada(event.target.value);
+    console.log(event.target.value);
+    setInputValue('');
+    setOpcionFiltro('');
+    setTipo('');
+    setValor('');
+    setOpenFiltroNombre(!openFiltronombre);
+    setOpenFiltroNombre2(!openFiltronombre2);
+  };
+// funcion  buscar por nombre
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
   };
 
-  const handleClickOutsideModal = (event) => {
-    const modalContainer = document.getElementById('modal-container');
-    if (!modalContainer.contains(event.target)) {
-      setOpenCrearEncuesta(false);
-      setBlurBackground(false);
-      setIsModalVisible(false);
-    }
+  const handleClick = () => {
+    setTipo('');
+    setValor('');
+    setOpenFiltroNombre2(!openFiltronombre2);
+    setOpenFiltroNombre(!openFiltronombre);
+    setRefreshComponent(!refreshComponent);
+    console.log(inputValue);
+    console.log(opcionFiltro);
   };
-  
-  useEffect(() => {
-    verificarLocalStorage()
-  }, [])
-
-  const verificarLocalStorage = () => {
-    const isAdmin = localStorage.getItem('data')
-    if (isAdmin === null) {
-      window.location.href = global.ROUTE_LOGIN
-    }
-  }
 
   return (
     <>
-    <div
-      id="modal-container"
-      className={`encuesta-container ${blurBackground ? 'encuesta-blur' : ''}`}
-      onClick={handleClickOutsideModal}
-    >
-      <Container fluid>
+      <Container fluid className='encuesta-container'>
         <Row id="encuestas-Row">
           <Col xs={2} className="encuestas__coltitulo">
             <h2 className='encuesta-titulo'>Mis Encuestas</h2>
           </Col>
 
           <Col xs={7} className="encuestas__colinput">
-            <div className="input-container">
+            <div className="input-container" > 
               <input
                 type="text"
                 placeholder="Buscar por nombre"
                 className="input-filtro"
+                value={inputValue}
+                onChange={handleChange}
               />
-              <SearchIcon className="search-icon" />
+              
+              <SearchIcon className="search-icon" onClick={handleClick} />
+              
             </div>
           </Col>
 
@@ -117,102 +128,54 @@ const Encuestas = () => {
             </Button>
           </Col>
         </Row>
+
         <Row className="encuestasFiltros" xs={12}>
           <Col xs={6} className="encuestas-filtrarpor">
             <h4>Filtrar por:</h4>
             <ul className="encuestas-filtrarpor__ul">
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'abiertas' ? 'active' : ''}`} onClick={() => handleFiltroClick('abiertas')}>
-                <a >Abiertas</a>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'A' ? 'active' : ''}`} onClick={() => handleFiltroClick('A', 1)}>
+                <a className={opcionFiltro === 'A' ? 'active' : ''}>Abiertas</a>
               </li>
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'cerradas' ? 'active' : ''}`} onClick={() => handleFiltroClick('cerradas')}>
-                <a >Cerradas</a>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'C' ? 'active' : ''}`} onClick={() => handleFiltroClick('C',1)}>
+                <a  className={opcionFiltro === 'C' ? 'active' : ''}>Cerradas</a>
               </li>
-              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'todas' ? 'active' : ''}`} onClick={() => handleFiltroClick('todas')}>
-                <a>Todas</a>
+              <li className={`encuestas-filtrarpor__li ${opcionFiltro === 'T' ? 'active' : ''}`} onClick={() => handleFiltroClick('T',1)}>
+                <a className={opcionFiltro === 'T' ? 'active' : ''}>Todas</a>
               </li>
             </ul>
           </Col>
 
           <Col xs={6} className="encuestas-ordenarpor">
             <h4>Ordenar por:</h4>
-            <select className="encuestas-ordenarpor__select">
-              <option value="default">Seleccionar Categoría</option>
+            <select className="encuestas-ordenarpor__select" value={categoriaSeleccionada} onChange={handleCategoriaChange}>
+              <option value="">Seleccionar Categoría</option>
               <option value="nombre">Nombre</option>
-              <option value="fecha">Fecha de creación</option>
+              <option value="fechaCreacion">Fecha de creación</option>
             </select>
           </Col>
         </Row>
 
-        {(opcionFiltro === 'abiertas' || opcionFiltro === 'cerradas' || opcionFiltro === 'todas') && (
-          <CrearEncuestas opcionFiltro={opcionFiltro} />
+        {(openFiltronombre) && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor} nombrefiltro = {inputValue} orden={categoriaSeleccionada} />
         )}
-        <Row className="encuestas-paginacion">
-          <Col xs={12} className="encuestas-paginacion__col">
-            <div className={paginationClass.root}>
-            <Pagination
-              count={10}
-              variant="outlined"
-              shape="rounded"
-              sx={paginationStyle}
-            />
-            </div>
-          </Col>
-        </Row>
 
+        {openFiltronombre2 && (
+          <CrearEncuestas opcionFiltro={opcionFiltro} tipofiltro= {tipo} valorfiltro = {valor} nombrefiltro = {inputValue} orden= {categoriaSeleccionada} />
+        )  
+        }
       </Container>
-    </div>
       
-      <Modal
-        open={openCrearEncuesta}
-        onClose={() => setOpenCrearEncuesta(false)}
-        sx={{
-          width: '60%',
-          height: '60%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: 'auto',
-          marginTop: '5%',
-        }}
-        BackdropProps={{
-          onClick: () => {
-            setOpenCrearEncuesta(false);
-            setBlurBackground(false);
-            setIsModalVisible(false);
-          },
-        }}
-      >
-        <Box className="encuesta_modalcrear" sx={{ width: '73%', height: '60%' }}>
-          <div className="encuesta_modalcrear_closeicon">
-            <p className="encuesta_modalcrear__title">Crear encuesta</p>
-            <span
-              dangerouslySetInnerHTML={{ __html: closeSVG }}
-              onClick={() => handleCloseEliminar(false)}
-              className="encuesta_modalcrear__close"
-              style={{ marginLeft: 'auto' }}
-            />
-          </div>
-          
-          <ModalCrearEncuestas/>
-
-          <div className='encuesta_modal_cerrar'>
-            <Box sx={{ width: '50%', display: 'contents'}}>
-                    <Col className="d-flex justify-content-center">
-                      <Button className='buttoncancelaruser' variant="contained" color="primary" onClick={handleCloseEliminar}>
-                        <span className='cancelar-encuesta'>Cancelar</span>
-                      </Button>
-                      <Button className='buttondeleteuser' variant="contained" color="primary"
-                      // onClick={handleEliminar}
-                      >
-                        <span className='continuar-encuesta'>Continuar</span>
-                      </Button>
-                    </Col>
-            </Box>
-          </div>
-        </Box>
-      </Modal>
-
-    </>
+      <ModalCrearEncuesta 
+        open = {openModalCrearEncuesta} 
+        onClose={() => setOpenModalCrearEncuesta(false)} 
+        opcionFiltro={opcionFiltro} 
+        tipofiltro= {tipo} 
+        valorfiltro = {valor} 
+        nombrefiltro = {inputValue}
+        orden={categoriaSeleccionada}
+        publico={publica}
+      /> 
+    </>  
   );
 };
 

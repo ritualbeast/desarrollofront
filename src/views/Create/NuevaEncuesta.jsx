@@ -58,6 +58,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [titulo, setTitulo] = useState("Seccion ");
     const [comentario, setComentario] = useState("");
     const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(false));
+    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -350,14 +351,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log(nuevoEstado);
       setContentCont(nuevoEstado);
-    };
-
-    const handleGuardarOpcionMultiple = (indiceSeccion, indicePreg, nuevaPregunta) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
-      contPregTemp[indicePreg] = nuevaPregunta; 
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
-      setContentCont(tempCont);
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
@@ -410,14 +404,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log(nuevoEstado);
       setContentCont(nuevoEstado);
-    };
-
-    const handleGuardarValoracionEstrellas = (indiceSeccion, indicePreg, nuevaPregunta) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
-      contPregTemp[indicePreg] = nuevaPregunta; 
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
-      setContentCont(tempCont);
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
@@ -464,15 +451,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log('Aceptar Carga Archivo', nuevoEstado);
       setContentCont(nuevoEstado);
-    };
-
-    const handleGuardarCargaDatos = (indiceSeccion, indicePreg, nuevaPregunta) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
-      contPregTemp[indicePreg] = nuevaPregunta; 
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
-      setContentCont(tempCont);
-      console.log('Guardar Carga Archivo', nuevaPregunta)
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarCargaDatos = (indiceSeccion, indicePreg) => {
@@ -523,14 +502,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       console.log(nuevoEstado);
       setContentCont(nuevoEstado);
-    };
-
-    const handleGuardarCuadroComentarios = (indiceSeccion, indicePreg, nuevaPregunta) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
-      contPregTemp[indicePreg] = nuevaPregunta; 
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
-      setContentCont(tempCont);
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarCuadroComentarios = (indiceSeccion, indicePreg) => {
@@ -674,11 +646,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   contentPreg = {preg}
                                   closeopmul={handleCancelarOpcionMultiple} 
                                   onAceptar={handleAceptarOpcionMultiple} 
-                                  handleCargaPreg={handleGuardarOpcionMultiple}
                                   handleEditarPregunta={handleEditarOpcionMultiple}
                                   handleEliminarPregunta={handleEliminarOpcionMultiple}
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
+                                  preguntaVisibleOpen={preguntaVisible}
                                 />
                               }  
                               if (preg.tipo == 'VE') {
@@ -689,11 +661,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   contentPreg = {preg}
                                   closeVariacionEstrellas={handleCancelarValoracionEstrellas}
                                   onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
-                                  handleCargaPreg={handleGuardarValoracionEstrellas}
                                   handleEditarPregunta={handleEditarValoracionEstrellas}
                                   handleEliminarPregunta={handleEliminarValoracionEstrellas}
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
+                                  preguntaVisibleOpen={preguntaVisible}
                                 />
                               }
                               if (preg.tipo == 'CA') {
@@ -704,11 +676,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   contentPreg = {preg}
                                   closeCargaArchivos={handleCancelarCargaArchivos}
                                   handleCargaArchivos={handleAceptarCargaArchivos}
-                                  handleCargaPreg={handleGuardarCargaDatos}
                                   handleEditarPregunta={handleEditarCargaDatos}
                                   handleEliminarPregunta={handleEliminarCargaArchivos}
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
+                                  preguntaVisibleOpen={preguntaVisible}
                                 />
                               }
                               if (preg.tipo == 'CC') {
@@ -719,11 +691,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   contentPreg = {preg}
                                   closeCuadroComentarios={handleCancelarCuadroComentarios}
                                   handleCuadroComentarios={handleAceptarCuadroComentarios}
-                                  handleCargaPreg={handleGuardarCuadroComentarios}
                                   handleEditarPregunta={handleEditarCuadroComentarios}
                                   handleEliminarPregunta={handleEliminarCuadroComentarios}
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
+                                  preguntaVisibleOpen={preguntaVisible}
                                 />
                               }
                               return '';

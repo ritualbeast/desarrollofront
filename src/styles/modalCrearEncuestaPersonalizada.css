@@ -1,0 +1,155 @@
+.imagenModal{
+    border-start-start-radius: 20px;
+    border-start-end-radius: 20px;
+}
+.imagenColModal img{
+    height: 110px;
+}
+.modalEncuestasPersonalizadas_container {
+    width: 97%;
+    max-height: 365px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+.modalCrearEncuestaPersonalizada_rowpreguntas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.modalCrearEncuestaPersonalizada_rowpreguntas::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+  }
+  .modalCrearEncuestaPersonalizada_rowpreguntas::-webkit-scrollbar-track {
+    background-color: #ddd;
+  }
+  .modalCrearEncuestaPersonalizada_rowpreguntas::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+  .modalCrearEncuestaPersonalizada_rowpreguntas::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+.comentario {
+    margin-left: 2.8%;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #616161;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}
+.input-container{
+    padding: 10px;
+    padding-left: 20px !important;
+}
+.input-filtroPersonalizado{
+    width: 98% !important;
+    border: 1px solid #E0E0E0 !important;
+}
+.modalCrearEncuesta_Contenedorbutton {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 1.5%;
+  }
+.modalCrearEncuesta_button{
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: solid 2px;
+    border-color: #c6c4c4;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #3F3F3F;
+    cursor: pointer;
+    width: 43.7%;
+    display: flex;
+    width: 335px;
+}
+
+.modalCrearEncuesta_button.selected {
+    border-color: #565656;
+  }  
+.modal1Comentario, .modal2Comentario{
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.encuesta_modalcrear_title_plantilla{
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: rgba(39, 0, 137, 1);
+    margin-left: 2.5%;
+}
+
+.encuesta_modal_cerrar{
+    gap: 8px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    float: right;
+}
+
+.buttoncancelarEncuest{
+    width: Hug (97px);
+    height: Hug (36px);
+    padding: 8px 16px 8px 16px;
+    border-radius: 40px;
+    gap: 4px;
+    background: #FFF0C7;
+    border-style: none;
+}
+
+.buttonContinuar{
+    width: Hug (103px);
+    height: Hug (36px);
+    padding: 8px 16px 8px 16px;
+    border-radius: 40px;
+    gap: 4px;
+    background: #FFC700;
+    border-style: none;
+}
+
+.disabled {
+    background: #F5F5F5;
+}
+
+.disabled span{
+    color: #C2C2C2;
+}
+.search-icon{
+    width: 3rem !important;
+}
+
+.modalbancopreguntas_colpreguntas_{
+    display: block;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border-style: solid ;
+    border-width: 1px;
+    border-color: #bebebe;
+    border-radius: 20px;
+}
+
+.modalbancopreguntas_colpreguntas_.clicked {
+    border: 2px solid #000000;
+  }

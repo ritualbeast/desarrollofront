@@ -30,6 +30,7 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
           }
         setTituloTemp(titulo)
         setTitulo('');
+        setComentario('');
         setIsInputFilled(false);
         setComentarioTemp(comentario)
         handleEditarAceptar(indiceSec, titulo, comentario);
@@ -82,7 +83,12 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
                             style={{ width: '94.8%', border: '1px solid #ccc' }}
                             className="textoAgradecimiento"
                             value={comentario}
-                            onChange={(e) => setComentario(e.target.value)}
+                            onChange={(e) => {
+                                const inputValue = e.target.value.trim();
+                                setComentario(e.target.value)
+                                setIsInputFilled(e.target.value.trim() !== '');
+                                setHasChanges(inputValue !== contentSec.comentario);
+                            }}
                             rows={5} // Ajusta el número de filas según tus necesidades
                         />
                     </Col>

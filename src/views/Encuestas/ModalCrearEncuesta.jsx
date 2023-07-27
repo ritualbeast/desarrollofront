@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { Col, Button } from 'react-bootstrap';
-import {Box, Modal} from '@mui/material';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+
+import { Select, Pagination, Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
+import {EliminarEncuesta} from '../../services/EncuestasServices';
 import '../../styles/modalCrearEncuesta.css';
 import ModalCrearEncuesta2 from './ModalCrearEncuesta2';
 import ModalCrearEncuestaPersonalizada from './ModalCrearEncuestaPersonalizada';
@@ -12,64 +14,85 @@ const alertSVG = svgManager.getSVG('alert');
 const trelloSVG = svgManager.getSVG('trello');
 const PlusSqareSVG = svgManager.getSVG('plus-sqare');
 
-const ModalCrearEncuesta = ({ open, onClose }) => {
+// crear consumo categoria de encuestas
+
+
+const ModalCrearEncuesta = ({ open, onClose, tipofiltro, valorfiltro, nombrefiltro, orden, publico}) => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [selectedOption, setSelectedOption] = useState(null);
     const [openModalCrearEncuesta2, setOpenModalCrearEncuesta2] = useState(false);
     const [openModalCrearEncuestaPersonalizada, setOpenModalCrearEncuestaPersonalizada] = useState(false);
 
+    // create a preview as a side effect, whenever selected file is changed
     useEffect(() => {
-      if (!selectedFile) {
-        setPreview(undefined)
-          return
-      }
-      const objectUrl = URL.createObjectURL(selectedFile)
-      setPreview(objectUrl)
+        if (!selectedFile) {
+            setPreview(undefined)
+            return
+        }
 
-      return () => URL.revokeObjectURL(objectUrl)
+        const objectUrl = URL.createObjectURL(selectedFile)
+        setPreview(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
     }, [selectedFile])
 
     const onSelectFile = e => {
-      if (!e.target.files || e.target.files.length === 0) {
-        setSelectedFile(undefined)
-          return
-      }
-      setSelectedFile(e.target.files[0])
+        if (!e.target.files || e.target.files.length === 0) {
+            setSelectedFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+        setSelectedFile(e.target.files[0])
     }
 
     const handleCancelar = () => {
-      onClose();
-      setPreview(undefined)
-      setSelectedFile(undefined)
+        onClose();
+        // clear the preview
+        setPreview(undefined)
+        setSelectedFile(undefined)
+
     }
 
     const handleOptionClick = (option) => {
-      setSelectedOption((prevSelectedOption) => (prevSelectedOption === option ? null : option));
+        setSelectedOption((prevSelectedOption) => (prevSelectedOption === option ? null : option));
     };
     
     const handleOpenModalCrearEncuesta2 = () => {
-      if (selectedOption === 'opcion1') {
-        setOpenModalCrearEncuesta2(true);
-      }
-      else if (selectedOption === 'opcion2') {
-        setOpenModalCrearEncuestaPersonalizada(true);
-      }
-      onClose();
+        if (selectedOption === 'opcion1') {
+            setOpenModalCrearEncuesta2(true);
+        }
+        else if (selectedOption === 'opcion2') {
+            setOpenModalCrearEncuestaPersonalizada(true);
+        }
+        onClose();
     };
 
     const handleCerrarModalCrearEncuesta2 = () => {
-      setOpenModalCrearEncuesta2(false); 
+        setOpenModalCrearEncuesta2(false);
+        
     };
 
     const handleCerrarModalCrearEncuestaPersonalizada = () => {
-      setOpenModalCrearEncuestaPersonalizada(false);
+        setOpenModalCrearEncuestaPersonalizada(false);
     };
 
   return (
     <>
         <ModalCrearEncuesta2 open={openModalCrearEncuesta2} onClose={handleCerrarModalCrearEncuesta2} />
-        <ModalCrearEncuestaPersonalizada open={openModalCrearEncuestaPersonalizada} onClose={handleCerrarModalCrearEncuestaPersonalizada} />
+        
+        <ModalCrearEncuestaPersonalizada 
+            open={openModalCrearEncuestaPersonalizada} 
+            onClose={handleCerrarModalCrearEncuestaPersonalizada}
+            tipofiltro= {tipofiltro} 
+            valorfiltro = {valorfiltro} 
+            nombrefiltro = {nombrefiltro}
+            orden={orden}
+            publico={publico}
+        />
+        
         <Modal
             open={open}
             onClose={onClose}
@@ -80,16 +103,16 @@ const ModalCrearEncuesta = ({ open, onClose }) => {
             }}
         >
             <Box
-              style={{
-                  backgroundColor: 'white',
-                  borderRadius: '20px',
-                  maxWidth: '1052px',
-                  maxHeight: '307px',
+            style={{
+                backgroundColor: 'white',
+                borderRadius: '20px',
+                maxWidth: '1052px',
+                maxHeight: '307px',
 
-                  overflow: 'auto',
-                  minWidth: '40%',
-                  backdropFilter: 'blur(10px)',
-              }}
+                overflow: 'auto',
+                minWidth: '40%',
+                backdropFilter: 'blur(10px)',
+            }}
             >
                 <div className="encuesta_modalcrear_closeicon">
                     <p className="encuesta_modalcrear__title">Crear encuesta</p>
@@ -137,6 +160,7 @@ const ModalCrearEncuesta = ({ open, onClose }) => {
             </Box>
         </Modal>
     </>
+    
   );
 };
 export default ModalCrearEncuesta;

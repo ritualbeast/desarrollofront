@@ -6,9 +6,6 @@ const VistaPrevia = ({contentCont, showModal}) => {
     return null;
   }
 
-  // if (!Array.isArray(showModal) || showModal.length === 0) {
-  //   return null;
-  // }
   console.log(contentCont)
 
   return (
@@ -27,7 +24,7 @@ const VistaPrevia = ({contentCont, showModal}) => {
 
                   {Array.isArray(seccion.contentPreg) &&
                     seccion.contentPreg.map((pregunta, indicePreg) => {
-                      if (pregunta.tipo === 'M' && pregunta.save) {
+                      if (pregunta.tipo === 'OM' && pregunta.save) {
                           return (
                               <Container key={indicePreg} style={{marginLeft:'1.4%', width: '92.8%'}} className='container-resultadoOpcionMultiple'>
                                 <Col>
@@ -51,7 +48,7 @@ const VistaPrevia = ({contentCont, showModal}) => {
                                 ))}
                               </Container>
                           );
-                      } else if (pregunta.tipo === 'V' && pregunta.save) {
+                      } else if (pregunta.tipo === 'VE' && pregunta.save) {
                           const { opciones, ningunaOpcion, otraOpcion } = pregunta;
                           if (!Array.isArray(opciones) || opciones.length === 0) {
                             return null;

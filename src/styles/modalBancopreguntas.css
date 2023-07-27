@@ -1,0 +1,290 @@
+.modalbancopreguntas_rowfiltro{
+    display: flex;
+    width: 100%;
+    margin: 1%;
+}
+.modalbancopreguntas_col1{
+    width: 20%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.modalbancopreguntas_col2{
+    width: 73%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 1%;
+    margin-right: 1%;
+    position: relative;
+}
+
+.modalbancopreguntas_coltitle p{
+    
+    
+    font-family: Poppins;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #270089;
+    margin: 2%;
+    
+}
+.modalbancopreguntas_coltitle2{
+    width: 20%;
+    text-align: end;
+    margin: 1%;
+}
+.modalbancopreguntas_coltitle2 p{
+    color: #616161 ;    
+}
+.modalbancopreguntas_coltitle{
+    width: 80%;
+}
+
+.modalbancopreguntas_coltitle_equis{
+    text-align: right;
+}
+
+.modalbancopreguntas_rowtitle{
+    display: flex;
+    width: 100%;
+    margin: 1%;
+}
+
+.modalbancopreguntas_select{
+    border-color: #c5c0c0;
+    color: #757575  ;
+    font-size: 14px;
+    
+}
+
+.modalbancopreguntas_input{
+    border-color: #E0E0E0 !important;
+    color: #757575  !important;
+    font-size: 14px !important;
+    
+}
+
+/*Estilos titulo despues del filtro*/
+
+.modalbancopreguntas_rowtitle2{
+    display: flex;
+    margin: 0%;
+    padding: 0%;
+    height: 20px !important;
+}
+.modalbancopreguntas_coltitle2{
+    width: 50%;
+    text-align: end;
+}
+.modalbancopreguntas_coltitle2x{
+    width: 50%;
+    text-align: start;
+    margin-left:  2%;
+    height: 20px !important;
+}
+.modalbancopreguntas_coltitle2x p{
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color : #878787;
+
+}   
+.modalbancopreguntas_coltitle3{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 55px !important;
+}
+.modalbancopreguntas_seleccionadas{
+    padding: 1%;
+    color: #FF4197;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: right;
+
+}
+.modalbancopreguntas_preguntastotal{
+    margin-right: 2%;
+    padding: 1%;
+    color: #757575;
+    font-family: 'Poppins';
+    font-style: normal;
+}
+
+
+/*Estilos de la tabla*/ 
+.modalbancopreguntas_colpreguntas{
+    
+    display: block;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border-style: solid ;
+    border-width: 1px;
+    border-color: #bebebe;
+    border-radius: 20px;
+    
+}
+
+.modalbancopreguntas_colpreguntas.clicked {
+    border: 2px solid #000000;
+  }
+
+.modalbancopreguntas_acordion{
+    margin: 0;
+    padding: 0;
+    color : #757575;
+    font-weight: initial;
+}
+
+.modalbancopreguntas_ul{
+    margin: 0;
+    padding: 10%;
+    list-style: outside;
+    color : #757575;
+    font-weight: initial;
+}
+
+
+.modalbancopreguntas_rowpreguntas{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.modalbancopreguntas_divpreguntas
+{
+    overflow: auto;
+    
+}
+
+
+.modalbancopreguntas_divmenudesplegable{
+    margin: 3%;
+    display: flex;
+    justify-content: center !important;
+}
+.modalbancopreguntas_divmenudesplegableSelect{
+    
+    width: 90% !important;
+    background-color: #F5F5F5 !important;
+    font-weight: bold;
+    
+    
+}
+.modalbancopreguntas_divpreguntas {
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 3%;
+    margin-bottom: 0%;
+    min-width: 96.8%;
+    min-height: 95%;
+    max-width: 680px;
+    max-height: 230px;
+}
+
+.modalbancopreguntas_divpreguntas::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modalbancopreguntas_divpreguntas::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+.modalbancopreguntas_divpreguntas::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+.modalbancopreguntas_divpreguntas::-webkit-scrollbar-track {
+    background-color: #F1F1F1;
+    border-radius: 5px;
+}
+
+
+.modalbancopreguntas_divpreguntasbody{
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-top: 5%;
+    margin-bottom: 0%;
+}	
+
+/*Estilos de los botones*/
+
+.buttondeleteEncuestas{
+    padding: 8px 16px;
+    background: #FFC700;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    border-style: none;
+    text-align: left;
+    margin-bottom: 5%;
+    margin-top: 5%;
+   }
+  
+   .buttoncancelarEncuestas{
+    padding: 8px 16px;
+    background: #FFF0C7 ;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+   
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    border-style: none;
+    margin-bottom: 5%;
+    margin-top: 5%;
+   }
+
+   /*Estilos de los botones*/
+
+   .modalbancopreguntas_rowpaginacion{
+    padding: 0%;
+    margin: 0%;
+    height: 60px !important;
+   }
+
+   /*Estilos del boton search*/
+   .modalbancopreguntas_inputContainer {
+    position: relative;
+  }
+  
+  .modalbancopreguntas_searchIconContainer {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  
+  .modalbancopreguntas_searchIcon {
+    width: 5px !important;
+    height: 5px !important;
+    fill: #000; /* Ajusta el color del icono según tus necesidades */
+  }

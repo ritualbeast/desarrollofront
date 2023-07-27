@@ -14,11 +14,10 @@ const CuadroComentarios = ({
     contentPreg, 
     closeCuadroComentarios, 
     handleCuadroComentarios, 
-    handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta, 
     handleCambiarPregunta,
-    contentCont,
+    preguntaVisibleOpen,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -37,7 +36,6 @@ const CuadroComentarios = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -109,7 +107,6 @@ const CuadroComentarios = ({
     const handleGuardarCuadroComentarios = () => {
         setPreguntaTemp(pregunta)
         handleCuadroComentarios(indice, indiceSec, pregunta, cancelar);
-        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     }; 
 
     const listarTipoPregunta = async () => {
@@ -319,7 +316,7 @@ const CuadroComentarios = ({
                     handleEliminarPregunta = {handleEliminarCuadroComentarios}
                     informacion = {informacionPregunta}
                     configuracion3Activa={configuracion3}
-                    preguntaVisibleC={preguntaVisible}
+                    preguntaVisibleC={preguntaVisibleOpen}
                 />
             </Container>
         )}

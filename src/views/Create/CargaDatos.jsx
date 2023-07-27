@@ -15,11 +15,11 @@ const CargaDatos = ({
     contentPreg, 
     closeCargaArchivos, 
     handleCargaArchivos, 
-    handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta,
     handleCambiarPregunta,
     contentCont,
+    preguntaVisibleOpen,
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -44,7 +44,6 @@ const CargaDatos = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -130,7 +129,6 @@ const CargaDatos = ({
         setPreguntaTemp(pregunta)
         setPregunta2Temp(pregunta2)
         handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar);
-        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const listarTipoPregunta = async () => {
@@ -426,7 +424,7 @@ const CargaDatos = ({
                     handleEliminarPregunta={handleEliminarPregunta}
                     informacion = {informacionPregunta}
                     configuracion2Activa={configuracion2}
-                    preguntaVisibleC={preguntaVisible}
+                    preguntaVisibleC={preguntaVisibleOpen}
                 />
             </Container>
         )}

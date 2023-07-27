@@ -21,5 +21,5 @@ const ListarEnumeradosService = async (idTipoEnumerado) => {
 };
   
 export {
-    ListarEnumeradosService
+    ListarEnumeradosService,
 };
