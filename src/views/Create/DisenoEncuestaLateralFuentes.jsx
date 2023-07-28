@@ -42,6 +42,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
 
     const handleChangeGrosor = (event, titulo) => {
         if (pasos === 2) {
+            console.log(event.target.value, titulo);
             sendGrosorPaso2(event.target.value, titulo);
         } else {
         sendGrosor(event.target.value, titulo);

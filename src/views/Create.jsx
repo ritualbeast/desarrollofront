@@ -203,20 +203,21 @@ const Create = () => {
 
     // enviar fuentes paso 2 
 
-    const [tamanoPaso2, setTamanoPaso2] = useState('');
-    const [grosorPaso2, setGrosorPaso2] = useState('');
-    const [tipografiaPaso2, setTipografiaPaso2] = useState('');
+    const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
+    const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
+    const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
 
-    const handleSendTamanoPaso2 = (tamano) => {
-        setTamanoPaso2(tamano)
+    const handleSendTamanoPaso2 = (tamano, titulo) => {
+        console.log('paso2',tamano, 'titu', titulo)
+        setTamanoPaso2(tamano, titulo)
     }
 
-    const handleSendGrosorPaso2 = (grosor) => {
-        setGrosorPaso2(grosor)
+    const handleSendGrosorPaso2 = (grosor, titulo) => {
+        setGrosorPaso2(grosor , titulo)
     }
 
-    const handleSendTipografiaPaso2 = (tipografia) => {
-        setTipografiaPaso2(tipografia)
+    const handleSendTipografiaPaso2 = (tipografia , titulo) => {
+        setTipografiaPaso2(tipografia , titulo)
     }
 
 
@@ -388,9 +389,9 @@ const Create = () => {
                                     sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
                                     sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
                                     sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
-                                    sendTamanoPaso2 = {tamanoPaso2 => handleSendTamanoPaso2(tamanoPaso2)}
-                                    sendGrosorPaso2 = {grosorPaso2 => handleSendGrosorPaso2(grosorPaso2)}
-                                    sendTipografiaPaso2 = {tipografiaPaso2 => handleSendTipografiaPaso2(tipografiaPaso2)}
+                                    sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
+                                    sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
+                                    sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
 
                                     />
                                 )}
@@ -434,6 +435,9 @@ const Create = () => {
                             handleCloseVistaPrevia={handleCloseVistaPrevia}
                             handleTotalPreguntas={recibirTotalPreguntas}
                             contentInit={contentCont}
+                            sendTamanoPaso2 = {tamanoPaso2}
+                            sendGrosorPaso2 = {grosorPaso2}
+                            sendTipografiaPaso2 = {tipografiaPaso2}
                         />}
 
                                 

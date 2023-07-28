@@ -218,17 +218,17 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
 
     // enviar datos al paso 2
     
-    const handleSendTamanoPaso2 = (tamanoPaso2) => {
-        sendTamanoPaso2(tamanoPaso2);
+    const handleSendTamanoPaso2 = (tamanoPaso2,titulo) => {
+        sendTamanoPaso2(tamanoPaso2,titulo);
     }
 
 
-    const handleSendGrosorPaso2 = (grosorPaso2) => {
-        sendGrosorPaso2(grosorPaso2);
+    const handleSendGrosorPaso2 = (grosorPaso2,titulo) => {
+        sendGrosorPaso2(grosorPaso2,titulo);
     }
 
-    const handleSendTipografiaPaso2 = (tipografiaPaso2) => {
-        sendTipografiaPaso2(tipografiaPaso2);
+    const handleSendTipografiaPaso2 = (tipografiaPaso2,titulo) => {
+        sendTipografiaPaso2(tipografiaPaso2,titulo);
     }
 
 
@@ -355,9 +355,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 sendTamano={(tamano, titulo) => handleSendTamano(tamano, titulo)}
                 sendGrosor={(grosor, titulo) => handleSendGrosor(grosor, titulo)}
                 sendTipografia={(tipografia, titulo) => handleSendTipografia(tipografia, titulo)}
-                sendTamanoPaso2 = { tamanoPaso2 => handleSendTamanoPaso2(tamanoPaso2)}
-                 sendGrosorPaso2 = { grosorPaso2 => handleSendGrosorPaso2(grosorPaso2)}
-                 sendTipografiaPaso2 = { tipografiaPaso2 => handleSendTipografiaPaso2(tipografiaPaso2)}
+                sendTamanoPaso2 = { (tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2, titulo) }
+                 sendGrosorPaso2 = { (grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2, titulo) }
+                 sendTipografiaPaso2 = { (tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2, titulo) }
             />
         )
         }
