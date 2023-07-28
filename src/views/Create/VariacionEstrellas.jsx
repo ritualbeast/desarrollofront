@@ -29,11 +29,10 @@ const VariacionEstrellas = ({
     contentPreg, 
     closeVariacionEstrellas, 
     onAceptarValoracionEstrellas, 
-    handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta,
     handleCambiarPregunta,
-    contentCont,
+    preguntaVisibleOpen,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -70,7 +69,6 @@ const VariacionEstrellas = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -238,7 +236,6 @@ const VariacionEstrellas = ({
     const handleGuardarValoracionEstrellas = () => {
         setPreguntaTemp(pregunta)
         onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar);
-        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleIconClick = (id) => {
@@ -684,7 +681,7 @@ const VariacionEstrellas = ({
                     closeEliminarCPVE={handleEliminarVariacionEstrellas}
                     informacion = {informacionPregunta}
                     configuracion6Activa={configuracion6}
-                    preguntaVisibleC={preguntaVisible}
+                    preguntaVisibleC={preguntaVisibleOpen}
                 />
             </Container>
         )}

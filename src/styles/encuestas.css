@@ -1,9 +1,6 @@
 .input-container__icon{
   width: 100%;
 }
-.encuesta-container{
-  margin: 4%;
-}
 /*encabezado filtro y crear*/
 #encuestas-Row {
   display: flex;

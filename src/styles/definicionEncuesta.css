@@ -639,7 +639,7 @@
     
       /* Tercera columna */
       .encuesta-Tercerocuerpo2.encuesta-abierto {
-        width: 100%;
+        width: 1000px !important;
       }
       
       .encuesta-Tercerocuerpo2.encuesta-cerrado {

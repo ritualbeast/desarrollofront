@@ -21,7 +21,9 @@ const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
-    sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo}) => {
+    sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -213,7 +215,23 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     const handleSendTamanoLogotipo = (tamano) => {
         sendTamanoLogotipo(tamano);
     }
+
+    // enviar datos al paso 2
     
+    const handleSendTamanoPaso2 = (tamanoPaso2) => {
+        sendTamanoPaso2(tamanoPaso2);
+    }
+
+
+    const handleSendGrosorPaso2 = (grosorPaso2) => {
+        sendGrosorPaso2(grosorPaso2);
+    }
+
+    const handleSendTipografiaPaso2 = (tipografiaPaso2) => {
+        sendTipografiaPaso2(tipografiaPaso2);
+    }
+
+
   return (
     <>
         {openDisenoPrincipal && (
@@ -337,6 +355,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 sendTamano={(tamano, titulo) => handleSendTamano(tamano, titulo)}
                 sendGrosor={(grosor, titulo) => handleSendGrosor(grosor, titulo)}
                 sendTipografia={(tipografia, titulo) => handleSendTipografia(tipografia, titulo)}
+                sendTamanoPaso2 = { tamanoPaso2 => handleSendTamanoPaso2(tamanoPaso2)}
+                 sendGrosorPaso2 = { grosorPaso2 => handleSendGrosorPaso2(grosorPaso2)}
+                 sendTipografiaPaso2 = { tipografiaPaso2 => handleSendTipografiaPaso2(tipografiaPaso2)}
             />
         )
         }

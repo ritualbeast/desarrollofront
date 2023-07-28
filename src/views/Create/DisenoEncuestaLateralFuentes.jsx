@@ -10,7 +10,9 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia }) => {
+const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia 
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+ }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -30,16 +32,28 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
     }
     const handleChangeTamano = (event, titulo) => {
-        console.log(event.target.value, titulo);
-        sendTamano(event.target.value, titulo);
+        if (pasos === 2) {
+            sendTamanoPaso2(event.target.value, titulo);
+        } else {
+
+            sendTamano(event.target.value, titulo);
+        }
     };
 
     const handleChangeGrosor = (event, titulo) => {
+        if (pasos === 2) {
+            sendGrosorPaso2(event.target.value, titulo);
+        } else {
         sendGrosor(event.target.value, titulo);
+        }
     };
 
     const handleChangeTipografia = (event, titulo) => {
+        if (pasos === 2) {
+            sendTipografiaPaso2(event.target.value, titulo);
+        } else {
         sendTipografia(event.target.value, titulo);
+        }
     };
     
 

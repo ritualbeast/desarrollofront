@@ -17,11 +17,10 @@ const OpcionMultiple = ({
     contentPreg, 
     closeopmul, 
     onAceptar, 
-    handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta,
     handleCambiarPregunta,
-    contentCont,
+    preguntaVisibleOpen,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -55,7 +54,6 @@ const OpcionMultiple = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -245,7 +243,6 @@ const OpcionMultiple = ({
     const handleGuardarOpcionMultiple = () => {
         setPreguntaTemp(pregunta)
         onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
-        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     useEffect(() => {
@@ -624,7 +621,7 @@ const OpcionMultiple = ({
                     closeEliminarCPM={handleEliminarOpcionMultiple}
                     informacion = {informacionPregunta}
                     configuracion6Activa={configuracion6}
-                    preguntaVisibleC={preguntaVisible}
+                    preguntaVisibleC={preguntaVisibleOpen}
                 />
             </Container>
         )}

@@ -5,8 +5,6 @@ import svgManager from '../../assets/svg';
 import ResultadoCargaDatos from './ResultadoCargaDatos';
 import { useEffect } from 'react';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
-import VariacionEstrellas from './VariacionEstrellas';
-import CuadroComentarios from './CuadroComentarios';
 
 const trashSVG = svgManager.getSVG('trash-mini');
 
@@ -17,10 +15,11 @@ const CargaDatos = ({
     contentPreg, 
     closeCargaArchivos, 
     handleCargaArchivos, 
-    handleCargaPreg, 
     handleEditarPregunta, 
     handleEliminarPregunta,
-    handleCambiarPregunta
+    handleCambiarPregunta,
+    contentCont,
+    preguntaVisibleOpen,
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -36,12 +35,15 @@ const CargaDatos = ({
     const [isCheckedJPG, setIsCheckedJPG] = useState(false);
     const [isCheckedGIF, setIsCheckedGIF] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
+    const [configuracion2, setConfiguracion2] = useState(false);
+    const [configuracion3, setConfiguracion3] = useState(false);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [pregunta2, setPregunta2] = useState(contentPreg.pregunta2);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
+    const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -94,6 +96,14 @@ const CargaDatos = ({
         setConfiguracion1(!configuracion1);
     };
 
+    const handleSwitchConfigurar2 = () => {
+        setConfiguracion2(!configuracion2);
+    };
+
+    const handleSwitchConfigurar3 = () => {
+        setConfiguracion3(!configuracion3);
+    };
+
     const handleClearOpcion = () => {
         setSeccionValue('');
         setPreguntaValue('');
@@ -116,16 +126,8 @@ const CargaDatos = ({
     }
 
     const handleGuardarCargaDatos = () => {
-        const nuevaPregunta = {
-            tipo: 'CA',
-            pregunta: pregunta,
-            pregunta2: pregunta2,
-            save: true,
-            cancelar: cancelar
-        };
         setPreguntaTemp(pregunta)
         setPregunta2Temp(pregunta2)
-
         handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar);
     };
 
@@ -184,11 +186,6 @@ const CargaDatos = ({
                                 ))}
                             </select>
                         </Col>
-                        {/* {openVE && (
-                            <CuadroComentarios />
-                        )
-
-                        } */}
 
                         <Col>
                             <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
@@ -320,6 +317,35 @@ const CargaDatos = ({
                                 <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
                             </Col>
                         )}
+
+                        <Col className='seccion2-cargaDatos-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Agregar información sobre la pregunta</p>
+                        </Col>
+                        {configuracion2 && (
+                            <Col className='seccion1-1-cargaDatos-configuracion'>
+                                <p style={{margin: 'unset' }}>Información sobre pregunta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                            </Col>
+                        )}
+
+                        <Col className='seccion1-cargaDatos-configuracion'>
+                            <label class="switch">
+                                <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
+                                <span className="slider round"></span>
+                            </label>
+                            <p style={{ margin: 'unset', cursor: 'default' }}>Alimentar a banco de preguntas</p>
+                        </Col>
+                        {configuracion3 && (
+                            <Col className='seccion1-1-cuadroComentarios-configuracion'>
+                                <p style={{margin: 'unset' }}>Etiqueta</p>
+                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
+                            </Col>
+                        )}
                     </Container>
                 )}
 
@@ -396,6 +422,9 @@ const CargaDatos = ({
                     pregunta2={pregunta2}
                     handleEditarPregunta={handleEditarPregunta}
                     handleEliminarPregunta={handleEliminarPregunta}
+                    informacion = {informacionPregunta}
+                    configuracion2Activa={configuracion2}
+                    preguntaVisibleC={preguntaVisibleOpen}
                 />
             </Container>
         )}
