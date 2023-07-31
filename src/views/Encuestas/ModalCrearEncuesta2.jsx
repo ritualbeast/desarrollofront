@@ -5,13 +5,9 @@ import { Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
 import '../../styles/modalCrearEncuesta2.css';
 
-const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const closeSVG = svgManager.getSVG('close');
-const alertSVG = svgManager.getSVG('alert');
 const trelloSVG = svgManager.getSVG('trello');
 const PlusSqareSVG = svgManager.getSVG('plus-sqare');
-const fileSVG = svgManager.getSVG('file');
-const listSVG = svgManager.getSVG('list');
 
 const ModalCrearEncuesta2 = ({ open, onClose }) => {
     const [selectedFile, setSelectedFile] = useState()
@@ -88,14 +84,14 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
 
         <div className='comentario'>Selecciona una opcion</div>
         
-        <div className='modalCrearEncuesta_Contenedorbutton'>
+        <div className='modalCrearEncuesta_Contenedorbutton_DesdeCero'>
           <div className={`modalCrearEncuesta_button ${selectedOption === 'opcion1' ? 'selected' : ''}`}
               onClick={() => handleOptionClick('opcion1','C')}
           >
-              <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
+              <span style={{ marginTop: '10px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
                   
               <div className='ContenedorModalComentario'>
-                <h2 className='modal2Comentario'>Clásico</h2>
+                <h2 className='modal2Comentario_desdeCero'>Clásico</h2>
                 <p className='modalsubcomentario'>
                   Muestra todas las preguntas en una sola página al mismo tiempo.
                 </p>
@@ -106,10 +102,10 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
               className={`modalCrearEncuesta_button ${selectedOption === 'opcion2' ? 'selected' : ''}`}
               onClick={() => handleOptionClick('opcion2','P')}
           >
-              <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: trelloSVG }} />
+              <span style={{ marginTop: '10px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: trelloSVG }} />
               <div className='ContenedorModalComentario'>
                   
-                  <h2 className='modal2Comentario'>Una pregunta a la vez</h2>
+                  <h2 className='modal2Comentario_desdeCero'>Una pregunta a la vez</h2>
                   <p className='modalsubcomentario'>
                       Pasa de forma automática a la siguiente pregunta.
                   </p>
@@ -119,10 +115,10 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
           <div className={`modalCrearEncuesta_button ${selectedOption === 'opcion3' ? 'selected' : ''}`}
               onClick={() => handleOptionClick('opcion3','P')}
           >
-              <span style={{ marginTop: '12px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
+              <span style={{ marginTop: '10px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
               
               <div className='ContenedorModalComentario'>
-                  <h2 className='modal1Comentario'>Una pregunta a la vez editable</h2>
+                  <h2 className='modal1Comentario_desdeCero'>Una pregunta a la vez editable</h2>
                   <p className='modalsubcomentario'>
                       Pasa de forma automática a la siguiente pregunta.
                   </p>
@@ -130,9 +126,9 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
           </div>
         </div>
 
-        <div className='encuesta_modal_cerrar'>
+        <div className='encuesta_modal_cerrar2'>
             <Box sx={{ width: '50%', display: 'contents'}}>
-                <Col className="d-flex justify-content-center">
+                <Col className="d-flex justify-content-center" style={{display: 'flex'}}>
                     <Button 
                       className='buttoncancelarEncuest' 
                       variant="contained" 

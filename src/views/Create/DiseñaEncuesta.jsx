@@ -15,7 +15,9 @@ const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 
-const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit}) => {
+const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit
+    ,sendTamanoPaso2 ,sendGrosorPaso2 , sendTipografiaPaso2
+}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -24,7 +26,15 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const tamano = sendTamanoPaso2?.tamano ;
+    const titulotamano = sendTamanoPaso2?.titulo;
+    const grosor = sendGrosorPaso2?.grosor;
+    const tituloGrosor = sendGrosorPaso2?.titulo;
+    const tipografia = sendTipografiaPaso2?.tipografia;
+    const tituloTipografia = sendTipografiaPaso2?.titulo;
 
+
+    // console.log("grosor", grosor, 'tituloGrosor', tituloGrosor);
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
     };
@@ -78,104 +88,9 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
             onClick={handleClickOutsideModal}
         >
             <Col className='encuesta-cuerpo'>
-                <Col className="encuesta-cuerpo2">
-                    <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
-                        <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
-                        {encuestaSegundoCuerpoVisible ? (
-                            <>
-                                <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
-                                <span className="encuesta-subtitulo-1">Colapsar</span>
-                            </>
-                        ) : (
-                            <>
-                                <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
-                                <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
-                            </>
-                        )}
-                        </div>
-                    </Col>
-                    
-                    <Col>
-                        <div className="lista-2">
-                                <div className="fondo-lista">
-                                    {lista.map((item) => (
-                                    <div
-                                        key={item.nombre}
-                                        className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
-                                        onClick={() => handleClick(item.nombre)}
-                                    >
-                                        <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
-                                            <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : 'inactive-background'}`}>
-                                                {item.icono && (
-                                                    <span dangerouslySetInnerHTML={{ __html: item.icono.replace(/stroke="([^"]*)"/, `stroke="${activeIcon === item.nombre ? 'rgba(255, 199, 0, 1)' : 'rgba(177, 177, 177, 1)'}"`) }}/>
-                                                    
-                                                )}
-                                                <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    ))}
-                                </div>
-                        </div>
-                    </Col>
-                </Col>
+                
 
-                {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible && (
-                    <Col className="encuesta-Segundocuerpo2">
-                        <Col>
-                            <div className='encuesta-subtitulo2'>
-                                <h2 className='encuesta-subtitulo-2'>Banco de Preguntas</h2>
-                                <OverlayTrigger
-                                    trigger="click"
-                                    show={showTooltip}
-                                    target={targetRef.current}
-                                    placement="right"
-                                    delay={{ show: 250, hide: 400 }}
-                                    overlay={renderTooltip}
-                                    onHide={() => setShowTooltip(false)}
-                                >
-                                    <div
-                                        className='help-icon'
-                                        onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                                    >
-                                        <span
-                                            ref={targetRef}
-                                            style={{ marginLeft: '46%' }}
-                                            dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                                        />
-                                    </div>
-                                </OverlayTrigger>
-                            </div>
-                        </Col>
-                        <Col>
-                            {showBancoPreguntas && (
-                                <div className="desplegado-container">
-                                    <div className="listaBancoPreguntas-2">
-                                        <div className="fondo-lista">
-                                            {listaBancoPreguntas.map((item) => (
-                                                <div
-                                                    key={item.nombre}
-                                                    className="encuesta-nombrelista"
-                                                    onClick={() => handleNestedClick(item.nombre)}
-                                                >
-                                                    <div className="juntar-listaBancoPreguntas-nombre">
-                                                        <div className="fondo-listaBancoPreguntas2">
-                                                            <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                            {item.icono && (
-                                                                <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                            )}
-                                                            <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </Col>
-                    </Col>
-                )}
+                
 
                 {activeIcon === 'Estilo'  && (
                     <DisenoEncuestaLateralPrincipal/>

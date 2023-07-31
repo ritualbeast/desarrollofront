@@ -6,7 +6,7 @@
     height: 110px;
 }
 .modalEncuestasPersonalizadas_container {
-    width: 97%;
+    width: 96%;
     max-height: 365px;
     display: flex;
     flex-direction: column;
@@ -39,7 +39,10 @@
     background-color: #555;
   }
   
-.comentario {
+.comentario_ {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 2.8%;
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -47,17 +50,26 @@
     font-size: 16px;
     line-height: 24px;
     color: #616161;
-    flex: none;
-    order: 2;
-    flex-grow: 0;
 }
-.input-container{
+.input-container_{
+    width: 62.5%;
     padding: 10px;
-    padding-left: 20px !important;
+    padding-left: 10.5% !important;
+    padding-top: unset;
+}
+.search-icon_ {
+    position: absolute;
+    top: 17%;
+    right: 3%;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
 }
 .input-filtroPersonalizado{
-    width: 98% !important;
+    width: 100% !important;
     border: 1px solid #E0E0E0 !important;
+    padding: 2%;
+    border-radius: 7px;
 }
 .modalCrearEncuesta_Contenedorbutton {
     display: flex;
@@ -100,11 +112,11 @@
     margin-left: 2.5%;
 }
 
-.encuesta_modal_cerrar{
-    gap: 8px;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    float: right;
+.encuesta_modal_cerrar_{
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
+    width: 23%
 }
 
 .buttoncancelarEncuest{
@@ -125,6 +137,7 @@
     gap: 4px;
     background: #FFC700;
     border-style: none;
+    margin-left: 2%;
 }
 
 .disabled {
@@ -150,6 +163,7 @@
     border-radius: 20px;
 }
 
-.modalbancopreguntas_colpreguntas_.clicked {
+.selected-option {
     border: 2px solid #000000;
-  }
+}
+  

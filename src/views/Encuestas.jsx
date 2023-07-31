@@ -7,6 +7,8 @@ import { makeStyles } from "@material-ui/core";
 import svgManager from '../assets/svg';
 import CrearEncuestas from './Encuestas/CrearEncuestas';
 import ModalCrearEncuesta from './Encuestas/ModalCrearEncuesta';
+import ModalCrearEncuestaPersonalizada from './Encuestas/ModalCrearEncuestaPersonalizada';
+import ModalCrearEncuesta2 from './Encuestas/ModalCrearEncuesta2';
 
 const pagination = makeStyles({
   root: {
@@ -38,17 +40,19 @@ const paginationStyle = {
 
 const Encuestas = () => {
   const paginationClass = pagination();
-  const [opcionFiltro, setOpcionFiltro] = useState('');
+  const [opcionFiltro, setOpcionFiltro] = useState('A');
   const [openCrearEncuesta, setOpenCrearEncuesta] = useState(false);
   const [openModalCrearEncuesta, setOpenModalCrearEncuesta] = useState(false);
   const [tipo, setTipo] = useState('A');
-  const [publica, setPublica] = useState('S')
   const [valor, setValor] = useState('');
   const [refreshComponent, setRefreshComponent] = useState(false);
   const [openFiltronombre, setOpenFiltroNombre] = useState(false);
   const [openFiltronombre2, setOpenFiltroNombre2] = useState(true);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
+  const [orden, setOrden] = useState('nombre')
   const [inputValue, setInputValue] = useState('');
+  const [openModalCrearEncuestaPersonalizada, setOpenModalCrearEncuestaPersonalizada] = useState(false);
+  const [openModalCrearEncuesta2, setOpenModalCrearEncuesta2] = useState(false);
 
   const handleFiltroClick = (opcion, valor) => {
     console.log('entro a la funcion')
@@ -62,6 +66,14 @@ const Encuestas = () => {
 
   const handleOpenCrearEncuesta = () => {
     setOpenModalCrearEncuesta(true);
+  };
+
+  const handleOpenCrearEncuestaPersonalizada = () => {
+    setOpenModalCrearEncuestaPersonalizada(true);
+  };
+
+  const handleOpenModalCrearEncuesta2 = () => {
+    setOpenModalCrearEncuesta2(true);
   };
 
   const  [currentPage, setCurrentPage] = useState(0);
@@ -165,16 +177,33 @@ const Encuestas = () => {
         }
       </Container>
       
-      <ModalCrearEncuesta 
-        open = {openModalCrearEncuesta} 
-        onClose={() => setOpenModalCrearEncuesta(false)} 
-        opcionFiltro={opcionFiltro} 
-        tipofiltro= {tipo} 
-        valorfiltro = {valor} 
-        nombrefiltro = {inputValue}
-        orden={categoriaSeleccionada}
-        publico={publica}
-      /> 
+      {
+        openModalCrearEncuesta ? (
+          <ModalCrearEncuesta
+            open={openModalCrearEncuesta}
+            onClose={() => setOpenModalCrearEncuesta(false)}
+            handleOpenCrearEncuestaPersonalizada={handleOpenCrearEncuestaPersonalizada}
+            handleOpenModalCrearDesdeCero={handleOpenModalCrearEncuesta2}
+          />
+        ) : ''
+      }
+      {
+        openModalCrearEncuesta2 ? (
+          <ModalCrearEncuesta2
+            open={openModalCrearEncuesta2}
+            onClose={() => setOpenModalCrearEncuesta2(false)}
+          />
+        ) : ''
+      }
+      {
+        openModalCrearEncuestaPersonalizada ? (
+          <ModalCrearEncuestaPersonalizada
+            open={openModalCrearEncuestaPersonalizada}
+            onClose={() => setOpenModalCrearEncuestaPersonalizada(false)}
+          />
+        ) : ''
+      }
+      
     </>  
   );
 };

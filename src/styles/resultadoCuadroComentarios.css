@@ -1,137 +1,137 @@
 .container-resultadoCuadroComentarios{
-    display: flow-root;
-    border: solid 1px #b8b8b8;
-    width: 92.3%;
-    margin-left: 1.8%;
-    border-radius: 5px;
-    margin-top: 1.5%;
-    padding-left: 2%;
-    padding-right: 2%;
-    padding-bottom: 2%;
+  display: flow-root;
+  border: solid 1px #b8b8b8;
+  width: 92.3%;
+  margin-left: 1.8%;
+  border-radius: 5px;
+  margin-top: 1.5%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 2%;
 }
 
 .contenedor-editar-pregunta{
-    display: flex;
-    align-items: center;
-    border-radius: 10px;;
-    margin-left: 2%;
-    margin-right: 2%;
-    padding-top: 0.3%;
-    padding-bottom: 0.3%;
-    background-color: rgba(237, 237, 237, 1);
-  }
-  .contenedor-editar-pregunta.visible {
-    transform: translateY(0);
-  }
-  .contenedor-editar-pregunta {
-    display: none;
-  }
-  
-  .contenedor-editar-pregunta.visible {
-    display: flex;
-  }
-  
-  .contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-pregunta,
-  .contenedor-editar-pregunta:hover {
-    display: flex;
-  }
-  .titulo-editarPregunta{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    color: rgba(255, 65, 151, 1);
-    margin-left: 2%;
-    width: 5.4%;
-  }
-  .titulo-editarPregunta:hover{
-    cursor: pointer;
-  }
-  .titulo-editarOpciones{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    color: rgba(255, 65, 151, 1);
-    margin-left: 4%;
-    width: 9%;
-  }
-  .titulo-editarOpciones:hover{
-    cursor: pointer;
-  }
-  .titulo-editarMover{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    color: rgba(255, 65, 151, 1);
-    margin-left: 4%;
-    width: 6%;
-  }
-  .titulo-editarMover:hover{
-    cursor: pointer;
-  }
-  .titulo-editarDuplicar{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 24px;
-    color: rgba(255, 65, 151, 1);
-    margin-left: 4%;
-    width: 9%;
-  }
-  .titulo-editarDuplicar:hover{
-    cursor: pointer;
-  }
-  .contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-pregunta,
-  .contenedor-editar-pregunta:hover {
-    display: flex;
-  }
-  
-  .contenedor-tituloNuevaEncuesta{
-    display: flex;
-    align-items: center;
-    border-radius: 10px;;
-    margin: 2%;
-    margin-top: unset;
-    transition: transform 5s ease; /* Transición de 5 segundos */
-  }
-  .contenedor-tituloNuevaEncuesta.oculto {
-    transform: translateY(-100%);
-  }
-  .contenedor-tituloNuevaEncuesta.visible {
-    transform: translateY(0);
-  }
-  .contenedor-tituloNuevaEncuesta:hover{
-    background-color: rgba(237, 237, 237, 1);
-    /* cursor: pointer; */
-  }
-  .contenedor-tituloNuevaEncuesta.editar-visible{
-    background-color: rgba(245, 245, 245, 1);
-    /* cursor: pointer; */
-  }
+  display: flex;
+  align-items: center;
+  border-radius: 10px;;
+  margin-left: 2%;
+  margin-right: 2%;
+  padding-top: 0.3%;
+  padding-bottom: 0.3%;
+  background-color: rgba(237, 237, 237, 1);
+}
+.contenedor-editar-pregunta.visible {
+  transform: translateY(0);
+}
+.contenedor-editar-pregunta {
+  display: none;
+}
 
-  .help-icon-r{
-    width: 5%;
-    margin-left: 1%;
-    display: flex;
-  }
-  #button-tooltipC {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin-left: 10px;
-    padding: 18px;
-    width: 210px;
-    height: 140px;
-    background: #FFFFFF;
-    border-radius: 16px;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-    flex: none;
-    order: 1;
-    flex-grow: 1;
-  }
+.contenedor-editar-pregunta.visible {
+  display: flex;
+}
+
+.contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-pregunta,
+.contenedor-editar-pregunta:hover {
+  display: flex;
+}
+.titulo-editarPregunta{
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 65, 151, 1);
+  margin-left: 2%;
+  width: 5.4%;
+}
+.titulo-editarPregunta:hover{
+  cursor: pointer;
+}
+.titulo-editarOpciones{
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 65, 151, 1);
+  margin-left: 4%;
+  width: 9%;
+}
+.titulo-editarOpciones:hover{
+  cursor: pointer;
+}
+.titulo-editarMover{
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 65, 151, 1);
+  margin-left: 4%;
+  width: 6%;
+}
+.titulo-editarMover:hover{
+  cursor: pointer;
+}
+.titulo-editarDuplicar{
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(255, 65, 151, 1);
+  margin-left: 4%;
+  width: 9%;
+}
+.titulo-editarDuplicar:hover{
+  cursor: pointer;
+}
+.contenedor-tituloNuevaEncuesta:hover + .contenedor-editar-pregunta,
+.contenedor-editar-pregunta:hover {
+  display: flex;
+}
+
+.contenedor-tituloNuevaEncuesta{
+  display: flex;
+  align-items: center;
+  border-radius: 10px;;
+  margin: 2%;
+  margin-top: unset;
+  transition: transform 5s ease; /* Transición de 5 segundos */
+}
+.contenedor-tituloNuevaEncuesta.oculto {
+  transform: translateY(-100%);
+}
+.contenedor-tituloNuevaEncuesta.visible {
+  transform: translateY(0);
+}
+.contenedor-tituloNuevaEncuesta:hover{
+  background-color: rgba(237, 237, 237, 1);
+  /* cursor: pointer; */
+}
+.contenedor-tituloNuevaEncuesta.editar-visible{
+  background-color: rgba(245, 245, 245, 1);
+  /* cursor: pointer; */
+}
+
+.help-icon-r{
+  width: 5%;
+  margin-left: 1%;
+  display: flex;
+}
+#button-tooltipC {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-left: 10px;
+  padding: 18px;
+  width: 210px;
+  height: 140px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+  flex: none;
+  order: 1;
+  flex-grow: 1;
+}

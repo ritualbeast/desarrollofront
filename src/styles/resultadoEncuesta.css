@@ -1,0 +1,16 @@
+.container_resultadoEncuesta{
+    width: 100%;
+    /* background-color: rgba(245, 245, 245, 1); */
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+.contenedor-preguntas-fin{
+    width: 65%;
+    margin-bottom: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    border: 2px solid rgba(197, 197, 197, 1);
+    border-radius: 4px;
+    background:white;
+    margin-left: 20%;
+}

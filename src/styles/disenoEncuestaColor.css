@@ -1,3 +1,7 @@
+.contenedorCabeceraLogotipo {
+  display: flex;
+  align-items: center;
+}
 .contenedorFuenteColor {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -51,7 +55,7 @@
     padding: 10px 12px 10px 12px;
     border-radius: 8px;
     border: 1px;
-    justify: space-between;
+    /* justify: space-between; */
     border: 1px solid #E0E0E0;
     margin-bottom: 10px;
     margin-top: 10px;
@@ -374,6 +378,25 @@
       .encuestas_colsg_create_2 {
         display: flex;
         align-items: center;
+      }
+      .encuesta-sg-buttonv-create{
+        font-family: 'Poppins', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        gap: 4px;
+        width: 152px;
+        height: 40px;
+        background: #FFFFFF;
+        border: 1px solid #202020;
+        border-radius: 40px;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
       }
       .encuesta-sg-buttonv-create:hover{
         cursor: pointer;

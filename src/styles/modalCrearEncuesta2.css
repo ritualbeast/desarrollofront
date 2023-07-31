@@ -10,10 +10,11 @@
     order: 2;
     flex-grow: 0;
 }
-.modalCrearEncuesta_Contenedorbutton {
+.modalCrearEncuesta_Contenedorbutton_DesdeCero {
+    width: 97%;
     display: flex;
     justify-content: space-between;
-    margin-left: 1.5%;
+    margin-left: 2%;
   }
 .modalCrearEncuesta_button{
     margin: 0.5rem;
@@ -32,36 +33,29 @@
 .modalCrearEncuesta_button.selected {
     border-color: #565656;
   }  
-.modal1Comentario, .modal2Comentario{
-    font-family: Poppins;
+.modal1Comentario_desdeCero, .modal2Comentario_desdeCero{
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
     letter-spacing: 0em;
     text-align: left;
-
 }
 
 .encuesta_modalcrear__title{
-    font-family: Poppins;
     font-size: 20px;
     font-weight: 500;
     line-height: 28px;
     letter-spacing: 0em;
     text-align: left;
-    color: #3B3B3B;
-    margin-left: 0%;
-
-
+    color: rgba(39, 0, 137, 1);
+    margin-left: 2.5%;
 }
 
-.encuesta_modal_cerrar{
-    width: Fill (659px);
-    height: Fixed (52px);
-    gap: 8px;
-    margin-top: 20px;
+.encuesta_modal_cerrar2{
+    margin-top: 10px;
     margin-bottom: 20px;
-
+    float: right;
+    margin-right: 1.6%;
 }
 
 .buttoncancelarEncuest{
@@ -72,7 +66,7 @@
     gap: 4px;
     background: #FFF0C7;
     border-style: none;
-
+    cursor: pointer;
 }
 
 .buttonContinuar{
@@ -83,7 +77,7 @@
     gap: 4px;
     background: #FFC700;
     border-style: none;
-
+    cursor: pointer;
 }
 
 .disabled {

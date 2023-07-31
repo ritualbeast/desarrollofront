@@ -1,3 +1,9 @@
+.contenedorCabeceraLogotipo {
+  display: flex;
+  align-items: center;
+}
+
+
 .cabeceraTitle{ 
   font-family: Poppins;
   font-size: 14px;
@@ -5,6 +11,7 @@
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
+  margin-left: 10px; /* Ajusta el margen izquierdo según sea necesario */
 
 }
 .contenedorLogotipo{

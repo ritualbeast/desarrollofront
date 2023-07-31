@@ -513,6 +513,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(tempCont);
     }
 
+
     const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
@@ -574,7 +575,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'>
               <Col>
-                  <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
+                  <p className='titulo-encuesta-tercero'>Encuesta Veris1</p>
               </Col>
 
               {contentCont.map((seccion, index) => {

@@ -5,11 +5,12 @@ import Dashboard from './views/Dashboard';
 import Encuestas from './views/Encuestas';
 import IPN from './views/IPN';
 import Reporte from './views/Reporte';
-import CrearEncuestas from './views/IPN/CrearEncuestas';
+import CrearEncuestas from './views/IPN/CrearEncuestaIPN';
 import Create from './views/Create';
 import Login from './components/master/Login';
 import globalServices from './services/global'
 import CreateFin from './views/CreateFin';
+import ResultadoEncuesta from './views/ResultadoEncuesta';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem('loggedUser'))
@@ -80,6 +81,10 @@ function App() {
 
           <Route path="/create/finalizar" element={<Layouts />}>
             <Route index element={<CreateFin />}/>
+          </Route>
+
+          <Route path="/fin/*">
+            <Route index element={<ResultadoEncuesta />}/>
           </Route>
         </Routes>
       </Router>

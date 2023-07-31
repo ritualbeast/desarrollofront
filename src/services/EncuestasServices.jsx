@@ -51,7 +51,7 @@ const EliminarEncuesta = async (idEncuesta) => {
   }
 };
 
-const ListarEncuestas = async (tipo, valor, nombre= '', orden, pagina, size, publica='') => {
+const ListarEncuestas = async (tipo, valor, nombre= '', orden='', pagina, size, publica='', tipoEncuesta='') => {
   try {
     const canales = '808cd0b9-141f-4132-81e9-c3822436191b';
     const headers = {
@@ -62,7 +62,7 @@ const ListarEncuestas = async (tipo, valor, nombre= '', orden, pagina, size, pub
       method: 'GET',
       headers
     };
-    const response = await fetch(`http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas?nombre=${nombre}&categoriaEncuestas=${valor}&fechaInicio&fechaFin&formatoPresentacion=&esPublica=${publica}&tipoVigencia&tipoEncuesta=&estadoEncuesta=${tipo}&orden=${orden}&pagina=${pagina}&size=${size}`, requestOptions);
+    const response = await fetch(`http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/listarEncuestas?nombre=${nombre}&categoriaEncuestas=${valor}&fechaInicio&fechaFin&formatoPresentacion=&esPublica=${publica}&tipoVigencia&tipoEncuesta=${tipoEncuesta}&estadoEncuesta=${tipo}&orden=${orden}&pagina=${pagina}&size=${size}`, requestOptions);
     const data = await response.json();
     return data;
   } catch (error) {

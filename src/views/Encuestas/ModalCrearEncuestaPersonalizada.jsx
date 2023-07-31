@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
+import SearchIcon from '@mui/icons-material/Search';
 import '../../styles/modalCrearEncuestaPersonalizada.css';
 import ImagenEncuetaPosterior from '../../assets/img/encuestaPosterior.jpg'
 import ImagenPosteriorEvento from '../../assets/img/posteriorEvento.jpg'
@@ -13,27 +14,16 @@ import { ListarEncuestas } from '../../services/EncuestasServices';
 
 const closeSVG = svgManager.getSVG('close');
 
-const ModalCrearEncuestaPersonalizada = ({ open, onClose, tipofiltro, valorfiltro, nombrefiltro, orden, publico}) => {
+const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [selectedOption, setSelectedOption] = useState(null);
     const [clickedElements, setClickedElements] = useState({});
-    const [tipoFiltro, setTipoFiltro] = useState(tipofiltro);
-    const [valorFiltro, setValorFiltro] = useState(valorfiltro);
-    const [filtronombre, setFiltroNombre] = useState(nombrefiltro);
-    const [ordenamiento, setOrdenamiento] = useState(orden);
     const [dataEncuestas, setDataEncuestas] = useState([]);
+    const [busqueda, setBusqueda] = useState('');
 
     useEffect(() => {
-      setTipoFiltro(tipofiltro);
-      setValorFiltro(valorfiltro);
-      setFiltroNombre(nombrefiltro);
-      setOrdenamiento(orden);
-    }, [tipofiltro, valorfiltro, nombrefiltro, orden]);
-
-    useEffect(() => {
-      console.log('entro')
-      ListarEncuestasPublicas(1,10);
+      ListarEncuestasPublicas();
 
       if (!selectedFile) {
         setPreview(undefined)
@@ -53,7 +43,6 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose, tipofiltro, valorfiltr
 
     const handleClick = (id) => {
       setSelectedOption((prevSelected) => {
-        // Si la opción actual ya estaba seleccionada, deseleccionarla (establecer en null).
         if (prevSelected === id) {
           setClickedElements((prevState) => ({
             ...prevState,
@@ -62,28 +51,34 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose, tipofiltro, valorfiltr
           return null;
         }
     
-        // Si la opción actual no estaba seleccionada, seleccionarla y deseleccionar las demás opciones.
         const newState = {};
         Object.keys(clickedElements).forEach((key) => {
-          newState[key] = key === id ? true : false;
+          newState[key] = key === id;
         });
         setClickedElements(newState);
     
         return id;
       });
-    };
+    };    
     
-   
-    
-    const ListarEncuestasPublicas = async (newPagina = 1, newSize = 10) => {
+    const ListarEncuestasPublicas = async () => {
       try {
-        const response = await  ListarEncuestas(tipoFiltro, valorFiltro, filtronombre, ordenamiento, newPagina, newSize);
+        const response = await  ListarEncuestas('', '', '', 'nombre', '1', '50', 'S');
         setDataEncuestas(response.data.items);  
         console.log(response.data.items)    
       } catch (error) {
         console.error(error);
       }
     };
+
+    const handleBusqueda = () => {
+      const encuestasFiltradas = dataEncuestas.filter((encuesta) => {
+        return encuesta.titulo.toLowerCase().includes(busqueda.toLowerCase());
+      });
+    
+      setDataEncuestas(encuestasFiltradas);
+    };
+    
     
   return (
     <Modal
@@ -114,32 +109,56 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose, tipofiltro, valorfiltr
                 className="encuesta_modalcrear__close"
                 style={{ marginLeft: 'auto' }}
               />
-          </div>  
+          </div>
 
-          <div className='comentario'>Selecciona una plantilla</div>
+          <div style={{display:'flex'}}>
+            <div className='comentario_'>Selecciona una plantilla</div>
+
+            <div className="input-container_" > 
+              <input
+                type="text"
+                placeholder="Buscar por nombre"
+                className="input-filtroPersonalizado"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+              <SearchIcon className="search-icon_" onClick={handleBusqueda}/>
+              
+            </div>
+          </div>
+          
 
           <Container className='modalEncuestasPersonalizadas_container'>
               <Row className='modalCrearEncuestaPersonalizada_rowpreguntas'>
+                {dataEncuestas.map((encuesta, index) => (
                   <Col
+                    key={encuesta.idEncuesta}
                     md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element1'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element1')}
-                    selected={clickedElements['element1']}
+                    className={
+                      `modalbancopreguntas_colpreguntas_ 
+                      ${clickedElements[encuesta.idEncuesta] ? 'clicked' : ''} 
+                      ${selectedOption === encuesta.idEncuesta ? 'selected-option' : ''}`
+                    }
+                    onClick={() => handleClick(encuesta.idEncuesta)}
+                    selected={clickedElements[encuesta.idEncuesta]}
                   >
                     <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenEncuetaPosterior} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Encuesta de opinión posterior a un evento
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            Reúne información demográfica de tus encuestados.
-                        </p>
+                      <div className='imagenColModal'>
+                        {/* <img src={ImagenEncuetaPosterior} alt="imagen" className='imagenModal' width='100%' /> */}
+                      </div>
+
+                      <h4 className='modalbancopreguntas_divpreguntasbody'>
+                        {encuesta.titulo}
+                      </h4>
+
+                      <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
+                        {encuesta.descripcion}
+                      </p>
                     </div>
                   </Col>
+                ))}
 
-                  <Col
+                  {/* <Col
                     md={4}
                     className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element2'] ? 'clicked' : ''}`}
                     onClick={() => handleClick('element2')}
@@ -240,13 +259,13 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose, tipofiltro, valorfiltr
                             Obtenga información sobre la calidad del servicio prestado.
                         </p>
                     </div>
-                  </Col>
+                  </Col> */}
               </Row>
           </Container>
                   
-          <div className='encuesta_modal_cerrar'>
+          <div className='encuesta_modal_cerrar_'>
               <Box sx={{ width: '50%', display: 'contents'}}>
-                  <Col className="d-flex justify-content-center">
+                  <Col className="d-flex justify-content-center" style={{display: 'flex'}}>
                     <Button 
                       className='buttoncancelarEncuest' 
                       variant="contained" 
