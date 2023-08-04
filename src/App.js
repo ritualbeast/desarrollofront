@@ -11,10 +11,21 @@ import Login from './components/master/Login';
 import globalServices from './services/global'
 import CreateFin from './views/CreateFin';
 import ResultadoEncuesta from './views/Resultado/ResultadoEncuesta';
+import { AppContext } from './context/AppContext';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem('loggedUser'))
   const [load, setLoad] = useState(false)
+
+
+  const [contextValue, setContextValue] = useState({
+    sendTamanoPaso2: null,
+    sendGrosorPaso2: null,
+    sendTipografiaPaso2: null,
+  });
+
+
+
   useEffect(() => {
     const loggedUserJson = localStorage.getItem('loggedUser')
     if (loggedUserJson) {
@@ -44,52 +55,54 @@ function App() {
     }
   }
   return (
-    <div>
-      {
-        user === null
-      ? <Router>
+    <AppContext.Provider value={{ contextValue, setContextValue }}>
+      <div>
+        {
+          user === null
+        ? <Router>
+            <Routes>
+              <Route path="/*" caseSensitive={false} element={<Login />} />
+            </Routes>
+          </Router>
+        : load &&
+        <Router>
           <Routes>
-            <Route path="/*" caseSensitive={false} element={<Login />} />
+            <Route path="/dashboard/*" element={<Layouts />} >
+              <Route index element={<Dashboard />} />
+            </Route>
+
+            <Route path="/encuesta/*" element={<Layouts />} >
+              <Route index element={<Encuestas />} />
+            </Route>
+
+            <Route path="/ipn/*"element={<Layouts />} >
+              <Route index element={<IPN />} />
+            </Route>
+
+            <Route path="/reportes/*" element={<Layouts />} >
+              <Route index element={<Reporte />} />
+            </Route>
+
+            <Route path="ipn/crearEncuesta" element={<Layouts />} >
+              <Route index element={<CrearEncuestas />} />
+            </Route>
+
+            <Route path="/create" element={<Layouts />} >
+              <Route index element={<Create />} />
+            </Route>
+
+            <Route path="/create/finalizar" element={<Layouts />}>
+              <Route index element={<CreateFin />}/>
+            </Route>
+
+            <Route path="/fin/*">
+              <Route index element={<ResultadoEncuesta />}/>
+            </Route>
           </Routes>
         </Router>
-      : load &&
-      <Router>
-        <Routes>
-          <Route path="/dashboard/*" element={<Layouts />} >
-            <Route index element={<Dashboard />} />
-          </Route>
-
-          <Route path="/encuesta/*" element={<Layouts />} >
-            <Route index element={<Encuestas />} />
-          </Route>
-
-          <Route path="/ipn/*"element={<Layouts />} >
-            <Route index element={<IPN />} />
-          </Route>
-
-          <Route path="/reportes/*" element={<Layouts />} >
-            <Route index element={<Reporte />} />
-          </Route>
-
-          <Route path="ipn/crearEncuesta" element={<Layouts />} >
-            <Route index element={<CrearEncuestas />} />
-          </Route>
-
-          <Route path="/create" element={<Layouts />} >
-            <Route index element={<Create />} />
-          </Route>
-
-          <Route path="/create/finalizar" element={<Layouts />}>
-            <Route index element={<CreateFin />}/>
-          </Route>
-
-          <Route path="/fin/*">
-            <Route index element={<ResultadoEncuesta />}/>
-          </Route>
-        </Routes>
-      </Router>
-      }
-    </div>
+        }
+      </div>
+    </AppContext.Provider>
   );
 }
 

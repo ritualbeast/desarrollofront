@@ -1,61 +1,54 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaLogo.css'
 import Logo from '../../assets/img/LOGO_VERIS.jpg'
-import Select from 'react-select';
-
+import { RadioGroup } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core';
+import { Radio } from '@material-ui/core';
+import { ListarEnumeradosService } from '../../services/EstilosServices';
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const uploadSVG = svgManager.getSVG('upload');
 
-const Categoria = {
-    container: (provided, state) => ({
-      ...provided,
-      width: '109%',
-      marginTop: '0.5%',
-    }),
-    control: (provided, state) => ({
-      ...provided,
-      width:'102.5%',
-      backgroundColor: 'white',
-      color: 'black',
-      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
-      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
-      "&:hover": {
-        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      color: state.isFocused ? 'black' : 'black',
-      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
-    })
-};
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,preview4, sendPreviewLogo,sendPosicionImagen, sendTamanoImagen}) => {
 
-const DisenoEncuestaLaterallogotipo = () => {
+    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
+    
+    const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
-    const [posicion, setPosicion] = useState('');
+
+    useEffect(() => {
+        ListarPosicionImagen();
+    }, []);
+
+    const ContenedorTamanoLogotipo = () => {
+        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
+    }
+
 
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
+          sendTamanoImagen(event.target.value);
     };
     
+
     const RadioButton = ({ id, value, checked, onChange, label }) => (
         <label className="radioButton">
             <input
-                type="radio"
-                id={id}
-                value={value}
-                checked={checked}
-                onChange={onChange}
+            type="radio"
+            id={id}
+            value={value}
+            checked={checked}
+            onChange={onChange}
             />
             <span className="checkmark"></span>
             {label}
         </label>
-    );
+        );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -83,7 +76,10 @@ const DisenoEncuestaLaterallogotipo = () => {
         </Tooltip>
     );
 
+    
+
     // lista tamano
+
     const tamano = [
         { id: 1, nombre: 'Tamaño actual' },
         { id: 2, nombre: 'Pequeño' },
@@ -91,98 +87,132 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    const positions = [
-        { value: '1', label: 'Izquierda' },
-        { value: '2', label: 'Derecha' },
-        { value: '3', label: 'Centro' },
-        { value: '4', label: 'Arriba' },
-        { value: '5', label: 'Abajo' },
-    ]
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuLogotipo(false);
+    }
 
-    const handlePosition = (selectedOption) => {
-        setPosicion(selectedOption.value);
+    // consumo de posicion de pie de pagina
+    
+    const [posicionImagen, setPosicionImagen] = useState([]);
+
+    const ListarPosicionImagen = async () => {
+        try {
+            const response = await  ListarEnumeradosService('POSICION_IMAGEN')
+            setPosicionImagen(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
     };
-   
+
+    // enviar posicion de pie de pagina
+
+
+    const handleChangePosicion = (event) => {
+        sendPosicionImagen(event.target.value);
+    };
+
+    
   return (
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-                <div className="encuesta-subtitulo2">
-                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
-
-                    <OverlayTrigger
-                    trigger="click"
-                    show={showTooltip}
-                    target={targetRef.current}
-                    placement="right"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}
-                    onHide={() => setShowTooltip(false)}
-                    >
-                    <div
-                        className="help-icon"
-                        onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                    >
-                        <span
-                        ref={targetRef}
-                        style={{ marginLeft: '150px' }}
-                        dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                        />
-                    </div>
-                    </OverlayTrigger>
+            <div className="encuesta-subtitulo2">
+                <h2 className="encuesta-subtitulo-2">Estilo</h2>
+                <OverlayTrigger
+                trigger="click"
+                show={showTooltip}
+                target={targetRef.current}
+                placement="right"
+                delay={{ show: 250, hide: 400 }}
+                overlay={renderTooltip}
+                onHide={() => setShowTooltip(false)}
+                >
+                <div
+                    className="help-icon"
+                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                >
+                    <span
+                    ref={targetRef}
+                    style={{ marginLeft: '150px' }}
+                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                    />
                 </div>
+                </OverlayTrigger>
+            </div>
             </Col>
-
             <Col>
+            
                 <div className="desplegado-container">
-                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'25%'}}>
-                        <div className="fondo-lista">
-                            <div className="contenedorCabeceraLogotipo">
-                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                                <span className='cabeceraTitle'>Cabezera</span>
+                <div className="listaBancoPreguntas-2">
+                    <div className="fondo-lista">
+                        <div className="contenedorCabeceraLogotipo">
+                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                            <span className='cabeceraTitle'>Cabezera</span>
+                        </div>
+                        {sendPreviewLogo != undefined ? (
+                        <img
+                            src={sendPreviewLogo}
+                            alt="preview"
+                            style={{ height: '92px', width: '100%' }}
+                            className="imagenLogotipoEncuesta"
+                        />
+                        ) : 
+                        <div className="contenedorLogotipo">
+                            <div className='buttonLogotipo'>
+                                <span className='buttonLogotipoText'>Imagen</span>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
                             </div>
+                        
+                        </div>
 
-                            <div className="contenedorLogotipo">
-                                <img src={Logo} width={160} height={72} alt="Logo" />
-                            </div>
 
-                            <div className="contenedorContenedorTamano">
-                                <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
 
-                                <div className="contenedortamanoLogotipo">
-                                    <div className='radioLogotipo'>
-                                    {tamano.map((opcion) => (
-                                        <div key={opcion.id} className="radioOption">
-                                        <RadioButton
-                                            id={opcion.id.toString()}
-                                            value={opcion.id.toString()}
-                                            checked={tamanoSeleccionado === opcion.id.toString()}
-                                            onChange={handleChangeTamano}
-                                            label={opcion.nombre}
-                                        />
-                                        </div>
-                                    ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="contenedorContenedorPosicion">
-                                <span className='contenedorPosicionLabel'>Posición</span>
-                                
-                                <div className="contenedorPosicion">
-                                    <Select
-                                        styles={Categoria}
-                                        options={positions}
-                                        value={positions.find((option) => option.value === posicion)}
-                                        onChange={handlePosition}
+                        }
+                        <div className="contenedorContenedorTamano">
+                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
+                            <div className="contenedortamanoLogotipo">
+                                <div className='radioLogotipo'>
+                                {tamano.map((opcion) => (
+                                    <div key={opcion.id} className="radioOption">
+                                    <RadioButton
+                                        id={opcion.id.toString()}
+                                        value={opcion.id.toString()}
+                                        checked={tamanoSeleccionado === opcion.id.toString()}
+                                        onChange={handleChangeTamano}
+                                        label={opcion.nombre}
                                     />
+                                    </div>
+                                ))}
                                 </div>
                             </div>
                         </div>
+
+                        <div className="contenedorContenedorPosicion">
+                            <span className='contenedorPosicionLabel'>Posición</span>
+                            
+                            <div className="contenedorPosicion">
+                                <select className="selectPosicion" onChange={handleChangePosicion}>
+                                    {posicionImagen.map((opcion) => (
+                                        <option key={opcion.id} value={opcion.etiqueta}>{opcion.etiqueta}</option>
+                                    ))    
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        
+                   
+                    
+                    
                     </div>
                 </div>
+                </div>
+            
             </Col>
-        </Col>                       
+        </Col>
+       
+                                
+                                
     </>
   )
 }

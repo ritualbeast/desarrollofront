@@ -20,8 +20,14 @@ const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = () => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
+    sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+}) => {
+
+    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
+
     const [openDisenoPrincipal, setOpenDisenoPrincipal] = React.useState(true);
     const [openDisenoLogotipo, setOpenDisenoLogotipo] = React.useState(false);
     const [openDisenoPiePagina, setOpenDisenoPiePagina] = React.useState(false);
@@ -30,7 +36,12 @@ const DisenoEncuestaLateralPrincipal = () => {
     const [openDisenoFondo, setOpenDisenoFondo] = React.useState(false);
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
+    const [pasos, setPasos] = React.useState(datapasos);
+    const [preview, setPreview] = useState(preview3);
+    const [previewLogotipo, setPreviewLogotipo] = useState(sendPreviewLogotipo); 
     
+    console.log('preview', preview3);
+
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
         setOpenDisenoPrincipal(false);
@@ -66,9 +77,10 @@ const DisenoEncuestaLateralPrincipal = () => {
         setOpenDisenoPrincipal(false);
     };
 
+
+    
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const targetRef = useRef(null);
-
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -94,15 +106,19 @@ const DisenoEncuestaLateralPrincipal = () => {
         </Tooltip>
     );
 
+    const handleNestedClick = (nombre) => {
+        // Lógica para manejar el clic en las opciones desplegadas
+    };
+
     // lista de diseño
 
     const listadiseno = [  
         {nombre: 'Logotipo', id: 1, SSVG: imageSVG},
         {nombre: 'Pie de página', id: 2, SSVG: sidebarSVG},
         {nombre: 'Fuentes', id: 3 , SSVG: italicSVG},
-        {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
-        {nombre: 'Fondo', id: 5 , SSVG: dropletSVG},
-        {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
+        // {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
+        {nombre: 'Fondo', id: 4 , SSVG: dropletSVG},
+        // {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
     ];
 
     const elementosPorFila = 2;
@@ -114,6 +130,7 @@ const DisenoEncuestaLateralPrincipal = () => {
     }
 
     // Lista de colores
+
     const listacolores = [
         {nombre: '1', id: 1},
         {nombre: '2', id: 2},
@@ -153,10 +170,10 @@ const DisenoEncuestaLateralPrincipal = () => {
         } else if (id === 3) {
 
             openDisenoFuentesHandler();
-        }  else if (id === 4) {
+        }  else if (id === 5) {
 
             openDisenoDisposicionHandler();
-        } else if (id === 5) {
+        } else if (id === 4) {
 
             openDisenoFondoHandler();
         } else if (id === 6) {
@@ -167,6 +184,53 @@ const DisenoEncuestaLateralPrincipal = () => {
         
 
     };
+    const handleSendEstado = (estado) => {
+        sendEstado2(estado);
+    }
+    
+    const handleSendPosicion = (posicion) => {
+        sendPosicion2(posicion);
+    }
+
+    const handleSendTamano = (tamano, titulo) => {
+        sendTamano2(tamano, titulo);
+    }
+
+    const handleSendGrosor = (grosor, titulo) => {
+        sendGrosor2(grosor, titulo);
+    }
+
+    const handleSendTipografia = (tipografia, titulo) => {
+        sendTipografia2(tipografia, titulo);
+    }
+
+    // enviar posicion de imagen de logotipo
+
+    const handleSendPosicionLogotipo = (posicion) => {
+        sendPosicionLogotipo(posicion);
+    }
+
+    // enviar tamaño de imagen de logotipo
+
+    const handleSendTamanoLogotipo = (tamano) => {
+        sendTamanoLogotipo(tamano);
+    }
+
+    // enviar datos al paso 2
+    
+    const handleSendTamanoPaso2 = (tamanoPaso2,titulo) => {
+        sendTamanoPaso2(tamanoPaso2,titulo);
+    }
+
+
+    const handleSendGrosorPaso2 = (grosorPaso2,titulo) => {
+        sendGrosorPaso2(grosorPaso2,titulo);
+    }
+
+    const handleSendTipografiaPaso2 = (tipografiaPaso2,titulo) => {
+        sendTipografiaPaso2(tipografiaPaso2,titulo);
+    }
+
 
   return (
     <>
@@ -205,17 +269,20 @@ const DisenoEncuestaLateralPrincipal = () => {
                         {filas.map((fila, index) => (
                             <div className="fila" key={index}>
                                 {fila.map((elemento) => (
-                                <div className="elemento" key={elemento.id}  onClick={() => handleClickElemento(elemento.id)}>
-                                    <span className='disenobar-nombre'>{elemento.nombre}</span>
-                                    <br/>
-                                    <div className="svg-container">
-                                    {/* Renderizar el SVG dentro del div con radius */}
-                                    <div className="svg-div">
-                                        {<span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: elemento.SSVG }}/>}
-                                    </div>
-                                    </div>
+                                     pasos === 1 && (elemento.nombre === "Disposicion" || elemento.nombre === "Transcición" ||  elemento.nombre === 'Fondo'  ) ? null :  (
                                     
-                                </div>
+                                        <div className="elemento" key={elemento.id}  onClick={() => handleClickElemento(elemento.id)}>
+                                            <span className='disenobar-nombre'>{elemento.nombre}</span>
+                                            <br/>
+                                            <div className="svg-container">
+                                            {/* Renderizar el SVG dentro del div con radius */}
+                                            <div className="svg-div">
+                                                {<span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: elemento.SSVG }}/>}
+                                            </div>
+                                            </div>
+                                            
+                                        </div>
+                                    )
                                 ))}
                             </div>
                             ))}  
@@ -258,37 +325,75 @@ const DisenoEncuestaLateralPrincipal = () => {
        
 
         {openDisenoLogotipo && (
-            <DisenoEncuestaLaterallogotipo />
+            <DisenoEncuestaLaterallogotipo 
+              openMenuPrincipal={setOpenDisenoPrincipal}
+              closeMenuLogotipo={setOpenDisenoLogotipo}
+              sendPosicionImagen={(posicion) => handleSendPosicionLogotipo(posicion)}
+              sendTamanoImagen={(tamano) => handleSendTamanoLogotipo(tamano)}
+              sendPreviewLogo = {previewLogotipo}
+            />
         )    
         }
 
         {openDisenoPiePagina && (
-            <DisenoEncuestaLateralPiePagina />
+            <DisenoEncuestaLateralPiePagina 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuPiePagina={setOpenDisenoPiePagina}
+                preview4={preview}
+                paso={pasos}
+                sendEstado={(estado) => handleSendEstado(estado)}
+                sendPosicion={(posicion) => handleSendPosicion(posicion)}
+            />
         )  
         }
 
         {openDisenoFuentes && (
-            <DisenoEncuestaLateralFuentes />
+            <DisenoEncuestaLateralFuentes 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFuentes={setOpenDisenoFuentes}
+                paso={pasos}
+                sendTamano={(tamano, titulo) => handleSendTamano(tamano, titulo)}
+                sendGrosor={(grosor, titulo) => handleSendGrosor(grosor, titulo)}
+                sendTipografia={(tipografia, titulo) => handleSendTipografia(tipografia, titulo)}
+                sendTamanoPaso2 = { (tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2, titulo) }
+                 sendGrosorPaso2 = { (grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2, titulo) }
+                 sendTipografiaPaso2 = { (tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2, titulo) }
+            />
         )
         }
 
         {openDisenoDisposicion && (
-            <DisenoEncuestaLateralDisposicion />
+            <DisenoEncuestaLateralDisposicion
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuDisposicion={setOpenDisenoDisposicion}
+            
+            />
         )
         }
 
         {openDisenoFondo && (
-            <DisenoEncuestaLateralFondo />
+            <DisenoEncuestaLateralFondo 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFondo={setOpenDisenoFondo}
+            
+            />
         )
         }
 
         {openDisenoTransicion && (
-            <DisenoEncuestaLateralTransicion />
+            <DisenoEncuestaLateralTransicion 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuTransicion={setOpenDisenoTransicion}
+            />
         )
         }
 
         {openDisenoColores && (
-            <DisenoEncuestaLateralColores />
+            <DisenoEncuestaLateralColores
+            
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuColores={setOpenDisenoColores}
+             />
         )
         }
 
