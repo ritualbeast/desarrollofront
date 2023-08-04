@@ -1,18 +1,46 @@
-import React, {useState, useEffect, useContext,useRef} from 'react'
-
-
+import React, {useState, useEffect, useRef} from 'react'
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
-import DisenoEncuestaLateralPiePagina from '../Create/DisenoEncuestaLateralPiePagina';
-import { crearEncuesta } from '../../services/EncuestasServices';
-import { event } from 'jquery';
+import styled from 'styled-components';
 
-const chevronupSVG = svgManager.getSVG('chevron-up');
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const edit2SVG = svgManager.getSVG('edit2');
 const trashSVG = svgManager.getSVG('trash');
 
-const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3, 
+const NombreEncuesta = styled.input`
+    width: 97.3% !important;
+    height: 2.2% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Descripcion = styled.textarea`
+    width: 94.8%; 
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const Leyenda = styled.textarea`
+    width: 94.8%; 
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3, 
   sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, sendDatosDefinicionEncuesta,
   sendPosicionLogotipo, sendTamanoLogotipo
 }) => {
@@ -21,10 +49,6 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
   // const [preview, setPreview] = useState(null);
-
-  const [posicionSeleccionada, setPosicionSeleccionada] = useState(null);
-  const [leerEstado, setLeerEstado] = useState(estado);
-  const [leerEstadoPiePagina, setLeerEstadoPiePagina] = useState(sendEstado3);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState({nombre: '', descripcion: '', leyenda: ''});
   const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
@@ -45,9 +69,6 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
   const [tipografiaLeyendaDefinicion, setTipografiaLeyendaDefinicion] = useState('');
   const [tipografiaBotonDefinicion, setTipografiaBotonDefinicion] = useState('');
 
-
-
-  
   const tamano = sendTamano3?.tamano ;
   const titulotamano = sendTamano3?.titulo;
   const grosor = sendGrosor3?.grosor;
@@ -81,7 +102,6 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
        if (titulotamano === 'Descripción de encuesta') {
         inputDescripcionElement.style.fontSize = `${tamano}px`;
         setTamanoDescripcionDefinicion(tamano);
-
       } 
        if ( tituloGrosor === 'Descripción de encuesta' ) {
         inputDescripcionElement.style.fontWeight = grosor;
@@ -133,12 +153,12 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
     console.log('previe1', previe);
     sendPreview(previe);
   };
+
   const enviarPreview2 = (previe) => { 
     console.log('previe2', previe);
     sendPreview2(previe);
   };
     
-
   const onSelectFile1 = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -163,46 +183,24 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
     }
   };
 
-  const enviarEncuesta = async () => {
-    try {
-      const response = await  crearEncuesta();
-      console.log(response);
-  } catch (error) {
-      console.error(error);
-  }
-  }
-
-  // enviar nombre
-
   const handleEnviarNombre = (e) => {
     setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, nombre: e.target.value });
   }
-
-  // enviar descripcion
-
 
   const handleEnviarDescripcion = (e) => {
     setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, descripcion: e.target.value });
   }
 
-  // enviar leyenda
-
-
   const handleEnviarLeyenda = (e) => {
     setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, leyenda: e.target.value });
   }
 
-
-
   return (
     <>
-      <button className="buttonEnviarEncuesta" onClick={enviarEncuesta}>
-        Enviar encuesta
-      </button>
       <div className="tituloDefinicionEncuesta">
-         <span 
-         > Crear  de Encuesta </span>
-        </div>
+         <span> Crear  de Encuesta </span>
+      </div>
+
       <div className="cuerpoDefinicionEncuesta">
           <div className="cabeceraDefinicionEncuesta">
               <span>Cabecera</span>
@@ -228,7 +226,7 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
           ) : (
             <div className="agregarImagenDefinicionEncuesta">
               <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: uploadCloudSVG }} onClick={() => document.getElementById('file-input1').click()} />
-              <span>Agregue imagen o logotipo a la encuesta</span>
+              <span style={{ color:'rgba(130, 130, 130, 1)', marginTop:'1%', marginBottom:'1%' }}>Agregue imagen o logotipo a la encuesta</span>
               <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
             </div>
           )}
@@ -236,23 +234,28 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
           <div className="subtituloDefinicionEncuesta">
             <span >Nombre de la encuesta</span>
           </div>
-          <div className="inputDefinicionEncuesta">
-              <input type="text" placeholder=" Ej: Encuesta a personal" 
-              id="nombre"
-              ref={inputNombreRef}
-              onChange={handleEnviarNombre}
 
+          <div className="inputDefinicionEncuesta">
+              <NombreEncuesta 
+                type="text" 
+                placeholder=" Ej: Encuesta a personal" 
+                id="nombre"
+                ref={inputNombreRef}
+                onChange={handleEnviarNombre}
               />
           </div>
+
           <div className="subtituloDefinicionEncuesta2">
               <span>Descripción &#40;opcional&#41;</span>
           </div>
+
           <div className="inputDefinicionEncuesta">
-              <textarea type="text" placeholder="Ingrese una descripción"
-              id='descripcion'
-              ref={inputDescripcionRef}
-              onChange={handleEnviarDescripcion}
-              
+              <Descripcion 
+                type="text" 
+                placeholder="Ingrese una descripción"
+                id='descripcion'
+                ref={inputDescripcionRef}
+                onChange={handleEnviarDescripcion}
               />
           </div>
       </div>
@@ -264,17 +267,17 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
               <span>Pie de página</span>
           </div>
          
-          <div className="subtituloDefinicionEncuesta">
+          <div className="subtituloDefinicionEncuesta_Leyenda">
               <span>Leyenda</span>
           </div>
-          <br />
-          <div> </div>
           
           <div className="inputDefinicionEncuesta">
-              <textarea type="text" placeholder="Ingrese una leyenda" 
-              id='leyenda'
-              ref={inputLeyendaRef}
-              onChange={handleEnviarLeyenda}
+              <Leyenda 
+                type="text" 
+                placeholder="Ingrese una leyenda" 
+                id='leyenda'
+                ref={inputLeyendaRef}
+                onChange={handleEnviarLeyenda}
               />
           </div>
           
@@ -296,30 +299,26 @@ const DefinicionEncuestaCuerpo = ({ estado, posicion, sendEstado3, sendPosicion3
             ) : (
               <div className="agregarImagenDefinicionEncuesta">
                 <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: uploadCloudSVG }} onClick={() => document.getElementById('file-input2').click()} />
-                <span>Agregue imagen o logotipo a la encuesta</span>
+                <span style={{ color:'rgba(130, 130, 130, 1)', marginTop:'1%', marginBottom:'1%' }}>Agregue imagen o logotipo a la encuesta</span>
                 <input type="file" id="file-input2" style={{ display: 'none' }} onChange={onSelectFile2} />
               </div>
-            )}
-                
-          
-            
-          </div>
-          {sendEstado3 === '' ? null : (
-            <div className={`contenedorbuttonPieDePagina ${leerPosicion == 1 ? 'contenedorbuttonPieDePagina2' : leerPosicion == 2 ? 'contenedorbuttonPieDePagina3' : leerPosicion == 3 ? 'contenedorbuttonPieDePagina4' : null}`}>
-              <button className='buttonPieDePagina'
-              id='buttonPieDePagina'
-              ref={inputBotonRef}
-              >
-                {sendEstado3}
-              </button>
-            </div>
-          )}
+            )
+          }
+      </div>
 
-          
+      {sendEstado3 === '' ? null : (
+        <div className={`contenedorbuttonPieDePagina ${leerPosicion == 1 ? 'contenedorbuttonPieDePagina2' : leerPosicion == 2 ? 'contenedorbuttonPieDePagina3' : leerPosicion == 3 ? 'contenedorbuttonPieDePagina4' : null}`}>
+          <button className='buttonPieDePagina'
+          id='buttonPieDePagina'
+          ref={inputBotonRef}
+          >
+            {sendEstado3}
+          </button>
+        </div>
+      )}
+
       <br />
       <br />
-      <div></div>
-
     </>
   )
 }

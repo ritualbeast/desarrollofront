@@ -1,5 +1,71 @@
 import React from 'react'
 import { Button, Container, Col } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledCheckBox = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border: 2px solid rgba(194, 194, 194, 1);
+  border-radius: 4px;
+  background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'white')};
+  border:${(props) => (props.checked ? '2px solid rgba(255, 206, 72, 1)' : '2px solid rgba(194, 194, 194, 1)')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+
+  &:after {
+    content: '${(props) => (props.checked ? '\u2713' : '')}';
+    font-size: 14px;
+    color: white;
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: -2px;
+    left: 3px;
+
+  }
+`;
+
+const HiddenRadioButton = styled.input.attrs({ type: 'radio' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledRadioButton = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border-radius: 50%;
+  border: 2px solid ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'rgba(194, 194, 194, 1)')};
+  background-color: ${(props) => (props.checked ? 'white' : 'white')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: 2.3px;
+    left: 2.3px;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'transparent')}; 
+  }
+`;
 
 const VistaPrevia = ({contentCont, showModal}) => {
   if (!Array.isArray(contentCont) || contentCont.length === 0) {
@@ -32,24 +98,41 @@ const VistaPrevia = ({contentCont, showModal}) => {
                                 </Col>
 
                                 {pregunta.opcionesRespuesta.map((opcion, indiceOpcion) => (
-                                  <Col key={indiceOpcion} style={{ display: 'flex' }}>
-                                    <input
-                                      type={opcion.type}
-                                      name={`opcion_${index}`}
-                                      value={opcion.id}
-                                      checked={opcion.checked}
-                                      onChange={() => {}}
-                                      style={{marginRight: '2%'}}
-                                    />
-                                    <div style={{ marginBottom: '0.4%'}}>
-                                      {opcion.text}
+                                  <Col key={opcion.id} style={{ display: 'flex', marginBottom: '1%' }}>
+                                  {opcion.type === 'checkbox' ? (
+                                    // Opción de tipo "checkbox"
+                                    <div>
+                                      <HiddenCheckBox
+                                        type={opcion.type}
+                                        name={`opcion_${index}`}
+                                        value={opcion.id}
+                                        checked={opcion.checked}
+                                        onChange={() => {}}
+                                      />
+                                      <StyledCheckBox checked={opcion.checked} />
                                     </div>
-                                  </Col>
+                                  ) : (
+                                    // Opción de tipo "radio"
+                                    <div>
+                                      <HiddenRadioButton
+                                        type={opcion.type}
+                                        name={`opcion_${index}`}
+                                        value={opcion.id}
+                                        checked={opcion.checked}
+                                        onChange={() => {}}
+                                      />
+                                      <StyledRadioButton checked={opcion.checked} />
+                                    </div>
+                                  )}
+                                  <div style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
+                                    {opcion.text}
+                                  </div>
+                                </Col>
                                 ))}
                               </Container>
                           );
                       } else if (pregunta.tipo === 'VE' && pregunta.save) {
-                          const { opciones, ningunaOpcion, otraOpcion } = pregunta;
+                          const { opciones, ningunaOpcion, otro } = pregunta;
                           if (!Array.isArray(opciones) || opciones.length === 0) {
                             return null;
                           }
@@ -86,37 +169,35 @@ const VistaPrevia = ({contentCont, showModal}) => {
                                 </Col>
 
                                 <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                                  <Col style={{ display: 'flex' }}>
-                                    <div>
-                                      <input
-                                        type={ningunaOpcion.type}
-                                        name={`opcion_${ningunaOpcion.id}`}
-                                        value={ningunaOpcion.id}
-                                        checked={ningunaOpcion.checked}
-                                        onChange={() => {}}
-                                      />
-                                    </div>
-                                    <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                      {ningunaOpcion.text}
-                                    </div>
-                                  </Col>
+                                    <Col style={{display: 'flex'}}>
+                                        <div>
+                                            <HiddenRadioButton
+                                                type="radio"
+                                                checked={ningunaOpcion}
+                                                // onChange={Opcion1}
+                                            />
+                                            <StyledRadioButton checked={ningunaOpcion} />
+                                        </div>
+                                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                            Ninguna Opcion
+                                        </div>
+                                    </Col>
                                 </Col>
 
                                 <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                                  <Col style={{ display: 'flex' }}>
-                                    <div>
-                                      <input
-                                        type={otraOpcion.type}
-                                        name={`opcion_${otraOpcion.id}`}
-                                        value={otraOpcion.id}
-                                        checked={otraOpcion.checked}
-                                        onChange={() => {}}
-                                      />
-                                    </div>
-                                    <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                      {otraOpcion.text}
-                                    </div>
-                                  </Col>
+                                    <Col style={{display: 'flex'}}>
+                                        <div>
+                                            <HiddenRadioButton
+                                                type="radio"
+                                                checked={otro}
+                                                // onChange={Opcion2}
+                                            />
+                                            <StyledRadioButton checked={otro} />
+                                        </div>
+                                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                            Otro
+                                        </div>
+                                    </Col>
                                 </Col>
                             </Container>
                           );
@@ -157,8 +238,6 @@ const VistaPrevia = ({contentCont, showModal}) => {
                 </Col>
               )
             )}
-
-
         </Container>
     </>
   )

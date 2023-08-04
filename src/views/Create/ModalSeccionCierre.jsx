@@ -2,11 +2,32 @@ import React, { useState } from 'react'
 import '../../styles/seccionCierre.css';
 import { Container, Row, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
+import styled from 'styled-components';
 
 const uploadSVG = svgManager.getSVG('upload');
 const chevronUpSVG = svgManager.getSVG('chevron-up');
 const copyRosaSVG = svgManager.getSVG('copy-rosa');
 const trashSVG = svgManager.getSVG('trash');
+
+const Agradecimiento = styled(FormControl)`
+    width: 94.2% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const URL = styled(FormControl)`
+    width: 94.2% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
 
 const ModalSeccionCierre = () => {
     const [duplicarSeccionVisible, setDuplicarSeccionVisible] = useState(false);
@@ -75,12 +96,12 @@ const ModalSeccionCierre = () => {
             
                 <Col className="seccion3-SeccionCierre">
                     <p style={{ marginLeft: '2%' }}>Texto de agradecimiento</p>
-                    <FormControl style={{ width: '94.2%'}} className= 'textoAgradecimiento' type="text" placeholder="Escribe aquí..." />
+                    <Agradecimiento className= 'textoAgradecimiento' type="text" placeholder="Escribe aquí..." />
                 </Col>
             
                 <Col className="seccion4-SeccionCierre">
                     <p style={{ marginLeft: '2%' }}>Url de redirección</p>
-                    <FormControl style={{ width: '94.2%'}} className= 'urlRedireccion' type="text" placeholder="Escribe aquí..." />
+                    <URL className= 'urlRedireccion' type="text" placeholder="Escribe aquí..." />
                 </Col>
                 
                 <Col style={{display: 'flex'}}>

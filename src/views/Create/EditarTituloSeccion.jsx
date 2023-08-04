@@ -1,6 +1,31 @@
 import React, { useState } from 'react'
 import '../../styles/editarTituloSeccion.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const Titulo = styled(FormControl)`
+    width: 92.6% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+    margin-left: 1.9% !important;
+    padding: 1.5% !important;
+    border-radius: 4px !important;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Subtitulo = styled.textarea`
+    width: 94.8%;
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
 
 const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handleEditarAceptar, handleEditarGuardar}) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -49,38 +74,24 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
                 <Container className='tituloSeccion-container-editar'>
                     <Col>
                         <p style={{ marginLeft: '2%', marginBottom: '1%', marginTop:'unset', cursor: 'default' }}>Nombre descripción</p>
-                        <FormControl 
-                        style={{ 
-                            width: '92.6%', 
-                            border: '1px solid #ccc', 
-                            marginLeft: '1.9%', 
-                            padding:'1.5%',
-                            borderRadius:'4px'
-                        }} 
-                        id='titulo-editar'
-                        value={titulo}
-                        onChange={(e) => {
-                            const inputValue = e.target.value.trim();
-                            setTitulo(e.target.value);
-                            setIsInputFilled(e.target.value.trim() !== '');
-                            setHasChanges(inputValue !== contentSec.titulo);
-                          }}
-                        placeholder='Descripción'
+                        <Titulo 
+                            id='titulo-editar'
+                            value={titulo}
+                            onChange={(e) => {
+                                const inputValue = e.target.value.trim();
+                                setTitulo(e.target.value);
+                                setIsInputFilled(e.target.value.trim() !== '');
+                                setHasChanges(inputValue !== contentSec.titulo);
+                            }}
+                            placeholder='Descripción'
                         />
                     </Col>
 
                     <Col>
-                        <p 
-                            style={{ 
-                                marginLeft: '2%', 
-                                marginBottom: '1%', 
-                                cursor: 'default' 
-                            }}
-                        >
+                        <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>
                             Descripción (Opcional)
                         </p>
-                        <textarea
-                            style={{ width: '94.8%', border: '1px solid #ccc' }}
+                        <Subtitulo
                             className="textoAgradecimiento"
                             value={comentario}
                             onChange={(e) => {

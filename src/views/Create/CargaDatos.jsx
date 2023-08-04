@@ -1,12 +1,147 @@
 import React, { useState } from 'react'
+import Select from 'react-select';
 import '../../styles/cargaDatos.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import ResultadoCargaDatos from './ResultadoCargaDatos';
 import { useEffect } from 'react';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import styled from 'styled-components';
 
 const trashSVG = svgManager.getSVG('trash-mini');
+
+const Pregunta = styled.textarea`
+    width: 94.8%; 
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const Comentario = styled.textarea`
+    width: 96.8%;
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledCheckBox = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border: 2px solid rgba(194, 194, 194, 1);
+  border-radius: 4px;
+  background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'white')};
+  border:${(props) => (props.checked ? '2px solid rgba(255, 206, 72, 1)' : '2px solid rgba(194, 194, 194, 1)')};
+  position: relative;
+  margin-top: 40%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+
+  &:after {
+    content: '${(props) => (props.checked ? '\u2713' : '')}';
+    font-size: 14px;
+    color: white;
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: -2px;
+    left: 3px;
+
+  }
+`;
+
+const Informacion = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 1%; 
+    border-radius: 4px;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const Instrucciones = styled(FormControl)`
+    width: 95.32% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const MB = styled.input`
+    width: 2.2% !important;
+    height: 2.2% !important;
+    text-align: center !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const MensajeError = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const AlimentarBancoPreguntas = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc; 
+    padding: 1%;
+    border-radius: 4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '96%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
 
 const CargaDatos = ({
     indice, 
@@ -18,7 +153,6 @@ const CargaDatos = ({
     handleEditarPregunta, 
     handleEliminarPregunta,
     handleCambiarPregunta,
-    contentCont,
     preguntaVisibleOpen,
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -44,6 +178,7 @@ const CargaDatos = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
+    const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -135,7 +270,16 @@ const CargaDatos = ({
         try {
             const response = await ListarTipoPregunta();
             console.log(response.data.listTipoPreguntas)
-            setTipoPregunta(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas);
+            const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 4);
+            if (defaultTipo) {
+                const data={
+                    value: defaultTipo.idTipoPregunta,
+                    label:defaultTipo.descripcion
+                }
+                setSelectedTipoPregunta(data);
+            }
+            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -171,26 +315,21 @@ const CargaDatos = ({
                 {mostrarEditar && (
                     <Container className='cargaDatos-container-editar'>
                         <Col>
-                            <select 
-                                className='selectEditar'
-                                onChange={(e) => handlePregunta(e.target.value)}
-                            >
-                                {tipoPregunta.map((item) => (
-                                    <option
-                                        key={item.idTipoPregunta}
-                                        value={item.tipo}
-                                        selected={item.idTipoPregunta === 4}
-                                    >
-                                        {item.descripcion}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                styles={customStyles}
+                                className='selectEditar_CD'
+                                onChange={(selectedOption) => handlePregunta(selectedOption.value)}
+                                options={tipoPregunta.map((item) => ({
+                                    value: item.tipo,
+                                    label: item.descripcion,
+                                }))}
+                                value={selectedTipoPregunta}
+                            />
                         </Col>
 
                         <Col>
                             <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
-                            <textarea
-                                style={{ width: '94.8%', border: '1px solid #ccc' }}
+                            <Pregunta
                                 className="textoAgradecimiento"
                                 id='idTextoAgradecimiento'
                                 value={pregunta}
@@ -202,8 +341,7 @@ const CargaDatos = ({
                         <Col className='seccion3-cargaDatos-editar'>
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Instrucciones para el encuestado</p>
 
-                            <FormControl 
-                                style={{ width: '95.32%', border: '1px solid #ccc' }} 
+                            <Instrucciones
                                 className= '' 
                                 type="text"
                                 value={pregunta2}
@@ -217,60 +355,61 @@ const CargaDatos = ({
 
                             <Col className='seccion4-1-cargaDatos-editar'>
                                 <label style={{marginTop: '11%', width: '100%'}}>
-                                    <input
+                                    <HiddenCheckBox
                                         type="checkbox"
-                                        style={{width: '70%', height: '70%'}}
                                         checked={isCheckedPDF}
                                         onChange={handleCheckboxPDF}
+                                        
                                     />
+                                    <StyledCheckBox checked={isCheckedPDF} />
                                 </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>PDF</p>
                             </Col>
 
                             <Col className='seccion4-2-cargaDatos-editar'>
                                 <label style={{marginTop: '5.6%', width: '55%'}}>
-                                    <input
+                                    <HiddenCheckBox
                                         type="checkbox"
-                                        style={{width: '70%', height: '70%'}}
                                         checked={isCheckedDOC}
                                         onChange={handleCheckboxDOC}
                                     />
+                                    <StyledCheckBox checked={isCheckedDOC} />
                                 </label>
-                                <p style={{ width: '170%', marginBottom: '1%', cursor: 'default' }}>DOC, DOCX</p>
+                                <p style={{ width: '170%', marginTop: '13.4%', cursor: 'default' }}>DOC, DOCX</p>
                             </Col>
 
                             <Col className='seccion4-3-cargaDatos-editar'>
                                 <label style={{marginTop: '11%', width: '48%'}}>
-                                    <input
+                                    <HiddenCheckBox
                                         type="checkbox"
-                                        style={{width: '70%', height: '70%'}}
                                         checked={isCheckedPNG}
                                         onChange={handleCheckboxPNG}
                                     />
+                                    <StyledCheckBox checked={isCheckedPNG} />
                                 </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>PNG</p>
                             </Col>
 
                             <Col className='seccion4-4-cargaDatos-editar'>
                                 <label style={{marginTop: '11%', width: '48%'}}>
-                                    <input
+                                    <HiddenCheckBox
                                         type="checkbox"
-                                        style={{width: '70%', height: '70%'}}
                                         checked={isCheckedJPG}
                                         onChange={handleCheckboxJPG}
                                     />
+                                    <StyledCheckBox checked={isCheckedJPG} />
                                 </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>JPG</p>
                             </Col>
 
                             <Col className='seccion4-5-cargaDatos-editar'>
                                 <label style={{marginTop: '11%', width: '48%'}}>
-                                    <input
+                                    <HiddenCheckBox
                                         type="checkbox"
-                                        style={{width: '70%', height: '70%'}}
                                         checked={isCheckedGIF}
                                         onChange={handleCheckboxGIF}
                                     />
+                                    <StyledCheckBox checked={isCheckedGIF} />
                                 </label>
                                 <p style={{ marginBottom: '1%', cursor: 'default' }}>GIF</p>
                             </Col>
@@ -279,7 +418,7 @@ const CargaDatos = ({
                         <Col className='seccion5-cargaDatos-editar'>
                             <p style={{ marginBottom: '1%', marginTop: '1.3%', cursor: 'default' }}>Peso máximo</p>
                             
-                            <input
+                            <MB
                                 className="numeracionRespuesta"
                                 style={{ width: '2.2%', height: '2.2%', textAlign: 'center' }}
                                 type="text"
@@ -290,8 +429,7 @@ const CargaDatos = ({
 
                         <Col className='seccion6-cargaDatos-editar'>
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
-                            <textarea
-                                style={{ width: '96.8%', border: '1px solid #ccc' }}
+                            <Comentario
                                 className="textoMensajeError"
                                 value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
                                 readOnly
@@ -314,7 +452,11 @@ const CargaDatos = ({
                         {configuracion1 && (
                             <Col className='seccion1-1-cargaDatos-configuracion'>
                                 <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
+                                <MensajeError 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                />
                             </Col>
                         )}
 
@@ -328,7 +470,12 @@ const CargaDatos = ({
                         {configuracion2 && (
                             <Col className='seccion1-1-cargaDatos-configuracion'>
                                 <p style={{margin: 'unset' }}>Información sobre pregunta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                                <Informacion 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                    value={informacionPregunta}
+                                />
                             </Col>
                         )}
 
@@ -342,7 +489,11 @@ const CargaDatos = ({
                         {configuracion3 && (
                             <Col className='seccion1-1-cuadroComentarios-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <AlimentarBancoPreguntas 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..."
+                                />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>
                         )}

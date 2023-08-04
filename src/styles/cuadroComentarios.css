@@ -65,13 +65,11 @@
     padding-top: 2%;
     padding-bottom: 2%;
 }
-.selectEditar {
+.selectEditar_CC {
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
     border-radius: 4px;
-    width: 96%;
-    margin-left: 2%;
+    margin-left: 0.6%;
     margin-top: unset;
   }
 select:hover {

@@ -10,7 +10,7 @@ import Create from './views/Create';
 import Login from './components/master/Login';
 import globalServices from './services/global'
 import CreateFin from './views/CreateFin';
-import ResultadoEncuesta from './views/ResultadoEncuesta';
+import ResultadoEncuesta from './views/Resultado/ResultadoEncuesta';
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem('loggedUser'))

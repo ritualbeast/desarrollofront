@@ -1,45 +1,31 @@
 .cuerpoDefinicionEncuesta{
-  width: Fixed (898px);
-  height: Fixed (616px);
-  top: 262px;
-  left: 498px;
-  padding: 24px 21px 24px 21px;
+  padding: 3% 2% 3% 2%;
   border-radius: 20px;
-  border: 0.5px;
-  gap: 10px;
   border: 0.5px solid #C5C5C5;
-  margin-left: 10px;
-  background: #FAFAFA
-
+  margin-left: 2%;
 }
 
 .tituloDefinicionEncuesta span{
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 28px;
   letter-spacing: 0em;
   text-align: left;
   color: #FF4197;
-
-
+  padding-left: 2%;
 }
 .tituloDefinicionEncuesta{
   margin: 10px;
 }
 
 .cabeceraDefinicionEncuesta{
-  width: Fill (856px);
-  height: Hug (56px);
-  padding: 16px;
+  padding: 2%;
   border-radius: 10px;
-  justify: space-between;
-
 }
 .cabeceraDefinicionEncuesta span{
-  font-family: Poppins;
-  font-size: 16px;
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
@@ -47,20 +33,18 @@
 }
 
 .agregarImagenDefinicionEncuesta{
-  width: Fill (856px);
-  height: 134px;
+  width: 95%;
+  height: 25%;
   padding: 16px 20px 16px 20px;
   border-radius: 10px;
-  border: 1px;
+  border: 2px dashed !important;
   gap: 8px;
-  border: 1px solid #B1B1B1;
+  border-color: #b8b8b8 !important;
   border-style: dashed;
-  display: flex; /* Habilitar flexbox */
-  flex-direction: column; /* Alinear los elementos en columna */
-  justify-content: center; /* Alinear horizontalmente (centrar) */
-  align-items: center; /* Alinear verticalmente (centrar) */
-  height: 200px;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .agregarImagenDefinicionEncuesta2 {
   display: flex;
@@ -79,52 +63,54 @@
   margin-right: 10px; /* Espacio entre la imagen y el subcontenedor */
 }
 
-
 .subtituloDefinicionEncuesta, .subtituloDefinicionEncuesta2{
-  font-family: Poppins;
+  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 2%;
+  margin-left: 0.4%;
+}
+.subtituloDefinicionEncuesta_Leyenda{
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-left: 0.4%;
 }
 .inputDefinicionEncuesta input{
-  width: 98%;
-  
-  height: Hug (40px);
+  width: 97.6%;
   padding: 10px 12px 10px 0px;
   border-radius: 8px;
   border: 1px;
   gap: 4px;
   border: 1px solid #E0E0E0;
-  font-family: Poppins;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
   color: #9E9E9E;
-
+  padding-left: 1%;
 }
 .inputDefinicionEncuesta textarea{
-  width: 98%;
-  min-width: 98%;
-  max-width: 98%;
-  height: Hug (40px);
+  width: 97.4%;
   padding: 10px 12px 10px 0px;
   border-radius: 8px;
   border: 1px;
   gap: 4px;
   border: 1px solid #E0E0E0;
-  font-family: Poppins;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
   color: #9E9E9E;
+  padding-left: 1%;
 }
 
 .inputDefinicionEncuesta{
@@ -136,7 +122,6 @@
   width: 100%;
   display: flex;
   height: 100%;
-
 }
 .contenedorbuttonPieDePagina2{
   margin-top: 10px;
@@ -163,11 +148,6 @@
   justify-content: right;
 }
 
-
-
-
-
-
 .buttonPieDePagina {
   width: Hug (103px);
   height: Hug (36px);
@@ -175,14 +155,9 @@
   border-radius: 40px;
   gap: 4px;
   background: rgba(255, 199, 0, 1);
-  font-family: Poppins;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
   letter-spacing: 0em;
   text-align: left;
-  
-
-
-
 }

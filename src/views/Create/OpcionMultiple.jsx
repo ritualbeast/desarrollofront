@@ -1,14 +1,199 @@
 import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
 import '../../styles/opcionMultiple.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import styled from 'styled-components';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
+
+const Pregunta = styled(FormControl)`
+    width: 94.2% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Respuesta = styled(FormControl)`
+    width: 79.5% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Ponderacion = styled.input`
+    width: 2.5% !important;
+    text-align: center !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const MensajeError = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Etiqueta = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Etiqueta2 = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Informacion = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 1%; 
+    border-radius:4px;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const AlimentarBancoPreguntas = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc; 
+    padding: 1%;
+    border-radius: 4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const CustomCheckBox = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: ${(props) => (props.checked ? 'red' : 'white')}; /* Cambiar el color rojo aquí */
+  margin-right: 5px;
+  background-color: unset;
+`;
+
+const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledCheckBox = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border: 2px solid rgba(194, 194, 194, 1);
+  border-radius: 4px;
+  background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'white')};
+  border:${(props) => (props.checked ? '2px solid rgba(255, 206, 72, 1)' : '2px solid rgba(194, 194, 194, 1)')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+
+  &:after {
+    content: '${(props) => (props.checked ? '\u2713' : '')}';
+    font-size: 14px;
+    color: white;
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: -2px;
+    left: 3px;
+
+  }
+`;
+
+const HiddenRadioButton = styled.input.attrs({ type: 'radio' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledRadioButton = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border-radius: 50%;
+  border: 2px solid ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'rgba(194, 194, 194, 1)')};
+  background-color: ${(props) => (props.checked ? 'white' : 'white')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+
+  &:before {
+    content: '';
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: 2.3px;
+    left: 2.3px;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'transparent')}; 
+    cursor: pointer;
+  }
+`;
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '96%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
 
 const OpcionMultiple = ({
     indice, 
@@ -33,7 +218,7 @@ const OpcionMultiple = ({
             id: 1,
             checked: false,
             text: "",
-            type: 'checkbox',
+            type: 'radio',
             seccionValue: '',
             preguntaValue: '',
         }
@@ -54,7 +239,8 @@ const OpcionMultiple = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-
+    const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
+    
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -87,7 +273,7 @@ const OpcionMultiple = ({
             id: opcionesRespuesta.length + 1,
             checked: false,
             text: "",
-            type: 'checkbox',
+            type: 'radio',
             seccionValue: '', // Valor inicial de la sección
             preguntaValue: '', // Valor inicial de la pregunta
         };
@@ -97,18 +283,32 @@ const OpcionMultiple = ({
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
-    const handleOpcionChange = (id, value, checked) => {
-        setOpcionText(value);
-
-        setOpcionesRespuesta((prevOpciones) =>
+    const handleOpcionChange = (id, value, checked, type) => {
+        if (!configuracion3) {
+          // Solo cambiamos el estado si el switch está en modo "radio"
+          if (type === 'checkbox') {
+            // Para checkbox, cambiamos el estado del checkbox actual, pero también deseleccionamos todos los demás
+            setOpcionesRespuesta((prevOpciones) =>
+              prevOpciones.map((opcion) =>
+                opcion.id === id ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+              )
+            );
+          } else if (type === 'radio') {
+            // Para radio, deseleccionamos todas las opciones excepto la que se hizo clic
+            setOpcionesRespuesta((prevOpciones) =>
+              prevOpciones.map((opcion) =>
+                opcion.id === id ? { ...opcion, checked: true } : { ...opcion, checked: false }
+              )
+            );
+          }
+        } else {
+          // En modo "checkbox", simplemente cambiamos el estado del checkbox actual
+          setOpcionesRespuesta((prevOpciones) =>
             prevOpciones.map((opcion) =>
-            opcion.id === id 
-                ? { ...opcion, checked: !opcion.checked } // Cambiar el estado checked de la opción actual
-                : opcion.type === 'checkbox' // Verificar si es un checkbox
-                ? opcion // Mantener el estado de los otros checkboxes
-                : { ...opcion, checked: false } // Desmarcar las opciones de tipo radio
+              opcion.id === id ? { ...opcion, checked: !checked } : opcion
             )
-        );
+          );
+        }
     };
 
     const handleOpcionTextChange = (id, newText) => {
@@ -148,10 +348,11 @@ const OpcionMultiple = ({
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) => ({
             ...opcion,
-            type: configuracion3 ? 'checkbox' : 'radio',
+            type: configuracion3 ? 'radio' : 'checkbox',
+            checked: configuracion3 ? false : opcion.checked,
           }))
         );
-    };            
+    };                  
 
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
@@ -253,7 +454,16 @@ const OpcionMultiple = ({
         try {
             const response = await ListarTipoPregunta();
             console.log(response.data.listTipoPreguntas)
-            setTipoPregunta(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas);
+            const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 1);
+            if (defaultTipo) {
+                const data={
+                    value: defaultTipo.idTipoPregunta,
+                    label:defaultTipo.descripcion
+                }
+                setSelectedTipoPregunta(data);
+            }
+            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -289,26 +499,21 @@ const OpcionMultiple = ({
                 {mostrarEditar && (
                     <Container className='opcionMultiple-container-editar'>
                         <Col>
-                            <select 
-                                className='selectEditar'
-                                onChange={(e) => handlePregunta(e.target.value)}
-                            >
-                                {tipoPregunta.map((item) => (
-                                    <option
-                                        key={item.idTipoPregunta}
-                                        value={item.tipo}
-                                        selected={item.idTipoPregunta === 1}
-                                    >
-                                        {item.descripcion}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                styles={customStyles}
+                                className='selectEditar_OM'
+                                onChange={(selectedOption) => handlePregunta(selectedOption.value)}
+                                options={tipoPregunta.map((item) => ({
+                                    value: item.tipo,
+                                    label: item.descripcion,
+                                }))}
+                                value={selectedTipoPregunta}
+                            />
                         </Col>
 
                         <Col>
-                            <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
-                            <FormControl 
-                                style={{ width: '94.2%', border: '1px solid #ccc' }} 
+                            <p style={{ marginLeft: '2.2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
+                            <Pregunta 
                                 className= 'textoAgradecimiento' 
                                 type="text"
                                 value={pregunta}
@@ -336,18 +541,36 @@ const OpcionMultiple = ({
                                                                 {...provided.dragHandleProps}
                                                             >
                                                                 <Col className="seccion3-1-opcionMultiple-editar">
-                                                                    <label className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}>
-                                                                        <input
-                                                                            type={opcion.type}
-                                                                            style={{ width: '100%', height: '100%' }}
-                                                                            checked={opcion.checked}
-                                                                            onChange={() => handleOpcionChange(opcion.id)}
-                                                                        />
+                                                                    <CustomCheckBox
+                                                                        key={opcion.id}
+                                                                        className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}
+                                                                        checked={opcion.checked}
+                                                                    >
+                                                                        {opcion.type === 'checkbox' ? (
+                                                                            <>
+                                                                                <HiddenCheckBox
+                                                                                    type="checkbox"
+                                                                                    style={{ width: '100%', height: '100%' }}
+                                                                                    checked={opcion.checked}
+                                                                                    onChange={() => handleOpcionChange(opcion.id, opcion.text, opcion.checked, 'checkbox')}
+                                                                                />
+                                                                                <StyledCheckBox checked={opcion.checked} />
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                <HiddenRadioButton
+                                                                                    type="radio"
+                                                                                    style={{ width: '100%', height: '100%' }}
+                                                                                    checked={opcion.checked}
+                                                                                    onChange={() => handleOpcionChange(opcion.id, opcion.text, opcion.checked, 'radio')}
+                                                                                />
+                                                                                <StyledRadioButton checked={opcion.checked} />
+                                                                            </>
+                                                                        )}
                                                                         <span class="checkmark"></span>
-                                                                    </label>
+                                                                    </CustomCheckBox>
 
-                                                                    <FormControl
-                                                                        style={{ width: '79.5%', border: '1px solid #ccc' }}
+                                                                    <Respuesta
                                                                         className="textoOpcionRespuesta"
                                                                         type="text"
                                                                         value={opcion.text}
@@ -357,9 +580,8 @@ const OpcionMultiple = ({
 
                                                                     {usarPonderacion && (
                                                                         inputs.map((inputNum, index) => (
-                                                                            <input
+                                                                            <Ponderacion
                                                                                 className="numeracionRespuesta"
-                                                                                style={{ width: '2.5%', textAlign: 'center' }}
                                                                                 key={inputNum}
                                                                                 type="text"
                                                                             />
@@ -414,7 +636,11 @@ const OpcionMultiple = ({
                         {configuracion1 && (
                             <Col className='seccion1-1-opcionMultiple-configuracion'>
                                 <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
+                                <MensajeError 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                />
                             </Col>
                         )}
 
@@ -454,7 +680,10 @@ const OpcionMultiple = ({
                         {configuracion4 && (
                             <Col className='seccion1-4-opcionMultiple-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
+                                <Etiqueta 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                />
                             </Col>
                         )}
 
@@ -469,7 +698,11 @@ const OpcionMultiple = ({
                             <Col className='seccion1-5-opcionMultiple-configuracion'>
                                 <Col>
                                     <p style={{margin: 'unset' }}>Etiqueta</p>
-                                    <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
+                                    <Etiqueta2 
+                                        className= 'textoConfiguracion1' 
+                                        type="text" 
+                                        placeholder="Otro (especifique)" 
+                                    />
                                 </Col>
                                 <Col className='seccion1-5-2-opcionMultiple-configuracion'>
                                     <Col style={{ width: '55%' }}>
@@ -516,7 +749,12 @@ const OpcionMultiple = ({
                         {configuracion6 && (
                             <Col className='seccion1-1-opcionMultiple-configuracion'>
                                 <p style={{margin: 'unset' }}>Información sobre pregunta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                                <Informacion 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                    value={informacionPregunta}
+                                />
                             </Col>
                         )}
 
@@ -530,7 +768,11 @@ const OpcionMultiple = ({
                         {configuracion7 && (
                             <Col className='seccion1-1-opcionMultiple-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <AlimentarBancoPreguntas 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..."
+                                />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>
                         )}

@@ -36,15 +36,6 @@
   margin-right: unset;
 }
 
-.input-filtro{
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  width: 100%;
-}
-
 .btn-notisurvey {
   display: flex;
   justify-content: center;
@@ -77,11 +68,6 @@
   color: #888; /* Color del icono */
   
 }
-
-
-
-
-
 
   /*css para filtros*/
   

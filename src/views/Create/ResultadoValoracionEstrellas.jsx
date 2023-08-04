@@ -7,6 +7,7 @@ import svgManager from '../../assets/svg';
 import $ from 'jquery'
 import { Box, Modal } from '@mui/material';
 import ModalEliminarPregunta from './ModalEliminarPregunta';
+import styled from 'styled-components';
 
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
@@ -15,6 +16,39 @@ const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
 const chevronUpSVG = svgManager.getSVG('chevron-up');
+
+const HiddenRadioButton = styled.input.attrs({ type: 'radio' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledRadioButton = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border-radius: 50%;
+  border: 2px solid ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'rgba(194, 194, 194, 1)')};
+  background-color: ${(props) => (props.checked ? 'white' : 'white')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: 2.3px;
+    left: 2.3px;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'transparent')}; 
+  }
+`;
 
 function ResultadoValoracionEstrellas({ 
     index, 
@@ -36,19 +70,15 @@ function ResultadoValoracionEstrellas({
     const targetRef = useRef(null);
     const [isUp, setIsUp] = useState(true);
     const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
+    const [ningunaOpcion, setNingunaOpcion] = useState(false);
+    const [otro, setOtro] = useState(false);
 
-    const ningunaOpcion = {
-        id: 'ninguna',
-        text: 'Ninguna de las anteriores',
-        type: 'radio',
-        checked: false,
+    const Opcion1 = () => {
+        setNingunaOpcion(!ningunaOpcion);
     };
 
-    const otro = {
-        id: 'otro',
-        text: 'Otro',
-        type: 'radio',
-        checked: false,
+    const Opcion2 = () => {
+        setOtro(!otro);
     };
 
     const handleMouseEnterEditar = (index) => {
@@ -57,7 +87,7 @@ function ResultadoValoracionEstrellas({
         $(`#Preg${index +1}`).addClass("editar-visible");
     };
     
-      const handleMouseLeaveEditar = (index) => {
+    const handleMouseLeaveEditar = (index) => {
         $(`#editPreg${index +1}`).removeClass("visible");
         $(`#editPreg${index +1}`).addClass("oculto");
         $(`#Preg${index +1}`).removeClass("editar-visible");
@@ -202,16 +232,15 @@ function ResultadoValoracionEstrellas({
                     <Col style={{ marginRight: '2%', marginTop: '1%' }}>
                         <Col style={{display: 'flex'}}>
                             <div>
-                                <input
-                                    type={ningunaOpcion.type}
-                                    name={`opcion_${ningunaOpcion.id}`}
-                                    value={ningunaOpcion.id}
-                                    checked={ningunaOpcion.checked}
-                                    onChange={() => {}}
+                                <HiddenRadioButton
+                                    type="radio"
+                                    checked={ningunaOpcion}
+                                    onChange={Opcion1}
                                 />
+                                <StyledRadioButton checked={ningunaOpcion} />
                             </div>
                             <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                {ningunaOpcion.text}
+                                Ninguna Opcion
                             </div>
                         </Col>
                     </Col>
@@ -219,16 +248,15 @@ function ResultadoValoracionEstrellas({
                     <Col style={{ marginRight: '2%', marginTop: '1%' }}>
                         <Col style={{display: 'flex'}}>
                             <div>
-                                <input
-                                    type={otro.type}
-                                    name={`opcion_${otro.id}`}
-                                    value={otro.id}
-                                    checked={otro.checked}
-                                    onChange={() => {}}
+                                <HiddenRadioButton
+                                    type="radio"
+                                    checked={otro}
+                                    onChange={Opcion2}
                                 />
+                                <StyledRadioButton checked={otro} />
                             </div>
                             <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                {otro.text}
+                                Otro
                             </div>
                         </Col>
                     </Col>

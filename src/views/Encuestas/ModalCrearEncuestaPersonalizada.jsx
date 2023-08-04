@@ -4,15 +4,24 @@ import { Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
 import SearchIcon from '@mui/icons-material/Search';
 import '../../styles/modalCrearEncuestaPersonalizada.css';
-import ImagenEncuetaPosterior from '../../assets/img/encuestaPosterior.jpg'
-import ImagenPosteriorEvento from '../../assets/img/posteriorEvento.jpg'
-import ImagenDatosDemograficos from '../../assets/img/datosDemograficos.jpeg'
-import ImagenComunidad from '../../assets/img/comunidad.jpg'
-import ImagenMembresia from '../../assets/img/membresia.jpg'
-import ImagenEvaluacionServicios from '../../assets/img/evaluacionServicios.jpg'
 import { ListarEncuestas } from '../../services/EncuestasServices';
+import styled from 'styled-components';
 
 const closeSVG = svgManager.getSVG('close');
+
+const BuscarNombre = styled.input`
+    width: 100% !important;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
 
 const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
     const [selectedFile, setSelectedFile] = useState()
@@ -115,7 +124,7 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
             <div className='comentario_'>Selecciona una plantilla</div>
 
             <div className="input-container_" > 
-              <input
+              <BuscarNombre
                 type="text"
                 placeholder="Buscar por nombre"
                 className="input-filtroPersonalizado"

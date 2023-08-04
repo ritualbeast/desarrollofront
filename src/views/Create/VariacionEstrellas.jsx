@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
 import '../../styles/variacionEstrellas.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
@@ -6,6 +7,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { SketchPicker } from 'react-color';
 import ResultadoValoracionEstrellas from './ResultadoValoracionEstrellas';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import styled from 'styled-components';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
@@ -21,6 +23,117 @@ const opciones = [
     { id: 3, icono: 'circle' },
     { id: 4, icono: 'triangle' },
   ];
+
+  const Pregunta = styled(FormControl)`
+    width: 94.2% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Respuesta = styled(FormControl)`
+    width: 37% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Ponderacion = styled.input`
+    width: 2.2% !important;
+    height: 2% !important;
+    text-align: center !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+    margin-top: 1.2% !important;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const MensajeError = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Etiqueta = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Etiqueta2 = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Informacion = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc;
+    outline: none;
+    padding: 1%; 
+    border-radius:4px;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const AlimentarBancoPreguntas = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc; 
+    padding: 1%;
+    border-radius: 4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '94%',
+      marginLeft: '1.8%',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
 
 const VariacionEstrellas = ({
     indice, 
@@ -69,7 +182,8 @@ const VariacionEstrellas = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    
+    const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
+
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -276,7 +390,16 @@ const VariacionEstrellas = ({
         try {
             const response = await ListarTipoPregunta();
             console.log(response.data.listTipoPreguntas)
-            setTipoPregunta(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas);
+            const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 2);
+            if (defaultTipo) {
+                const data={
+                    value: defaultTipo.idTipoPregunta,
+                    label:defaultTipo.descripcion
+                }
+                setSelectedTipoPregunta(data);
+            }
+            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -312,26 +435,21 @@ const VariacionEstrellas = ({
                 {mostrarEditar && (
                     <Container className='variacionEstrellas-container-editar'>
                         <Col>
-                            <select 
-                                className='selectEditar'
-                                onChange={(e) => handlePregunta(e.target.value)}
-                            >
-                                {tipoPregunta.map((item) => (
-                                    <option
-                                        key={item.idTipoPregunta}
-                                        value={item.tipo}
-                                        selected={item.idTipoPregunta === 2}
-                                    >
-                                        {item.descripcion}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                styles={customStyles}
+                                className='selectEditar_VE'
+                                onChange={(selectedOption) => handlePregunta(selectedOption.value)}
+                                options={tipoPregunta.map((item) => ({
+                                    value: item.tipo,
+                                    label: item.descripcion,
+                                }))}
+                                value={selectedTipoPregunta}
+                            />
                         </Col>
 
                         <Col>
                             <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
-                            <FormControl 
-                                style={{ width: '94.2%', border: '1px solid #ccc' }} 
+                            <Pregunta 
                                 className= 'textoAgradecimiento' 
                                 type="text"
                                 value={pregunta}
@@ -362,8 +480,7 @@ const VariacionEstrellas = ({
                                                                 <Col className="seccion3-1-variacionEstrellas-editar">
                                                                     <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{index+1} estrella</p>
 
-                                                                    <FormControl
-                                                                        style={{ width: '37%', border: '1px solid #ccc' }}
+                                                                    <Respuesta
                                                                         className="textoOpcionRespuesta"
                                                                         type="text"
                                                                         value={opcion.text}
@@ -419,9 +536,8 @@ const VariacionEstrellas = ({
 
                                                                     {usarPonderacion && (
                                                                         inputs.map((inputNum, index) => (
-                                                                            <input
+                                                                            <Ponderacion
                                                                                 className="numeracionRespuesta"
-                                                                                style={{ width: '2.2%', textAlign: 'center', height: '2%', marginTop: '1.2%' }}
                                                                                 key={inputNum}
                                                                                 // placeholder={index + 1}
                                                                                 type="text"
@@ -477,7 +593,11 @@ const VariacionEstrellas = ({
                         {configuracion1 && (
                             <Col className='seccion1-1-variacionEstrellas-configuracion'>
                                 <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
+                                <MensajeError 
+                                className= 'textoConfiguracion1' 
+                                type="text" 
+                                placeholder="Escribe aquí..." 
+                                />
                             </Col>
                         )}
 
@@ -509,7 +629,10 @@ const VariacionEstrellas = ({
                         {configuracion4 && (
                             <Col className='seccion1-4-variacionEstrellas-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" />
+                                <Etiqueta 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                />
                             </Col>
                         )}
 
@@ -524,7 +647,11 @@ const VariacionEstrellas = ({
                             <Col className='seccion1-5-variacionEstrellas-configuracion'>
                                 <Col>
                                     <p style={{margin: 'unset' }}>Etiqueta</p>
-                                    <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Otro (especifique)" />
+                                    <Etiqueta2 
+                                        className= 'textoConfiguracion1' 
+                                        type="text" 
+                                        placeholder="Otro (especifique)" 
+                                    />
                                 </Col>
                                 <Col className='seccion1-5-2-variacionEstrellas-configuracion'>
                                     <Col style={{ width: '55%' }}>
@@ -571,7 +698,12 @@ const VariacionEstrellas = ({
                         {configuracion6 && (
                             <Col className='seccion1-1-variacionEstrellas-configuracion'>
                                 <p style={{margin: 'unset' }}>Información sobre pregunta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                                <Informacion 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                    value={informacionPregunta}
+                                />
                             </Col>
                         )}
 
@@ -585,7 +717,11 @@ const VariacionEstrellas = ({
                         {configuracion7 && (
                             <Col className='seccion1-1-variacionEstrellas-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <AlimentarBancoPreguntas 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..."
+                                />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>
                         )}

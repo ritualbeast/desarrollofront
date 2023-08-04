@@ -1,16 +1,50 @@
 .container_resultadoEncuesta{
-    width: 100%;
-    /* background-color: rgba(245, 245, 245, 1); */
+    width: 65%;
+    background-color: rgba(245, 245, 245, 1);
+    margin-top: 1%;
     padding-top: 1%;
-    padding-bottom: 1%;
+    margin-bottom: 1%;
+    margin-left: 17%;
+    border: 2px solid rgba(197, 197, 197, 1);
+    border-radius: 4px;
 }
 .contenedor-preguntas-fin{
-    width: 65%;
-    margin-bottom: 1%;
+    margin-bottom: 1.5%;
     padding-top: 1%;
     padding-bottom: 1%;
     border: 2px solid rgba(197, 197, 197, 1);
     border-radius: 4px;
-    background:white;
-    margin-left: 20%;
+    background: white;
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+}
+.button-siguiente-resultadoEncuesta{
+    width: 7%;
+    padding: 0.5%;
+    border-radius: 4px;
+    float: right;
+    margin-right: 20%;
+    margin-bottom: 2%;
+    cursor: pointer;
+    background-color: rgba(255, 199, 0, 1);
+}
+.button-regresar-resultadoEncuesta{
+    width: 8%;
+    padding: 0.5%;
+    border-radius: 4px;
+    float: right;
+    margin-right: 58%;
+    margin-bottom: 2%;
+    cursor: pointer;
+    background-color: rgba(255, 199, 0, 1);
+}
+.button-finalizar-resultadoEncuesta{
+    width: 8%;
+    padding: 0.5%;
+    border-radius: 4px;
+    float: right;
+    /* margin-right: 20%; */
+    margin-bottom: 2%;
+    cursor: pointer;
+    background-color: rgba(255, 199, 0, 1);
 }

@@ -21,10 +21,7 @@ const dropletSVG = svgManager.getSVG('droplet');
 const repeatSVG = svgManager.getSVG('repeat');
 
 const DisenoEncuestaLateralPrincipal = () => {
-
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
-
     const [openDisenoPrincipal, setOpenDisenoPrincipal] = React.useState(true);
     const [openDisenoLogotipo, setOpenDisenoLogotipo] = React.useState(false);
     const [openDisenoPiePagina, setOpenDisenoPiePagina] = React.useState(false);
@@ -34,7 +31,6 @@ const DisenoEncuestaLateralPrincipal = () => {
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     
-
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
         setOpenDisenoPrincipal(false);
@@ -70,10 +66,9 @@ const DisenoEncuestaLateralPrincipal = () => {
         setOpenDisenoPrincipal(false);
     };
 
-
-    
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const targetRef = useRef(null);
+
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -99,10 +94,6 @@ const DisenoEncuestaLateralPrincipal = () => {
         </Tooltip>
     );
 
-    const handleNestedClick = (nombre) => {
-        // Lógica para manejar el clic en las opciones desplegadas
-    };
-
     // lista de diseño
 
     const listadiseno = [  
@@ -123,7 +114,6 @@ const DisenoEncuestaLateralPrincipal = () => {
     }
 
     // Lista de colores
-
     const listacolores = [
         {nombre: '1', id: 1},
         {nombre: '2', id: 2},
@@ -178,8 +168,6 @@ const DisenoEncuestaLateralPrincipal = () => {
 
     };
 
-    
-    
   return (
     <>
         {openDisenoPrincipal && (

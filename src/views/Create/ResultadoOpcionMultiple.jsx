@@ -7,6 +7,7 @@ import svgManager from '../../assets/svg';
 import $ from 'jquery'
 import { Box, Modal } from '@mui/material';
 import ModalEliminarPregunta from './ModalEliminarPregunta';
+import styled from 'styled-components';
 
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
@@ -15,6 +16,71 @@ const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
 const chevronUpSVG = svgManager.getSVG('chevron-up');
+
+const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledCheckBox = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border: 2px solid rgba(194, 194, 194, 1);
+  border-radius: 4px;
+  background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'white')};
+  border:${(props) => (props.checked ? '2px solid rgba(255, 206, 72, 1)' : '2px solid rgba(194, 194, 194, 1)')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+
+  &:after {
+    content: '${(props) => (props.checked ? '\u2713' : '')}';
+    font-size: 14px;
+    color: white;
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: -2px;
+    left: 3px;
+
+  }
+`;
+
+const HiddenRadioButton = styled.input.attrs({ type: 'radio' })`
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+`;
+
+const StyledRadioButton = styled.div`
+  display: inline-block;
+  width: 16.5px;
+  height: 16.5px;
+  border-radius: 50%;
+  border: 2px solid ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'rgba(194, 194, 194, 1)')};
+  background-color: ${(props) => (props.checked ? 'white' : 'white')};
+  position: relative;
+  margin-top: 3%;
+  margin-left: 0.4%;
+  margin-right: 2%;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    display: ${(props) => (props.checked ? 'block' : 'none')};
+    position: absolute;
+    top: 2.3px;
+    left: 2.3px;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: ${(props) => (props.checked ? 'rgba(255, 206, 72, 1)' : 'transparent')}; 
+  }
+`;
 
 const ResultadoOpcionMultiple = ({ 
   index, 
@@ -158,16 +224,33 @@ const ResultadoOpcionMultiple = ({
       {preguntaVisible[index] && (
         <div>
           {opciones.map((opcion) => (
-            <Col key={opcion.id} style={{ display: 'flex'}}>
-              <input
-                type={opcion.type}
-                name={`opcion_${index}`}
-                value={opcion.id}
-                checked={opcion.checked}
-                onChange={() => {}}
-                style={{marginRight: '2%'}}
-              />
-              <div style={{ marginBottom: '0.4%'}}>
+            <Col key={opcion.id} style={{ display: 'flex', marginBottom: '1%' }}>
+              {opcion.type === 'checkbox' ? (
+                // Opción de tipo "checkbox"
+                <div>
+                  <HiddenCheckBox
+                    type={opcion.type}
+                    name={`opcion_${index}`}
+                    value={opcion.id}
+                    checked={opcion.checked}
+                    onChange={() => {}}
+                  />
+                  <StyledCheckBox checked={opcion.checked} />
+                </div>
+              ) : (
+                // Opción de tipo "radio"
+                <div>
+                  <HiddenRadioButton
+                    type={opcion.type}
+                    name={`opcion_${index}`}
+                    value={opcion.id}
+                    checked={opcion.checked}
+                    onChange={() => {}}
+                  />
+                  <StyledRadioButton checked={opcion.checked} />
+                </div>
+              )}
+              <div style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
                 {opcion.text}
               </div>
             </Col>

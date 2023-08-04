@@ -242,12 +242,6 @@
   margin-bottom: 0;
 }
 
-/* label {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-} */
-
 label > span {
   margin-bottom: 0.5rem;
 }
@@ -274,9 +268,9 @@ select {
 
 select:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #99c9ff;
 }
 
+/* Aplicar estilos al select */
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(20%) sepia(66%) saturate(1969%) hue-rotate(197deg) brightness(92%) contrast(90%);
   margin-left: 0.5rem;
@@ -285,7 +279,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 input[type="date"]:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #99c9ff;
 }
 button {
   margin-right: 10px;

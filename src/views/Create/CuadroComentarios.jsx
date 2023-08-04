@@ -1,11 +1,81 @@
 import React, { useEffect, useState } from 'react'
+import Select from 'react-select';
 import '../../styles/cuadroComentarios.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import ResultadoCuadroComentarios from './ResultadoCuadroComentarios';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import styled from 'styled-components';
 
 const trashSVG = svgManager.getSVG('trash-mini');
+
+const Pregunta = styled.textarea`
+    width: 94.8%; 
+    border: 1px solid #ccc;
+    border-radius:4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const MensajeError = styled(FormControl)`
+    width: 94% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const AlimentarBancoPreguntas = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc; 
+    padding: 1%;
+    border-radius: 4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const Etiqueta = styled.textarea`
+    width: 94%;
+    border: 1px solid #ccc; 
+    padding: 1%;
+    border-radius: 4px;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1);
+    }
+`;
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '96%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
 
 const CuadroComentarios = ({
     indice, 
@@ -36,7 +106,8 @@ const CuadroComentarios = ({
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
-    
+    const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
+
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -113,11 +184,20 @@ const CuadroComentarios = ({
         try {
             const response = await ListarTipoPregunta();
             console.log(response.data.listTipoPreguntas)
-            setTipoPregunta(response.data.listTipoPreguntas)
+            setTipoPregunta(response.data.listTipoPreguntas);
+            const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 5);
+            if (defaultTipo) {
+                const data={
+                    value: defaultTipo.idTipoPregunta,
+                    label:defaultTipo.descripcion
+                }
+                setSelectedTipoPregunta(data);
+            }
+            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
-      };
+    };
     
       useEffect(() => {
         listarTipoPregunta();
@@ -148,26 +228,21 @@ const CuadroComentarios = ({
                 {mostrarEditar && (
                     <Container className='cuadroComentarios-container-editar'>
                         <Col>
-                            <select 
-                                className='selectEditar'
-                                onChange={(e) => handlePregunta(e.target.value)}
-                            >
-                                {tipoPregunta.map((item) => (
-                                    <option
-                                        key={item.idTipoPregunta}
-                                        value={item.tipo}
-                                        selected={item.idTipoPregunta === 5}
-                                    >
-                                        {item.descripcion}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select
+                                styles={customStyles}
+                                className='selectEditar_CC'
+                                onChange={(selectedOption) => handlePregunta(selectedOption.value)}
+                                options={tipoPregunta.map((item) => ({
+                                    value: item.tipo,
+                                    label: item.descripcion,
+                                }))}
+                                value={selectedTipoPregunta}
+                            />
                         </Col>
 
                         <Col>
                             <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Texto de pregunta</p>
-                            <textarea
-                                style={{ width: '94.8%', border: '1px solid #ccc' }}
+                            <Pregunta
                                 className="textoAgradecimiento"
                                 value={pregunta}
                                 onChange={(e) => setPregunta(e.target.value)}
@@ -189,7 +264,11 @@ const CuadroComentarios = ({
                         {configuracion1 && (
                             <Col className='seccion1-1-cuadroComentarios-configuracion'>
                                 <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
-                                <FormControl style={{ width: '94%', border: '1px solid #ccc' }} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." />
+                                <MensajeError 
+                                className= 'textoConfiguracion1' 
+                                type="text" 
+                                placeholder="Escribe aquí..." 
+                                />
                             </Col>
                         )}
 
@@ -221,7 +300,12 @@ const CuadroComentarios = ({
                         {configuracion3 && (
                             <Col className='seccion1-1-cuadroComentarios-configuracion'>
                                 <p style={{margin: 'unset' }}>Información sobre pregunta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..." value={informacionPregunta}/>
+                                <AlimentarBancoPreguntas 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                    value={informacionPregunta}
+                                />
                             </Col>
                         )}
 
@@ -235,7 +319,11 @@ const CuadroComentarios = ({
                         {configuracion4 && (
                             <Col className='seccion1-1-cuadroComentarios-configuracion'>
                                 <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <textarea style={{ width: '94%', border: '1px solid #ccc', padding:'1%', borderRadius:'4px'}} className= 'textoConfiguracion1' type="text" placeholder="Escribe aquí..."/>
+                                <Etiqueta 
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..."
+                                />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>
                         )}
