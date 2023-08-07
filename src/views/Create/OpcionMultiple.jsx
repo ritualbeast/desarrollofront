@@ -206,6 +206,7 @@ const OpcionMultiple = ({
     handleEliminarPregunta,
     handleCambiarPregunta,
     preguntaVisibleOpen,
+    sendTamanoPaso2, sendGrosorPaso2, sendTipografiaPaso2
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -371,7 +372,6 @@ const OpcionMultiple = ({
     };
 
     const handleDragEnd = (result) => {
-        console.log('DragDropContext result:', result);
         if (!result.destination) return; // No se soltó en una ubicación válida
         
         const sourceIndex = result.source.index;
@@ -453,7 +453,6 @@ const OpcionMultiple = ({
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
-            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 1);
             if (defaultTipo) {
@@ -463,7 +462,6 @@ const OpcionMultiple = ({
                 }
                 setSelectedTipoPregunta(data);
             }
-            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -474,7 +472,6 @@ const OpcionMultiple = ({
     }, [])
 
     const handlePregunta = (value) => {
-        console.log(value)
         handleCambiarPregunta(indice, indiceSec, value)
     }
 
@@ -864,6 +861,9 @@ const OpcionMultiple = ({
                     informacion = {informacionPregunta}
                     configuracion6Activa={configuracion6}
                     preguntaVisibleC={preguntaVisibleOpen}
+                    sendTamanoPaso2={sendTamanoPaso2}
+                    sendGrosorPaso2={sendGrosorPaso2}
+                    sendTipografiaPaso2={sendTipografiaPaso2}
                 />
             </Container>
         )}

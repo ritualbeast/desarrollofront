@@ -32,7 +32,10 @@ const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
 const warningLightSVG = svgManager.getSVG('warning-light');
 
-const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit}) => {
+const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
+    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+
+}) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
@@ -59,6 +62,52 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [comentario, setComentario] = useState("");
     const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(false));
     const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
+    const tamano = sendTamanoPaso2?.tamano ;
+    const titulotamano = sendTamanoPaso2?.titulo;
+    const grosor = sendGrosorPaso2?.grosor;
+    const tituloGrosor = sendGrosorPaso2?.titulo;
+    const tipografia = sendTipografiaPaso2?.tipografia;
+    const tituloTipografia = sendTipografiaPaso2?.titulo;
+
+    console.log(titulotamano);
+    
+    
+    const tituloRef = useRef(null);
+    const descripcionRef = useRef(null);
+   
+    
+
+  useEffect(() => {
+    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
+    const inputtitulo = tituloRef.current;
+    const inputdescripcion = descripcionRef.current;
+
+    if (titulotamano === 'Título de sección') {
+      inputtitulo.style.fontSize = `${tamano}px`;
+    }
+    if (tituloGrosor === 'Título de sección') {
+      inputtitulo.style.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Título de sección') {
+      inputtitulo.style.fontFamily = tipografia;
+    }
+    if (titulotamano === 'Descripción de sección') {
+      inputdescripcion.style.fontSize = `${tamano}px`;
+    }
+    if (tituloGrosor === 'Descripción de sección') {
+      inputdescripcion.style.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Descripción de sección') {
+      inputdescripcion.style.fontFamily = tipografia;
+    }
+
+
+
+
+
+
+
+  }, [tamano, grosor, tipografia]);
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -90,7 +139,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setNuevaSeccionVisible(false);
       setSeccionVisible((prevVisibility) => [...prevVisibility, true]);
 
-      console.log(contentCont)
     };
 
     const handleSeccionCierre = () => {
@@ -112,7 +160,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
       nuevoEstado[index].contentPreg = contenidoActual;
 
-      console.log('nuevoEstado', nuevoEstado)
       setContentOpt(nuevoEstado);
 
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -160,7 +207,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual.push(obj);
 
       nuevoEstado[index].contentPreg = contenidoActual;
-      console.log('Nuevo Carga Archivo',nuevoEstado);
       setContentCont(nuevoEstado);
       setContentCarg((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -324,7 +370,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleEliminarOpcionMultiple = (indicePreg, indiceSec) => {
@@ -338,7 +383,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar) => {
@@ -349,7 +393,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].save = true
       contenidoActual[indicePreg].cancelar = cancelar
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log(nuevoEstado);
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -375,7 +418,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleEliminarValoracionEstrellas = (indicePreg, indiceSec) => {
@@ -389,7 +431,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar) => {
@@ -402,7 +443,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].cancelar = cancelar
       contenidoActual[indicePreg].save = true
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log(nuevoEstado);
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -428,7 +468,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleEliminarCargaArchivos = (indicePreg, indiceSec) => {
@@ -449,7 +488,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].cancelar = cancelar
       contenidoActual[indicePreg].save = true
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log('Aceptar Carga Archivo', nuevoEstado);
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -460,7 +498,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].contentPreg = contPregTemp;
       setContentCont(tempCont);
-      console.log('Editar Carga Archivo', tempCont)
     }
 
     const handleCancelarCuadroComentarios = (indicePreg, indiceSec) => {
@@ -476,7 +513,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleEliminarCuadroComentarios = (indicePreg, indiceSec) => {
@@ -490,7 +526,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
       setContentCont(nuevoEstado);
-      console.log('cancelar - nuevoEstado', nuevoEstado)
     };
 
     const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, cancelar) => {
@@ -500,7 +535,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].save = true
       contenidoActual[indicePreg].cancelar = cancelar
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log(nuevoEstado);
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -527,7 +561,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       if (value === 'CC') contenidoActual[indicePreg].pregunta = 'Añada un comentario sobre la charla';
       
       nuevoEstado[indiceSec].contentPreg = contenidoActual;
-      console.log(nuevoEstado);
       setContentCont(nuevoEstado);
     }
 
@@ -536,8 +569,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       const contenedorEliminado = nuevoEstado.splice(index, 1)[0];
       setContentCont(nuevoEstado);
       setOpenEliminarSeccion(false)
-      console.log(contenedorEliminado)
-      console.log(contentCont)
     }
 
     const cambioIcono = (index) => {
@@ -559,7 +590,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const listarTipoPregunta = async () => {
       try {
           const response = await ListarTipoPregunta();
-          console.log(response.data.listTipoPreguntas)
           setTipoPregunta(response.data.listTipoPreguntas)
       } catch (error) {
           console.error(error);
@@ -575,7 +605,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'>
               <Col>
-                  <p className='titulo-encuesta-tercero'>Encuesta Veris1</p>
+                  <p className='titulo-encuesta-tercero'
+                  
+                  >Encuesta Veris1</p>
               </Col>
 
               {contentCont.map((seccion, index) => {
@@ -602,8 +634,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 onMouseLeave={() => handleMouseLeaveEditar(index)}
                             >
                                 <div style={{width:'96%'}}>
-                                  <p className='titulo-nuevaEncuesta'> {seccion.titulo + (index +1)}</p>
-                                  <p style={{marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                  <p className='titulo-nuevaEncuesta' ref={tituloRef}
+                                  > {seccion.titulo + (index +1) }</p>
+                                  <p ref={descripcionRef}
+                                    style={{marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
                                 </div>
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
@@ -652,6 +686,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
                                   preguntaVisibleOpen={preguntaVisible}
+                                  sendTamanoPaso2={sendTamanoPaso2}
+                                  sendGrosorPaso2={sendGrosorPaso2}
+                                  sendTipografiaPaso2={sendTipografiaPaso2}
                                 />
                               }  
                               if (preg.tipo == 'VE') {
@@ -951,4 +988,5 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
   )
 }
 
-export default NuevaEncuesta
+
+export default NuevaEncuesta 

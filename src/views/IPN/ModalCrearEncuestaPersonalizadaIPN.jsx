@@ -73,8 +73,7 @@ const ModalCrearEncuestaPersonalizadaIPN = ({ open, onClose }) => {
   const ListarEncuestasPublicas = async () => {
     try {
       const response = await  ListarEncuestas('', '', '', 'nombre', '1', '50', 'S');
-      setDataEncuestas(response.data.items);  
-      console.log(response.data.items)    
+      setDataEncuestas(response.data.items);   
     } catch (error) {
       console.error(error);
     }

@@ -42,7 +42,7 @@ const Leyenda = styled.textarea`
 
 const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3, 
   sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, sendDatosDefinicionEncuesta,
-  sendPosicionLogotipo, sendTamanoLogotipo
+  sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
 }) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
@@ -53,6 +53,8 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState({nombre: '', descripcion: '', leyenda: ''});
   const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
   const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
+  const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
+  const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState(sendTamanoLogotipoPiePagina);
   // capturar tamaño de letra para enviar a create
   const [tamanoNombreDefinicion, setTamanoNombreDefinicion] = useState(0);
   const [tamanoDescripcionDefinicion, setTamanoDescripcionDefinicion] = useState(0);
@@ -136,26 +138,27 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
         setTipografiaBotonDefinicion(tipografia);
       }
 
-   enviarPreview(preview2);
+    enviarPreview(preview2);
     enviarPreview2(preview1);
     sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
     setLeerPosicion(sendPosicion3);
     setLeerPosicionLogotipo(sendPosicionLogotipo);
     setLeerTamanoLogotipo(sendTamanoLogotipo);
+    setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
+    setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
 
-  }, [preview1, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
+  }, [preview1, preview2, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
     tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
-    sendPosicionLogotipo, sendTamanoLogotipo
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
   ]);
 
   const enviarPreview = (previe) => {
-    // Verifica que el valor de preview1 sea diferente del valor previo antes de enviarlo
-    console.log('previe1', previe);
+    
     sendPreview(previe);
   };
 
   const enviarPreview2 = (previe) => { 
-    console.log('previe2', previe);
+    console.log('previe', previe);
     sendPreview2(previe);
   };
     
@@ -283,8 +286,12 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
           
           {selectedFile2 ? (
               <div className="agregarImagenDefinicionEncuesta2">
-                <div className="imagenContainer">
-                  <img src={preview2} alt="preview" style={{ height: '130px', width: '100%' }} className="imagenLogotipoEncuesta" />
+
+                
+                <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
+                  <img src={preview2} alt="preview" 
+                  className={`${(leerTamanoLogotipoPiePagina== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipoPiePagina == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipoPiePagina == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                  />
                 </div>
                 <div className="subcontenedorLogotipo">
                   <div className="buttonLogotipoeditar">

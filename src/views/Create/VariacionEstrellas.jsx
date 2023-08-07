@@ -222,7 +222,6 @@ const VariacionEstrellas = ({
             icono: starFillSVG,
         };
 
-        console.log("Nueva opción de respuesta:", newOpcion);
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         setOpcionText("");
@@ -379,7 +378,6 @@ const VariacionEstrellas = ({
           ...prevSelectedIcon,
           [opcionId]: value,
         }));
-        console.log(opcionId)
     };
 
     useEffect(() => {
@@ -389,7 +387,6 @@ const VariacionEstrellas = ({
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
-            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 2);
             if (defaultTipo) {
@@ -399,7 +396,6 @@ const VariacionEstrellas = ({
                 }
                 setSelectedTipoPregunta(data);
             }
-            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -410,7 +406,6 @@ const VariacionEstrellas = ({
     }, [])
 
     const handlePregunta = (value) => {
-        console.log(value)
         handleCambiarPregunta(indice, indiceSec, value)
     }
 

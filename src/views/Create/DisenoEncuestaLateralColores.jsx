@@ -59,10 +59,8 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
     };
     
     const handleCloseColorPicker = (index) => {
-        console.log(index);
         const updatedColorEncuesta = [...colorEncuesta];
         updatedColorEncuesta[index].isOpen = false;
-        console.log(updatedColorEncuesta);
         setColorEncuesta(updatedColorEncuesta[0].isOpen = false);
 
     };

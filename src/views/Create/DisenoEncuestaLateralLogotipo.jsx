@@ -20,10 +20,14 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
     
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
+    const [logotipo, setLogotipo] = useState(sendPreviewLogo);
 
+    
+    console.log(sendPreviewLogo);
     useEffect(() => {
         ListarPosicionImagen();
-    }, []);
+        setLogotipo(sendPreviewLogo);
+    }, [logotipo]);
 
     const ContenedorTamanoLogotipo = () => {
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');

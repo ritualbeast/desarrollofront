@@ -3,7 +3,6 @@ import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFuente.css'
 import { ListarEnumeradosService } from '../../services/EstilosServices';
-import { AppContext } from '../../context/AppContext';
 
 
 const helpCircleSVG = svgManager.getSVG('help-circle');
@@ -22,7 +21,6 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [pasos, setPasos] = useState(paso);
 
-    const [contextValue, setContextValue] = useContext(AppContext);
 
     useEffect(() => {
         ListarFuenteGrosorEncuesta();
@@ -46,7 +44,6 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const handleChangeGrosor = (event, titulo) => {
         if (pasos === 2) {
             sendGrosorPaso2(event.target.value, titulo);
-            setContextValue({...contextValue, grosor: event.target.value});
         } else {
         sendGrosor(event.target.value, titulo);
         }

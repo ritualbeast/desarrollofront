@@ -16,22 +16,27 @@ const trashSVG = svgManager.getSVG('trash');
 const uploadSVG = svgManager.getSVG('upload');
 
 
-const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, preview4, sendEstado,sendPosicion,paso}) => {
+const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, sendEstado,sendPosicion,paso
+,sendPosicionImagen, sendTamanoImagen, sendPreviewPiePagina
+}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [selectedFile, setSelectedFile] = useState();
-    const [previeww, setPreview] = useState(preview4);
     const [estado, setEstado] = useState('Guardar');
     const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
     const [pasos, setPasos] = useState(paso);
-    console.log(preview4)
+    const [previewPiePagina, setPreviewPiePagina] = useState(sendPreviewPiePagina);
+
+    console.log(sendPreviewPiePagina);
+    
 
     useEffect(() => {
         ListarPosicionImagen();
-    }, []);
+        setPreviewPiePagina(sendPreviewPiePagina);
+    }, [previewPiePagina]);
 
 
     const ContenedorTamanoLogotipo = () => {
@@ -39,6 +44,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     }
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
+          sendTamanoImagen(event.target.value);
     };
     
 
@@ -122,6 +128,10 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
         }
     };
 
+    const handleChangePosicion = (event) => {
+        sendPosicionImagen(event.target.value);
+    };
+
     
     
   return (
@@ -162,9 +172,9 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
                         
-                        {preview4 != undefined ? (
+                        {sendPreviewPiePagina != '' ? (
                         <img
-                            src={preview4}
+                            src={previewPiePagina}
                             alt="preview"
                             style={{ height: '92px', width: '100%' }}
                             className="imagenLogotipoEncuesta"
@@ -194,6 +204,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                         checked={tamanoSeleccionado === opcion.id.toString()}
                                         onChange={handleChangeTamano}
                                         label={opcion.nombre}
+                                        
                                     />
                                     </div>
                                 ))}
@@ -205,7 +216,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             <span className='contenedorPosicionLabel'>Posición</span>
                             
                             <div className="contenedorPosicion">
-                                <select className="selectPosicion">
+                                <select className="selectPosicion" onChange={handleChangePosicion}>
                                     {posicionImagen.map((opcion) => (
                                         <option key={opcion.id} value={opcion.etiqueta}>{opcion.etiqueta}</option>
                                     ))    

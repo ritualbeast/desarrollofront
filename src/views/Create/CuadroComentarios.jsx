@@ -183,7 +183,6 @@ const CuadroComentarios = ({
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
-            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 5);
             if (defaultTipo) {
@@ -193,7 +192,6 @@ const CuadroComentarios = ({
                 }
                 setSelectedTipoPregunta(data);
             }
-            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }

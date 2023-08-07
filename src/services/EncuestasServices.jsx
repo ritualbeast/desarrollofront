@@ -21,8 +21,6 @@ const ListarCategoriasService = async () => {
 };
 const usuarioInactivacion = "CBENJAC";
 const EliminarEncuesta = async (idEncuesta) => {
-  console.log(idEncuesta);
-  console.log(usuarioInactivacion);
   try {
     // const tokenUsuario = localStorage.getItem('token');
     const canales = '808cd0b9-141f-4132-81e9-c3822436191b';
@@ -43,7 +41,7 @@ const EliminarEncuesta = async (idEncuesta) => {
     };
     const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/eliminarEncuesta', requestOptions);
     const data = await response.json();
-    console.log(data);
+    
     return data;
   } catch (error) {
     console.error(error);
@@ -231,7 +229,7 @@ const crearEncuesta = async () => {
 
     // Aquí puedes manejar la respuesta de la API
     const data = await response.json();
-    console.log(data);
+    
   } catch (error) {
     // Manejar errores de la solicitud
     console.error('Error al crear la encuesta:', error);

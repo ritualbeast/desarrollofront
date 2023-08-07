@@ -82,7 +82,6 @@ const CrearEncuestaIPN = ({tipofiltro, valorfiltro, nombrefiltro, orden, idEncue
     const isMenuOpen = (encuestaId) => menuStates[encuestaId];
   
     const handleOpenEliminar = (idEncuesta) => {
-        console.log(idEncuesta);
         setOpenEliminarId(idEncuesta);
         setOpenEliminar(true);
     };
@@ -111,7 +110,6 @@ const CrearEncuestaIPN = ({tipofiltro, valorfiltro, nombrefiltro, orden, idEncue
             const response = await  ListarEncuestas(tipoFiltro, valorFiltro, filtronombre, ordenamiento, newPagina, newSize, publica, tipoEncuesta);
             setDataEncuestas(response.data.items);
             setTotalItems(response.data.totalItems);
-            console.log(response.data.items)
         } catch (error) {
             console.error(error);
         }
@@ -130,7 +128,6 @@ const CrearEncuestaIPN = ({tipofiltro, valorfiltro, nombrefiltro, orden, idEncue
         const newSize = newPagina * size;
         if (newPagina * size > totalItems) {
             setSize(Math.ceil(totalItems / newPagina));
-            console.log(newSize)
         } else {
             setSize(size);
         };

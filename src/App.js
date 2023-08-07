@@ -11,19 +11,14 @@ import Login from './components/master/Login';
 import globalServices from './services/global'
 import CreateFin from './views/CreateFin';
 import ResultadoEncuesta from './views/Resultado/ResultadoEncuesta';
-import { AppContext } from './context/AppContext';
+
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem('loggedUser'))
   const [load, setLoad] = useState(false)
 
 
-  const [contextValue, setContextValue] = useState({
-    sendTamanoPaso2: null,
-    sendGrosorPaso2: null,
-    sendTipografiaPaso2: null,
-  });
-
+  
 
 
   useEffect(() => {
@@ -41,7 +36,6 @@ function App() {
       verificaToken()
     }, 600000)
     setLoad(true)
-    console.log('cargar')
   }
   
   setTimeout(function () {
@@ -55,7 +49,6 @@ function App() {
     }
   }
   return (
-    <AppContext.Provider value={{ contextValue, setContextValue }}>
       <div>
         {
           user === null
@@ -102,7 +95,6 @@ function App() {
         </Router>
         }
       </div>
-    </AppContext.Provider>
   );
 }
 

@@ -44,8 +44,6 @@ const Login = () => {
             username,
             password
           })
-          console.log('userDatas', userData)
-          console.log(localStorage.getItem('url'))
           if (userData.error === 1) {
             setSpiner(false)
             $(global.FIELD).html(global.LABEL_INPUT_ERROR)
@@ -101,7 +99,6 @@ const Login = () => {
             }, 2000)
           }
         } catch (e) {
-          console.log('error')
           setSpiner(false)
           setIsOpen(true)
           setHeader(global.MODAL_HEAD_ERROR)

@@ -88,7 +88,6 @@ const IPN = () => {
   const [openModalCrearEncuesta2, setOpenModalCrearEncuesta2] = useState(false);
 
   const handleFiltroClick = (opcion, valor) => {
-    console.log('entro a la funcion')
     setInputValue('');
     setOpcionFiltro(opcion);
     setTipo(opcion);
@@ -131,8 +130,7 @@ const IPN = () => {
     setOpenFiltroNombre2(!openFiltronombre2);
     setOpenFiltroNombre(!openFiltronombre);
     setRefreshComponent(!refreshComponent);
-    console.log(inputValue);
-    console.log(opcionFiltro);
+    
   };
 
   return (

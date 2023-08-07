@@ -72,8 +72,6 @@ const VistaPrevia = ({contentCont, showModal}) => {
     return null;
   }
 
-  console.log(contentCont)
-
   return (
     <>
         <Container>

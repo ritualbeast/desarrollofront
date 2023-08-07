@@ -60,7 +60,6 @@ const DisenoEncuesta = () => {
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
     };
-    console.log(contentCont);
     const handleSeccionCierre = () => {
       setShowModal(true);
       setNuevaSeccionVisible(false);
@@ -79,7 +78,6 @@ const DisenoEncuesta = () => {
 
       nuevoEstado[index].contentPreg = contenidoActual;
 
-      console.log('nuevoEstado', nuevoEstado)
       setContentCont(nuevoEstado);
 
       
@@ -100,7 +98,6 @@ const DisenoEncuesta = () => {
 
       nuevoEstado[index].contentPreg = contenidoActual;
 
-      console.log('nuevoEstado', nuevoEstado)
       setContentCont(nuevoEstado);
 
       

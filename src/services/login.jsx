@@ -22,9 +22,8 @@ const login = async credenciales => {
   if (resps === true) {
     const resp = await fetch(global.LOGIN_METHOD, requestOptions)
     const items = await resp.json()
-    console.log(items)
+    
     if (items.code === 200) {
-      console.log('entra 200')
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(items.data)
       )
@@ -83,7 +82,6 @@ const login = async credenciales => {
 const validarLogin = async () => {
   const idUsuario = localStorage.getItem('data');
   const tokenUsuario = localStorage.getItem('token');
-  console.log(localStorage.getItem('token'))
   const token = `Bearer ${tokenUsuario}`;
   const headers = { 'Content-Type': 'application/json' }
   headers.Authorization = token

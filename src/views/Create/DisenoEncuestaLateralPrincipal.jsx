@@ -22,7 +22,7 @@ const repeatSVG = svgManager.getSVG('repeat');
 
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
     sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
-    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
 }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -37,10 +37,9 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
-    const [preview, setPreview] = useState(preview3);
-    const [previewLogotipo, setPreviewLogotipo] = useState(sendPreviewLogotipo); 
     
-    console.log('preview', preview3);
+    console.log(preview3);
+    
 
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
@@ -216,6 +215,21 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
         sendTamanoLogotipo(tamano);
     }
 
+    // enviar posicion de imagen de logotipo de pie de pagina
+
+    const handleSendPosicionLogotipoPiePagina = (posicion) => {
+        sendPosicionLogotipoPiePagina(posicion);
+    }
+
+    // enviar tamaño de imagen de logotipo de pie de pagina
+
+
+    const handleSendTamanoLogotipoPiePagina = (tamano) => {
+        sendTamanoLogotipoPiePagina(tamano);
+    }
+
+
+
     // enviar datos al paso 2
     
     const handleSendTamanoPaso2 = (tamanoPaso2,titulo) => {
@@ -330,7 +344,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
               closeMenuLogotipo={setOpenDisenoLogotipo}
               sendPosicionImagen={(posicion) => handleSendPosicionLogotipo(posicion)}
               sendTamanoImagen={(tamano) => handleSendTamanoLogotipo(tamano)}
-              sendPreviewLogo = {previewLogotipo}
+              sendPreviewLogo = {sendPreviewLogotipo}
             />
         )    
         }
@@ -339,10 +353,13 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
             <DisenoEncuestaLateralPiePagina 
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuPiePagina={setOpenDisenoPiePagina}
-                preview4={preview}
+                sendPreviewPiePagina={preview3}
                 paso={pasos}
                 sendEstado={(estado) => handleSendEstado(estado)}
                 sendPosicion={(posicion) => handleSendPosicion(posicion)}
+                sendPosicionImagen={(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
+                sendTamanoImagen={(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
+
             />
         )  
         }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/resultadoOpcionMultiple.css'
 import { Button, Container, Col } from 'react-bootstrap';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -92,6 +92,7 @@ const ResultadoOpcionMultiple = ({
   informacion,
   configuracion6Activa,
   preguntaVisibleC,
+  sendTamanoPaso2, sendGrosorPaso2, sendTipografiaPaso2
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -100,6 +101,45 @@ const ResultadoOpcionMultiple = ({
   const targetRef = useRef(null);
   const [isUp, setIsUp] = useState(true);
   const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
+  const tamano = sendTamanoPaso2?.tamano ;
+  const titulotamano = sendTamanoPaso2?.titulo;
+  const grosor = sendGrosorPaso2?.grosor;
+  const tituloGrosor = sendGrosorPaso2?.titulo;
+  const tipografia = sendTipografiaPaso2?.tipografia;
+  const tituloTipografia = sendTipografiaPaso2?.titulo;
+
+  const preguntasRef = useRef(null);
+  const opcionesRespuestaRef = useRef(null);
+  console.log(tamano);
+  useEffect(() => {
+    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
+    const inputoreguntasRef = preguntasRef.current;
+    const inputopcionesRespuestaRef = opcionesRespuestaRef.current;
+
+    if (titulotamano === 'Preguntas') {
+      inputoreguntasRef.style.fontSize = `${tamano}px`;
+    }
+    if (tituloGrosor === 'Preguntas') {
+      inputoreguntasRef.style.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Preguntas') {
+      inputoreguntasRef.style.fontFamily = tipografia;
+    }
+    if (titulotamano === 'Opciones de respuesta') {
+      inputopcionesRespuestaRef.style.fontSize = `${tamano}px`;
+    }
+    if (tituloGrosor === 'Opciones de respuesta') {
+      inputopcionesRespuestaRef.style.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Opciones de respuesta') {
+      inputopcionesRespuestaRef.style.fontFamily = tipografia;
+    }
+    
+
+
+
+  }, [tamano, grosor, tipografia]);
+
 
   const handleMouseEnterEditar = (index) => {
     $(`#editPreg${index +1}`).removeClass("oculto");
@@ -187,7 +227,8 @@ const ResultadoOpcionMultiple = ({
                 onMouseLeave={() => handleMouseLeaveEditar(index)}
             >
                 <Col style={{width:'95%', display:'flex'}}>
-                    <p>{index + 1}. {pregunta}</p>
+                    <p ref={preguntasRef}
+                    >{index + 1}. {pregunta}</p>
                     {configuracion6Activa && (
                         <OverlayTrigger
                             trigger="click"
@@ -250,7 +291,8 @@ const ResultadoOpcionMultiple = ({
                   <StyledRadioButton checked={opcion.checked} />
                 </div>
               )}
-              <div style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
+              <div ref = {opcionesRespuestaRef}
+              style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
                 {opcion.text}
               </div>
             </Col>

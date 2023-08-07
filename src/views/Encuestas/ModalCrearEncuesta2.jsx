@@ -43,7 +43,6 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
     const handleOptionClick = (option, optionCrearEncuesta) => {
       setSelectedOption((prevSelectedOption) => (prevSelectedOption === option ? null : option));
       localStorage.setItem('opcionCrearEncuesta', optionCrearEncuesta);
-      console.log(optionCrearEncuesta);
     };
 
     const handleGoToDefinicion = () => {       

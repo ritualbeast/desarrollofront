@@ -269,7 +269,6 @@ const CargaDatos = ({
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
-            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 4);
             if (defaultTipo) {
@@ -279,7 +278,6 @@ const CargaDatos = ({
                 }
                 setSelectedTipoPregunta(data);
             }
-            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -290,7 +288,6 @@ const CargaDatos = ({
     }, [])
 
     const handlePregunta = (value) => {
-        console.log(value)
         handleCambiarPregunta(indice, indiceSec, value)
     }
 

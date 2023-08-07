@@ -76,7 +76,6 @@ const CrearEncuestas = ({tipofiltro, valorfiltro, nombrefiltro, orden}) => {
   const isMenuOpen = (encuestaId) => menuStates[encuestaId];
 
   const handleOpenEliminar = (idEncuesta) => {
-    console.log(idEncuesta);
     setOpenEliminarId(idEncuesta);
     setOpenEliminar(true);
   };
@@ -144,7 +143,7 @@ const CrearEncuestas = ({tipofiltro, valorfiltro, nombrefiltro, orden}) => {
     const newSize = newPagina * size;
     if (newPagina * size > totalItems) {
         setSize(Math.ceil(totalItems / newPagina)); // Ajusta el tamaño máximo posible para la última página
-        console.log(newSize)
+       
     } else {
         setSize(size); // Mantiene el tamaño de página
     };

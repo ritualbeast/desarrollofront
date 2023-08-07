@@ -39,9 +39,14 @@ const Create = () => {
     const [Ispreview2, setIspreview2] = useState('');
     const [posicionLogotipo, setPosicionLogotipo] = useState('');
     const [tamanoLogotipo, setTamanoLogotipo] = useState('');
+    const [posicionLogotipoPiePagina, setPosicionLogotipoPiePagina] = useState('');
+    const [tamanoLogotipoPiePagina, setTamanoLogotipoPiePagina] = useState('');
     const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
     const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
     const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
+    
+    
+
 
     const regresarRevision = () => {
         if(pasos === 3) {
@@ -59,7 +64,8 @@ const Create = () => {
     useEffect(() => {
         // verificarLocalStorage();
         setShowBancoPreguntas(true);
-    }, []);
+        
+    }, [Ispreview, Ispreview2]);
 
     const toggleEncuestaSegundoCuerpo = () => {
         setEncuestaSegundoCuerpoVisible(!encuestaSegundoCuerpoVisible);
@@ -97,11 +103,12 @@ const Create = () => {
     }
 
     const enviarPreview = (previe) => {
-        console.log(previe)
+        // console.log(previe)
         setIspreview(previe)
     }
 
     const enviarPreview2 = (previe2) => {
+        // console.log(previe2)
         setIspreview2(previe2)
     }
 
@@ -126,7 +133,7 @@ const Create = () => {
     }
 
     const handleSendDatosDefinicionEncuesta = (datos) => {
-        // console.log(datos)
+       
     }
 
     const handleSendPosicionLogotipo = (posicion) => {
@@ -135,6 +142,14 @@ const Create = () => {
 
     const handleSendTamanoLogotipo = (tamano) => {
         setTamanoLogotipo(tamano)
+    }
+
+    const handleSendPosicionLogotipoPiePagina = (posicion) => {
+        setPosicionLogotipoPiePagina(posicion)
+    }
+
+    const handleSendTamanoLogotipoPiePagina = (tamano) => {
+        setTamanoLogotipoPiePagina(tamano)
     }
     
     const handleCloseVistaPrevia = () => {
@@ -147,24 +162,23 @@ const Create = () => {
 
     const recibirTotalPreguntas = (contentCont) => {
         setContentCont(contentCont);
-        console.log(contentCont);
     };
 
     const handleSendTamanoPaso2 = (tamano, titulo) => {
-        console.log('paso2',tamano, 'titu', titulo)
-        setTamanoPaso2(tamano, titulo)
+        setTamanoPaso2({tamano: tamano, titulo: titulo})
     }
 
     const handleSendGrosorPaso2 = (grosor, titulo) => {
-        setGrosorPaso2(grosor , titulo)
+        setGrosorPaso2({grosor: grosor, titulo: titulo})
     }
 
     const handleSendTipografiaPaso2 = (tipografia , titulo) => {
-        setTipografiaPaso2(tipografia , titulo)
+        setTipografiaPaso2({tipografia: tipografia, titulo: titulo})
     }
 
     return (
         <>
+        
             <div
                 id="modal-container"
                 className={`encuesta-container ${blurBackground ? 'encuesta-blur' : ''}`}
@@ -341,7 +355,9 @@ const Create = () => {
                                     sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
                                     sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
                                     sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
-
+                                    sendPosicionLogotipoPiePagina = {(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
+                                    sendTamanoLogotipoPiePagina = {(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
+                                    
                                     />
                             )}
 
@@ -373,6 +389,8 @@ const Create = () => {
                                         sendDatosDefinicionEncuesta={(datos) =>  handleSendDatosDefinicionEncuesta(datos)}
                                         sendPosicionLogotipo = {posicionLogotipo}
                                         sendTamanoLogotipo = {tamanoLogotipo}
+                                        sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
+                                        sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
                                     />
 
                                 ) : pasos === 2 ? (<DiseñaEncuesta 
@@ -395,6 +413,7 @@ const Create = () => {
                     </Row>
                 </Container> 
             </div>
+            
         </>
     )  
 }

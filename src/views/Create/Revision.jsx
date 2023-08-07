@@ -162,7 +162,6 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
     const listarEnumeradosVigencia = async () => {
         try {
             const response = await ListarEnumeradosService('TIPO_VIGENCIA');
-            console.log(response.data.listaEnumerados)
             setTipoVigencia(response.data.listaEnumerados);
             const defaultTipo = response.data.listaEnumerados.find((item) => item.id === '');
             if (defaultTipo) {
