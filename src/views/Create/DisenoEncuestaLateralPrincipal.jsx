@@ -38,7 +38,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
     
-    console.log(preview3);
     
 
     const openDisenoLogotipoHandler = () => {

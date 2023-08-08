@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFondo.css'
@@ -13,6 +13,8 @@ const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 const uploadSVG = svgManager.getSVG('upload');
 
+const trashSVG = svgManager.getSVG('trash');
+
 const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -21,6 +23,12 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [openFondo, setOpenFondo] = useState(false);
+    
+    const [selectedFile, setSelectedFile] = useState();
+
+    useEffect(() => {
+        console.log(selectedFile);
+    }, [selectedFile]);
 
     const handleCloseFondo = () => {
         setOpenFondo(false);
@@ -93,12 +101,19 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
         openMenuPrincipal(true);
         closeMenuFondo(false);
     }
+
+    const handleRecibirImagenFondo = (imagen) => {
+        console.log(imagen);
+        setSelectedFile(imagen);
+    }
+
     
     
   return (
     <>
         <ModalFondo open={openFondo}
          onClose={handleCloseFondo}
+         sendImagenFondo= {(imagen) => {handleRecibirImagenFondo(imagen)}}
            />
 
         <Col className="encuesta-Segundocuerpo2">
@@ -136,6 +151,31 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
                             <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}  onClick={volverMenuPrincipal}/> 
                             <span className='cabeceraTitle'>Fondo</span>
                         </div>
+                        {/* <div className="contenedorLogotipo">
+                            <div className='buttonLogotipo' onClick={handleOpenFondo}>
+                                <span className='buttonLogotipoText'>Imagen</span>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                            </div>
+                        
+                        </div> */}
+                        {selectedFile != undefined ? (
+                            <>
+                                <img
+                                     src={URL.createObjectURL(selectedFile)}
+                                    alt="preview"
+                                    style={{ height: '92px', width: '70%' }}
+                                    className="imagenLogotipoEncuesta"
+                                />
+                                <div>
+                                    <span dangerouslySetInnerHTML={{ __html: trashSVG }} style={{ cursor: 'pointer' }} onClick={() => setSelectedFile(undefined)} />
+
+
+                                </div>
+                                
+
+                            </>
+                       
+                        ) : 
                         <div className="contenedorLogotipo">
                             <div className='buttonLogotipo' onClick={handleOpenFondo}>
                                 <span className='buttonLogotipoText'>Imagen</span>
@@ -143,6 +183,10 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
                             </div>
                         
                         </div>
+
+
+
+                        }
                         
                         
                    

@@ -13,7 +13,7 @@ const alertSVG = svgManager.getSVG('alert');
 // crear consumo categoria de encuestas
 
 
-const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
+const ModalPiePagina = ({ open, onClose, sendImagenFondo }) => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
@@ -154,4 +154,4 @@ const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
   );
 };
 
-export default ModalFondo;
+export default ModalPiePagina;

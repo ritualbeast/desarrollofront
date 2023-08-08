@@ -3,7 +3,6 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import { Select, Pagination, Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
-import {EliminarEncuesta} from '../../services/EncuestasServices';
 import '../../styles/modalanadirFondo.css';
 
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
@@ -13,7 +12,7 @@ const alertSVG = svgManager.getSVG('alert');
 // crear consumo categoria de encuestas
 
 
-const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
+const ModalLogotipo = ({ open, onClose, sendImagenLogo }) => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
 
@@ -52,7 +51,7 @@ const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
     const handleAceptar = () => {
         onClose();
         // clear the preview
-        sendImagenFondo(selectedFile);
+        sendImagenLogo(selectedFile);
     }
 
 
@@ -83,7 +82,7 @@ const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
       }}
     >
         <div className="encuesta_modalAñadir_closeicon">
-            <p className="encuesta_modalAñadir__title">Subir una imagen de fondo</p>
+            <p className="encuesta_modalAñadir__title">Subir una imagen de Logotipo</p>
             <span
                 dangerouslySetInnerHTML={{ __html: closeSVG }}
                 onClick={onClose}
@@ -154,4 +153,4 @@ const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
   );
 };
 
-export default ModalFondo;
+export default ModalLogotipo;

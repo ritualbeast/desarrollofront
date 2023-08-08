@@ -172,9 +172,9 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                             <span className='cabeceraTitle'>Pie de página</span>
                         </div>
                         
-                        {sendPreviewPiePagina != '' ? (
+                        {sendPreviewPiePagina != undefined ? (
                         <img
-                            src={previewPiePagina}
+                            src={sendPreviewPiePagina}
                             alt="preview"
                             style={{ height: '92px', width: '100%' }}
                             className="imagenLogotipoEncuesta"

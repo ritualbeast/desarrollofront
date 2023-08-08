@@ -16,6 +16,16 @@
     margin-left: 3%;
     margin-bottom: 2%;
 }
+.contenedor-añadirLogo-2 {
+  display: flex;
+  align-items: center; /* Cambio aquí para centrar verticalmente */
+  width: 100%;
+}
+.contenedor-añadirLogo-3{
+  align-items: center;
+  text-align: right;
+  width: 30%;
+}
 .contendorTitulo-añadirLogo{
     display: flex;
     align-items: center;

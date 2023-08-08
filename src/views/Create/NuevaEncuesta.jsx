@@ -15,6 +15,8 @@ import ModalEliminarSeccion from './ModalEliminarSeccion';
 import ModalVistaPrevia from './ModalVistaPrevia';
 import EditarTituloSeccion from './EditarTituloSeccion';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
+import ModalLogotipo from './ModalLogotipo';
+import ModalPiePagina from './ModalPiePagina';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -68,8 +70,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const tituloGrosor = sendGrosorPaso2?.titulo;
     const tipografia = sendTipografiaPaso2?.tipografia;
     const tituloTipografia = sendTipografiaPaso2?.titulo;
+    const [openFondo, setOpenFondo] = useState(false);
+    const [openPiePagina, setOpenPiePagina] = useState(false);
 
-    console.log(titulotamano);
     
     
     const tituloRef = useRef(null);
@@ -108,6 +111,22 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
 
   }, [tamano, grosor, tipografia]);
+
+    const handleCloseFondo = () => {
+      setOpenFondo(false);
+    }
+    const handleOpenFondo = () => {
+        setOpenFondo(true);
+    }
+
+    const handleClosePiePagina = () => {
+      setOpenPiePagina(false);
+    }
+
+    const handleOpenPiePagina = () => {
+        setOpenPiePagina(true);
+    }
+    
 
     const handleOpenAñadirLogo = () => {
         setOpenAñadirLogo(true);
@@ -653,7 +672,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                             <Col className='seccion3-nuevaEcuesta'>
                               <Button 
                                   className='boton-logotipo'
-                                  onClick={handleOpenAñadirLogo}
+                                  onClick={handleOpenFondo}
                               >
                                   <p className='textoLogotipo'>Logotipo</p>
                                   <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
@@ -832,6 +851,14 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
               <span style={{marginTop: '11px', marginLeft: '5px'}} dangerouslySetInnerHTML={{ __html: chevronDownSVG }}/>
             </Button>
         </Container>
+        
+        <ModalLogotipo open={openFondo}
+         onClose={handleCloseFondo}
+           />
+
+        <ModalPiePagina open={openPiePagina}
+          onClose={handleClosePiePagina}
+        />
         
         <Modal
             open={openAñadirLogo}
