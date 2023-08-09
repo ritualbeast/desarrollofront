@@ -6,6 +6,7 @@ import svgManager from '../../assets/svg';
 import { ListarEnumeradosService } from '../../services/EnumeradosServices';
 import styled from 'styled-components';
 import Select from 'react-select';
+import { crearEncuesta } from '../../services/EncuestasServices';
 
 const fileSVG = svgManager.getSVG('file');
 const listRosaSVG = svgManager.getSVG('list-rosa');
@@ -99,7 +100,7 @@ const options = [
     { value: 'opción 3', label: 'Opción 3' },
 ]
 
-const Revision = ({regresar, handleTotalPreguntas,}) => {
+const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedDateInicio, setSelectedDateInicio] = useState('');
     const [selectedDateFin, setSelectedDateFin] = useState('');
@@ -115,6 +116,9 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
         value: '',
         label: 'Seleccionar tipo de vigencia',
     });
+
+    console.log(handleTotalPreguntas)
+    console.log(handleDatosPaso1)
 
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
@@ -179,6 +183,14 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
     const handleCategoriaChange = (selectedOption) => {
         setCategoriaSeleccionada(selectedOption.value);
     };
+    const enviarEncuesta = async () => {
+        try {
+          const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1 )
+          console.log(response);
+      } catch (error) {
+          console.error(error);
+      }
+      }
     
     return (
         <div>
@@ -191,7 +203,8 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
             <Col className='revision-seccion2'>
                 <Col className='revision-seccion2-1'>
                     <p style={{marginBottom:'unset'}}>Nombre de la encuesta</p>
-                    <IngreseTexto type="text" placeholder="Ingrese su texto" />
+                    <IngreseTexto type="text" placeholder="Ingrese su texto"  value={handleDatosPaso1.nombre} readOnly
+                    />
                 </Col>
 
                 <Col className='revision-seccion2-2'>
@@ -335,6 +348,7 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
                     to="/create/finalizar"
                     className={`revision-Finalizar ${location.pathname === '/create/finalizar' ? 'active' : ''}`}
                     style={{ textDecoration: 'none' }}
+                    onClick={enviarEncuesta}
                 >
                     Finalizar
                 </Link>

@@ -692,6 +692,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                             
                             
                             {seccion.contentPreg.map((preg, indexp) => { 
+                              
                               if (preg.tipo == 'OM') {
                                 return <OpcionMultiple 
                                   indice={indexp} 

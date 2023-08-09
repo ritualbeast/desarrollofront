@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState , useImperativeHandle, forwardRef} from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFondo.css'
@@ -34,7 +34,8 @@ const customStyles = {
     })
 };
 
-const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
+const DefinicionEncuestaConfiguracion =  forwardRef(
+({closeMenuConfiguracion, sendDatosConfiguracionEncuesta} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const targetRef = useRef(null);
 
@@ -46,6 +47,22 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const handleIconClick = () => {
         setShowTooltip(false);
     };
+
+    const handleEnviarDatosConfiguracion = () => {
+        // Crear un objeto con los datos
+        const datosEncuestaConf = {
+            categoria: selectedCategoriaEncuesta.value,
+            vigencia: selectedVigencia.value,
+            enum_tipo_encuesta: 1,
+        };
+    
+        // Enviar los datos a la función prop
+        sendDatosConfiguracionEncuesta(datosEncuestaConf);
+      };
+
+      useImperativeHandle(ref, () => ({
+        handleEnviarDatosConfiguracion,
+      }));
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -100,6 +117,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const ListarCategoriaEncuesta = async () => {
         try {
             const response = await  ListarCategoriasService();
+            
             setListarCategoriaEncuestas(response.data.row);
             const defaultTipo = response.data.row.find((item) => item.idCategoriaEncuesta === '');
             if (defaultTipo) {
@@ -116,6 +134,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
 
     // seleccion de categoria
         const handleChangeCategoria = (selectedOption) => {
+        
         setSelectedCategoriaEncuesta(selectedOption);
     };
 
@@ -181,6 +200,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                                     options={ListarCategoriaEncuestas.map((item) => ({
                                         label: item.nombre,
                                         value: item.idCategoriaEncuesta,
+                                        
                                     }))}
                                     value={selectedCategoriaEncuesta}
                                 />
@@ -225,5 +245,6 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     </>
   )
 }
+)
 
 export default DefinicionEncuestaConfiguracion

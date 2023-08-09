@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { lista } from '../prisma/data/listaEncuesta.ts';
@@ -44,6 +44,9 @@ const Create = () => {
     const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
     const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
     const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
+
+    const DefinicionEncuestaCuerpoRef = useRef(null);
+    const ConfiguracionEncuestaRef = useRef(null);
     
     
 
@@ -87,11 +90,18 @@ const Create = () => {
     //     }
     // }
     const [lateralOpciones, setLateralOpciones] = useState(true)
+    const [activeFuncionEnviarDatos, setActiveFuncionEnviarDatos] = useState(false)
 
     const nextPasos = () => {
+        
         if(pasos === 1){
+            handleBotonClick();
+            
             setPasos(2);
             setActiveTab(true);
+            // handleSendDatosDefinicionEncuestaPaso2();
+            
+
         }
         setActiveIcon('Banco de Preguntas')
         if (pasos === 2) {
@@ -132,9 +142,7 @@ const Create = () => {
         setTipografia({ tipografia: tipografia, titulo: titulo });
     }
 
-    const handleSendDatosDefinicionEncuesta = (datos) => {
-       
-    }
+    
 
     const handleSendPosicionLogotipo = (posicion) => {
         setPosicionLogotipo(posicion)
@@ -175,6 +183,28 @@ const Create = () => {
     const handleSendTipografiaPaso2 = (tipografia , titulo) => {
         setTipografiaPaso2({tipografia: tipografia, titulo: titulo})
     }
+
+    const handleSendDatosDefinicionEncuestaPaso2 = (datos) => {
+        console.log(datos)
+    }
+
+    const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState([])
+    const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState([])
+
+    const sendDatosDefinicionEncuesta = (datos) => {
+        
+        setDatosDefinicionEncuesta(datos)
+      };
+
+    const sendDatosConfiguracionEncuesta = (datos) => {
+        console.log(datos)
+    }
+    
+      const handleBotonClick = () => {
+        DefinicionEncuestaCuerpoRef.current.handleEnviarDatos();
+        ConfiguracionEncuestaRef.current.handleEnviarDatosConfiguracion();
+      };
+
 
     return (
         <>
@@ -311,6 +341,7 @@ const Create = () => {
                                             <div className="lista_2">
                                                     <div className="fondo-lista">
                                                         {lista.map((item) => (
+                                                            
                                                         pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
                                                             pasos === 2 && item.nombre === "Configuracion" ? null : (
                                                             <div
@@ -372,6 +403,7 @@ const Create = () => {
                             {activeIcon === 'Configuracion' && (
                                 <DefinicionEncuestaConfiguracion
                                     closeMenuConfiguracion={handleClick}
+                                    sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
                                 />
                             )}
 
@@ -379,6 +411,7 @@ const Create = () => {
                                 {pasos === 1 
                                 ? (
                                     <DefinicionEncuestaCuerpo 
+                                        ref={DefinicionEncuestaCuerpoRef}
                                         sendPreview={(previe) => enviarPreview(previe)}
                                         sendPreview2={(previe2) => enviarPreview2(previe2)}
                                         sendEstado3={estados}
@@ -386,11 +419,14 @@ const Create = () => {
                                         sendTamano3={tamanos}
                                         sendGrosor3={grosor}
                                         sendTipografia3={tipografia}
-                                        sendDatosDefinicionEncuesta={(datos) =>  handleSendDatosDefinicionEncuesta(datos)}
+                                        
                                         sendPosicionLogotipo = {posicionLogotipo}
                                         sendTamanoLogotipo = {tamanoLogotipo}
                                         sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
                                         sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
+                                        activeFuncionEnviarDatos={activeFuncionEnviarDatos}
+                                        
+                                        sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
                                     />
 
                                 ) : pasos === 2 ? (<DiseñaEncuesta 
@@ -405,6 +441,9 @@ const Create = () => {
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}
                                         handleTotalPreguntas={contentCont}
+                                        handleDatosPaso1 = {datosDefinicionEncuesta}
+                                        handleDatosConfiguracion = {datosConfiguracionEncuesta}
+                                        
                                     />
                                 ) : null
                                 }

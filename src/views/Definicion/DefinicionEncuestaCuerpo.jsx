@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, forwardRef, useImperativeHandle} from 'react'
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
 import styled from 'styled-components';
@@ -40,10 +40,12 @@ const Leyenda = styled.textarea`
     }
 `;
 
-const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3, 
-  sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, sendDatosDefinicionEncuesta,
-  sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
-}) => {
+const DefinicionEncuestaCuerpo =  forwardRef(({
+  sendEstado3, sendPosicion3, 
+  sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, 
+  sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
+  sendDatosDefinicionEncuesta
+}, ref) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
@@ -82,12 +84,15 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
   const inputLeyendaRef = useRef(null);
   const inputBotonRef = useRef(null);
 
+
   useEffect(() => {
     // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
     const inputNombreElement = inputNombreRef.current;
     const inputDescripcionElement = inputDescripcionRef.current;
     const inputLeyendaElement = inputLeyendaRef.current;
     const inputBotonElement = inputBotonRef.current;
+
+    console.log('cambio de estado');
 
       if (titulotamano === 'Nombre de encuesta') {
         inputNombreElement.style.fontSize = `${tamano}px`;
@@ -140,7 +145,6 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
 
     enviarPreview(preview2);
     enviarPreview2(preview1);
-    sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
     setLeerPosicion(sendPosicion3);
     setLeerPosicionLogotipo(sendPosicionLogotipo);
     setLeerTamanoLogotipo(sendTamanoLogotipo);
@@ -149,8 +153,38 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
 
   }, [preview1, preview2, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
     tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
-    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
+    
+    
   ]);
+
+  
+
+
+  // capturar el valor de todos los datos
+
+  const handleEnviarDatos = () => {
+    // Crear un objeto con los datos
+    console.log('enviar datos ok');
+    const datosEncuesta = {
+      imagen1: preview1, // Asegúrate de tener la URL o los datos de la imagen
+      imagen2: preview2,
+      nombre: inputNombreRef.current.value,
+      descripcion: inputDescripcionRef.current.value,
+      leyenda: inputLeyendaRef.current.value
+    };
+
+    // Enviar los datos a la función prop
+    sendDatosDefinicionEncuesta(datosEncuesta);
+  };
+
+  useImperativeHandle(ref, () => ({
+    handleEnviarDatos,
+  }));
+  
+
+
+
 
   const enviarPreview = (previe) => {
     
@@ -329,5 +363,6 @@ const DefinicionEncuestaCuerpo = ({ sendEstado3, sendPosicion3,
     </>
   )
 }
+)
 
-export default DefinicionEncuestaCuerpo
+export default DefinicionEncuestaCuerpo 
