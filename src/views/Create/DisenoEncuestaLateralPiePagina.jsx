@@ -30,7 +30,6 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const [pasos, setPasos] = useState(paso);
     const [previewPiePagina, setPreviewPiePagina] = useState(sendPreviewPiePagina);
 
-    console.log(sendPreviewPiePagina);
     
 
     useEffect(() => {

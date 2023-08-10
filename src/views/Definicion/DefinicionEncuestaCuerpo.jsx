@@ -92,8 +92,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     const inputLeyendaElement = inputLeyendaRef.current;
     const inputBotonElement = inputBotonRef.current;
 
-    console.log('cambio de estado');
-
       if (titulotamano === 'Nombre de encuesta') {
         inputNombreElement.style.fontSize = `${tamano}px`;
         setTamanoNombreDefinicion(tamano);
@@ -159,16 +157,17 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   ]);
 
   
-
+  
 
   // capturar el valor de todos los datos
 
-  const handleEnviarDatos = () => {
+  const handleEnviarDatos = async () => {
     // Crear un objeto con los datos
-    console.log('enviar datos ok');
     const datosEncuesta = {
-      imagen1: preview1, // Asegúrate de tener la URL o los datos de la imagen
-      imagen2: preview2,
+
+      
+      imagenCabecera: preview1,
+      imagenPie: preview2,
       nombre: inputNombreRef.current.value,
       descripcion: inputDescripcionRef.current.value,
       leyenda: inputLeyendaRef.current.value
@@ -192,7 +191,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   };
 
   const enviarPreview2 = (previe) => { 
-    console.log('previe', previe);
     sendPreview2(previe);
   };
     
@@ -200,25 +198,48 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     const file = e.target.files[0];
     if (file) {
       setSelectedFile1(file);
-      const objectUrl1 = URL.createObjectURL(file);
-      setPreview1(objectUrl1);
+  
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        // Aquí tienes la cadena base64 en reader.result
+        setPreview1(reader.result);
+      };
+  
+      reader.onerror = (error) => {
+        console.error(error);
+      };
+  
+      reader.readAsDataURL(file); // Lee el archivo como base64
     } else {
       setSelectedFile1(null);
       setPreview1(null);
     }
   };
-
+  
   const onSelectFile2 = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile2(file);
-      const objectUrl2 = URL.createObjectURL(file);
-      setPreview2(objectUrl2);
+  
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        // La cadena base64 estará en reader.result
+        setPreview2(reader.result);
+      };
+  
+      reader.onerror = (error) => {
+        console.error(error);
+      };
+  
+      reader.readAsDataURL(file); // Lee el archivo como base64
     } else {
       setSelectedFile2(null);
       setPreview2(null);
     }
   };
+  
 
   const handleEnviarNombre = (e) => {
     setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, nombre: e.target.value });

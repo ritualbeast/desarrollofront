@@ -34,9 +34,11 @@ const customStyles = {
     })
 };
 
-const DefinicionEncuestaConfiguracion =  forwardRef(
-({closeMenuConfiguracion, sendDatosConfiguracionEncuesta} , ref) => {
+const DefinicionEncuestaConfiguracion =  forwardRef(({
+    closeMenuConfiguracion, sendDatosConfiguracionEncuesta} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
+    const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
+    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
     const targetRef = useRef(null);
 
     useEffect(() => {  
@@ -54,6 +56,10 @@ const DefinicionEncuestaConfiguracion =  forwardRef(
             categoria: selectedCategoriaEncuesta.value,
             vigencia: selectedVigencia.value,
             enum_tipo_encuesta: 1,
+            enum_tipoVigencia: 1,
+            fechaInicio : fechaInicioSeleccionada,
+            fechaFin : fechaFinSeleccionada,
+
         };
     
         // Enviar los datos a la función prop
@@ -144,19 +150,20 @@ const DefinicionEncuestaConfiguracion =  forwardRef(
     };
     
     // seleccion de fecha inicio
-    const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
+    
     const handleChangeFechaInicio = (event) => {
         setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
     };
 
     // seleccion de fecha fin
-    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
+    
     const handleChangeFechaFin = (event) => {
         setFechaFinSeleccionada(event.target.value + ' 23:59:59');
     };
     
   return (
     <>
+        
         <Col className="encuesta-Segundocuerpo2">
             <Col>
                 <div className="encuesta-subtitulo2">

@@ -69,7 +69,13 @@ const ListarEncuestas = async (tipo, valor, nombre= '', orden='', pagina, size, 
   }
 };
 
-const crearEncuesta = async () => {
+const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo) => {
+  console.log('handleTotalPreguntas', handleTotalPreguntas);
+  console.log('handleDatosPaso1', handleDatosPaso1);
+  console.log('handleDatosConfiguracion', handleDatosConfiguracion);
+  console.log(handleDatosConfiguracion.enum_tipo_encuesta);
+  console.log('contenedorSeleccionado', contenedorSeleccionado);
+  
   const opcionCrearEncuesta = localStorage.getItem('opcionCrearEncuesta');
   const canal = '808cd0b9-141f-4132-81e9-c3822436191b'; 
 
@@ -82,18 +88,18 @@ const crearEncuesta = async () => {
   const url = 'http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/crearEncuesta';
 
   const body = {
-    "enumTipoEncuesta": "1",
-    "idCategoriaEncuesta": 1,
-    "titulo": "XD",
-    "descripcion": "Comparte tu currículum para consideración de empleo",
-    "fechaInicio": "2023-07-11 10:00:00",
-    "fechaFin": "2023-07-12 10:00:00",
+    "enumTipoEncuesta": handleDatosConfiguracion.enum_tipo_encuesta,
+    "idCategoriaEncuesta": handleDatosConfiguracion.categoria,
+    "titulo": handleDatosPaso1.nombre,
+    "descripcion": handleDatosPaso1.descripcion,
+    "fechaInicio": handleDatosConfiguracion.fechaInicio,
+    "fechaFin": handleDatosConfiguracion.fechaFin,
     "formatoPresentacion": opcionCrearEncuesta,
-    "enumTipoVigencia": "3",
+    "enumTipoVigencia": handleDatosConfiguracion.enum_tipoVigencia,
     "esPublica": "S",
-    "cantidadRespuesta": 3,
-    "imagenCabecera": "iVBORw0KGgoAAAANSUhEUgAAAyAAAAMgCAYAAADbcAZoAAAyJklEQVR4Ae3XQQ0AIRAEweO88MS/JVxAgoh+1RqYpLKfHnvN8zkCBAgQIECAAAECBAgEAn+wYYIAAQIECBAgQIAAAQJPQIB4BAIECBAgQIAAAQIEMgEBklEbIkCAAAECBAgQIEBAgPgBAgQIECBAgAABAgQyAQGSURsiQIAAAQIECBAgQECA",
-    "imagenPie": "iVBORw0KGgoAAAANSUhEUgAAAyAAAAMgCAYAAADbcAZoAAAyJklEQVR4Ae3XQQ0AIRAEweO88MS/JVxAgoh+1RqYpLKfHnvN8zkCBAgQIECAAAECBAgEAn+wYYIAAQIECBAgQIAAAQJPQIB4BAIECBAgQIAAAQIEMgEBklEbIkCAAAECBAgQIEBAgPgBAgQIECBAgAABAgQyAQGSURsiQIAAAQIECBAgQECA",
+    "cantidadRespuesta": totalConteo,
+    "imagenCabecera": handleDatosPaso1.imagenCabecera,
+    "imagenPie":  handleDatosPaso1.imagenPie,
     "usuarioCreacion": "AndresPradoV",
     "secciones": [
       {
@@ -102,7 +108,7 @@ const crearEncuesta = async () => {
         "orden": "1",
         "imagenCabecera": "iVBORw0KGgoAAAANSUhEUgAAA5AAAAOQCAIAAADALglzAAAACXBIWXMAAAsTAAALEwEAmpwYAAARe0lEQVR4nO3WMQEAIAzAMED5pOOAlx6Jgp7dM7MAAKDq/A4AAIAXwwoAQJphBQAgzbACAJBmWAEASDOs",
         "imagenPie": "",
-        "estado": "activo",
+        
         "tipoSeccion": "P",
         "textoAgradecimiento": "¡Gracias por participar en nuestra encuesta!",
         "urlRedireccion": "https://www.ejemplo.com",

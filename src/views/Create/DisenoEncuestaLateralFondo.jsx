@@ -27,7 +27,6 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
     const [selectedFile, setSelectedFile] = useState();
 
     useEffect(() => {
-        console.log(selectedFile);
     }, [selectedFile]);
 
     const handleCloseFondo = () => {
@@ -103,7 +102,6 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
     }
 
     const handleRecibirImagenFondo = (imagen) => {
-        console.log(imagen);
         setSelectedFile(imagen);
     }
 

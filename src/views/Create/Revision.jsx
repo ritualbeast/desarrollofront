@@ -7,6 +7,7 @@ import { ListarEnumeradosService } from '../../services/EnumeradosServices';
 import styled from 'styled-components';
 import Select from 'react-select';
 import { crearEncuesta } from '../../services/EncuestasServices';
+import { ListarCategoriasService } from '../../services/EncuestasServices';
 
 const fileSVG = svgManager.getSVG('file');
 const listRosaSVG = svgManager.getSVG('list-rosa');
@@ -100,11 +101,14 @@ const options = [
     { value: 'opción 3', label: 'Opción 3' },
 ]
 
-const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
+
+
+const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion}) => {
+    const formatoEncuesta = localStorage.getItem('opcionCrearEncuesta');
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedDateInicio, setSelectedDateInicio] = useState('');
     const [selectedDateFin, setSelectedDateFin] = useState('');
-    const [contenedorSeleccionado, setContenedorSeleccionado] = useState(null);
+    const [contenedorSeleccionado, setContenedorSeleccionado] = useState(formatoEncuesta);
     const location = useLocation();
     const [totalConteo, setTotalConteo] = useState()
     const [Opcion1, setOpcion1] = useState(false);
@@ -117,8 +121,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
         label: 'Seleccionar tipo de vigencia',
     });
 
-    console.log(handleTotalPreguntas)
-    console.log(handleDatosPaso1)
+    
 
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
@@ -152,13 +155,15 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
         handleTotalPreguntas.forEach((item) => {
         if (item.tipo === 'C') {
             totalContenedoresC++;
-            totalDatosContentPreg += item.contentPreg.length;
+            totalDatosContentPreg += item.preguntas.length;
         }
         });
         setTotalConteo(totalDatosContentPreg)
     }
 
     useEffect(() => {
+        ListarCategoriaEncuesta();
+        ListarVigenciaEncuesta();
         total();
         listarEnumeradosVigencia();
     }, [])
@@ -185,12 +190,65 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
     };
     const enviarEncuesta = async () => {
         try {
-          const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1 )
+          const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo )
           console.log(response);
       } catch (error) {
           console.error(error);
       }
       }
+
+      // consumo de categorias - cambio
+    const [ListarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
+    const [selectedCategoriaEncuesta, setSelectedCategoriaEncuesta] = useState({
+        value: '',
+        label: 'Categoria de encuesta',
+    });
+    const ListarCategoriaEncuesta = async () => {
+        try {
+            const response = await ListarCategoriasService();
+            const categorias = response.data.row.map((item) => ({
+                label: item.nombre,
+                value: item.idCategoriaEncuesta,
+            }));
+            
+            setListarCategoriaEncuestas(categorias);
+    
+            const defaultCategoria = categorias.find((item) => item.value === handleDatosConfiguracion.categoria);
+            if (defaultCategoria) {
+                setSelectedCategoriaEncuesta(defaultCategoria);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // consumo de vigencia - cambio
+
+    const [ListarVigenciaEncuestas, setListarVigenciaEncuestas] = useState([]);
+    const [selectedVigenciaEncuesta, setSelectedVigenciaEncuesta] = useState({
+        value: '',
+        label: 'Vigencia de encuesta',
+    });
+    const ListarVigenciaEncuesta = async () => {
+        try {
+            const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
+            const vigencia = response.data.listaEnumerados.map((item) => ({
+                label: item.etiqueta,
+                value: item.id,
+            }));
+
+            setListarVigenciaEncuestas(vigencia);
+
+            const defaultVigencia = vigencia.find((item) => item.value === handleDatosConfiguracion.vigencia);
+            if (defaultVigencia) {  
+                setSelectedVigenciaEncuesta(defaultVigencia);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    
     
     return (
         <div>
@@ -211,9 +269,12 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
                     <p style={{marginBottom:'unset'}}>Categoría:</p>
                     <Select
                         styles={Categoria}
-                        options={options}
-                        value={options.find((option) => option.value === categoriaSeleccionada)}
-                        onChange={handleCategoriaChange}
+                        options={ListarCategoriaEncuestas}
+                        value={selectedCategoriaEncuesta}
+                        onChange={(selectedOption) => {
+                            setSelectedCategoriaEncuesta(selectedOption);
+                            // Aquí también puedes actualizar handleDatosConfiguracion.categoria si es necesario
+                        }}
                     />
                 </Col>
             </Col>
@@ -223,12 +284,12 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
                     <p style={{marginBottom:'unset'}}>Vigencia</p>
                     <Select
                         styles={Vigencia}
-                        onChange={handleOptionChange}
-                        options={tipoVigencia.map((item) => ({
-                            value: item.id,
-                            label: item.etiqueta,
-                        }))}
-                        value={selectedEnumerados}
+                        options={ListarVigenciaEncuestas}
+                        value={selectedVigenciaEncuesta}
+                        onChange={(selectedOption) => {
+                            setSelectedVigenciaEncuesta(selectedOption);
+                            // Aquí también puedes actualizar handleDatosConfiguracion.vigencia si es necesario
+                        }}
                     />
                 </Col>
 
@@ -296,8 +357,8 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
                 </Col>
                 <Col className='revision-seccion4-2'>
                     <Col
-                        className={`revision-seccion4-2-1 ${contenedorSeleccionado === 'contenedor1' ? 'seleccionado' : ''}`}
-                        onClick={() => setContenedorSeleccionado('contenedor1')}
+                        className={`revision-seccion4-2-1 ${contenedorSeleccionado === 'C' ? 'seleccionado' : ''}`}
+                        onClick={() => setContenedorSeleccionado('C')}
                     >
                         <Col style={{display:'flex'}}>
                             <span dangerouslySetInnerHTML={{ __html: fileSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>
@@ -309,8 +370,8 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
                     </Col>
 
                     <Col
-                        className={`revision-seccion4-2-2 ${contenedorSeleccionado === 'contenedor2' ? 'seleccionado' : ''}`}
-                        onClick={() => setContenedorSeleccionado('contenedor2')}
+                        className={`revision-seccion4-2-2 ${contenedorSeleccionado === 'P' ? 'seleccionado' : ''}`}
+                        onClick={() => setContenedorSeleccionado('P')}
                     >
                         <Col style={{display:'flex'}}>
                             <span dangerouslySetInnerHTML={{ __html: listRosaSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>
@@ -322,8 +383,8 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1}) => {
                     </Col>
 
                     <Col
-                        className={`revision-seccion4-2-3 ${contenedorSeleccionado === 'contenedor3' ? 'seleccionado' : ''}`}
-                        onClick={() => setContenedorSeleccionado('contenedor3')}
+                        className={`revision-seccion4-2-3 ${contenedorSeleccionado === 'P' ? 'seleccionado' : ''}`}
+                        onClick={() => setContenedorSeleccionado('P')}
                     >
                         <Col style={{display:'flex'}}>
                             <span dangerouslySetInnerHTML={{ __html: editRosaSVG }} style={{display:'flex', alignItems:'center', padding:'4%'}}/>

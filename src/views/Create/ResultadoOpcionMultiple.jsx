@@ -110,7 +110,6 @@ const ResultadoOpcionMultiple = ({
 
   const preguntasRef = useRef(null);
   const opcionesRespuestaRef = useRef(null);
-  console.log(tamano);
   useEffect(() => {
     // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
     const inputoreguntasRef = preguntasRef.current;

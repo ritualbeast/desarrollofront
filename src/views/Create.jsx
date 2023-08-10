@@ -34,7 +34,20 @@ const Create = () => {
     const [grosor, setGrosor] = useState({grosor: '', titulo: ''});
     const [tipografia, setTipografia] = useState({tipografia: '', titulo: ''});
     const [openVistaPrevia, setVistaPrevia] = useState(false);
-    const [contentCont, setContentCont] = useState([{ tipo: 'C', titulo: 'Seccion ', comentario: '', contentPreg: [] }]);
+    const [contentCont, setContentCont] = useState([{ 
+        titulo: 'Seccion ',
+        descripcion: '', 
+        orden: 1,
+        imagenCabecera: '', 
+        imagenPie : '',  
+        tipoSeccion: 'C',  
+        textoAgradecimiento: '',
+        urlRedireccion: '',
+        imagenCierre: '',   
+        textoBotonCierre: '',
+        preguntas: [] 
+
+    }]);
     const [Ispreview, setIspreview] = useState('');
     const [Ispreview2, setIspreview2] = useState('');
     const [posicionLogotipo, setPosicionLogotipo] = useState('');
@@ -184,9 +197,6 @@ const Create = () => {
         setTipografiaPaso2({tipografia: tipografia, titulo: titulo})
     }
 
-    const handleSendDatosDefinicionEncuestaPaso2 = (datos) => {
-        console.log(datos)
-    }
 
     const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState([])
     const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState([])
@@ -198,6 +208,7 @@ const Create = () => {
 
     const sendDatosConfiguracionEncuesta = (datos) => {
         console.log(datos)
+        setDatosConfiguracionEncuesta(datos)
     }
     
       const handleBotonClick = () => {
@@ -402,6 +413,7 @@ const Create = () => {
 
                             {activeIcon === 'Configuracion' && (
                                 <DefinicionEncuestaConfiguracion
+                                    ref={ConfiguracionEncuestaRef}
                                     closeMenuConfiguracion={handleClick}
                                     sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
                                 />

@@ -72,6 +72,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const tituloTipografia = sendTipografiaPaso2?.titulo;
     const [openFondo, setOpenFondo] = useState(false);
     const [openPiePagina, setOpenPiePagina] = useState(false);
+   
 
     
     
@@ -149,10 +150,17 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
     const handleNewContenedor = () => {
       let obj={
-        tipo:'C',
-        titulo:titulo,
-        comentario:'',
-        contentPreg:[]
+        titulo: titulo,
+        descripcion: '', 
+        orden: contentCont.length + 1,
+        imagenCabecera: '', 
+        imagenPie : '',  
+        tipoSeccion: 'C',  
+        textoAgradecimiento: '',
+        urlRedireccion: '',
+        imagenCierre: '',   
+        textoBotonCierre: '',
+        preguntas:[]
       }
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
@@ -174,10 +182,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
 
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      const contenidoActual = [...nuevoEstado[index].preguntas];
       contenidoActual.push(obj);
 
-      nuevoEstado[index].contentPreg = contenidoActual;
+      nuevoEstado[index].preguntas = contenidoActual;
 
       setContentOpt(nuevoEstado);
 
@@ -196,10 +204,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
 
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      const contenidoActual = [...nuevoEstado[index].preguntas];
       contenidoActual.push(obj);
 
-      nuevoEstado[index].contentPreg = contenidoActual;
+      nuevoEstado[index].preguntas = contenidoActual;
       
       setContentVari((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -222,10 +230,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
 
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      const contenidoActual = [...nuevoEstado[index].preguntas];
       contenidoActual.push(obj);
 
-      nuevoEstado[index].contentPreg = contenidoActual;
+      nuevoEstado[index].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setContentCarg((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -243,10 +251,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
 
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].contentPreg];
+      const contenidoActual = [...nuevoEstado[index].preguntas];
       contenidoActual.push(obj);
 
-      nuevoEstado[index].contentPreg = contenidoActual;
+      nuevoEstado[index].preguntas = contenidoActual;
 
       setContentCuadro((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -272,8 +280,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       let obj = {
         tipo: 'C',
         titulo: previoTitulo,
-        comentario: previoComentario,
-        contentPreg: []
+        descripcion: previoComentario,
+        preguntas: []
       };
     
       const nuevoEstado = [...contentCont];
@@ -308,7 +316,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[indiceSec] = {
         ...nuevoEstado[indiceSec],
         titulo: titulo,
-        comentario: comentario
+        descripcion: comentario
       };
       setContentCont(nuevoEstado);
         
@@ -378,7 +386,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
     const handleCancelarOpcionMultiple = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -387,46 +395,46 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         contenidoActual[indicePreg].save = true;
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleEliminarOpcionMultiple = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === 'true') {
         contenidoActual.splice(indicePreg, 1);
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
       contenidoActual[indicePreg].save = true
       contenidoActual[indicePreg].cancelar = cancelar
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
+      const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
+      tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     }
 
     const handleCancelarValoracionEstrellas = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -435,48 +443,48 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         contenidoActual[indicePreg].save = true;
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleEliminarValoracionEstrellas = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === 'true') {
         contenidoActual.splice(indicePreg, 1);
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
       contenidoActual[indicePreg].selectedColor = selectedColor
       contenidoActual[indicePreg].selectedIcon = selectedIcon
       contenidoActual[indicePreg].cancelar = cancelar
       contenidoActual[indicePreg].save = true
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
+      const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
+      tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     }
 
     const handleCancelarCargaArchivos = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -485,43 +493,43 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         contenidoActual[indicePreg].save = true;
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleEliminarCargaArchivos = (indicePreg, indiceSec) => {
       setContentCont((prevContent) => {
         const nuevoEstado = [...prevContent];
-        const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
         contenidoActual.splice(indicePreg, 1);
-        nuevoEstado[indiceSec].contentPreg = contenidoActual;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
         return nuevoEstado;
       });
     };
 
     const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].pregunta2 = pregunta2
       contenidoActual[indicePreg].cancelar = cancelar
       contenidoActual[indicePreg].save = true
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarCargaDatos = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
+      const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
+      tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     }
 
     const handleCancelarCuadroComentarios = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -530,46 +538,46 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         contenidoActual[indicePreg].save = true;
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleEliminarCuadroComentarios = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === 'true') {
         contenidoActual.splice(indicePreg, 1);
       }
     
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
     const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, cancelar) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
       contenidoActual[indicePreg].save = true
       contenidoActual[indicePreg].cancelar = cancelar
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleEditarCuadroComentarios = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].contentPreg];
+      const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
-      tempCont[indiceSeccion].contentPreg = contPregTemp;
+      tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     }
 
 
     const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].tipo = value
       
       if (value === 'OM') contenidoActual[indicePreg].pregunta = '';
@@ -579,7 +587,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       if (value === 'CA') contenidoActual[indicePreg].pregunta2 = 'Suba archivos PDF, PNG';
       if (value === 'CC') contenidoActual[indicePreg].pregunta = 'Añada un comentario sobre la charla';
       
-      nuevoEstado[indiceSec].contentPreg = contenidoActual;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     }
 
@@ -619,6 +627,55 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         listarTipoPregunta();
     }, [])
 
+
+
+    // capturar imagenes de la seccion
+    const onSelectFile1 = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setSelectedFile1(file);
+    
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+          // Aquí tienes la cadena base64 en reader.result
+          setPreview1(reader.result);
+        };
+    
+        reader.onerror = (error) => {
+          console.error(error);
+        };
+    
+        reader.readAsDataURL(file); // Lee el archivo como base64
+      } else {
+        setSelectedFile1(null);
+        setPreview1(null);
+      }
+    };
+    
+    const onSelectFile2 = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setSelectedFile2(file);
+    
+        const reader = new FileReader();
+    
+        reader.onloadend = () => {
+          // La cadena base64 estará en reader.result
+          setPreview2(reader.result);
+        };
+    
+        reader.onerror = (error) => {
+          console.error(error);
+        };
+    
+        reader.readAsDataURL(file); // Lee el archivo como base64
+      } else {
+        setSelectedFile2(null);
+        setPreview2(null);
+      }
+    };
+
   return (
     <>
         <Container className='encuesta-Tercerocuerpo2-1'>
@@ -630,6 +687,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
               </Col>
 
               {contentCont.map((seccion, index) => {
+                  
                   return (
                     <Col>
                       <Col key={index} className='contendor-nuevaEncuesta principal'>
@@ -669,15 +727,35 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
                         {seccionVisible[index] && (
                           <div>
+                            {selectedFile1 ? (
+                              <div className="agregarImagenDefinicionEncuesta2">
+                                <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
+                                  <img src={preview1} alt="preview" 
+                                  className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                                  />
+                                </div>
+                                <div className="subcontenedorLogotipo">
+                                  <div className="buttonLogotipoeditar">
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById('file-input1').click()} />
+                                    <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
+                                  </div>
+                                  <div className="buttonLogotipoeliminar">
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setSelectedFile1(null)} />
+                                  </div>
+                                </div>
+                              </div>  ): (
                             <Col className='seccion3-nuevaEcuesta'>
                               <Button 
                                   className='boton-logotipo'
-                                  onClick={handleOpenFondo}
+                                  onClick={() => document.getElementById('file-input1').click()} 
                               >
                                   <p className='textoLogotipo'>Logotipo</p>
                                   <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                                  <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
                               </Button>
                             </Col>
+                            )}
+
 
                             <div>
                               {mostrarContenedorC[index] && seccion.tipo === 'C' && (
@@ -691,7 +769,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                             </div>
                             
                             
-                            {seccion.contentPreg.map((preg, indexp) => { 
+                            {seccion.preguntas.map((preg, indexp) => { 
                               
                               if (preg.tipo == 'OM') {
                                 return <OpcionMultiple 

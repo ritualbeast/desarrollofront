@@ -23,7 +23,6 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
 
     
-    console.log(sendPreviewLogo);
     useEffect(() => {
         ListarPosicionImagen();
         setLogotipo(sendPreviewLogo);
