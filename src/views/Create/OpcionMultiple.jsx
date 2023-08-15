@@ -251,13 +251,9 @@ const OpcionMultiple = ({
         }
     ]
     );
-    const [configuracionAdicional, setConfiguracionAdicional] = useState(
-        {
-            multipleRespuesta : ""
-        }
-    );
+    
     const [multipleRespuesta, setMultipleRespuesta] = useState("S");
-
+    const [ponderacion, setPonderacion] = useState("S");
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
@@ -358,6 +354,7 @@ const OpcionMultiple = ({
           } else {
             setInputs([]);
           }
+        setPonderacion(!usarPonderacion ? "S" : "N");  
     };
 
     const handleSwitchConfigurar1 = () => {
@@ -410,6 +407,7 @@ const OpcionMultiple = ({
           }))
           
         );
+        setMultipleRespuesta(!configuracion3 ? "S" : "N");
         // setConfiguracionAdicional((prevConfiguracion) => {
         //     const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
         //         if (configuracionIndex === 0) {
@@ -672,7 +670,7 @@ const OpcionMultiple = ({
     
     const handleGuardarOpcionMultiple = () => {
         setPreguntaTemp(pregunta)
-        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral);
+        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion);
     };
 
     useEffect(() => {

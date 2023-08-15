@@ -435,21 +435,21 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta;
       contenidoActual[indicePreg].nemonico = '1S_1P';
       contenidoActual[indicePreg].idTipoPregunta = 1;
-      contenidoActual[indicePreg].orden = 1;
+      contenidoActual[indicePreg].orden = indiceSec;
       contenidoActual[indicePreg].requerida = '';
       contenidoActual[indicePreg].placeHolder = 'seleccione';
       contenidoActual[indicePreg].mensajeErrorRequerido = '';
       contenidoActual[indicePreg].mensajeError = '';
       contenidoActual[indicePreg].tipoArchivo = '';
       contenidoActual[indicePreg].pesoArchivo = '';
-      contenidoActual[indicePreg].multipleRespuesta = '';
-      contenidoActual[indicePreg].ponderacion = 'N';
+      contenidoActual[indicePreg].multipleRespuesta =  multipleRespuesta;
+      contenidoActual[indicePreg].ponderacion = ponderacion;
       contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
       contenidoActual[indicePreg].preguntasComplementarias = [{}] ;
