@@ -103,7 +103,7 @@ const options = [
 
 
 
-const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion}) => {
+const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, handleEstilos}) => {
     const formatoEncuesta = localStorage.getItem('opcionCrearEncuesta');
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedDateInicio, setSelectedDateInicio] = useState('');
@@ -190,7 +190,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
     };
     const enviarEncuesta = async () => {
         try {
-          const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo )
+          const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo, handleEstilos);
           console.log(response);
       } catch (error) {
           console.error(error);

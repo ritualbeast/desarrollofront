@@ -36,18 +36,75 @@ const Create = () => {
     const [openVistaPrevia, setVistaPrevia] = useState(false);
     const [contentCont, setContentCont] = useState([{ 
         titulo: 'Seccion ',
-        descripcion: '', 
+        descripcion: '#', 
         orden: 1,
         imagenCabecera: '', 
         imagenPie : '',  
         tipoSeccion: 'C',  
         textoAgradecimiento: '',
-        urlRedireccion: '',
-        imagenCierre: '',   
-        textoBotonCierre: '',
+        urlRedireccion: '#',
+        imagenCierre: '#',   
+        textoBotonCierre: '#',
         preguntas: [] 
 
     }]);
+    const [encuestaEstilos, setEncuestaEstilos] = useState({
+        logotipo: {
+          tamanio: "1",
+          enumPosicion: ""
+        },
+        pieDePagina: {
+          tamanio: "1",
+          enumPosicion: ""
+        },
+        fuente: {
+          tituloEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          descripcionEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          tituloSeccion: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          descripcionSeccion: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          preguntas: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          opcionesRespuestas: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          textoCierreEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          textoBotones: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          }
+        },
+        fondo: {
+          colorFondo: "",
+          imagenFondo: ""
+        }
+      });
+      
     const [Ispreview, setIspreview] = useState('');
     const [Ispreview2, setIspreview2] = useState('');
     const [posicionLogotipo, setPosicionLogotipo] = useState('');
@@ -207,7 +264,7 @@ const Create = () => {
       };
 
     const sendDatosConfiguracionEncuesta = (datos) => {
-        console.log(datos)
+       
         setDatosConfiguracionEncuesta(datos)
     }
     
@@ -455,6 +512,7 @@ const Create = () => {
                                         handleTotalPreguntas={contentCont}
                                         handleDatosPaso1 = {datosDefinicionEncuesta}
                                         handleDatosConfiguracion = {datosConfiguracionEncuesta}
+                                        handleEstilos = {encuestaEstilos}
                                         
                                     />
                                 ) : null

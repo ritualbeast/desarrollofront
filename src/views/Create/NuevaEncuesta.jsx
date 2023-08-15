@@ -33,6 +33,7 @@ const starSVG = svgManager.getSVG('star');
 const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
 const warningLightSVG = svgManager.getSVG('warning-light');
+const edit2SVG = svgManager.getSVG('edit2');
 
 const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
     sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
@@ -62,7 +63,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [titulo, setTitulo] = useState("Seccion ");
     const [comentario, setComentario] = useState("");
-    const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(false));
+    const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(true));
     const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
     const tamano = sendTamanoPaso2?.tamano ;
     const titulotamano = sendTamanoPaso2?.titulo;
@@ -72,6 +73,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const tituloTipografia = sendTipografiaPaso2?.titulo;
     const [openFondo, setOpenFondo] = useState(false);
     const [openPiePagina, setOpenPiePagina] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [previews, setPreviews] = useState([]);
+    const [footerFiles, setFooterFiles] = useState([]);
+    const [footerPreviews, setFooterPreviews] = useState([]);
+
    
 
     
@@ -146,6 +152,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setBlurBackground(false);
       setIsModalVisible(false);
       setIndexEliminar(index);
+      
     }
 
     const handleNewContenedor = () => {
@@ -153,8 +160,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         titulo: titulo,
         descripcion: '', 
         orden: contentCont.length + 1,
-        imagenCabecera: '', 
-        imagenPie : '',  
+        imagenCabecera: '',
+        imagenPie : '',
         tipoSeccion: 'C',  
         textoAgradecimiento: '',
         urlRedireccion: '',
@@ -308,20 +315,36 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         return newState;
       });
     
-      setEditarTituloVisible(!editarTituloVisible)
+      setEditarTituloVisible((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? true : false)));
     };
     
-    const handleAceptarEditarTitulo = (indiceSec, titulo, comentario) => {
+    const handleAceptarEditarTitulo = (indiceSec, nuevoTitulo, comentario) => {
+      console.log(nuevoTitulo)
       const nuevoEstado = [...contentCont];
       nuevoEstado[indiceSec] = {
         ...nuevoEstado[indiceSec],
-        titulo: titulo,
-        descripcion: comentario
+        indice: indiceSec,
+        titulo: nuevoTitulo,
+        comentario: comentario,
+        regresar: false,
       };
+      if (!nuevoEstado[indiceSec].regresar) {
+        setMostrarContenedorC((prevMostrar) => {
+          const newMostrar = prevMostrar.map((mostrar, i) => (i === indiceSec ? false : mostrar));
+          
+          // Llamar a regresarRevision pasando el valor false
+          // regresarRevision(newMostrar[indiceSec]);
+          
+          return newMostrar;
+        });
+      }
       setContentCont(nuevoEstado);
-        
-      setMostrarContenedorC(false, indiceSec)
-      setEditarTituloVisible(!editarTituloVisible)
+      console.log(indiceSec)
+      $(`#editTitulo${indiceSec + 1}`).removeClass("oculto");
+      $(`#editTitulo${indiceSec + 1}`).removeClass("ocultar");
+      $(`#editTitulo${indiceSec + 1}`).addClass("visible");
+      setMostrarContenedorC((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? false : visible)));
+      setEditarTituloVisible((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? true : false)));
     };
 
     const handleCloseEliminar = () => {
@@ -412,17 +435,31 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
-      contenidoActual[indicePreg].save = true
-      contenidoActual[indicePreg].cancelar = cancelar
+      contenidoActual[indicePreg].pregunta = pregunta;
+      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].idTipoPregunta = 1;
+      contenidoActual[indicePreg].orden = 1;
+      contenidoActual[indicePreg].requerida = '';
+      contenidoActual[indicePreg].placeHolder = 'seleccione';
+      contenidoActual[indicePreg].mensajeErrorRequerido = '';
+      contenidoActual[indicePreg].mensajeError = '';
+      contenidoActual[indicePreg].tipoArchivo = '';
+      contenidoActual[indicePreg].pesoArchivo = '';
+      contenidoActual[indicePreg].multipleRespuesta = '';
+      contenidoActual[indicePreg].ponderacion = 'N';
+      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+      contenidoActual[indicePreg].preguntasComplementarias = [{}] ;
+      contenidoActual[indicePreg].save = true;
+      contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
+    
 
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
@@ -628,56 +665,78 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     }, [])
 
 
-
+    
     // capturar imagenes de la seccion
-    const onSelectFile1 = (e) => {
+    const onSelectFile = (index, e) => {
       const file = e.target.files[0];
       if (file) {
-        setSelectedFile1(file);
+        setSelectedFiles(prevFiles => {
+          const newFiles = [...prevFiles];
+          newFiles[index] = file;
+          return newFiles;
+        });
     
         const reader = new FileReader();
     
         reader.onloadend = () => {
-          // Aquí tienes la cadena base64 en reader.result
-          setPreview1(reader.result);
-        };
-    
-        reader.onerror = (error) => {
-          console.error(error);
+          setPreviews(prevPreviews => {
+            const newPreviews = [...prevPreviews];
+            newPreviews[index] = reader.result;
+            return newPreviews;
+          });
+          const nuevoEstado = [...contentCont];
+          nuevoEstado[index] = {
+            ...nuevoEstado[index],
+            imagenCabecera: reader.result,
+          };
+          setContentCont(nuevoEstado);
+
         };
     
         reader.readAsDataURL(file); // Lee el archivo como base64
-      } else {
-        setSelectedFile1(null);
-        setPreview1(null);
       }
     };
-    
-    const onSelectFile2 = (e) => {
+
+    const onSelectFooterFile = (index, e) => {
       const file = e.target.files[0];
       if (file) {
-        setSelectedFile2(file);
+        setFooterFiles(prevFiles => {
+          const newFiles = [...prevFiles];
+          newFiles[index] = file;
+          return newFiles;
+        });
     
         const reader = new FileReader();
     
         reader.onloadend = () => {
-          // La cadena base64 estará en reader.result
-          setPreview2(reader.result);
-        };
-    
-        reader.onerror = (error) => {
-          console.error(error);
+          setFooterPreviews(prevPreviews => {
+            const newPreviews = [...prevPreviews];
+            newPreviews[index] = reader.result;
+            return newPreviews;
+          });
+          const nuevoEstado = [...contentCont];
+          nuevoEstado[index] = {
+            ...nuevoEstado[index], 
+            imagenPie: reader.result,
+          };
+          setContentCont(nuevoEstado);
         };
     
         reader.readAsDataURL(file); // Lee el archivo como base64
-      } else {
-        setSelectedFile2(null);
-        setPreview2(null);
       }
     };
+    
+
+    const verContendidoImagen = () => {
+      console.log(contentCont)
+    }
+    
 
   return (
     <>
+        <button onClick={verContendidoImagen}>
+            imagen
+        </button>
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'>
               <Col>
@@ -689,11 +748,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
               {contentCont.map((seccion, index) => {
                   
                   return (
-                    <Col>
-                      <Col key={index} className='contendor-nuevaEncuesta principal'>
+                    <Col key={index}>
+                      <Col  className='contendor-nuevaEncuesta principal'>
                         <Col 
                           id={`editTitulo${index+1}`}
-                          className={editarTituloVisible ? 'titulo-editar' : 'titulo-editar oculto'}
+                          className={editarTituloVisible ? 'titulo-editar' : 'titulo-editar'}
                         >
                             <Col 
                                 id={`editSec${index +1}`}
@@ -727,33 +786,33 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
                         {seccionVisible[index] && (
                           <div>
-                            {selectedFile1 ? (
+                            {selectedFiles[index] ? (
                               <div className="agregarImagenDefinicionEncuesta2">
-                                <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
-                                  <img src={preview1} alt="preview" 
-                                  className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
-                                  />
+                                <div className="imageContainer">
+                                  <img src={previews[index]} alt="preview" className="imagenLogotipoEncuesta" />
                                 </div>
                                 <div className="subcontenedorLogotipo">
                                   <div className="buttonLogotipoeditar">
-                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById('file-input1').click()} />
-                                    <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById(`file-input${index}`).click()} />
+                                    <input type="file" id={`file-input${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFile(index, e)} />
                                   </div>
                                   <div className="buttonLogotipoeliminar">
-                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setSelectedFile1(null)} />
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setSelectedFiles(prevFiles => {
+                                      const newFiles = [...prevFiles];
+                                      newFiles[index] = null;
+                                      return newFiles;
+                                    })} />
                                   </div>
                                 </div>
-                              </div>  ): (
-                            <Col className='seccion3-nuevaEcuesta'>
-                              <Button 
-                                  className='boton-logotipo'
-                                  onClick={() => document.getElementById('file-input1').click()} 
-                              >
+                              </div>
+                            ) : (
+                              <Col className='seccion3-nuevaEcuesta'>
+                                <Button className='boton-logotipo' onClick={() => document.getElementById(`file-input${index}`).click()}>
                                   <p className='textoLogotipo'>Logotipo</p>
-                                  <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
-                                  <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
-                              </Button>
-                            </Col>
+                                  <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
+                                  <input type="file" id={`file-input${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFile(index, e)} />
+                                </Button>
+                              </Col>
                             )}
 
 
@@ -773,6 +832,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                               
                               if (preg.tipo == 'OM') {
                                 return <OpcionMultiple 
+                                  key={indexp}
                                   indice={indexp} 
                                   indiceSec = {index} 
                                   save={preg.save}
@@ -884,12 +944,35 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                               </Row>
                             </div>
             
-                            <Col className='seccion3-nuevaEcuesta'>
-                                <Button className='boton-Imgpie'>
-                                    <p className='textoLogotipo'>Imagen de pie</p>
-                                    <span dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
+                            {footerFiles[index] ? (
+                              <div className="agregarImagenDefinicionEncuesta2">
+                                <div className="imageContainer">
+                                  <img src={footerPreviews[index]} alt="preview" className="imagenLogotipoEncuesta" />
+                                </div>
+                                <div className="subcontenedorLogotipo">
+                                  <div className="buttonLogotipoeditar">
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById(`file-input${index}`).click()} />
+                                    <input type="file" id={`file-input${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFooterFile(index, e)} />
+                                  </div>
+                                  <div className="buttonLogotipoeliminar">
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setFooterFiles(prevFiles => {
+                                      const newFiles = [...prevFiles];
+                                      newFiles[index] = null;
+                                      return newFiles;
+                                    })} />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <Col className='seccion3-nuevaEcuesta'>
+                                <Button className='boton-logotipo' onClick={() => document.getElementById(`file-inputt${index}`).click()}>
+                                  <p className='textoLogotipo'>Imagen de Pie</p>
+                                  <span dangerouslySetInnerHTML={{ __html: uploadSVG }} />
+                                  <input type="file" id={`file-inputt${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFooterFile(index, e)} />
                                 </Button>
-                            </Col>
+                              </Col>
+                            )}
+                            
                           </div>
                         )}
                         

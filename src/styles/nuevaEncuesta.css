@@ -12,6 +12,11 @@
   max-height: 720px; */
 }
 
+.titulo-editar.oculto {
+  display: none;
+}
+
+
 .encuesta-Tercerocuerpo2-1::-webkit-scrollbar {
   width: 10px;
 }

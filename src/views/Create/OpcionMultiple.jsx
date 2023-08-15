@@ -234,6 +234,30 @@ const OpcionMultiple = ({
     const [configuracion5, setConfiguracion5] = useState(false);
     const [configuracion6, setConfiguracion6] = useState(false);
     const [configuracion7, setConfiguracion7] = useState(false);
+    const [configuraciongeneral, setConfiguraciongeneral] = useState([
+        {
+            esObligatoria: "",
+            mensajeEsObligatoria: "",
+            ningunaAnteriores: "",
+            otraRespuesta: "",
+            etiquetaOtraRespuesta: "",
+            enumTipoTexto: "",
+            enumCantidadCaracteres: "",
+            enumValidacion: "",
+            informacionPregunta: "",
+            etiquetaInformacionPregunta: "",
+            bancoPregunta: "",
+            etiquetaBancoPregunta: ""
+        }
+    ]
+    );
+    const [configuracionAdicional, setConfiguracionAdicional] = useState(
+        {
+            multipleRespuesta : ""
+        }
+    );
+    const [multipleRespuesta, setMultipleRespuesta] = useState("S");
+
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
@@ -338,10 +362,42 @@ const OpcionMultiple = ({
 
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        esObligatoria: !configuracion1 ? "S" : "N",
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
+    const handleEsOBligatoriaMensaje = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        mensajeEsObligatoria: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
     };
 
     const handleSwitchConfigurar2 = () => {
         setConfiguracion2(!configuracion2);
+        
+
     };
 
     const handleSwitchConfigurar3 = () => {
@@ -352,24 +408,197 @@ const OpcionMultiple = ({
             type: configuracion3 ? 'radio' : 'checkbox',
             checked: configuracion3 ? false : opcion.checked,
           }))
+          
         );
+        // setConfiguracionAdicional((prevConfiguracion) => {
+        //     const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+        //         if (configuracionIndex === 0) {
+        //             return {
+        //                 ...configuracion,
+        //                 multipleRespuesta: !configuracion3 ? "S" : "N",
+        //             };
+        //         }
+        //         return configuracion;
+        //     });
+        //     return updatedConfiguracion;
+        // }
+        // );
     };                  
 
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        ningunaAnteriores: !configuracion4 ? "S" : "N",
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
     };
 
     const handleSwitchConfigurar5 = () => {
         setConfiguracion5(!configuracion5);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        otraRespuesta: !configuracion5 ? "S" : "N",
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
     };
+
+    const handleOtraOpcionRespuesta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        etiquetaOtraRespuesta: selectedValue,
+                    };
+                }
+                
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
+    const handleenumTipoTexto = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        enumTipoTexto: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
+    const handleenumCantidadCaracteres = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        enumCantidadCaracteres: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
+    const handleenumValidacion = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        enumValidacion: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
+
 
     const handleSwitchConfigurar6 = () => {
         setConfiguracion6(!configuracion6);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        informacionPregunta: !configuracion6 ? "S" : "N",
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
     };
+    
+    const handleInformacionPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        etiquetaInformacionPregunta: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
 
     const handleSwitchConfigurar7 = () => {
         setConfiguracion7(!configuracion7);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        bancoPregunta: !configuracion7 ? "S" : "N",
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
     };
+     
+    const handleBancoPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+                if (configuracionIndex === 0) {
+                    return {
+                        ...configuracion,
+                        etiquetaBancoPregunta: selectedValue,
+                    };
+                }
+                return configuracion;
+            });
+            return updatedConfiguracion;
+        }
+        );
+    };
+
 
     const handleDragEnd = (result) => {
         if (!result.destination) return; // No se soltó en una ubicación válida
@@ -443,7 +672,7 @@ const OpcionMultiple = ({
     
     const handleGuardarOpcionMultiple = () => {
         setPreguntaTemp(pregunta)
-        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
+        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral);
     };
 
     useEffect(() => {
@@ -564,7 +793,7 @@ const OpcionMultiple = ({
                                                                                 <StyledRadioButton checked={opcion.checked} />
                                                                             </>
                                                                         )}
-                                                                        <span class="checkmark"></span>
+                                                                        <span className="checkmark"></span>
                                                                     </CustomCheckBox>
 
                                                                     <Respuesta
@@ -612,7 +841,7 @@ const OpcionMultiple = ({
                         </Col>
 
                         <Col className='seccion5-opcionMultiple-editar'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchChange} checked={usarPonderacion} />
                                 <span className="slider round"></span>
                             </label>
@@ -624,7 +853,7 @@ const OpcionMultiple = ({
                 {mostrarConfiguracion && (
                     <Container className='opcionMultiple-container-configuracion'>
                         <Col className='seccion1-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar1} checked={configuracion1}/>
                                 <span className="slider round"></span>
                             </label>
@@ -637,12 +866,13 @@ const OpcionMultiple = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..." 
+                                    onChange={handleEsOBligatoriaMensaje}
                                 />
                             </Col>
                         )}
 
                         <Col className='seccion2-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
                                 <span className="slider round"></span>
                             </label>
@@ -660,7 +890,7 @@ const OpcionMultiple = ({
                         )}
 
                         <Col className='seccion3-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar3} checked={configuracion3}/>
                                 <span className="slider round"></span>
                             </label>
@@ -668,7 +898,7 @@ const OpcionMultiple = ({
                         </Col>
                         
                         <Col className='seccion4-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
                                 <span className="slider round"></span>
                             </label>
@@ -685,7 +915,7 @@ const OpcionMultiple = ({
                         )}
 
                         <Col className='seccion5-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
                                 <span className="slider round"></span>
                             </label>
@@ -699,6 +929,7 @@ const OpcionMultiple = ({
                                         className= 'textoConfiguracion1' 
                                         type="text" 
                                         placeholder="Otro (especifique)" 
+                                        onChange={handleOtraOpcionRespuesta}
                                     />
                                 </Col>
                                 <Col className='seccion1-5-2-opcionMultiple-configuracion'>
@@ -707,14 +938,14 @@ const OpcionMultiple = ({
                                             <p className='configurarTamaño'>Tamaño</p>
                                         </Col>
                                         <Col className='contenedorConfigurarTamaño'>
-                                            <select className='selectConfigurarTamaño1'>
+                                            <select className='selectConfigurarTamaño1' onChange={handleenumTipoTexto}>
                                                 <option value="" selected disabled hidden>Una sola linea de texto</option>
                                                 <option value="option1">Opción 1</option>
                                                 <option value="option2">Opción 2</option>
                                                 <option value="option3">Opción 3</option>
                                             </select>
 
-                                            <select className='selectConfigurarTamaño2'>
+                                            <select className='selectConfigurarTamaño2' onChange={handleenumCantidadCaracteres}>
                                                 <option value="" selected disabled hidden>50 caracteres</option>
                                                 <option value="option1">Opción 1</option>
                                                 <option value="option2">Opción 2</option>
@@ -725,7 +956,7 @@ const OpcionMultiple = ({
                                     <Col style={{ width: '41.12%', marginLeft: '2%' }}>
                                         <p className='configurarValidacion'>Validación</p>
 
-                                        <select className='selectConfigurarValidacion'>
+                                        <select className='selectConfigurarValidacion' onChange={handleenumValidacion}>
                                             <option value="" selected disabled hidden>No validar esta respuesta</option>
                                             <option value="option1">Opción 1</option>
                                             <option value="option2">Opción 2</option>
@@ -737,7 +968,7 @@ const OpcionMultiple = ({
                         )}
 
                         <Col className='seccion1-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar6} checked={configuracion6}/>
                                 <span className="slider round"></span>
                             </label>
@@ -751,12 +982,13 @@ const OpcionMultiple = ({
                                     type="text" 
                                     placeholder="Escribe aquí..." 
                                     value={informacionPregunta}
+                                    onChange={handleInformacionPregunta}
                                 />
                             </Col>
                         )}
 
                         <Col className='seccion1-opcionMultiple-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar7} checked={configuracion7}/>
                                 <span className="slider round"></span>
                             </label>
@@ -769,6 +1001,7 @@ const OpcionMultiple = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..."
+                                    onChange={handleBancoPregunta}
                                 />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>
