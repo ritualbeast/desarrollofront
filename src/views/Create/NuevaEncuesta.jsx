@@ -163,7 +163,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         imagenCabecera: '',
         imagenPie : '',
         tipoSeccion: 'C',  
-        textoAgradecimiento: '',
+        textoAgradecimiento: 'ok',
         urlRedireccion: '',
         imagenCierre: '',   
         textoBotonCierre: '',
@@ -497,15 +497,24 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar) => {
+    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar, configuraciongeneral,ponderacion) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta
-      contenidoActual[indicePreg].selectedColor = selectedColor
-      contenidoActual[indicePreg].selectedIcon = selectedIcon
-      contenidoActual[indicePreg].cancelar = cancelar
-      contenidoActual[indicePreg].save = true
+      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].idTipoPregunta = 2;
+      contenidoActual[indicePreg].orden = indiceSec;
+      contenidoActual[indicePreg].requerida = '';
+      contenidoActual[indicePreg].placeHolder = 'seleccione';
+      contenidoActual[indicePreg].mensajeErrorRequerido = '';
+      contenidoActual[indicePreg].mensajeError = '';
+      contenidoActual[indicePreg].tipoArchivo = '';
+      contenidoActual[indicePreg].pesoArchivo = '';
+      contenidoActual[indicePreg].ponderacion = ponderacion;
+      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+      contenidoActual[indicePreg].preguntasComplementarias = [{}] ;
+      contenidoActual[indicePreg].save = true;
+      contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);

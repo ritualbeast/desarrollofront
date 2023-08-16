@@ -162,6 +162,10 @@ const VariacionEstrellas = ({
             seccionValue: '',
             preguntaValue: '',
             icono: starFillSVG,
+            orden: 0,
+            respuesta: '',
+            enumGrafico: 0,
+            colorOpcion: ""
           }
     ]);
     const [opcionText, setOpcionText] = useState("");
@@ -173,6 +177,23 @@ const VariacionEstrellas = ({
     const [configuracion5, setConfiguracion5] = useState(false);
     const [configuracion6, setConfiguracion6] = useState(false);
     const [configuracion7, setConfiguracion7] = useState(false);
+    const [configuraciongeneral, setConfiguraciongeneral] = useState(
+        {
+            esObligatoria: "",
+            mensajeEsObligatoria: "",
+            ningunaAnteriores: "",
+            otraRespuesta: "",
+            etiquetaOtraRespuesta: "",
+            enumTipoTexto: "",
+            enumCantidadCaracteres: "",
+            enumValidacion: "",
+            informacionPregunta: "",
+            etiquetaInformacionPregunta: "",
+            bancoPregunta: "",
+            etiquetaBancoPregunta: ""
+        }
+    );
+    const [ponderacion, setPonderacion] = useState("S");
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
@@ -250,30 +271,149 @@ const VariacionEstrellas = ({
           } else {
             setInputs([]);
           }
+          setPonderacion(!usarPonderacion ? "S" : "N");  
     };
 
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                esObligatoria: !configuracion1 ? "S" : "N",
+            };
+        });
+        
+    };
+
+    const handleEsOBligatoriaMensaje = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                mensajeEsObligatoria: selectedValue,
+            };
+        }
+        );
     };
 
     const handleSwitchConfigurar2 = () => {
         setConfiguracion2(!configuracion2);
-    };           
+        
+
+    };
 
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                ningunaAnteriores: !configuracion4 ? "S" : "N",
+            };
+        }
+        );
+
     };
 
     const handleSwitchConfigurar5 = () => {
         setConfiguracion5(!configuracion5);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                otraRespuesta: !configuracion5 ? "S" : "N",
+            };
+        }
+        );
     };
+
+    const handleOtraOpcionRespuesta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                etiquetaOtraRespuesta: selectedValue,
+            };
+        }
+        );
+    };
+
+    const handleenumTipoTexto = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                enumTipoTexto: selectedValue,
+            };
+        }
+        );
+    };
+
+    const handleenumCantidadCaracteres = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                enumCantidadCaracteres: selectedValue,
+            };
+        }
+        );
+    };
+
+    const handleenumValidacion = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                enumValidacion: selectedValue,
+            };
+        }
+        );
+    };
+
+
 
     const handleSwitchConfigurar6 = () => {
         setConfiguracion6(!configuracion6);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                informacionPregunta: !configuracion6 ? "S" : "N",
+            };
+        }
+        );
     };
+    
+    const handleInformacionPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                etiquetaInformacionPregunta: selectedValue,
+            };
+        }
+        );
+    };
+
 
     const handleSwitchConfigurar7 = () => {
         setConfiguracion7(!configuracion7);
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                bancoPregunta: !configuracion7 ? "S" : "N",
+            };
+        }
+        );
+    };
+     
+    const handleBancoPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                etiquetaBancoPregunta: selectedValue,
+            };
+        }
+        );
     };
 
     const handleDragEnd = (result) => {
@@ -348,7 +488,7 @@ const VariacionEstrellas = ({
 
     const handleGuardarValoracionEstrellas = () => {
         setPreguntaTemp(pregunta)
-        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar);
+        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar,configuraciongeneral,ponderacion);
     };
 
     const handleIconClick = (id) => {
@@ -592,6 +732,7 @@ const VariacionEstrellas = ({
                                 className= 'textoConfiguracion1' 
                                 type="text" 
                                 placeholder="Escribe aquí..." 
+                                onChange={handleEsOBligatoriaMensaje}
                                 />
                             </Col>
                         )}
@@ -646,6 +787,7 @@ const VariacionEstrellas = ({
                                         className= 'textoConfiguracion1' 
                                         type="text" 
                                         placeholder="Otro (especifique)" 
+                                        onChange={handleOtraOpcionRespuesta}
                                     />
                                 </Col>
                                 <Col className='seccion1-5-2-variacionEstrellas-configuracion'>
@@ -654,14 +796,14 @@ const VariacionEstrellas = ({
                                             <p className='configurarTamaño'>Tamaño</p>
                                         </Col>
                                         <Col className='contenedorConfigurarTamaño'>
-                                            <select className='selectConfigurarTamaño1'>
+                                            <select className='selectConfigurarTamaño1' onChange={handleenumTipoTexto}>
                                                 <option value="" selected disabled hidden>Una sola linea de texto</option>
                                                 <option value="option1">Opción 1</option>
                                                 <option value="option2">Opción 2</option>
                                                 <option value="option3">Opción 3</option>
                                             </select>
 
-                                            <select className='selectConfigurarTamaño2'>
+                                            <select className='selectConfigurarTamaño2' onChange={handleenumCantidadCaracteres}>
                                                 <option value="" selected disabled hidden>50 caracteres</option>
                                                 <option value="option1">Opción 1</option>
                                                 <option value="option2">Opción 2</option>
@@ -672,7 +814,7 @@ const VariacionEstrellas = ({
                                     <Col style={{ width: '41.12%', marginLeft: '2%' }}>
                                         <p className='configurarValidacion'>Validación</p>
 
-                                        <select className='selectConfigurarValidacion'>
+                                        <select className='selectConfigurarValidacion' onChange={handleenumValidacion}>
                                             <option value="" selected disabled hidden>No validar esta respuesta</option>
                                             <option value="option1">Opción 1</option>
                                             <option value="option2">Opción 2</option>
@@ -698,6 +840,7 @@ const VariacionEstrellas = ({
                                     type="text" 
                                     placeholder="Escribe aquí..." 
                                     value={informacionPregunta}
+                                    onChange={handleInformacionPregunta}
                                 />
                             </Col>
                         )}
@@ -716,6 +859,7 @@ const VariacionEstrellas = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..."
+                                    onChange={handleBancoPregunta}
                                 />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>

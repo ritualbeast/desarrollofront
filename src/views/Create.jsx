@@ -41,7 +41,7 @@ const Create = () => {
         imagenCabecera: '', 
         imagenPie : '',  
         tipoSeccion: 'C',  
-        textoAgradecimiento: '',
+        textoAgradecimiento: 'ok',
         urlRedireccion: '#',
         imagenCierre: '#',   
         textoBotonCierre: '#',

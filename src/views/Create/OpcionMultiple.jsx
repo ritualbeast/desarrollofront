@@ -222,6 +222,8 @@ const OpcionMultiple = ({
             type: 'radio',
             seccionValue: '',
             preguntaValue: '',
+            orden: 0,
+            respuesta: '',
         }
     ]);
     const [opcionText, setOpcionText] = useState("");
@@ -234,7 +236,7 @@ const OpcionMultiple = ({
     const [configuracion5, setConfiguracion5] = useState(false);
     const [configuracion6, setConfiguracion6] = useState(false);
     const [configuracion7, setConfiguracion7] = useState(false);
-    const [configuraciongeneral, setConfiguraciongeneral] = useState([
+    const [configuraciongeneral, setConfiguraciongeneral] = useState(
         {
             esObligatoria: "",
             mensajeEsObligatoria: "",
@@ -249,7 +251,7 @@ const OpcionMultiple = ({
             bancoPregunta: "",
             etiquetaBancoPregunta: ""
         }
-    ]
+    
     );
     
     const [multipleRespuesta, setMultipleRespuesta] = useState("S");
@@ -297,6 +299,8 @@ const OpcionMultiple = ({
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
             preguntaValue: '', // Valor inicial de la pregunta
+            orden: 0,
+            respuesta: '',
         };
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
@@ -360,33 +364,21 @@ const OpcionMultiple = ({
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        esObligatoria: !configuracion1 ? "S" : "N",
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
-        }
-        );
+            return {
+                ...prevConfiguracion,
+                esObligatoria: !configuracion1 ? "S" : "N",
+            };
+        });
+        
     };
 
     const handleEsOBligatoriaMensaje = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        mensajeEsObligatoria: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                mensajeEsObligatoria: selectedValue,
+            };
         }
         );
     };
@@ -426,33 +418,22 @@ const OpcionMultiple = ({
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        ningunaAnteriores: !configuracion4 ? "S" : "N",
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                ningunaAnteriores: !configuracion4 ? "S" : "N",
+            };
         }
         );
+
     };
 
     const handleSwitchConfigurar5 = () => {
         setConfiguracion5(!configuracion5);
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        otraRespuesta: !configuracion5 ? "S" : "N",
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                otraRespuesta: !configuracion5 ? "S" : "N",
+            };
         }
         );
     };
@@ -460,17 +441,10 @@ const OpcionMultiple = ({
     const handleOtraOpcionRespuesta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        etiquetaOtraRespuesta: selectedValue,
-                    };
-                }
-                
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                etiquetaOtraRespuesta: selectedValue,
+            };
         }
         );
     };
@@ -478,16 +452,10 @@ const OpcionMultiple = ({
     const handleenumTipoTexto = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        enumTipoTexto: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                enumTipoTexto: selectedValue,
+            };
         }
         );
     };
@@ -495,16 +463,10 @@ const OpcionMultiple = ({
     const handleenumCantidadCaracteres = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        enumCantidadCaracteres: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                enumCantidadCaracteres: selectedValue,
+            };
         }
         );
     };
@@ -512,16 +474,10 @@ const OpcionMultiple = ({
     const handleenumValidacion = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        enumValidacion: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                enumValidacion: selectedValue,
+            };
         }
         );
     };
@@ -531,16 +487,10 @@ const OpcionMultiple = ({
     const handleSwitchConfigurar6 = () => {
         setConfiguracion6(!configuracion6);
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        informacionPregunta: !configuracion6 ? "S" : "N",
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                informacionPregunta: !configuracion6 ? "S" : "N",
+            };
         }
         );
     };
@@ -548,16 +498,10 @@ const OpcionMultiple = ({
     const handleInformacionPregunta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        etiquetaInformacionPregunta: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                etiquetaInformacionPregunta: selectedValue,
+            };
         }
         );
     };
@@ -566,16 +510,10 @@ const OpcionMultiple = ({
     const handleSwitchConfigurar7 = () => {
         setConfiguracion7(!configuracion7);
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        bancoPregunta: !configuracion7 ? "S" : "N",
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                bancoPregunta: !configuracion7 ? "S" : "N",
+            };
         }
         );
     };
@@ -583,16 +521,10 @@ const OpcionMultiple = ({
     const handleBancoPregunta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
-            const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
-                if (configuracionIndex === 0) {
-                    return {
-                        ...configuracion,
-                        etiquetaBancoPregunta: selectedValue,
-                    };
-                }
-                return configuracion;
-            });
-            return updatedConfiguracion;
+            return {
+                ...prevConfiguracion,
+                etiquetaBancoPregunta: selectedValue,
+            };
         }
         );
     };
@@ -651,6 +583,8 @@ const OpcionMultiple = ({
                 return {
                     ...opcion,
                     preguntaValue: selectedValue,
+                    respuesta: selectedValue,
+                    orden: index + 1,
                 };
                 }
                 return opcion;

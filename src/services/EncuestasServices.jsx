@@ -119,6 +119,7 @@ const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosCo
 
     // Aquí puedes manejar la respuesta de la API
     const data = await response.json();
+    return data;
     
   } catch (error) {
     // Manejar errores de la solicitud

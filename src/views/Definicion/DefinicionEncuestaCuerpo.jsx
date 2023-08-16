@@ -50,6 +50,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
+  const [preview64, setPreview64] = useState(null);
+  const [preview64_2, setPreview64_2] = useState(null);
   // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState({nombre: '', descripcion: '', leyenda: ''});
@@ -166,8 +168,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     const datosEncuesta = {
 
       
-      imagenCabecera: preview1,
-      imagenPie: preview2,
+      imagenCabecera: preview64,
+      imagenPie: preview64_2,
       nombre: inputNombreRef.current.value,
       descripcion: inputDescripcionRef.current.value,
       leyenda: inputLeyendaRef.current.value
@@ -202,8 +204,11 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
       const reader = new FileReader();
   
       reader.onloadend = () => {
-        // Aquí tienes la cadena base64 en reader.result
+        let base64String = reader.result;
+        base64String = base64String.replace("data:image/png;base64,", "");
+        // Utiliza la cadena modificada
         setPreview1(reader.result);
+        setPreview64(base64String);
       };
   
       reader.onerror = (error) => {
@@ -225,8 +230,11 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
       const reader = new FileReader();
   
       reader.onloadend = () => {
-        // La cadena base64 estará en reader.result
+        let base64String = reader.result;
+        base64String = base64String.replace("data:image/png;base64,", "");
+        // Utiliza la cadena modificada
         setPreview2(reader.result);
+        setPreview64_2(base64String);
       };
   
       reader.onerror = (error) => {

@@ -56,7 +56,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
             categoria: selectedCategoriaEncuesta.value,
             vigencia: selectedVigencia.value,
             enum_tipo_encuesta: 1,
-            enum_tipoVigencia: 1,
+            enum_tipoVigencia: 4,
             fechaInicio : fechaInicioSeleccionada,
             fechaFin : fechaFinSeleccionada,
 
