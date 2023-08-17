@@ -199,54 +199,70 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const onSelectFile1 = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile1(file);
-  
-      const reader = new FileReader();
-  
-      reader.onloadend = () => {
-        let base64String = reader.result;
-        base64String = base64String.replace("data:image/png;base64,", "");
-        // Utiliza la cadena modificada
-        setPreview1(reader.result);
-        setPreview64(base64String);
-      };
-  
-      reader.onerror = (error) => {
-        console.error(error);
-      };
-  
-      reader.readAsDataURL(file); // Lee el archivo como base64
+        // Comprobar si el archivo es una imagen
+        if (file.type.startsWith('image/')) {
+            setSelectedFile1(file);
+
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                let base64String = reader.result;
+                base64String = base64String.replace("data:image/png;base64,", "");
+                // Utiliza la cadena modificada
+                setPreview1(reader.result);
+                setPreview64(base64String);
+            };
+
+            reader.onerror = (error) => {
+                console.error(error);
+            };
+
+            reader.readAsDataURL(file); // Lee el archivo como base64
+        } else {
+            alert('Por favor, selecciona un archivo de imagen válido.');
+            setSelectedFile1(null);
+            setPreview1(null);
+        }
     } else {
-      setSelectedFile1(null);
-      setPreview1(null);
+        setSelectedFile1(null);
+        setPreview1(null);
     }
   };
+
   
   const onSelectFile2 = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile2(file);
-  
-      const reader = new FileReader();
-  
-      reader.onloadend = () => {
-        let base64String = reader.result;
-        base64String = base64String.replace("data:image/png;base64,", "");
-        // Utiliza la cadena modificada
-        setPreview2(reader.result);
-        setPreview64_2(base64String);
-      };
-  
-      reader.onerror = (error) => {
-        console.error(error);
-      };
-  
-      reader.readAsDataURL(file); // Lee el archivo como base64
+        // Comprobar si el archivo es una imagen
+        if (file.type.startsWith('image/')) {
+            setSelectedFile2(file);
+
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                let base64String = reader.result;
+                base64String = base64String.replace("data:image/png;base64,", "");
+                // Utiliza la cadena modificada
+                setPreview2(reader.result);
+                setPreview64_2(base64String);
+            };
+
+            reader.onerror = (error) => {
+                console.error(error);
+            };
+
+            reader.readAsDataURL(file); // Lee el archivo como base64
+        } else {
+            alert('Por favor, selecciona un archivo de imagen válido.');
+            setSelectedFile2(null);
+            setPreview2(null);
+        }
     } else {
-      setSelectedFile2(null);
-      setPreview2(null);
+        setSelectedFile2(null);
+        setPreview2(null);
     }
   };
+
   
 
   const handleEnviarNombre = (e) => {

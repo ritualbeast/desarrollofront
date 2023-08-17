@@ -17,13 +17,6 @@ const squareFillSVG = svgManager.getSVG('square-fill');
 const circleFillSVG = svgManager.getSVG('circle-fill');
 const triangleFillSVG = svgManager.getSVG('triangle-fill');
 
-const opciones = [
-    { id: 1, icono: 'star' },
-    { id: 2, icono: 'square' },
-    { id: 3, icono: 'circle' },
-    { id: 4, icono: 'triangle' },
-  ];
-
   const Pregunta = styled(FormControl)`
     width: 94.2% !important;
     border: 1px solid #ccc !important;
@@ -168,7 +161,6 @@ const VariacionEstrellas = ({
             colorOpcion: ""
           }
     ]);
-    const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
@@ -179,21 +171,21 @@ const VariacionEstrellas = ({
     const [configuracion7, setConfiguracion7] = useState(false);
     const [configuraciongeneral, setConfiguraciongeneral] = useState(
         {
-            esObligatoria: "",
+            esObligatoria: "N",
             mensajeEsObligatoria: "",
-            ningunaAnteriores: "",
-            otraRespuesta: "",
+            ningunaAnteriores: "N",
+            otraRespuesta: "N",
             etiquetaOtraRespuesta: "",
             enumTipoTexto: "",
             enumCantidadCaracteres: "",
             enumValidacion: "",
-            informacionPregunta: "",
-            etiquetaInformacionPregunta: "",
-            bancoPregunta: "",
+            informacionPregunta: "N",
+            etiquetaInformacionPregunta: "'Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología'",
+            bancoPregunta: "N",
             etiquetaBancoPregunta: ""
         }
     );
-    const [ponderacion, setPonderacion] = useState("S");
+    const [ponderacion, setPonderacion] = useState("N");
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
@@ -241,18 +233,26 @@ const VariacionEstrellas = ({
             seccionValue: '',
             preguntaValue: '',
             icono: starFillSVG,
+            orden: 0,
+            respuesta: '',
+            enumGrafico: 0,
+            colorOpcion: ""
         };
 
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
-        setOpcionText("");
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
     const handleOpcionTextChange = (id, newText) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) =>
-            opcion.id === id ? { ...opcion, text: newText } : opcion
+            opcion.id === id ? { 
+                ...opcion, 
+                text: newText,
+                respuesta: newText,
+                orden: id,
+            } : opcion
           )
         );
     };
@@ -503,6 +503,20 @@ const VariacionEstrellas = ({
           ...prevState,
           [id]: color.hex,
         }));
+
+        // set enumColor
+        setOpcionesRespuesta((prevOpciones) => {
+            const updatedOpciones = prevOpciones.map((opcion) => {
+                if (opcion.id === id) {
+                return {
+                    ...opcion,
+                    colorOpcion: color.hex,
+                };
+                }
+                return opcion;
+            });
+            return updatedOpciones;
+        });
     };
       
     const handleCloseColorPicker = (id) => {
@@ -518,6 +532,19 @@ const VariacionEstrellas = ({
           ...prevSelectedIcon,
           [opcionId]: value,
         }));
+        // setenumGrafico(value);
+        setOpcionesRespuesta((prevOpciones) => {
+            const updatedOpciones = prevOpciones.map((opcion) => {
+                if (opcion.id === opcionId) {
+                return {
+                    ...opcion,
+                    enumGrafico: value,
+                };
+                }
+                return opcion;
+            });
+            return updatedOpciones;
+        });
     };
 
     useEffect(() => {
@@ -619,7 +646,7 @@ const VariacionEstrellas = ({
                                                                         className="textoOpcionRespuesta"
                                                                         type="text"
                                                                         value={opcion.text}
-                                                                        placeholder="Ingrese una estiqueta de valoración"
+                                                                        placeholder="Ingrese una etiqueta de valoración"
                                                                         onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
                                                                     />
 
@@ -629,10 +656,10 @@ const VariacionEstrellas = ({
                                                                         value={selectedIcon[opcion.id]}
                                                                         onChange={(e) => handleIconChange(e, opcion.id)}
                                                                     >
-                                                                        <option value="star">Estrella</option>
-                                                                        <option value="square">Cuadrado</option>
-                                                                        <option value="circle">Círculo</option>
-                                                                        <option value="triangle">Triángulo</option>
+                                                                        <option value="12">Estrella</option>
+                                                                        <option value="13">Cuadrado</option>
+                                                                        <option value="14">Círculo</option>
+                                                                        <option value="14">Triángulo</option>
                                                                     </select>
 
                                                                     <p style={{marginLeft: '2%'}}>Color</p>
@@ -797,17 +824,16 @@ const VariacionEstrellas = ({
                                         </Col>
                                         <Col className='contenedorConfigurarTamaño'>
                                             <select className='selectConfigurarTamaño1' onChange={handleenumTipoTexto}>
-                                                <option value="" selected disabled hidden>Una sola linea de texto</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
+                                                <option value="" selected disabled hidden>Seleccione</option>
+                                                <option value="6">Una sola linea</option>
+                                                <option value="7">Multiple lineas</option>
                                             </select>
 
                                             <select className='selectConfigurarTamaño2' onChange={handleenumCantidadCaracteres}>
-                                                <option value="" selected disabled hidden>50 caracteres</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
+                                                <option value="" selected disabled hidden>Seleccione</option>
+                                                <option value="8">10 caracteres</option>
+                                                <option value="9">20 caracteres</option>
+                                                <option value="10">30 caracteres</option>
                                             </select>
                                         </Col>
                                     </Col>
@@ -815,10 +841,8 @@ const VariacionEstrellas = ({
                                         <p className='configurarValidacion'>Validación</p>
 
                                         <select className='selectConfigurarValidacion' onChange={handleenumValidacion}>
-                                            <option value="" selected disabled hidden>No validar esta respuesta</option>
-                                            <option value="option1">Opción 1</option>
-                                            <option value="option2">Opción 2</option>
-                                            <option value="option3">Opción 3</option>
+                                            <option value="" selected disabled hidden>Seleccione</option>
+                                            <option value="11">No validar esta respuesta</option>
                                         </select>
                                     </Col>
                                 </Col>
@@ -839,7 +863,7 @@ const VariacionEstrellas = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..." 
-                                    value={informacionPregunta}
+                                    value={configuraciongeneral.etiquetaInformacionPregunta}
                                     onChange={handleInformacionPregunta}
                                 />
                             </Col>

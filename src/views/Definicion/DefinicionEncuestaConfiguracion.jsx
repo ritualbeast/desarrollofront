@@ -150,15 +150,28 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     };
     
     // seleccion de fecha inicio
-    
+    const fechaActual = new Date();
     const handleChangeFechaInicio = (event) => {
-        setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
+        const fechaInicio = new Date(event.target.value);
+        const fechaActual = new Date();
+        fechaActual.setHours(0, 0, 0, 0);
+
+        if (fechaInicio >= fechaActual) {
+            setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
+        } else {
+            alert("La fecha de inicio no puede ser menor a la fecha actual");
+        }
     };
 
-    // seleccion de fecha fin
-    
     const handleChangeFechaFin = (event) => {
-        setFechaFinSeleccionada(event.target.value + ' 23:59:59');
+        const fechaFin = new Date(event.target.value);
+        const fechaInicio = new Date(fechaInicioSeleccionada);
+
+        if (fechaFin >= fechaInicio) {
+            setFechaFinSeleccionada(event.target.value + ' 23:59:59');
+        } else {
+            alert("La fecha de fin no puede ser menor a la fecha de inicio");
+        }
     };
     
   return (
@@ -234,7 +247,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaInicio" onChange={handleChangeFechaInicio}/>
+                                <input type="date" className="inputFechaInicio" onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
@@ -242,7 +255,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaFin" onChange={handleChangeFechaFin}/>
+                                <input type="date" className="inputFechaFin" onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
                             </div>
                         </div>
                     </div>

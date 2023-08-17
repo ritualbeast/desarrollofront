@@ -107,38 +107,44 @@ const ResultadoOpcionMultiple = ({
   const tituloGrosor = sendGrosorPaso2?.titulo;
   const tipografia = sendTipografiaPaso2?.tipografia;
   const tituloTipografia = sendTipografiaPaso2?.titulo;
+  const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
+  const [preguntasStyle, setPreguntasStyle] = useState({});
 
-  const preguntasRef = useRef(null);
-  const opcionesRespuestaRef = useRef(null);
+  
+
+
+
+  
   useEffect(() => {
     // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
-    const inputoreguntasRef = preguntasRef.current;
-    const inputopcionesRespuestaRef = opcionesRespuestaRef.current;
-
-    if (titulotamano === 'Preguntas') {
-      inputoreguntasRef.style.fontSize = `${tamano}px`;
-    }
-    if (tituloGrosor === 'Preguntas') {
-      inputoreguntasRef.style.fontWeight = grosor;
-    }
-    if (tituloTipografia === 'Preguntas') {
-      inputoreguntasRef.style.fontFamily = tipografia;
-    }
+    let newStyle = {};
     if (titulotamano === 'Opciones de respuesta') {
-      inputopcionesRespuestaRef.style.fontSize = `${tamano}px`;
+      newStyle.fontSize = `${tamano}px`;
     }
     if (tituloGrosor === 'Opciones de respuesta') {
-      inputopcionesRespuestaRef.style.fontWeight = grosor;
+      newStyle.fontWeight = grosor;
     }
     if (tituloTipografia === 'Opciones de respuesta') {
-      inputopcionesRespuestaRef.style.fontFamily = tipografia;
+      newStyle.fontFamily = tipografia;
     }
+
+    setOpcionesRespuestaStyle(newStyle);
     
+    let newStyle2 = {};
+    if (titulotamano === 'Preguntas') {
+      newStyle2.fontSize = `${tamano}px`;
+    }
+    if (tituloGrosor === 'Preguntas') {
+      newStyle2.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Preguntas') {
+      newStyle2.fontFamily = tipografia;
+    }
+
+    setPreguntasStyle(newStyle2);
 
 
-
-  }, [tamano, grosor, tipografia]);
-
+  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);
 
   const handleMouseEnterEditar = (index) => {
     $(`#editPreg${index +1}`).removeClass("oculto");
@@ -226,7 +232,7 @@ const ResultadoOpcionMultiple = ({
                 onMouseLeave={() => handleMouseLeaveEditar(index)}
             >
                 <Col style={{width:'95%', display:'flex'}}>
-                    <p ref={preguntasRef}
+                    <p style={{...preguntasStyle, width:'95%'}}
                     >{index + 1}. {pregunta}</p>
                     {configuracion6Activa && (
                         <OverlayTrigger
@@ -290,8 +296,7 @@ const ResultadoOpcionMultiple = ({
                   <StyledRadioButton checked={opcion.checked} />
                 </div>
               )}
-              <div ref = {opcionesRespuestaRef}
-              style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
+              <div style={{...opcionesRespuestaStyle, width:'95%', marginBottom: '0.4%', marginLeft: '2%'}}>
                 {opcion.text}
               </div>
             </Col>

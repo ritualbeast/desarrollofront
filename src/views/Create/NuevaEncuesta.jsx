@@ -77,45 +77,32 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [previews, setPreviews] = useState([]);
     const [footerFiles, setFooterFiles] = useState([]);
     const [footerPreviews, setFooterPreviews] = useState([]);
-
-   
-
-    
-    
-    const tituloRef = useRef(null);
-    const descripcionRef = useRef(null);
-   
-    
-
+    const [tituloStyle, setTituloStyle] = useState({});
+    const [descripcionStyle, setDescripcionStyle] = useState({});
   useEffect(() => {
-    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
-    const inputtitulo = tituloRef.current;
-    const inputdescripcion = descripcionRef.current;
-
+    let newStyle = {};
     if (titulotamano === 'Título de sección') {
-      inputtitulo.style.fontSize = `${tamano}px`;
+      newStyle.fontSize = `${tamano}px`;
     }
     if (tituloGrosor === 'Título de sección') {
-      inputtitulo.style.fontWeight = grosor;
+      newStyle.fontWeight = grosor;
     }
     if (tituloTipografia === 'Título de sección') {
-      inputtitulo.style.fontFamily = tipografia;
+      newStyle.fontFamily = tipografia;
     }
+
+    setTituloStyle(newStyle);
+    let newStyle2 = {};
     if (titulotamano === 'Descripción de sección') {
-      inputdescripcion.style.fontSize = `${tamano}px`;
+      newStyle2.fontSize = `${tamano}px`;
     }
     if (tituloGrosor === 'Descripción de sección') {
-      inputdescripcion.style.fontWeight = grosor;
+      newStyle2.fontWeight = grosor;
     }
     if (tituloTipografia === 'Descripción de sección') {
-      inputdescripcion.style.fontFamily = tipografia;
+      newStyle2.fontFamily = tipografia;
     }
-
-
-
-
-
-
+    setDescripcionStyle(newStyle2);
 
   }, [tamano, grosor, tipografia]);
 
@@ -452,7 +439,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].ponderacion = ponderacion;
       contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].preguntasComplementarias = [{}] ;
+      contenidoActual[indicePreg].preguntasComplementarias = [] ;
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
@@ -500,6 +487,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar, configuraciongeneral,ponderacion) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+      contenidoActual[indicePreg].pregunta = pregunta;
       contenidoActual[indicePreg].nemonico = '1S_1P';
       contenidoActual[indicePreg].idTipoPregunta = 2;
       contenidoActual[indicePreg].orden = indiceSec;
@@ -512,10 +500,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       contenidoActual[indicePreg].ponderacion = ponderacion;
       contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].preguntasComplementarias = [{}] ;
+      contenidoActual[indicePreg].preguntasComplementarias = [] ;
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
+      nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -553,13 +542,26 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       });
     };
 
-    const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar) => {
+    const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar,configuraciongeneral, selectedFormats, mensajeError, pesoArchivo) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].pregunta2 = pregunta2
-      contenidoActual[indicePreg].cancelar = cancelar
-      contenidoActual[indicePreg].save = true
+      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].idTipoPregunta = 4;
+      contenidoActual[indicePreg].orden = indiceSec;
+      contenidoActual[indicePreg].requerida = '';
+      contenidoActual[indicePreg].placeHolder = 'seleccione';
+      contenidoActual[indicePreg].mensajeErrorRequerido = '';
+      contenidoActual[indicePreg].mensajeError = mensajeError;
+      contenidoActual[indicePreg].tipoArchivo = selectedFormats;
+      contenidoActual[indicePreg].pesoArchivo = pesoArchivo;
+      contenidoActual[indicePreg].ponderacion = '';
+      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+      contenidoActual[indicePreg].opcionesRespuesta = [];
+      contenidoActual[indicePreg].save = true;
+      contenidoActual[indicePreg].cancelar = cancelar;
+      nuevoEstado[indiceSec].preguntas = contenidoActual;
+      nuevoEstado[indiceSec].tipoSeccion = 'P';
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
@@ -620,7 +622,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(tempCont);
     }
 
-
     const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
@@ -673,8 +674,6 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         listarTipoPregunta();
     }, [])
 
-
-    
     // capturar imagenes de la seccion
     const onSelectFile = (index, e) => {
       const file = e.target.files[0];
@@ -734,18 +733,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         reader.readAsDataURL(file); // Lee el archivo como base64
       }
     };
-    
-
-    const verContendidoImagen = () => {
-      console.log(contentCont)
-    }
-    
 
   return (
     <>
-        <button onClick={verContendidoImagen}>
-            imagen
-        </button>
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'>
               <Col>
@@ -779,10 +769,10 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 onMouseLeave={() => handleMouseLeaveEditar(index)}
                             >
                                 <div style={{width:'96%'}}>
-                                  <p className='titulo-nuevaEncuesta' ref={tituloRef}
+                                  <p className='titulo-nuevaEncuesta' style={tituloStyle}
                                   > {seccion.titulo + (index +1) }</p>
-                                  <p ref={descripcionRef}
-                                    style={{marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                  <p 
+                                    style={{ descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
                                 </div>
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 

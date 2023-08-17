@@ -22,7 +22,6 @@ const circle2SVG = svgManager.getSVG('circle2');
 const Create = () => {
     const [activeIcon, setActiveIcon] = useState('Configuracion');
     const [activeTab, setActiveTab] = useState(true);
-    const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -34,6 +33,17 @@ const Create = () => {
     const [grosor, setGrosor] = useState({grosor: '', titulo: ''});
     const [tipografia, setTipografia] = useState({tipografia: '', titulo: ''});
     const [openVistaPrevia, setVistaPrevia] = useState(false);
+    const [Ispreview, setIspreview] = useState('');
+    const [Ispreview2, setIspreview2] = useState('');
+    const [posicionLogotipo, setPosicionLogotipo] = useState('');
+    const [tamanoLogotipo, setTamanoLogotipo] = useState('');
+    const [posicionLogotipoPiePagina, setPosicionLogotipoPiePagina] = useState('');
+    const [tamanoLogotipoPiePagina, setTamanoLogotipoPiePagina] = useState('');
+    const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
+    const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
+    const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
+    const DefinicionEncuestaCuerpoRef = useRef(null);
+    const ConfiguracionEncuestaRef = useRef(null);
     const [contentCont, setContentCont] = useState([{ 
         titulo: 'Seccion ',
         descripcion: '#', 
@@ -104,20 +114,6 @@ const Create = () => {
           imagenFondo: ""
         }
       });
-      
-    const [Ispreview, setIspreview] = useState('');
-    const [Ispreview2, setIspreview2] = useState('');
-    const [posicionLogotipo, setPosicionLogotipo] = useState('');
-    const [tamanoLogotipo, setTamanoLogotipo] = useState('');
-    const [posicionLogotipoPiePagina, setPosicionLogotipoPiePagina] = useState('');
-    const [tamanoLogotipoPiePagina, setTamanoLogotipoPiePagina] = useState('');
-    const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
-    const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
-    const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
-
-    const DefinicionEncuestaCuerpoRef = useRef(null);
-    const ConfiguracionEncuestaRef = useRef(null);
-    
     
 
 
@@ -135,8 +131,6 @@ const Create = () => {
     };
       
     useEffect(() => {
-        // verificarLocalStorage();
-        setShowBancoPreguntas(true);
         
     }, [Ispreview, Ispreview2]);
 

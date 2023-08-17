@@ -226,7 +226,6 @@ const OpcionMultiple = ({
             respuesta: '',
         }
     ]);
-    const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
@@ -304,7 +303,6 @@ const OpcionMultiple = ({
         };
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
-        setOpcionText("");
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
@@ -339,7 +337,13 @@ const OpcionMultiple = ({
     const handleOpcionTextChange = (id, newText) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) =>
-            opcion.id === id ? { ...opcion, text: newText } : opcion
+            opcion.id === id ? { 
+                ...opcion,
+                text: newText,
+                respuesta: newText,
+                orden: id,
+
+            } : opcion
           )
         );
     };
@@ -609,6 +613,7 @@ const OpcionMultiple = ({
 
     useEffect(() => {
         setMoreContendorLogica([true]);
+        
     }, []);
 
     const listarTipoPregunta = async () => {
@@ -871,17 +876,16 @@ const OpcionMultiple = ({
                                         </Col>
                                         <Col className='contenedorConfigurarTamaño'>
                                             <select className='selectConfigurarTamaño1' onChange={handleenumTipoTexto}>
-                                                <option value="" selected disabled hidden>Una sola linea de texto</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
+                                                <option value="" selected disabled hidden>Seleccione</option>
+                                                <option value="6">Una sola linea</option>
+                                                <option value="7">Multiple lineas</option>
                                             </select>
 
                                             <select className='selectConfigurarTamaño2' onChange={handleenumCantidadCaracteres}>
-                                                <option value="" selected disabled hidden>50 caracteres</option>
-                                                <option value="option1">Opción 1</option>
-                                                <option value="option2">Opción 2</option>
-                                                <option value="option3">Opción 3</option>
+                                                <option value="" selected disabled hidden>Seleccione</option>
+                                                <option value="8">10 caracteres</option>
+                                                <option value="9">20 caracteres</option>
+                                                <option value="10">30 caracteres</option>
                                             </select>
                                         </Col>
                                     </Col>
@@ -889,10 +893,8 @@ const OpcionMultiple = ({
                                         <p className='configurarValidacion'>Validación</p>
 
                                         <select className='selectConfigurarValidacion' onChange={handleenumValidacion}>
-                                            <option value="" selected disabled hidden>No validar esta respuesta</option>
-                                            <option value="option1">Opción 1</option>
-                                            <option value="option2">Opción 2</option>
-                                            <option value="option3">Opción 3</option>
+                                            <option value="" selected disabled hidden>Seleccione</option>
+                                            <option value="11">No validar esta respuesta</option>
                                         </select>
                                     </Col>
                                 </Col>
