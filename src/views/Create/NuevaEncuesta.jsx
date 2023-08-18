@@ -603,13 +603,26 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, cancelar) => {
+    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, cancelar,configuraciongeneral,opcionesRespuesta) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].save = true
-      contenidoActual[indicePreg].cancelar = cancelar
+      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].idTipoPregunta = 5;
+      contenidoActual[indicePreg].orden = indiceSec;
+      contenidoActual[indicePreg].requerida = '';
+      contenidoActual[indicePreg].placeHolder = 'seleccione';
+      contenidoActual[indicePreg].mensajeErrorRequerido = '';
+      contenidoActual[indicePreg].mensajeError = '';
+      contenidoActual[indicePreg].tipoArchivo = '';
+      contenidoActual[indicePreg].pesoArchivo = '';
+      contenidoActual[indicePreg].ponderacion = '';
+      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+      contenidoActual[indicePreg].save = true;
+      contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
+      nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };

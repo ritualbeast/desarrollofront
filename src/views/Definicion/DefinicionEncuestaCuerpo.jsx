@@ -44,7 +44,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   sendEstado3, sendPosicion3, 
   sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, 
   sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
-  sendDatosDefinicionEncuesta
+  sendDatosDefinicionEncuesta, contentInit
 }, ref) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
@@ -54,95 +54,72 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [preview64_2, setPreview64_2] = useState(null);
   // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
-  const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState({nombre: '', descripcion: '', leyenda: ''});
+  const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(contentInit);
   const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
   const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
   const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
   const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState(sendTamanoLogotipoPiePagina);
-  // capturar tamaño de letra para enviar a create
-  const [tamanoNombreDefinicion, setTamanoNombreDefinicion] = useState(0);
-  const [tamanoDescripcionDefinicion, setTamanoDescripcionDefinicion] = useState(0);
-  const [tamanoLeyendaDefinicion, setTamanoLeyendaDefinicion] = useState(0);
-  const [tamanoBotonDefinicion, setTamanoBotonDefinicion] = useState(0);
-  // capturar grosor de letra para enviarl a create
-  const [grosorNombreDefinicion, setGrosorNombreDefinicion] = useState('');
-  const [grosorDescripcionDefinicion, setGrosorDescripcionDefinicion] = useState('');
-  const [grosorLeyendaDefinicion, setGrosorLeyendaDefinicion] = useState('');
-  const [grosorBotonDefinicion, setGrosorBotonDefinicion] = useState('');
-  // capturar tipografia de letra para enviar a create
-  const [tipografiaNombreDefinicion, setTipografiaNombreDefinicion] = useState('');
-  const [tipografiaDescripcionDefinicion, setTipografiaDescripcionDefinicion] = useState('');
-  const [tipografiaLeyendaDefinicion, setTipografiaLeyendaDefinicion] = useState('');
-  const [tipografiaBotonDefinicion, setTipografiaBotonDefinicion] = useState('');
-
   const tamano = sendTamano3?.tamano ;
   const titulotamano = sendTamano3?.titulo;
   const grosor = sendGrosor3?.grosor;
   const tituloGrosor = sendGrosor3?.titulo;
   const tipografia = sendTipografia3?.tipografia;
   const tituloTipografia = sendTipografia3?.titulo;
-  const inputNombreRef = useRef(null);
-  const inputDescripcionRef = useRef(null);
-  const inputLeyendaRef = useRef(null);
-  const inputBotonRef = useRef(null);
+  const [tituloStyle, setTituloStyle] = useState({});
+  const [descripcionStyle, setDescripcionStyle] = useState({});
+  const [leyendaStyle, setLeyendaStyle] = useState({});
+  const [botonStyle, setBotonStyle] = useState({});
 
+  // capturar el valor de todos los datos
+sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
 
   useEffect(() => {
     // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
-    const inputNombreElement = inputNombreRef.current;
-    const inputDescripcionElement = inputDescripcionRef.current;
-    const inputLeyendaElement = inputLeyendaRef.current;
-    const inputBotonElement = inputBotonRef.current;
 
-      if (titulotamano === 'Nombre de encuesta') {
-        inputNombreElement.style.fontSize = `${tamano}px`;
-        setTamanoNombreDefinicion(tamano);
-      }   
-      if ( tituloGrosor === 'Nombre de encuesta' ) {
-        inputNombreElement.style.fontWeight = grosor;
-        setGrosorNombreDefinicion(grosor);
-      }   
-      if ( tituloTipografia === 'Nombre de encuesta') {
-        inputNombreElement.style.fontFamily = tipografia;
-        setTipografiaNombreDefinicion(tipografia);
-      } 
-       if (titulotamano === 'Descripción de encuesta') {
-        inputDescripcionElement.style.fontSize = `${tamano}px`;
-        setTamanoDescripcionDefinicion(tamano);
-      } 
-       if ( tituloGrosor === 'Descripción de encuesta' ) {
-        inputDescripcionElement.style.fontWeight = grosor;
-        setGrosorDescripcionDefinicion(grosor);
-      }  
-      if (tituloTipografia === 'Descripción de encuesta') {
-        inputDescripcionElement.style.fontFamily = tipografia;
-        setTipografiaDescripcionDefinicion(tipografia);
-      }
-      if (titulotamano === 'Leyenda') {
-        inputLeyendaElement.style.fontSize = `${tamano}px`;
-        setTamanoLeyendaDefinicion(tamano);
-      }
-      if ( tituloGrosor === 'Leyenda' ) {
-        inputLeyendaElement.style.fontWeight = grosor;
-        setGrosorLeyendaDefinicion(grosor);
-      }
-      if (tituloTipografia === 'Leyenda') {
-        inputLeyendaElement.style.fontFamily = tipografia;
-        setTipografiaLeyendaDefinicion(tipografia);
-      }
-      if (titulotamano === 'Texto de botones') {
-        inputBotonElement.style.fontSize = `${tamano}px`;
-        setTamanoBotonDefinicion(tamano);
-      }
-      if ( tituloGrosor === 'Texto de botones' ) {
-        inputBotonElement.style.fontWeight = grosor;
-        setGrosorBotonDefinicion(grosor);
-      }
-      if (tituloTipografia === 'Texto de botones') {
-        inputBotonElement.style.fontFamily = tipografia;
-        setTipografiaBotonDefinicion(tipografia);
-      }
-
+    let newStyle = {};
+    if (titulotamano === 'Nombre de encuesta') {
+      newStyle.fontSize = `${tamano}px`;  
+    }
+    if ( tituloGrosor === 'Nombre de encuesta' ) {
+      newStyle.fontWeight = grosor;
+    }
+    if ( tituloTipografia === 'Nombre de encuesta') {
+      newStyle.fontFamily = tipografia;
+    }
+    setTituloStyle(newStyle);
+    let newStyle2 = {};
+    if (titulotamano === 'Descripción de encuesta') {
+      newStyle2.fontSize = `${tamano}px`;  
+    }
+    if ( tituloGrosor === 'Descripción de encuesta' ) {
+      newStyle2.fontWeight = grosor;
+    }
+    if ( tituloTipografia === 'Descripción de encuesta') {
+      newStyle2.fontFamily = tipografia;
+    }
+    setDescripcionStyle(newStyle2);
+    let newStyle3 = {};
+    if (titulotamano === 'Leyenda') {
+      newStyle3.fontSize = `${tamano}px`;  
+    }
+    if ( tituloGrosor === 'Leyenda' ) {
+      newStyle3.fontWeight = grosor;
+    }
+    if ( tituloTipografia === 'Leyenda') {
+      newStyle3.fontFamily = tipografia;
+    }
+    setLeyendaStyle(newStyle3);
+    let newStyle4 = {};
+    if (titulotamano === 'Texto de botones') {
+      newStyle4.fontSize = `${tamano}px`;  
+    }
+    if ( tituloGrosor === 'Texto de botones' ) {
+      newStyle4.fontWeight = grosor;
+    }
+    if ( tituloTipografia === 'Texto de botones') {
+      newStyle4.fontFamily = tipografia;
+    }
+    setBotonStyle(newStyle4);
     enviarPreview(preview2);
     enviarPreview2(preview1);
     setLeerPosicion(sendPosicion3);
@@ -157,35 +134,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     
     
   ]);
-
-  
-  
-
-  // capturar el valor de todos los datos
-
-  const handleEnviarDatos = async () => {
-    // Crear un objeto con los datos
-    const datosEncuesta = {
-
-      
-      imagenCabecera: preview64,
-      imagenPie: preview64_2,
-      nombre: inputNombreRef.current.value,
-      descripcion: inputDescripcionRef.current.value,
-      leyenda: inputLeyendaRef.current.value
-    };
-
-    // Enviar los datos a la función prop
-    sendDatosDefinicionEncuesta(datosEncuesta);
-  };
-
-  useImperativeHandle(ref, () => ({
-    handleEnviarDatos,
-  }));
-  
-
-
-
 
   const enviarPreview = (previe) => {
     
@@ -266,15 +214,21 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   
 
   const handleEnviarNombre = (e) => {
-    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, nombre: e.target.value });
+    const nuevoEstado = { ...datosDefinicionEncuesta};
+    nuevoEstado.titulo = e.target.value;
+    setDatosDefinicionEncuesta(nuevoEstado);
   }
 
   const handleEnviarDescripcion = (e) => {
-    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, descripcion: e.target.value });
+    const nuevoEstado = { ...datosDefinicionEncuesta};
+    nuevoEstado.descripcion = e.target.value;
+    setDatosDefinicionEncuesta(nuevoEstado);
   }
 
   const handleEnviarLeyenda = (e) => {
-    setDatosDefinicionEncuesta({ ...datosDefinicionEncuesta, leyenda: e.target.value });
+    const nuevoEstado = { ...datosDefinicionEncuesta};
+    nuevoEstado.leyenda = e.target.value;
+    setDatosDefinicionEncuesta(nuevoEstado);
   }
 
   return (
@@ -322,8 +276,10 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                 type="text" 
                 placeholder=" Ej: Encuesta a personal" 
                 id="nombre"
-                ref={inputNombreRef}
+                style={tituloStyle}
                 onChange={handleEnviarNombre}
+                maxLength={2000}
+                required
               />
           </div>
 
@@ -336,8 +292,10 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                 type="text" 
                 placeholder="Ingrese una descripción"
                 id='descripcion'
-                ref={inputDescripcionRef}
+                style={descripcionStyle}
                 onChange={handleEnviarDescripcion}
+                maxLength={4000}
+                required
               />
           </div>
       </div>
@@ -358,7 +316,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                 type="text" 
                 placeholder="Ingrese una leyenda" 
                 id='leyenda'
-                ref={inputLeyendaRef}
+                style={leyendaStyle}
                 onChange={handleEnviarLeyenda}
               />
           </div>
@@ -396,7 +354,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
         <div className={`contenedorbuttonPieDePagina ${leerPosicion == 1 ? 'contenedorbuttonPieDePagina2' : leerPosicion == 2 ? 'contenedorbuttonPieDePagina3' : leerPosicion == 3 ? 'contenedorbuttonPieDePagina4' : null}`}>
           <button className='buttonPieDePagina'
           id='buttonPieDePagina'
-          ref={inputBotonRef}
+          style={botonStyle}
           >
             {sendEstado3}
           </button>

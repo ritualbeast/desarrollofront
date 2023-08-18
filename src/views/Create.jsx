@@ -114,7 +114,23 @@ const Create = () => {
           imagenFondo: ""
         }
       });
-    
+      const [datosEncuesta, setDatosEncuesta] = useState({
+        imagenCabecera : '',
+        imagenPie : '',
+        titulo : '',
+        descripcion : '',
+        leyenda : '',
+      });
+
+      const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState({
+        categoria: '',
+        vigencia: '',
+        enum_tipo_encuesta: '',
+        enum_tipoVigencia: '',
+        fechaInicio : '',
+        fechaFin : '',
+        });
+       
 
 
     const regresarRevision = () => {
@@ -159,7 +175,6 @@ const Create = () => {
     const nextPasos = () => {
         
         if(pasos === 1){
-            handleBotonClick();
             
             setPasos(2);
             setActiveTab(true);
@@ -250,22 +265,16 @@ const Create = () => {
 
 
     const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState([])
-    const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState([])
 
     const sendDatosDefinicionEncuesta = (datos) => {
-        
-        setDatosDefinicionEncuesta(datos)
+        setDatosEncuesta(datos)
       };
 
     const sendDatosConfiguracionEncuesta = (datos) => {
-       
+       console.log(datos)
         setDatosConfiguracionEncuesta(datos)
     }
     
-      const handleBotonClick = () => {
-        DefinicionEncuestaCuerpoRef.current.handleEnviarDatos();
-        ConfiguracionEncuestaRef.current.handleEnviarDatosConfiguracion();
-      };
 
 
     return (
@@ -467,6 +476,7 @@ const Create = () => {
                                     ref={ConfiguracionEncuestaRef}
                                     closeMenuConfiguracion={handleClick}
                                     sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
+                                    contentInit={datosConfiguracionEncuesta}
                                 />
                             )}
 
@@ -488,7 +498,7 @@ const Create = () => {
                                         sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
                                         sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
                                         activeFuncionEnviarDatos={activeFuncionEnviarDatos}
-                                        
+                                        contentInit={datosEncuesta}
                                         sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
                                     />
 

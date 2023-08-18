@@ -159,6 +159,7 @@ const ResultadoCuadroComentarios = ({
                 style={{ width: '98.8%', border: '1px solid #ccc' }}
                 className="textodePregunta"
                 rows={5} // Ajusta el número de filas según tus necesidades
+                
             />
         )}
 

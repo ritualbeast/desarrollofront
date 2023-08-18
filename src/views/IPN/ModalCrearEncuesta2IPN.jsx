@@ -47,6 +47,7 @@ const ModalCrearEncuesta2IPN = ({ open, onClose }) => {
 
   const handleGoToDefinicion = () => {       
     window.location.href = '/create';
+    localStorage.setItem('enumTipoEncuesta', 2);
   };
 
 return (

@@ -35,10 +35,11 @@ const customStyles = {
 };
 
 const DefinicionEncuestaConfiguracion =  forwardRef(({
-    closeMenuConfiguracion, sendDatosConfiguracionEncuesta} , ref) => {
+    closeMenuConfiguracion, sendDatosConfiguracionEncuesta,contentInit} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
     const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
+    const [datosConfiguracion, setDatosConfiguracion] = useState(contentInit);
     const targetRef = useRef(null);
 
     useEffect(() => {  
@@ -50,25 +51,9 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         setShowTooltip(false);
     };
 
-    const handleEnviarDatosConfiguracion = () => {
-        // Crear un objeto con los datos
-        const datosEncuestaConf = {
-            categoria: selectedCategoriaEncuesta.value,
-            vigencia: selectedVigencia.value,
-            enum_tipo_encuesta: 1,
-            enum_tipoVigencia: 4,
-            fechaInicio : fechaInicioSeleccionada,
-            fechaFin : fechaFinSeleccionada,
-
-        };
+    sendDatosConfiguracionEncuesta(datosConfiguracion);
     
-        // Enviar los datos a la función prop
-        sendDatosConfiguracionEncuesta(datosEncuestaConf);
-      };
-
-      useImperativeHandle(ref, () => ({
-        handleEnviarDatosConfiguracion,
-      }));
+    // sendDatosConfiguracionEncuesta
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -96,6 +81,8 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         value: '',
         label: 'Seleccionar tipo de vigencia',
     });
+
+    
     
     const ListarVigencia = async () => {
         try {
@@ -131,7 +118,10 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                     value: defaultTipo.idCategoriaEncuesta,
                     label:defaultTipo.nombre
                 }
-            setSelectedCategoriaEncuesta(data);
+            setDatosConfiguracion({...datosConfiguracion, 
+                categoria: defaultTipo.idCategoriaEncuesta,
+                nombreCategoria: defaultTipo.nombre
+            });
             }
         } catch (error) {
             console.error(error);
@@ -139,13 +129,20 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     };
 
     // seleccion de categoria
-        const handleChangeCategoria = (selectedOption) => {
-        
+    const handleChangeCategoria = (selectedOption) => {
+        setDatosConfiguracion({
+          ...datosConfiguracion,
+          categoria: selectedOption.value,
+        });
         setSelectedCategoriaEncuesta(selectedOption);
-    };
+      };
 
     // seleccion de vigencia
     const handleChangeVigencia = (selectedOption) => {
+        setDatosConfiguracion({
+            ...datosConfiguracion,
+            vigencia: selectedOption.value,
+        });
         setSelectedVigencia(selectedOption);
     };
     
@@ -157,6 +154,10 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         fechaActual.setHours(0, 0, 0, 0);
 
         if (fechaInicio >= fechaActual) {
+            setDatosConfiguracion({
+                ...datosConfiguracion,
+                fechaInicio: event.target.value + ' 00:00:00',
+            });
             setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
         } else {
             alert("La fecha de inicio no puede ser menor a la fecha actual");
@@ -168,15 +169,20 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         const fechaInicio = new Date(fechaInicioSeleccionada);
 
         if (fechaFin >= fechaInicio) {
+            setDatosConfiguracion({
+                ...datosConfiguracion,
+                fechaFin: event.target.value + ' 23:59:59',
+            });
+            
             setFechaFinSeleccionada(event.target.value + ' 23:59:59');
         } else {
             alert("La fecha de fin no puede ser menor a la fecha de inicio");
         }
     };
     
+   
   return (
     <>
-        
         <Col className="encuesta-Segundocuerpo2">
             <Col>
                 <div className="encuesta-subtitulo2">
@@ -218,13 +224,12 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                                     onChange={handleChangeCategoria} 
                                     styles={customStyles}
                                     options={ListarCategoriaEncuestas.map((item) => ({
-                                        label: item.nombre,
-                                        value: item.idCategoriaEncuesta,
-                                        
+                                    label: item.nombre,
+                                    value: item.idCategoriaEncuesta,
                                     }))}
-                                    value={selectedCategoriaEncuesta}
+                                    value={selectedCategoriaEncuesta} // Utilizar selectedCategoriaEncuesta en lugar de datosConfiguracion.categoria
                                 />
-                            </div>
+                                </div>
 
                             <div className="subcontenedorFuenteTitulo">
                                 <span className="fuenteTitulo">Vigencia</span>
