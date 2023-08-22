@@ -197,7 +197,7 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
                             <div className="contenedorPosicion">
                                 <select className="selectPosicion" onChange={handleChangePosicion}>
                                     {posicionImagen.map((opcion) => (
-                                        <option key={opcion.id} value={opcion.etiqueta}>{opcion.etiqueta}</option>
+                                        <option key={opcion.id} value={opcion.id}>{opcion.etiqueta}</option>
                                     ))    
                                     }
                                 </select>

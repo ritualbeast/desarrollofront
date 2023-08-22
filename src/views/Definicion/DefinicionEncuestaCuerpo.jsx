@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, forwardRef, useImperativeHandle} from 'react'
+import React, {useState, useEffect, useRef, forwardRef} from 'react'
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
 import styled from 'styled-components';
@@ -44,7 +44,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   sendEstado3, sendPosicion3, 
   sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, 
   sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
-  sendDatosDefinicionEncuesta, contentInit
+  sendDatosDefinicionEncuesta, contentInit, contenEstilos, sendEstilosDefinicionEncuesta
 }, ref) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
@@ -54,7 +54,9 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [preview64_2, setPreview64_2] = useState(null);
   // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
+  console.log('leerPosicion', sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(contentInit);
+  const [datosDefinicionEstilo, setDatosDefinicionEstilo] = useState(contenEstilos);
   const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
   const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
   const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
@@ -72,54 +74,97 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
 
   // capturar el valor de todos los datos
 sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
+sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
+  const tituloref = useRef();
+  const descripcionref = useRef();
+  const leyendaref = useRef();
+  const botonref = useRef();
+
 
   useEffect(() => {
-    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
 
-    let newStyle = {};
+    let newStyle = {...datosDefinicionEstilo};
+
+    // setear estilos de logotipo
+
+    newStyle.logotipo.enumPosicion = sendPosicionLogotipo;
+    newStyle.logotipo.tamanio = sendTamanoLogotipo;
+    newStyle.pieDePagina.enumPosicion = leerPosicionLogotipoPiePagina;
+    newStyle.pieDePagina.tamanio = leerTamanoLogotipoPiePagina;
+    
+    if (tituloTipografia === 'Nombre de encuesta') {
+      if (tituloref.current) {
+        tituloref.current.style.fontFamily = tipografia;
+      }
+      // newStyleView.fontFamily = tipografia;
+      newStyle.fuente.tituloSeccion.enumTipografia = tipografia;
+    }
+    if (tituloGrosor === 'Nombre de encuesta') {
+      if (tituloref.current) {
+        tituloref.current.style.fontWeight = grosor;
+      }
+      newStyle.fuente.tituloSeccion.enumGrosor = grosor;
+    }
     if (titulotamano === 'Nombre de encuesta') {
-      newStyle.fontSize = `${tamano}px`;  
-    }
-    if ( tituloGrosor === 'Nombre de encuesta' ) {
-      newStyle.fontWeight = grosor;
-    }
-    if ( tituloTipografia === 'Nombre de encuesta') {
-      newStyle.fontFamily = tipografia;
-    }
-    setTituloStyle(newStyle);
-    let newStyle2 = {};
-    if (titulotamano === 'Descripción de encuesta') {
-      newStyle2.fontSize = `${tamano}px`;  
-    }
-    if ( tituloGrosor === 'Descripción de encuesta' ) {
-      newStyle2.fontWeight = grosor;
+      if (tituloref.current) {
+        tituloref.current.style.fontSize = `${tamano}px`;
+      }
+      newStyle.fuente.tituloSeccion.enumTamanio = `${tamano}`;
     }
     if ( tituloTipografia === 'Descripción de encuesta') {
-      newStyle2.fontFamily = tipografia;
+      if (descripcionref.current) {
+        descripcionref.current.style.fontFamily = tipografia;
+      }
+      newStyle.fuente.descripcionEncuesta.enumTipografia = tipografia;
     }
-    setDescripcionStyle(newStyle2);
-    let newStyle3 = {};
+    if ( tituloGrosor === 'Descripción de encuesta' ) {
+      if (descripcionref.current) {
+        descripcionref.current.style.fontWeight = grosor;
+      }
+
+      newStyle.fuente.descripcionEncuesta.enumGrosor = grosor;
+    }
+    if (titulotamano === 'Descripción de encuesta') {
+      if (descripcionref.current) {
+        descripcionref.current.style.fontSize = `${tamano}px`;
+      }
+      newStyle.fuente.descripcionEncuesta.enumTamanio = `${tamano}`;
+    }
     if (titulotamano === 'Leyenda') {
-      newStyle3.fontSize = `${tamano}px`;  
+      if (leyendaref.current) {
+        leyendaref.current.style.fontSize = `${tamano}px`;
+      }
     }
     if ( tituloGrosor === 'Leyenda' ) {
-      newStyle3.fontWeight = grosor;
+      if (leyendaref.current) {
+        leyendaref.current.style.fontWeight = grosor;
+      }
     }
     if ( tituloTipografia === 'Leyenda') {
-      newStyle3.fontFamily = tipografia;
+      if (leyendaref.current) {
+        leyendaref.current.style.fontFamily = tipografia;
+      }
     }
-    setLeyendaStyle(newStyle3);
-    let newStyle4 = {};
+    
     if (titulotamano === 'Texto de botones') {
-      newStyle4.fontSize = `${tamano}px`;  
+      if (botonref.current) {
+        botonref.current.style.fontSize = `${tamano}px`;
+      }
+      newStyle.fuente.textoBotones.enumTamanio = `${tamano}`;
     }
     if ( tituloGrosor === 'Texto de botones' ) {
-      newStyle4.fontWeight = grosor;
+      if (botonref.current) {
+        botonref.current.style.fontWeight = grosor;
+      }
+      newStyle.fuente.textoBotones.enumGrosor = grosor;
     }
     if ( tituloTipografia === 'Texto de botones') {
-      newStyle4.fontFamily = tipografia;
-    }
-    setBotonStyle(newStyle4);
+      if (botonref.current) {
+        botonref.current.style.fontFamily = tipografia;
+      }
+      newStyle.fuente.textoBotones.enumTipografia = tipografia;
+    } 
+    setDatosDefinicionEstilo(newStyle);
     enviarPreview(preview2);
     enviarPreview2(preview1);
     setLeerPosicion(sendPosicion3);
@@ -244,7 +289,7 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
           
           {selectedFile1 ? (
             <div className="agregarImagenDefinicionEncuesta2">
-              <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
+              <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
                 <img src={preview1} alt="preview" 
                 className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
                 />
@@ -276,7 +321,7 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
                 type="text" 
                 placeholder=" Ej: Encuesta a personal" 
                 id="nombre"
-                style={tituloStyle}
+                ref={tituloref}
                 onChange={handleEnviarNombre}
                 maxLength={2000}
                 required
@@ -292,7 +337,7 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
                 type="text" 
                 placeholder="Ingrese una descripción"
                 id='descripcion'
-                style={descripcionStyle}
+                ref={descripcionref}
                 onChange={handleEnviarDescripcion}
                 maxLength={4000}
                 required
@@ -316,7 +361,7 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
                 type="text" 
                 placeholder="Ingrese una leyenda" 
                 id='leyenda'
-                style={leyendaStyle}
+                ref={leyendaref}
                 onChange={handleEnviarLeyenda}
               />
           </div>
@@ -325,7 +370,7 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
               <div className="agregarImagenDefinicionEncuesta2">
 
                 
-                <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 'Izquierda' ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 'Derecha' ? 'posicionLogotipoEncuesta2' : null}`}>
+                <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
                   <img src={preview2} alt="preview" 
                   className={`${(leerTamanoLogotipoPiePagina== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipoPiePagina == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipoPiePagina == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
                   />
@@ -351,10 +396,10 @@ sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
       </div>
 
       {sendEstado3 === '' ? null : (
-        <div className={`contenedorbuttonPieDePagina ${leerPosicion == 1 ? 'contenedorbuttonPieDePagina2' : leerPosicion == 2 ? 'contenedorbuttonPieDePagina3' : leerPosicion == 3 ? 'contenedorbuttonPieDePagina4' : null}`}>
+        <div className={`contenedorbuttonPieDePagina ${leerPosicion == 1 ? 'contenedorbuttonPieDePagina2' : leerPosicion == 2 ? 'contenedorbuttonPieDePagina3' : leerPosicion == 39 ? 'contenedorbuttonPieDePagina4' : null}`}>
           <button className='buttonPieDePagina'
           id='buttonPieDePagina'
-          style={botonStyle}
+          ref={botonref}
           >
             {sendEstado3}
           </button>

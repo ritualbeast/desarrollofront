@@ -274,11 +274,21 @@ const Create = () => {
        console.log(datos)
         setDatosConfiguracionEncuesta(datos)
     }
+
+    const sendDatosEstilosDefinicionEncuesta = (datos) => {
+        setEncuestaEstilos(datos)
+    }
     
 
+    const leerestilos = () => {
+        console.log(encuestaEstilos);
+      }
 
     return (
         <>
+            <button onClick={leerestilos}>leer estilos</button>
+
+            
         
             <div
                 id="modal-container"
@@ -499,7 +509,9 @@ const Create = () => {
                                         sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
                                         activeFuncionEnviarDatos={activeFuncionEnviarDatos}
                                         contentInit={datosEncuesta}
+                                        contenEstilos= {encuestaEstilos}
                                         sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
+                                        sendEstilosDefinicionEncuesta= {sendDatosEstilosDefinicionEncuesta}
                                     />
 
                                 ) : pasos === 2 ? (<DiseñaEncuesta 

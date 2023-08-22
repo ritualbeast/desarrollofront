@@ -5,6 +5,7 @@ import '../../styles/disenoEncuestaColor.css'
 import { SketchPicker } from 'react-color';
 import { ChromePicker } from 'react-color';
 import CustomSketchPicker from './CustomSketchPicker';
+import { colors } from '@mui/material';
 
 
 
@@ -116,6 +117,13 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
         openMenuPrincipal(true);
         closeMenuColores(false);
     }
+
+    const [colors, setColor] = useState('#fff');
+
+    const handleChangeComplete = (newColor, index) => {
+        setColor(newColor.hex);
+        handleCloseColorPicker(index);
+      };
     
     
   return (
@@ -156,23 +164,24 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
                             <span className='cabeceraTitle'>Colores</span>
                         </div>
                         <div className='contenedorColorPrincipal'>
-                            {colorEncuesta.map((color, index) => (
-                                <div className="contenedorFuenteColor" key={index}>
-                                    <div className="subcontenedorFuenteTitulo">
-                                        <span className="fuenteTitulo">{color.nombre}</span>
-                                    </div>
-                                    <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
-                                        {color.isOpen && (
-                                            <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
-                                                <CustomSketchPicker
-                                                    handleCloseColorPicker={() => handleCloseColorPicker(index)}
-                                                />
-                                                
-                                            </div>
-                                        )}
-                                    </div>
+                        {colorEncuesta.map((color, index) => (
+                            <div className="contenedorFuenteColor" key={index}>
+                                <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">{color.nombre}</span>
                                 </div>
-                            ))}
+                                <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
+                                    {color.isOpen && (
+                                        <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
+                                            <SketchPicker 
+                                                color={colors} // Asegúrate de que 'color' tenga la estructura correcta
+                                                onChangeComplete={(newColor) => handleChangeComplete(newColor, index)} 
+                                                
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
                         </div>
 
                     
