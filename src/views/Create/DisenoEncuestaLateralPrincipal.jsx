@@ -22,7 +22,8 @@ const repeatSVG = svgManager.getSVG('repeat');
 
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
     sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
-    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
+    sendImagenFondo, sendImagenFondoEstructura
 }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -244,7 +245,19 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
         sendTipografiaPaso2(tipografiaPaso2,titulo);
     }
 
+    const [colors, setColors] = useState([colores]);
 
+
+    const saveColors = (colors) => {
+        setColors(colors);
+    }   
+
+    const [imagenFondo, setImagenFondo] = useState(sendImagenFondoEstructura);
+    const recibirImagenFondo = (imagen) => {
+        setImagenFondo(imagen);
+    }
+
+    sendImagenFondo(imagenFondo);
   return (
     <>
         {openDisenoPrincipal && (
@@ -310,12 +323,13 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                                 onClick={() => handleClickFila(colorL.id)}
                                 >
                                 <div className="elemento2">
-                                    {colores.map((color) => (
+                                {colors.map((color, index) => (
                                     <div
                                         className="elementoColores"
-                                        key={color.id}
-                                        style={{ backgroundColor: color.color }}
+                                        key={index}
+                                        style={{ backgroundColor: color }}
                                     >
+
                                         <span className='disenobar-nombre'>{color.nombre}</span>
                                     </div>
                                     ))}
@@ -391,7 +405,8 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
             <DisenoEncuestaLateralFondo 
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuFondo={setOpenDisenoFondo}
-            
+                sendImagenFondo = {(imagen) => {recibirImagenFondo(imagen)}}
+                sendImagenFondoEstructura = {imagenFondo}
             />
         )
         }
@@ -409,6 +424,8 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
             
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuColores={setOpenDisenoColores}
+                sendColors={(colors) => saveColors(colors)}
+                datapasos={datapasos}
              />
         )
         }

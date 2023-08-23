@@ -54,7 +54,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [preview64_2, setPreview64_2] = useState(null);
   // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
-  console.log('leerPosicion', sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(contentInit);
   const [datosDefinicionEstilo, setDatosDefinicionEstilo] = useState(contenEstilos);
   const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
@@ -276,6 +275,10 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
     setDatosDefinicionEncuesta(nuevoEstado);
   }
 
+  const eliminarImagenLogotipo = () => {
+    setSelectedFile1(null);
+    setPreview1(null);
+  }
   return (
     <>
       <div className="tituloDefinicionEncuesta">
@@ -300,7 +303,7 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
                   <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
                 </div>
                 <div className="buttonLogotipoeliminar">
-                  <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setSelectedFile1(null)} />
+                  <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => eliminarImagenLogotipo()} />
                 </div>
               </div>
             </div>

@@ -7,16 +7,12 @@ import { ChromePicker } from 'react-color';
 import CustomSketchPicker from './CustomSketchPicker';
 import { colors } from '@mui/material';
 
-
-
-
-
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) => {
+const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sendColors, datapasos} ) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -38,20 +34,13 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
     const [currentColor, setCurrentColor] = useState('#FFFFFF');
   const [savedColors, setSavedColors] = useState([]);
 
-  
-
   const handleAddColor = () => {
     setSavedColors((prevColors) => [...prevColors, currentColor]);
   };
 
-
-
-    
-
     const handleColorChange = (color) => {
         setSelectedColor(color.hex);
     };
-
 
     const handleClickColorSeleccionado = (index) => {
         const updatedColorEncuesta = [...colorEncuesta];
@@ -62,17 +51,9 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
     const handleCloseColorPicker = (index) => {
         const updatedColorEncuesta = [...colorEncuesta];
         updatedColorEncuesta[index].isOpen = false;
-        setColorEncuesta(updatedColorEncuesta[0].isOpen = false);
-
+        setColorEncuesta(updatedColorEncuesta); // Corrección aquí
     };
     
-    
-    
-
-
-
-
-  
     const targetRef = useRef(null);
     const handleIconClick = () => {
         setShowTooltip(false);
@@ -99,32 +80,27 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
         </Tooltip>
     );
 
-    
-
-    // lista tamano
-
-    const tamano = [
-        { id: 1, nombre: 'Tamaño actual' },
-        { id: 2, nombre: 'Pequeño' },
-        { id: 3, nombre: 'Mediano' },
-        { id: 4, nombre: 'Grande' } 
-    ];
 
     // lista de colores de encuesta
 
-       
     const volverMenuPrincipal = () => {
         openMenuPrincipal(true);
         closeMenuColores(false);
     }
-
-    const [colors, setColor] = useState('#fff');
+    const initialColors = colorEncuesta.map(() => '#fff'); // Inicializa todos los colores a '#fff'
+    const [colors, setColors] = useState(initialColors);
+    sendColors(colors);
 
     const handleChangeComplete = (newColor, index) => {
-        setColor(newColor.hex);
+        const updatedColors = [...colors];
+        updatedColors[index] = newColor.hex;
+        setColors(updatedColors);
+        // handleCloseColorPicker(index);
+    };
+    const handleCloseButtonClick = (event, index) => {
+        event.stopPropagation();
         handleCloseColorPicker(index);
-      };
-    
+    };
     
   return (
     <>
@@ -165,22 +141,41 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) =
                         </div>
                         <div className='contenedorColorPrincipal'>
                         {colorEncuesta.map((color, index) => (
+                            datapasos === 1 &&  (color.nombre === 'Titulo de sección' || color.nombre === 'Descripción de sección' || 
+                            color.nombre === 'Preguntas' || color.nombre === 'Opciones de respuesta' ) ? null :  (
                             <div className="contenedorFuenteColor" key={index}>
-                                <div className="subcontenedorFuenteTitulo">
-                                    <span className="fuenteTitulo">{color.nombre}</span>
-                                </div>
-                                <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
-                                    {color.isOpen && (
-                                        <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
-                                            <SketchPicker 
-                                                color={colors} // Asegúrate de que 'color' tenga la estructura correcta
-                                                onChangeComplete={(newColor) => handleChangeComplete(newColor, index)} 
-                                                
-                                            />
+                                
+                                    
+                                      <>
+                                        <div className="subcontenedorFuenteTitulo">
+                                            <span className="fuenteTitulo">{color.nombre}</span>
                                         </div>
-                                    )}
-                                </div>
+                                        <div className="contenedorColorSeleccionado"
+                                        style={{ backgroundColor: colors[index] }}  
+                                        onClick={() => handleClickColorSeleccionado(index)}>
+                                            {color.isOpen && (
+                                                <div style={{ position: 'absolute', zIndex: '2', right: '70%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
+                                                    <SketchPicker 
+                                                        color={colors[index]}
+                                                        onChangeComplete={(newColor) => handleChangeComplete(newColor, index)} 
+                                                        
+                                                    />
+                                                    <button 
+                                                        style={{marginTop: '10px', padding: '5px 10px', cursor: 'pointer'}}
+                                                        onClick={(event) => handleCloseButtonClick(event, index)}
+                                                    >
+                                                        Cerrar
+                                                    </button>
+
+                                                </div>
+                                            )}
+                                        </div>
+                                      </>  
+                                    
+                                 
+                               
                             </div>
+                            )
                         ))}
                         </div>
 

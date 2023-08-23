@@ -6,15 +6,14 @@ import FormatoEncuestaLateralPrincipal from './../Create/FormatoEncuestaLateralP
 
 
 const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
-    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo, sendFooterImagen
 }) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    
-   
+   console.log(sendImagenFondo);
 
 
     const handleClickOutsideModal = (event) => {
@@ -25,6 +24,7 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
             setIsModalVisible(false);
         }
     };
+
     
     return (
         <div
@@ -51,6 +51,8 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
                             sendTamanoPaso2={sendTamanoPaso2}
                             sendGrosorPaso2={sendGrosorPaso2}
                             sendTipografiaPaso2={sendTipografiaPaso2}
+                            sendImagenFondo={sendImagenFondo}
+                            sendFooterImagen={sendFooterImagen}
                         />
                         )
                     }

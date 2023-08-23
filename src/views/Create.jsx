@@ -284,6 +284,17 @@ const Create = () => {
         console.log(encuestaEstilos);
       }
 
+    const [imagenFondo, setImagenFondo] = useState(null)
+    const handleSendImagenFondo = (imagen) => {
+        
+        setImagenFondo(imagen)
+    }
+
+    const [sendFooterImagen, setSendFooterImagen] = useState(null)
+    const handleSendFooterImagen = (imagen) => {
+        setSendFooterImagen(imagen)
+    }
+
     return (
         <>
             <button onClick={leerestilos}>leer estilos</button>
@@ -469,7 +480,8 @@ const Create = () => {
                                     sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
                                     sendPosicionLogotipoPiePagina = {(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
                                     sendTamanoLogotipoPiePagina = {(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
-                                    
+                                    sendImagenFondo = {(imagen) => handleSendImagenFondo(imagen)}
+                                    sendImagenFondoEstructura = {imagenFondo}
                                     />
                             )}
 
@@ -512,6 +524,7 @@ const Create = () => {
                                         contenEstilos= {encuestaEstilos}
                                         sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
                                         sendEstilosDefinicionEncuesta= {sendDatosEstilosDefinicionEncuesta}
+                                        
                                     />
 
                                 ) : pasos === 2 ? (<DiseñaEncuesta 
@@ -522,6 +535,8 @@ const Create = () => {
                                         sendTamanoPaso2 = {tamanoPaso2}
                                         sendGrosorPaso2 = {grosorPaso2}
                                         sendTipografiaPaso2 = {tipografiaPaso2}
+                                        sendImagenFondo = {imagenFondo}
+                                        sendFooterImagen = {sendFooterImagen}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}

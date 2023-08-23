@@ -15,7 +15,7 @@ const uploadSVG = svgManager.getSVG('upload');
 
 const trashSVG = svgManager.getSVG('trash');
 
-const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo, sendImagenFondo, sendImagenFondoEstructura}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -24,7 +24,8 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo}) => {
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [openFondo, setOpenFondo] = useState(false);
     
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState(sendImagenFondoEstructura);
+    sendImagenFondo(selectedFile);
 
     useEffect(() => {
     }, [selectedFile]);

@@ -36,7 +36,7 @@ const warningLightSVG = svgManager.getSVG('warning-light');
 const edit2SVG = svgManager.getSVG('edit2');
 
 const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
-    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo , sendFooterImagen
 
 }) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
@@ -79,7 +79,11 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [footerPreviews, setFooterPreviews] = useState([]);
     const [tituloStyle, setTituloStyle] = useState({});
     const [descripcionStyle, setDescripcionStyle] = useState({});
+    const [imagenFondo, setImagenFondo] = useState(null);
+
+
   useEffect(() => {
+    setImagenFondo(sendImagenFondo);
     let newStyle = {};
     if (titulotamano === 'Título de sección') {
       newStyle.fontSize = `${tamano}px`;
@@ -104,7 +108,9 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     }
     setDescripcionStyle(newStyle2);
 
-  }, [tamano, grosor, tipografia]);
+  }, [tamano, grosor, tipografia, imagenFondo]);
+    
+  
 
     const handleCloseFondo = () => {
       setOpenFondo(false);
@@ -747,10 +753,23 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       }
     };
 
+
   return (
     <>
+      
         <Container className='encuesta-Tercerocuerpo2-1'>
-            <Col className='contendor-de-EncuestaVeris'>
+            <Col className='contendor-de-EncuestaVeris'
+            style={
+              (sendImagenFondo == null || typeof sendImagenFondo === 'undefined') 
+              ? null
+              : {
+                  backgroundImage: `url(${URL.createObjectURL(sendImagenFondo)})`,
+                  backgroundSize: '100% 100%',           // Ajusta la imagen para cubrir el contenedor
+                  backgroundPosition: 'center',      // Centra la imagen en el contenedor
+                  backgroundRepeat: 'no-repeat'      // Evita que la imagen se repita
+                }
+            }
+            >
               <Col>
                   <p className='titulo-encuesta-tercero'
                   
@@ -963,8 +982,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 </div>
                                 <div className="subcontenedorLogotipo">
                                   <div className="buttonLogotipoeditar">
-                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById(`file-input${index}`).click()} />
-                                    <input type="file" id={`file-input${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFooterFile(index, e)} />
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById(`files-input${index}`).click()} />
+                                    <input type="file" id={`files-input${index}`} style={{ display: 'none' }} onChange={(e) => onSelectFooterFile(index, e)} />
                                   </div>
                                   <div className="buttonLogotipoeliminar">
                                     <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setFooterFiles(prevFiles => {
