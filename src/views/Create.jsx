@@ -124,8 +124,6 @@ const Create = () => {
 
       const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState({
         idCategoriaEncuesta: '',
-        vigencia: '',
-        enum_tipo_encuesta: '',
         enumTipoVigencia: '',
         fechaInicio : '',
         fechaFin : '',
@@ -292,7 +290,7 @@ const Create = () => {
     
 
     const leerestilos = () => {
-        console.log(encuestaEstilos);
+        console.log(datosConfiguracionEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)

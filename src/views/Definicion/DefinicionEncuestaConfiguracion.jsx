@@ -42,6 +42,8 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const [datosConfiguracion, setDatosConfiguracion] = useState(contentInit);
     const targetRef = useRef(null);
 
+    
+
     useEffect(() => {  
         ListarVigencia();
         ListarCategoriaEncuesta();
@@ -104,7 +106,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     // consumo de categorias 
     const [ListarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
     const [selectedCategoriaEncuesta, setSelectedCategoriaEncuesta] = useState({
-        value: '',
+        value: datosConfiguracion.idCategoriaEncuesta,
         label: 'Categoria de encuesta',
       });
     const ListarCategoriaEncuesta = async () => {
@@ -132,7 +134,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const handleChangeCategoria = (selectedOption) => {
         setDatosConfiguracion({
           ...datosConfiguracion,
-          categoria: selectedOption.value,
+          idCategoriaEncuesta: selectedOption.value,
         });
         setSelectedCategoriaEncuesta(selectedOption);
       };
@@ -141,7 +143,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const handleChangeVigencia = (selectedOption) => {
         setDatosConfiguracion({
             ...datosConfiguracion,
-            vigencia: selectedOption.value,
+            enumTipoVigencia: selectedOption.value,
             
         });
         setSelectedVigencia(selectedOption);
