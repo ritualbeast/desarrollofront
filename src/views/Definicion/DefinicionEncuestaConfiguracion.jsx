@@ -142,6 +142,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         setDatosConfiguracion({
             ...datosConfiguracion,
             vigencia: selectedOption.value,
+            
         });
         setSelectedVigencia(selectedOption);
     };

@@ -123,10 +123,10 @@ const Create = () => {
       });
 
       const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState({
-        categoria: '',
+        idCategoriaEncuesta: '',
         vigencia: '',
         enum_tipo_encuesta: '',
-        enum_tipoVigencia: '',
+        enumTipoVigencia: '',
         fechaInicio : '',
         fechaFin : '',
         });
@@ -175,6 +175,17 @@ const Create = () => {
     const nextPasos = () => {
         
         if(pasos === 1){
+            
+            if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
+            || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enum_tipoVigencia === '' 
+            || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
+             || datosEncuesta.titulo === ''
+            || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
+
+            ) {
+                alert('Por favor, complete todos los campos');
+                return;
+            }
             
             setPasos(2);
             setActiveTab(true);
