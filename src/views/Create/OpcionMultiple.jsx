@@ -206,7 +206,11 @@ const OpcionMultiple = ({
     handleEliminarPregunta,
     handleCambiarPregunta,
     preguntaVisibleOpen,
-    sendTamanoPaso2, sendGrosorPaso2, sendTipografiaPaso2
+    sendTamanoPaso2, 
+    sendGrosorPaso2, 
+    sendTipografiaPaso2,
+    contentCont,
+    obtenerPreg
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -214,18 +218,19 @@ const OpcionMultiple = ({
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
     const [isActiveLogica, setIsActiveLogica] = useState(true);
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState([
-        {
-            id: 1,
+    const opcionesApi = contentPreg.opcionesRespuesta ?? [];
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState(() =>
+        opcionesApi.map((opcionApi) => ({
+            idPregunta: opcionApi.idPregunta,
+            respuesta: opcionApi.respuesta,
             checked: false,
-            text: "",
             type: 'radio',
-            seccionValue: '',
-            preguntaValue: '',
-            orden: 0,
-            respuesta: '',
-        }
-    ]);
+            seccionValue: '', // Valor inicial de la sección
+            preguntaValue: '', // Valor inicial de la pregunta
+            orden : 0,
+            // ...
+        }))
+    );
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
@@ -291,36 +296,37 @@ const OpcionMultiple = ({
     };
 
     const handleMoreOpcion = () => {
+        console.log('more')
         const newOpcion = {
-            id: opcionesRespuesta.length + 1,
+            idPregunta: opcionesRespuesta.length + 1,
             checked: false,
-            text: "",
+            respuesta: '',
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
             preguntaValue: '', // Valor inicial de la pregunta
             orden: 0,
-            respuesta: '',
         };
-
+        console.log(newOpcion)
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
+        
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
-    const handleOpcionChange = (id, value, checked, type) => {
+    const handleOpcionChange = (idPregunta, value, checked, type) => {
         if (!configuracion3) {
           // Solo cambiamos el estado si el switch está en modo "radio"
           if (type === 'checkbox') {
             // Para checkbox, cambiamos el estado del checkbox actual, pero también deseleccionamos todos los demás
             setOpcionesRespuesta((prevOpciones) =>
               prevOpciones.map((opcion) =>
-                opcion.id === id ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+                opcion.idPregunta === idPregunta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
               )
             );
           } else if (type === 'radio') {
             // Para radio, deseleccionamos todas las opciones excepto la que se hizo clic
             setOpcionesRespuesta((prevOpciones) =>
               prevOpciones.map((opcion) =>
-                opcion.id === id ? { ...opcion, checked: true } : { ...opcion, checked: false }
+                opcion.idPregunta === idPregunta ? { ...opcion, checked: true } : { ...opcion, checked: false }
               )
             );
           }
@@ -328,29 +334,28 @@ const OpcionMultiple = ({
           // En modo "checkbox", simplemente cambiamos el estado del checkbox actual
           setOpcionesRespuesta((prevOpciones) =>
             prevOpciones.map((opcion) =>
-              opcion.id === id ? { ...opcion, checked: !checked } : opcion
+              opcion.idPregunta === idPregunta ? { ...opcion, checked: !checked } : opcion
             )
           );
         }
     };
 
-    const handleOpcionTextChange = (id, newText) => {
+    const handleOpcionTextChange = (idPregunta, newText) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) =>
-            opcion.id === id ? { 
+            opcion.idPregunta === idPregunta ? { 
                 ...opcion,
-                text: newText,
                 respuesta: newText,
-                orden: id,
+                orden: idPregunta,
 
             } : opcion
           )
         );
     };
     
-    const handleDeleteOpcion = (id) => {
+    const handleDeleteOpcion = (idPregunta) => {
         setOpcionesRespuesta((prevOpciones) =>
-          prevOpciones.filter((opcion) => opcion.id !== id)
+          prevOpciones.filter((opcion) => opcion.idPregunta !== idPregunta)
         );
     };
 
@@ -634,12 +639,31 @@ const OpcionMultiple = ({
     };
     
     useEffect(() => {
+        
         listarTipoPregunta();
+        handleMoreOpcion();
     }, [])
+
+    
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+        const nuevasOpcionesRespuesta = contentPreg.opcionesRespuesta?.map((opcionApi) => ({
+            idPregunta: opcionApi.idPregunta,
+            respuesta: opcionApi.respuesta,
+            checked: false,
+            type: 'radio',
+            seccionValue: '',
+            preguntaValue: '',
+        })) ?? [];
+        setOpcionesRespuesta(nuevasOpcionesRespuesta);
+    }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
+
 
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)
     }
+
 
     return (
     <>
@@ -687,14 +711,16 @@ const OpcionMultiple = ({
 
                         <Col className='seccion3-opcionMultiple-editar'>
                             <DragDropContext onDragEnd={handleDragEnd}>
-                                <Droppable droppableId={`drop_${indiceSec+1}_${indice+1}`}>
-                                    {(provided) => (
-                                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                                            {opcionesRespuesta.map((opcion, index) => {
-                                                return (
+                                {opcionesRespuesta.map((opcion, index) => {
+                                    const droppableId = `opcion-${opcion.idPregunta ? opcion.idPregunta.toString() : index}`;
+                                    const draggableId = `draggable-${opcion.idPregunta ? opcion.idPregunta.toString() : index}`;
+                                    return (
+                                        <Droppable droppableId={droppableId} key={droppableId}>
+                                            {(provided) => (
+                                                <div ref={provided.innerRef} {...provided.droppableProps}>
                                                     <Draggable
-                                                        key={opcion.id.toString()}
-                                                        draggableId={opcion.id.toString()}
+                                                        key={draggableId}
+                                                        draggableId={draggableId}
                                                         index={index}
                                                     >
                                                         {(provided) => (
@@ -705,7 +731,7 @@ const OpcionMultiple = ({
                                                             >
                                                                 <Col className="seccion3-1-opcionMultiple-editar">
                                                                     <CustomCheckBox
-                                                                        key={opcion.id}
+                                                                        key={opcion.idPregunta}
                                                                         className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}
                                                                         checked={opcion.checked}
                                                                     >
@@ -715,7 +741,7 @@ const OpcionMultiple = ({
                                                                                     type="checkbox"
                                                                                     style={{ width: '100%', height: '100%' }}
                                                                                     checked={opcion.checked}
-                                                                                    onChange={() => handleOpcionChange(opcion.id, opcion.text, opcion.checked, 'checkbox')}
+                                                                                    onChange={() => handleOpcionChange(opcion.idPregunta, opcion.respuesta, opcion.checked, 'checkbox')}
                                                                                 />
                                                                                 <StyledCheckBox checked={opcion.checked} />
                                                                             </>
@@ -725,7 +751,7 @@ const OpcionMultiple = ({
                                                                                     type="radio"
                                                                                     style={{ width: '100%', height: '100%' }}
                                                                                     checked={opcion.checked}
-                                                                                    onChange={() => handleOpcionChange(opcion.id, opcion.text, opcion.checked, 'radio')}
+                                                                                    onChange={() => handleOpcionChange(opcion.idPregunta, opcion.respuesta, opcion.checked, 'radio')}
                                                                                 />
                                                                                 <StyledRadioButton checked={opcion.checked} />
                                                                             </>
@@ -736,9 +762,9 @@ const OpcionMultiple = ({
                                                                     <Respuesta
                                                                         className="textoOpcionRespuesta"
                                                                         type="text"
-                                                                        value={opcion.text}
+                                                                        value={opcion.respuesta}
                                                                         placeholder="Ingrese una opción de respuesta"
-                                                                        onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
+                                                                        onChange={(e) => handleOpcionTextChange(opcion.idPregunta, e.target.value)}
                                                                     />
 
                                                                     {usarPonderacion && (
@@ -754,25 +780,25 @@ const OpcionMultiple = ({
                                                                     <span
                                                                         style={{ marginTop: '1.3%', marginLeft: '2%', cursor: 'pointer' }}
                                                                         dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
-                                                                        onClick={() => handleDeleteOpcion(opcion.id)}
+                                                                        onClick={() => handleDeleteOpcion(opcion.idPregunta)}
                                                                     />
                                                                 </Col>
                                                             </div>
                                                         )}
                                                     </Draggable>
-                                                );
-                                            })}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
+                                                    {provided.placeholder}
+                                                </div>
+                                            )}
+                                        </Droppable>
+                                    );
+                                })}
                             </DragDropContext>
-
                             <Col >
                                 <span 
                                     style={{ marginTop: '1.3%', cursor: 'pointer' }} 
                                     dangerouslySetInnerHTML={{ __html: plushCircleSVG }} 
                                     onClick={handleMoreOpcion}
+                                    id = 'more'
                                 />
                             </Col>
                         </Col>
@@ -955,8 +981,8 @@ const OpcionMultiple = ({
                                     <Col className='seccion2-opcionMultiple-logica'>
                                         {opcionesRespuesta.map((opcion, opcionIndex) => (
                                             opcionIndex === index && (
-                                                <div key={opcion.id} style={{ width: '29%' }}>
-                                                    <p style={{ margin: 'unset', width: '20%' }}>{opcion.text}</p>
+                                                <div key={opcion.idPregunta} style={{ width: '29%' }}>
+                                                    <p style={{ margin: 'unset', width: '20%' }}>{opcion.respuesta}</p>
                                                 </div>
                                             )
                                         ))}
@@ -964,7 +990,7 @@ const OpcionMultiple = ({
                                         {opcionesRespuesta.map((opcion, opcionIndex) => (
                                             opcionIndex === index && (
                                                 <Col style={{ width: '100%' }}>
-                                                    <div key={opcion.id}></div>
+                                                    <div key={opcion.idPregunta}></div>
                                                         <select
                                                             className='select1Logica1'
                                                             value={opcion.seccionValue}
@@ -1031,6 +1057,7 @@ const OpcionMultiple = ({
                     sendTamanoPaso2={sendTamanoPaso2}
                     sendGrosorPaso2={sendGrosorPaso2}
                     sendTipografiaPaso2={sendTipografiaPaso2}
+                    obtenerPreg={obtenerPreg}
                 />
             </Container>
         )}

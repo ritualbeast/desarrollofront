@@ -52,13 +52,18 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
         if (!hasChanges) {
             // No guardar si no hay cambios en el FormControl
             return;
-          }
-        setTituloTemp(titulo)
+        }
+
+        // Eliminar el número de índice del título
+        
+        const nuevoTitulo = titulo.replace(new RegExp(` ${indiceSec + 1}$`), '');
+        
+        setTituloTemp(nuevoTitulo)
         setTitulo('');
         setComentario('');
         setIsInputFilled(false);
         setComentarioTemp(comentario)
-        handleEditarAceptar(indiceSec, titulo, comentario);
+        handleEditarAceptar(indiceSec, nuevoTitulo, comentario);
     };    
 
     return (

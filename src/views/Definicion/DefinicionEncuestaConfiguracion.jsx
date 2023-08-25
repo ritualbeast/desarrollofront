@@ -41,7 +41,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const [datosConfiguracion, setDatosConfiguracion] = useState(contentInit);
     const targetRef = useRef(null);
 
-    console.log("datosConfiguracion",datosConfiguracion);
     useEffect(() => {  
         
         ListarVigencia();

@@ -138,6 +138,8 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -154,6 +156,7 @@ const CargaDatos = ({
     handleEliminarPregunta,
     handleCambiarPregunta,
     preguntaVisibleOpen,
+    contentCont,
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -198,7 +201,6 @@ const CargaDatos = ({
             etiquetaBancoPregunta: ""
         }
     );
-
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -225,6 +227,7 @@ const CargaDatos = ({
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
     };
+
     const updateSelectedFormats = () => {
         let formats = [];
         if (isCheckedPDF) formats.push("PDF");
@@ -233,14 +236,12 @@ const CargaDatos = ({
         if (isCheckedJPG) formats.push("JPG");
         if (isCheckedGIF) formats.push("GIF");
 
-    
         setSelectedFormats(formats.join(", "));
     };
 
     const handleCheckboxPDF = (event) => {
         setIsCheckedPDF(event.target.checked);
         updateSelectedFormats();
-        
     };
 
     const handleCheckboxDOC = (event) => {
@@ -263,9 +264,6 @@ const CargaDatos = ({
         updateSelectedFormats();
     };
 
-    
-    
-
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
         setConfiguraciongeneral({
@@ -282,8 +280,7 @@ const CargaDatos = ({
                 ...prevConfiguracion,
                 mensajeEsObligatoria: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleInformacionPregunta = (event) => {
@@ -293,8 +290,7 @@ const CargaDatos = ({
                 ...prevConfiguracion,
                 etiquetaInformacionPregunta: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleSwitchConfigurar2 = () => {
@@ -322,8 +318,7 @@ const CargaDatos = ({
                 ...prevConfiguracion,
                 etiquetaBancoPregunta: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleClearOpcion = () => {
@@ -374,7 +369,13 @@ const CargaDatos = ({
         listarTipoPregunta();
     }, [])
 
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+    }, [contentCont]);
+
     const handlePregunta = (value) => {
+        console.log(value)
         handleCambiarPregunta(indice, indiceSec, value)
     }
 
@@ -516,8 +517,8 @@ const CargaDatos = ({
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
                             <Comentario
                                 className="textoMensajeError"
-                                value={mensajeError}
-                                type="text"
+                                value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
+                                readOnly
                                 onChange={(e) => setMensajeError(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />
@@ -540,8 +541,8 @@ const CargaDatos = ({
                                 <MensajeError 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    placeholder="Escribe aquí..." 
-                                    onChange={handleEsOBligatoriaMensaje}
+                                    placeholder="Escribe aquí..."
+                                    onChange={handleEsOBligatoriaMensaje} 
                                 />
                             </Col>
                         )}
@@ -559,7 +560,6 @@ const CargaDatos = ({
                                 <Informacion 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    placeholder="Escribe aquí..." 
                                     value={configuraciongeneral.etiquetaInformacionPregunta}
                                     onChange={handleInformacionPregunta}
                                 />

@@ -13,7 +13,16 @@ const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 const uploadSVG = svgManager.getSVG('upload');
 
-const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,preview4, sendPreviewLogo,sendPosicionImagen, sendTamanoImagen}) => {
+const DisenoEncuestaLaterallogotipo = ({
+    openMenuPrincipal, 
+    closeMenuLogotipo,
+    preview4, 
+    sendPreviewLogo,
+    sendPosicionImagen, 
+    sendTamanoImagen,
+    contenEstilos
+}) => {
+
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -21,16 +30,13 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo,pre
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
+    const [estilos, setEstilos] = useState(contenEstilos);  
 
     
     useEffect(() => {
         ListarPosicionImagen();
         setLogotipo(sendPreviewLogo);
     }, [logotipo]);
-
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
 
 
     const handleChangeTamano = (event) => {

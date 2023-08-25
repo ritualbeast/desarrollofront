@@ -34,11 +34,26 @@ const tableSVG = svgManager.getSVG('table');
 const clipBoardSVG = svgManager.getSVG('clip-board');
 const warningLightSVG = svgManager.getSVG('warning-light');
 const edit2SVG = svgManager.getSVG('edit2');
+const starFillSVG = svgManager.getSVG('star-fill');
+const squareFillSVG = svgManager.getSVG('square-fill');
+const circleFillSVG = svgManager.getSVG('circle-fill');
+const triangleFillSVG = svgManager.getSVG('triangle-fill');
 
-const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
-    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo , sendFooterImagen
-
+const NuevaEncuesta = ({
+  openVistaPrevia, 
+  handleCloseVistaPrevia, 
+  handleTotalPreguntas, 
+  contentInit,
+  sendTamanoPaso2, 
+  sendGrosorPaso2,
+  sendTipografiaPaso2, 
+  sendImagenFondo , 
+  sendFooterImagen,
+  obtenerPreg,
+  regresarRevision,
+  estilos
 }) => {
+
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
@@ -59,7 +74,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
     const [indexEliminar, setIndexEliminar] = useState(null);
     const [isUp, setIsUp] = useState(true);
     const [seccionVisible, setSeccionVisible] = useState(Array(contentCont.length).fill(true));
-    const [editarTituloVisible, setEditarTituloVisible] = useState(false);
+    const [editarTituloVisible, setEditarTituloVisible] = useState([]);
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [titulo, setTitulo] = useState("Seccion ");
     const [comentario, setComentario] = useState("");
@@ -160,12 +175,14 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
         urlRedireccion: '',
         imagenCierre: '',   
         textoBotonCierre: '',
-        preguntas:[]
+        preguntas:[],
+        regresar:true,
       }
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
       setSeccionVisible((prevVisibility) => [...prevVisibility, true]);
-
+      setMostrarContenedorC((prevVisibility) => [...prevVisibility, true]);
+      setEditarTituloVisible((prevVisibility) => [...prevVisibility, false]);
     };
 
     const handleSeccionCierre = () => {
@@ -173,20 +190,29 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setNuevaSeccionVisible(false);
     };    
 
-    const handleOptionMultiple = (index) => {
-      let obj={
-        tipo:'OM',
-        save:false,
-        pregunta:'',
-        cancelar:'',
+    const handleOptionMultiple = (index, preguntas, saveValue = false, cancelarValue = '') => {
+      if (!Array.isArray(preguntas)) {
+        console.error('Preguntas no es un array:', preguntas);
+        return;
       }
-
+    
+      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+    
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].preguntas];
-      contenidoActual.push(obj);
-
-      nuevoEstado[index].preguntas = contenidoActual;
-
+      const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
+    
+      preguntas.forEach((preguntaSeleccionada) => {
+        const obj = {
+          tipo: 'OM',
+          save: saveValue,
+          pregunta: preguntaSeleccionada.pregunta,
+          opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
+          cancelar: cancelarValue,
+        };
+        contenidoActual.push(obj);
+      });
+    
+      nuevoEstado[seccionIndex].preguntas = contenidoActual;
       setContentOpt(nuevoEstado);
 
       $(`#NuevaPreg${index +1}`).removeClass("active");
@@ -195,21 +221,31 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
 
-    const handleValoracionEstrellas = (index) => {
-      let obj={
-        tipo:'VE',
-        save:false,
-        pregunta:'',
-        cancelar:'',
+    const handleValoracionEstrellas = (index, preguntas, saveValue = false, cancelarValue = '') => {
+      if (!Array.isArray(preguntas)) {
+        console.error('Preguntas no es un array:', preguntas);
+        return;
       }
-
+    
+      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+    
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].preguntas];
-      contenidoActual.push(obj);
-
-      nuevoEstado[index].preguntas = contenidoActual;
+      const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
+    
+      preguntas.forEach((preguntaSeleccionada) => {
+          const obj = {
+          tipo: 'VE',
+          save: saveValue,
+          pregunta: preguntaSeleccionada.pregunta,
+          opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
+          cancelar: cancelarValue,
+        };
+        contenidoActual.push(obj);
+      });
+    
+      nuevoEstado[seccionIndex].preguntas = contenidoActual;
+      setContentVari(nuevoEstado);
       
-      setContentVari((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
@@ -220,48 +256,90 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       setNuevaPreguntaVisible(false);
     };
 
-    const handleCargaArchivo = (index) => {
-      let obj={
-        tipo:'CA',
-        save:false,
-        pregunta: 'Adjunte su CV',
-        pregunta2: 'Suba archivos PDF, PNG',
-        cancelar:''
+    const handleCargaArchivo = (index, preguntas, saveValue = false, cancelarValue = '') => {
+      if (!Array.isArray(preguntas)) {
+        console.error('Preguntas no es un array:', preguntas);
+        return;
       }
-
+    
+      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+    
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].preguntas];
-      contenidoActual.push(obj);
+      const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
 
-      nuevoEstado[index].preguntas = contenidoActual;
-      setContentCont(nuevoEstado);
-      setContentCarg((prevVari) => [...prevVari, obj]);
+      preguntas.forEach((preguntaSeleccionada) => {
+        const obj = {
+          tipo:'CA',
+          save:saveValue,
+          pregunta: preguntaSeleccionada.pregunta,
+          pregunta2: 'Suba archivos PDF, PNG',
+          cancelar:cancelarValue
+        }
+        contenidoActual.push(obj);
+      });
+
+      nuevoEstado[seccionIndex].preguntas = contenidoActual;
+      setContentCarg(nuevoEstado);
       $(`#NuevaPreg${index +1}`).removeClass("active");
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
     
-    const handleCuadroComentarios = (index) => {
-      let obj={
-        tipo:'CC',
-        save:false,
-        pregunta: 'Añada un comentario sobre la charla',
-        cancelar:'',
+    const handleCuadroComentarios = (index, preguntas, saveValue = false, cancelarValue = '') => {
+      if (!Array.isArray(preguntas)) {
+        console.error('Preguntas no es un array:', preguntas);
+        return;
       }
-
+    
+      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+    
       const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[index].preguntas];
-      contenidoActual.push(obj);
+      const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
 
-      nuevoEstado[index].preguntas = contenidoActual;
+      preguntas.forEach((preguntaSeleccionada) => {
+        const obj = {
+          tipo:'CC',
+          save:saveValue,
+          pregunta: preguntaSeleccionada.pregunta,
+          opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
+          cancelar:cancelarValue,
+        }
+        contenidoActual.push(obj);
+      });
+      
+      nuevoEstado[seccionIndex].preguntas = contenidoActual;
+      setContentCuadro(nuevoEstado);
 
-      setContentCuadro((prevVari) => [...prevVari, obj]);
       $(`#NuevaPreg${index +1}`).removeClass("active");
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
     };
+
+    useEffect(() => {
+      if (obtenerPreg && obtenerPreg.length > 0) {
+        // Filtrar las preguntas que son de tipo "OM"
+        const preguntasOM = obtenerPreg.filter(preg => preg.tipoPregunta === 'OM');
+        const preguntasVE = obtenerPreg.filter(preg => preg.tipoPregunta === 'VE');
+        const preguntasCA = obtenerPreg.filter(preg => preg.tipoPregunta === 'CA');
+        const preguntasCC = obtenerPreg.filter(preg => preg.tipoPregunta === 'CC');
+    
+        if (preguntasOM.length > 0) {
+          const seccionIndex = 0; // Puedes cambiar esto para añadir las preguntas a una sección diferente
+          handleOptionMultiple(seccionIndex, preguntasOM, true, true);
+        } if (preguntasVE.length > 0) {
+          const seccionIndex = 0;
+          handleValoracionEstrellas(seccionIndex, preguntasVE, true, true);
+        } if (preguntasCA.length > 0) {
+          const seccionIndex = 0;
+          handleCargaArchivo(seccionIndex, preguntasCA, true, true)
+        } if (preguntasCC.length > 0) {
+          const seccionIndex = 0;
+          handleCuadroComentarios(seccionIndex, preguntasCC, true, true)
+        }
+      }
+    }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleEditarTitulo = (index) => {
       setMostrarContenedorC((prevState) => {
@@ -288,6 +366,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       nuevoEstado[index] = obj;
       setContentCont(nuevoEstado);
       $(`#editTitulo${index + 1}`).addClass("ocultar");
+      $(`#editTitulo${index + 1}`).removeClass("visible");
     };
     
     const handleCancelarEditarTitulo = (indiceSec) => {
@@ -309,6 +388,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       });
     
       setEditarTituloVisible((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? true : false)));
+      $(`#editTitulo${indiceSec +1}`).removeClass("oculto");
     };
     
     const handleAceptarEditarTitulo = (indiceSec, nuevoTitulo, comentario) => {
@@ -326,7 +406,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
           const newMostrar = prevMostrar.map((mostrar, i) => (i === indiceSec ? false : mostrar));
           
           // Llamar a regresarRevision pasando el valor false
-          // regresarRevision(newMostrar[indiceSec]);
+          regresarRevision(newMostrar[indiceSec]);
           
           return newMostrar;
         });
@@ -382,16 +462,17 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [nuevaPreguntaVisible, nuevaSeccionVisible]);
+    }, [nuevaPreguntaVisible, nuevaSeccionVisible, contentCont]);
 
     const handleButtonNuevaPregunta = (index) => {
       // Verificar el estado actual de las acciones
-      
       if($(`#NuevaPreg${index +1}`).hasClass('active')){
         $(`#NuevaPreg${index +1}`).removeClass("active");
         $(`#NuevaPreg${index +1}`).addClass("inactive");
         $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
         $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+        
+        
       }else{
         $(`#NuevaPregVisi${index +1}`).removeClass("ocultar");
         $(`#NuevaPreg${index +1}`).addClass("active");
@@ -783,7 +864,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                       <Col  className='contendor-nuevaEncuesta principal'>
                         <Col 
                           id={`editTitulo${index+1}`}
-                          className={editarTituloVisible ? 'titulo-editar' : 'titulo-editar'}
+                          className={editarTituloVisible[index] ? 'titulo-editar' : 'titulo-editar oculto'}
                         >
                             <Col 
                                 id={`editSec${index +1}`}
@@ -801,10 +882,8 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                 onMouseLeave={() => handleMouseLeaveEditar(index)}
                             >
                                 <div style={{width:'96%'}}>
-                                  <p className='titulo-nuevaEncuesta' style={tituloStyle}
-                                  > {seccion.titulo + (index +1) }</p>
-                                  <p 
-                                    style={{ descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                  <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
+                                  <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
                                 </div>
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
@@ -848,7 +927,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
 
 
                             <div>
-                              {mostrarContenedorC[index] && seccion.tipo === 'C' && (
+                              {mostrarContenedorC[index] && seccion.tipoSeccion === 'C' && (
                                 <EditarTituloSeccion
                                   indiceSec={index}
                                   contentSec={seccion}
@@ -878,6 +957,7 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   sendTamanoPaso2={sendTamanoPaso2}
                                   sendGrosorPaso2={sendGrosorPaso2}
                                   sendTipografiaPaso2={sendTipografiaPaso2}
+                                  obtenerPreg={obtenerPreg}
                                 />
                               }  
                               if (preg.tipo == 'VE') {
@@ -947,13 +1027,28 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                               className="container-newContendorPregunta ocultar"
                               
                             >
-                              <Row style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
-                                <Col className='container-newContendorPregunta-pt1' onClick={()=> { handleOptionMultiple(index) }}>
+                              <Row className='opciones-estilos' style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
+                                <Col 
+                                className='container-newContendorPregunta-pt1' 
+                                onClick={() => { 
+                                    // Define la pregunta predeterminada
+                                    const defaultPregunta = [{ 
+                                      pregunta: '' // Puedes definir más propiedades aquí si es necesario
+                                    }];
+                                    handleOptionMultiple(index, defaultPregunta); 
+                                  }}
+                                >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'OM')?.descripcion}</p>
                                 </Col>
                                     
-                                <Col className='container-newContendorPregunta-pt2' onClick={() => handleValoracionEstrellas(index)}>
+                                <Col className='container-newContendorPregunta-pt2' 
+                                onClick={() => {
+                                  const defaultPregunta =[{
+                                    pregunta:''
+                                  }]
+                                  handleValoracionEstrellas(index, defaultPregunta)}}
+                                >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'VE')?.descripcion}</p>
                                 </Col>
@@ -963,12 +1058,24 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'MV')?.descripcion}</p>
                                 </Col>
                                       
-                                <Col className='container-newContendorPregunta-pt4' onClick={() => handleCargaArchivo(index)}>
+                                <Col className='container-newContendorPregunta-pt4' 
+                                onClick={() => {
+                                  const defaultPregunta = [{
+                                    pregunta:''
+                                  }]
+                                  handleCargaArchivo(index, defaultPregunta)}}
+                                >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: uploadSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'CA')?.descripcion}</p>
                                 </Col>
             
-                                <Col className='container-newContendorPregunta-pt5' onClick={() => handleCuadroComentarios(index)}>
+                                <Col className='container-newContendorPregunta-pt5' 
+                                onClick={() => {
+                                  const defaultPregunta = [{
+                                    pregunta:''
+                                  }]
+                                  handleCuadroComentarios(index, defaultPregunta)}}
+                                >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: clipBoardSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'CC')?.descripcion}</p>
                                 </Col>
@@ -1198,12 +1305,21 @@ const NuevaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreg
             </Box>
         </Modal>
 
-        <ModalVistaPrevia
+        { openVistaPrevia && <ModalVistaPrevia
             open={openVistaPrevia}
             onClose={handleCloseVistaPrevia}
             contentCont={contentCont}
             showModal={showModal}
+            sendTamanoPaso2={sendTamanoPaso2}
+            sendGrosorPaso2={sendGrosorPaso2}
+            sendTipografiaPaso2={sendTipografiaPaso2}
+            estilos={estilos}
+            starFillSVG={starFillSVG}
+            squareFillSVG={squareFillSVG}
+            circleFillSVG={circleFillSVG}
+            triangleFillSVG={triangleFillSVG}
         />
+        }
     </>
   )
 }

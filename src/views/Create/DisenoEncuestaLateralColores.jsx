@@ -34,13 +34,6 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sen
     const [currentColor, setCurrentColor] = useState('#FFFFFF');
   const [savedColors, setSavedColors] = useState([]);
 
-  const handleAddColor = () => {
-    setSavedColors((prevColors) => [...prevColors, currentColor]);
-  };
-
-    const handleColorChange = (color) => {
-        setSelectedColor(color.hex);
-    };
 
     const handleClickColorSeleccionado = (index) => {
         const updatedColorEncuesta = [...colorEncuesta];

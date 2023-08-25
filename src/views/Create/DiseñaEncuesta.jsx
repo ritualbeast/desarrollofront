@@ -3,10 +3,18 @@ import { Col } from 'react-bootstrap';
 import NuevaEncuesta from './../Create/NuevaEncuesta';
 import DisenoEncuestaLateralPrincipal from './../Create/DisenoEncuestaLateralPrincipal';
 import FormatoEncuestaLateralPrincipal from './../Create/FormatoEncuestaLateralPrincipal';
+// quizas pienses que este componente 
+// es obsoleto y no hace nada, y estas en lo cierto.
+// este componente no hace nada
+// pero es necesario  
+// porque cuando removemos este componente
+// todo el proyecto se rompe por alguna razon
+// y no sabemos porque.
+// asi que aqui se queda 
 
 
 const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
-    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo, sendFooterImagen
+    sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo, sendFooterImagen, obtenerPreg, regresarRevision
 }) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
@@ -49,6 +57,8 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
                             sendTipografiaPaso2={sendTipografiaPaso2}
                             sendImagenFondo={sendImagenFondo}
                             sendFooterImagen={sendFooterImagen}
+                            obtenerPreg = {obtenerPreg}
+                            regresarRevision={regresarRevision}
                         />
                         )
                     }

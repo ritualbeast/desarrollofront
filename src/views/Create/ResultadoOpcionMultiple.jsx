@@ -92,7 +92,10 @@ const ResultadoOpcionMultiple = ({
   informacion,
   configuracion6Activa,
   preguntaVisibleC,
-  sendTamanoPaso2, sendGrosorPaso2, sendTipografiaPaso2
+  sendTamanoPaso2, 
+  sendGrosorPaso2, 
+  sendTipografiaPaso2,
+  obtenerPreg,
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -297,7 +300,7 @@ const ResultadoOpcionMultiple = ({
                 </div>
               )}
               <div style={{...opcionesRespuestaStyle, width:'95%', marginBottom: '0.4%', marginLeft: '2%'}}>
-                {opcion.text}
+                {opcion.respuesta}
               </div>
             </Col>
           ))}

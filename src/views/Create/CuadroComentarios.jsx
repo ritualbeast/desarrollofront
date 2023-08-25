@@ -9,7 +9,19 @@ import styled from 'styled-components';
 
 const trashSVG = svgManager.getSVG('trash-mini');
 
-const Pregunta = styled.textarea`
+const Pregunta = styled(FormControl)`
+    width: 93.8% !important;
+    border: 1px solid #ccc !important;
+    margin-left: 1.8%;
+    margin-bottom: 1%;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const Respuesta = styled.textarea`
     width: 94.8%; 
     border: 1px solid #ccc;
     border-radius:4px;
@@ -72,6 +84,8 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -88,6 +102,7 @@ const CuadroComentarios = ({
     handleEliminarPregunta, 
     handleCambiarPregunta,
     preguntaVisibleOpen,
+    contentCont,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -103,6 +118,13 @@ const CuadroComentarios = ({
     const [configuracion4, setConfiguracion4] = useState(false);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
+    const opcionesApi = contentPreg.opcionesRespuesta ?? [];
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState(() =>
+        opcionesApi.map((opcionApi) => ({
+        id: opcionApi.idOpcionRespuesta,
+        respuesta: opcionApi.respuesta,
+        }))
+    );
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
@@ -177,12 +199,13 @@ const CuadroComentarios = ({
 
     const handleGuardarCuadroComentarios = () => {
         setPreguntaTemp(pregunta)
-        handleCuadroComentarios(indice, indiceSec, pregunta, cancelar);
+        handleCuadroComentarios(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
     }; 
 
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
+            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 5);
             if (defaultTipo) {
@@ -192,14 +215,25 @@ const CuadroComentarios = ({
                 }
                 setSelectedTipoPregunta(data);
             }
+            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
     };
     
-      useEffect(() => {
+    useEffect(() => {
         listarTipoPregunta();
-      }, [])
+    }, [])
+
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+        const nuevasOpcionesRespuesta = contentPreg.opcionesRespuesta?.map((opcionApi) => ({
+            id: opcionApi.idOpcionRespuesta,
+            respuesta: opcionApi.respuesta,
+        })) ?? [];
+        setOpcionesRespuesta(nuevasOpcionesRespuesta);
+    }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
 
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)
@@ -239,12 +273,26 @@ const CuadroComentarios = ({
                         </Col>
 
                         <Col>
-                            <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>Texto de pregunta</p>
-                            <Pregunta
+                            <Col>
+                                <p style={{ marginLeft: '2.2%', marginBottom: '1%', cursor: 'default' }}>Pregunta {indice+1}</p>
+                                <Pregunta
+                                    className="textoOpcionRespuesta"
+                                    type="text"
+                                    value={pregunta}
+                                    placeholder="Añada un comentario sobre la charla"
+                                    onChange={(e) => setPregunta(e.target.value)}
+                                />
+                            </Col>
+                            
+                            <Respuesta
                                 className="textoAgradecimiento"
-                                value={pregunta}
-                                onChange={(e) => setPregunta(e.target.value)}
-                                rows={5} // Ajusta el número de filas según tus necesidades
+                                value={opcionesRespuesta[0]?.respuesta}
+                                onChange={(e) => {
+                                    const nuevasOpciones = [...opcionesRespuesta];
+                                    nuevasOpciones[0] = { ...nuevasOpciones[0], respuesta: e.target.value };
+                                    setOpcionesRespuesta(nuevasOpciones);
+                                }}
+                                rows={5}
                             />
                         </Col>
                     </Container>
@@ -303,6 +351,7 @@ const CuadroComentarios = ({
                                     type="text" 
                                     placeholder="Escribe aquí..." 
                                     value={informacionPregunta}
+                                    onChange={(e) => setInformacionPregunta(e.target.value)}
                                 />
                             </Col>
                         )}
@@ -398,6 +447,7 @@ const CuadroComentarios = ({
                     index={indice}
                     indexSec={indiceSec}
                     pregunta={pregunta}
+                    opciones={opcionesRespuesta}
                     handleEditarPregunta={handleEditarPregunta}
                     handleEliminarPregunta = {handleEliminarCuadroComentarios}
                     informacion = {informacionPregunta}

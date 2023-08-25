@@ -21,7 +21,7 @@ const dropletSVG = svgManager.getSVG('droplet');
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
     sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
     ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
-    sendImagenFondo, sendImagenFondoEstructura
+    sendImagenFondo, sendImagenFondoEstructura, contenEstilos
 }) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -352,6 +352,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
               sendPosicionImagen={(posicion) => handleSendPosicionLogotipo(posicion)}
               sendTamanoImagen={(tamano) => handleSendTamanoLogotipo(tamano)}
               sendPreviewLogo = {sendPreviewLogotipo}
+              contenEstilos={contenEstilos}
             />
         )    
         }
