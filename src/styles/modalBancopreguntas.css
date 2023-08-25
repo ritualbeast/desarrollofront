@@ -1,10 +1,10 @@
 .modalbancopreguntas_rowfiltro{
     display: flex;
-    width: 100%;
+    width: 99%;
     margin: 1%;
 }
 .modalbancopreguntas_col1{
-    width: 20%;
+    width: 28%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -13,19 +13,16 @@
 }
 
 .modalbancopreguntas_col2{
-    width: 73%;
+    width: 67.5%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-left: 1%;
-    margin-right: 1%;
     position: relative;
 }
 
 .modalbancopreguntas_coltitle p{
-    
-    
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 20px;
     font-weight: 500;
     line-height: 28px;
@@ -33,7 +30,6 @@
     text-align: left;
     color: #270089;
     margin: 2%;
-    
 }
 .modalbancopreguntas_coltitle2{
     width: 20%;
@@ -53,7 +49,7 @@
 
 .modalbancopreguntas_rowtitle{
     display: flex;
-    width: 100%;
+    width: 99%;
     margin: 1%;
 }
 
@@ -61,14 +57,12 @@
     border-color: #c5c0c0;
     color: #757575  ;
     font-size: 14px;
-    
 }
 
 .modalbancopreguntas_input{
     border-color: #E0E0E0 !important;
     color: #757575  !important;
     font-size: 14px !important;
-    
 }
 
 /*Estilos titulo despues del filtro*/
@@ -78,6 +72,7 @@
     margin: 0%;
     padding: 0%;
     height: 20px !important;
+    margin-top: 2%;
 }
 .modalbancopreguntas_coltitle2{
     width: 50%;
@@ -90,39 +85,40 @@
     height: 20px !important;
 }
 .modalbancopreguntas_coltitle2x p{
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 0em;
     text-align: left;
     color : #878787;
-
+    margin: unset;
 }   
 .modalbancopreguntas_coltitle3{
     width: 50%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: 55px !important;
+    height: 20px !important;
 }
 .modalbancopreguntas_seleccionadas{
     padding: 1%;
     color: #FF4197;
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: 700;
     line-height: 24px;
     letter-spacing: 0em;
     text-align: right;
-
+    margin: unset;
 }
 .modalbancopreguntas_preguntastotal{
-    margin-right: 2%;
     padding: 1%;
     color: #757575;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
+    margin: unset;
+    margin-right: 4%;
 }
 
 
@@ -154,12 +150,10 @@
 
 .modalbancopreguntas_ul{
     margin: 0;
-    padding: 10%;
     list-style: outside;
     color : #757575;
     font-weight: initial;
 }
-
 
 .modalbancopreguntas_rowpreguntas{
     display: grid;
@@ -175,27 +169,30 @@
 
 
 .modalbancopreguntas_divmenudesplegable{
-    margin: 3%;
+    /* margin: 3%;
     display: flex;
-    justify-content: center !important;
+    justify-content: center !important; */
+    width: 91.8%;
+    margin-top: 2%;
+    margin-bottom: 3%;
+    margin-left: 4%;
+    margin-right: unset;
 }
 .modalbancopreguntas_divmenudesplegableSelect{
-    
-    width: 90% !important;
     background-color: #F5F5F5 !important;
     font-weight: bold;
     
     
 }
 .modalbancopreguntas_divpreguntas {
-    margin-left: 2%;
+    margin-left: 1.5%;
     margin-right: 2%;
-    margin-top: 3%;
+    margin-top: 1%;
     margin-bottom: 0%;
-    min-width: 96.8%;
+    min-width: 97.2%;
     min-height: 95%;
     max-width: 680px;
-    max-height: 230px;
+    max-height: 335px
 }
 
 .modalbancopreguntas_divpreguntas::-webkit-scrollbar {
@@ -216,9 +213,9 @@
 
 
 .modalbancopreguntas_divpreguntasbody{
-    margin-left: 7%;
-    margin-right: 7%;
-    margin-top: 5%;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 3%;
     margin-bottom: 0%;
 }	
 
@@ -233,13 +230,12 @@
     justify-content: center;
     align-items: center;
     padding: 8px 16px;
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 500;
     border-style: none;
     text-align: left;
-    margin-bottom: 5%;
-    margin-top: 5%;
+    cursor: pointer;
    }
   
    .buttoncancelarEncuestas{
@@ -251,16 +247,14 @@
     justify-content: center;
     align-items: center;
     padding: 8px 16px;
-   
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0em;
     text-align: left;
     border-style: none;
-    margin-bottom: 5%;
-    margin-top: 5%;
+    cursor: pointer;
    }
 
    /*Estilos de los botones*/
@@ -286,5 +280,15 @@
   .modalbancopreguntas_searchIcon {
     width: 5px !important;
     height: 5px !important;
-    fill: #000; /* Ajusta el color del icono según tus necesidades */
+    fill: #000;
   }
+.modalbancopreguntas_colpaginacion{
+    position: absolute;
+    right: 10.2%;
+    bottom: 7%;
+}
+
+.css-o4b71y-MuiAccordionSummary-content.Mui-expanded{
+    margin-top: 3% !important;
+    margin-bottom: unset !important;
+}

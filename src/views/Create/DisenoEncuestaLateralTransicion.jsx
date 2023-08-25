@@ -13,34 +13,7 @@ const chevronsdownSVG = svgManager.getSVG('chevrons-down');
 
 const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion}) => {
 
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
-    
-    const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-    const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
-
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
-    const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
-    };
-    
-
-    const RadioButton = ({ id, value, checked, onChange, label }) => (
-        <label className="radioButton">
-            <input
-            type="radio"
-            id={id}
-            value={value}
-            checked={checked}
-            onChange={onChange}
-            />
-            <span className="checkmark"></span>
-            {label}
-        </label>
-        );
-  
     const targetRef = useRef(null);
     const handleIconClick = () => {
         setShowTooltip(false);
@@ -67,17 +40,6 @@ const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion
         </Tooltip>
     );
 
-    
-
-    // lista tamano
-
-    const tamano = [
-        { id: 1, nombre: 'Tamaño actual' },
-        { id: 2, nombre: 'Pequeño' },
-        { id: 3, nombre: 'Mediano' },
-        { id: 4, nombre: 'Grande' } 
-    ];
-
     // resaltar seleccion
 
     const [selectedItem, setSelectedItem] = useState(null);
@@ -96,8 +58,6 @@ const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion
         openMenuPrincipal(true);
         closeMenuTransicion(false);
     }
-    
-    
     
   return (
     <>

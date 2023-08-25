@@ -280,7 +280,7 @@ const Create = () => {
       };
 
     const sendDatosConfiguracionEncuesta = (datos) => {
-       console.log(datos)
+       
         setDatosConfiguracionEncuesta(datos)
     }
 

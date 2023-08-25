@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState , useImperativeHandle, forwardRef} from 'react'
+import React, { useEffect, useRef, useState , forwardRef} from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFondo.css'
@@ -38,13 +38,12 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     closeMenuConfiguracion, sendDatosConfiguracionEncuesta,contentInit} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
-    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
     const [datosConfiguracion, setDatosConfiguracion] = useState(contentInit);
     const targetRef = useRef(null);
 
-    
-
+    console.log("datosConfiguracion",datosConfiguracion);
     useEffect(() => {  
+        
         ListarVigencia();
         ListarCategoriaEncuesta();
     }, []); 
@@ -91,7 +90,14 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
             const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
             setVigencia(response.data.listaEnumerados);
             const defaultTipo = response.data.listaEnumerados.find((item) => item.id === '');
-            if (defaultTipo) {
+            if (datosConfiguracion.enumTipoVigencia !== '') {
+                setSelectedVigencia({
+                    value: datosConfiguracion.enumTipoVigencia,
+                    label: datosConfiguracion.vigencia,
+                });
+
+            }
+            else if (defaultTipo) {
                 const data={
                     value: defaultTipo.id,
                     label:defaultTipo.etiqueta
@@ -115,16 +121,23 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
             
             setListarCategoriaEncuestas(response.data.row);
             const defaultTipo = response.data.row.find((item) => item.idCategoriaEncuesta === '');
-            if (defaultTipo) {
-                const data={
-                    value: defaultTipo.idCategoriaEncuesta,
-                    label:defaultTipo.nombre
-                }
+            if (datosConfiguracion.idCategoriaEncuesta !== '') {
+                setSelectedCategoriaEncuesta({
+                    value: datosConfiguracion.idCategoriaEncuesta,
+                    label: datosConfiguracion.nombreCategoria,
+                });
+
+            }
+
+
+            else if (defaultTipo) {
+            
             setDatosConfiguracion({...datosConfiguracion, 
-                categoria: defaultTipo.idCategoriaEncuesta,
+                idCategoriaEncuesta: defaultTipo.idCategoriaEncuesta,
                 nombreCategoria: defaultTipo.nombre
             });
-            }
+            } 
+            
         } catch (error) {
             console.error(error);
         }
@@ -135,6 +148,8 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         setDatosConfiguracion({
           ...datosConfiguracion,
           idCategoriaEncuesta: selectedOption.value,
+            nombreCategoria: selectedOption.label,
+          
         });
         setSelectedCategoriaEncuesta(selectedOption);
       };
@@ -144,6 +159,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         setDatosConfiguracion({
             ...datosConfiguracion,
             enumTipoVigencia: selectedOption.value,
+            vigencia: selectedOption.label,
             
         });
         setSelectedVigencia(selectedOption);
@@ -155,6 +171,8 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         const fechaInicio = new Date(event.target.value);
         const fechaActual = new Date();
         fechaActual.setHours(0, 0, 0, 0);
+
+        
 
         if (fechaInicio >= fechaActual) {
             setDatosConfiguracion({
@@ -177,7 +195,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                 fechaFin: event.target.value + ' 23:59:59',
             });
             
-            setFechaFinSeleccionada(event.target.value + ' 23:59:59');
         } else {
             alert("La fecha de fin no puede ser menor a la fecha de inicio");
         }
@@ -255,7 +272,9 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaInicio" onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
+                                <input type="date" className="inputFechaInicio"
+                                value={datosConfiguracion.fechaInicio.split(' ')[0]} 
+                                onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
@@ -263,7 +282,9 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                             </div>
 
                             <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaFin" onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
+                                <input type="date" className="inputFechaFin" 
+                                value={datosConfiguracion.fechaFin.split(' ')[0]}
+                                onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
                             </div>
                         </div>
                     </div>

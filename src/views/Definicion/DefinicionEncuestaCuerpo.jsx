@@ -50,9 +50,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
-  const [preview64, setPreview64] = useState(null);
-  const [preview64_2, setPreview64_2] = useState(null);
-  // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(contentInit);
   const [datosDefinicionEstilo, setDatosDefinicionEstilo] = useState(contenEstilos);
@@ -66,10 +63,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const tituloGrosor = sendGrosor3?.titulo;
   const tipografia = sendTipografia3?.tipografia;
   const tituloTipografia = sendTipografia3?.titulo;
-  const [tituloStyle, setTituloStyle] = useState({});
-  const [descripcionStyle, setDescripcionStyle] = useState({});
-  const [leyendaStyle, setLeyendaStyle] = useState({});
-  const [botonStyle, setBotonStyle] = useState({});
 
   // capturar el valor de todos los datos
 sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
@@ -202,7 +195,6 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
                 base64String = base64String.replace("data:image/png;base64,", "");
                 // Utiliza la cadena modificada
                 setPreview1(reader.result);
-                setPreview64(base64String);
             };
 
             reader.onerror = (error) => {
@@ -236,7 +228,6 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
                 base64String = base64String.replace("data:image/png;base64,", "");
                 // Utiliza la cadena modificada
                 setPreview2(reader.result);
-                setPreview64_2(base64String);
             };
 
             reader.onerror = (error) => {

@@ -1,21 +1,17 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Col } from 'react-bootstrap';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import svgManager from '../../assets/svg';
-import { lista } from '../../prisma/data/listaEncuesta.ts';
-import { listaBancoPreguntas } from '../../prisma/data/listaBancoPreguntas.ts';
-import NuevaEncuesta from './../Create/NuevaEncuesta';
-import DisenoEncuestaLateralPrincipal from './../Create/DisenoEncuestaLateralPrincipal';
-import FormatoEncuestaLateralPrincipal from './../Create/FormatoEncuestaLateralPrincipal';
+import { ListarCategoriasService } from '../../services/EncuestasServices';
+import ModalBancoPreguntas from '../Encuestas/ModalBancoPreguntas';
 
-const chevronsLeftSVG = svgManager.getSVG('chevrons-left');
-const chevronsRightSVG = svgManager.getSVG('chevrons-right');
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
+const chevronsNighBtSVG = svgManager.getSVG('chevron-rigth-black');
 
-const BancoPreguntasLateralPrincipal = () => {
+const BancoPreguntasLateralPrincipal = ({onObtenerPregunta}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -24,21 +20,12 @@ const BancoPreguntasLateralPrincipal = () => {
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const handleClick = (nombre) => {
-        setActiveIcon(nombre);
-    };
-    
-    const handleNestedClick = (nombre) => {
-        // Lógica para manejar el clic en las opciones desplegadas
-    };
+    const [listarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
+    const [openBancoPreguntas, setOpenBancoPreguntas] = useState(false);
+    const [selectedCategoriaId, setSelectedCategoriaId] = useState(null);
 
     const handleIconClick = () => {
         setShowTooltip(false);
-    };
-
-    const toggleEncuestaSegundoCuerpo = () => {
-        setEncuestaSegundoCuerpoVisible(!encuestaSegundoCuerpoVisible);
     };
 
     const renderTooltip = (props) => (
@@ -70,6 +57,29 @@ const BancoPreguntasLateralPrincipal = () => {
             setIsModalVisible(false);
         }
     };
+
+    useEffect(() => {
+        ListarCategoriaEncuesta();
+    }, []);
+
+    const ListarCategoriaEncuesta = async () => {
+        try {
+          const response = await  ListarCategoriasService();
+          setListarCategoriaEncuestas(response.data.row);
+        } catch (error) {
+          console.error(error);
+        }
+    };
+
+    const handleOpenBancoPreguntas = (idCategoriaEncuesta) => {
+        setSelectedCategoriaId(idCategoriaEncuesta);
+        setOpenBancoPreguntas(true);
+    };
+
+    const handleCloseBancoPreguntas = (preguntasSeleccionadas) => {
+        setOpenBancoPreguntas(false);
+        onObtenerPregunta(preguntasSeleccionadas)
+    };
     
     return (
         <div
@@ -78,8 +88,6 @@ const BancoPreguntasLateralPrincipal = () => {
             onClick={handleClickOutsideModal}
         >
             <Col className='encuesta-cuerpo'>
-                
-
                 {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible && (
                     <Col className="encuesta-Segundocuerpo2">
                         <Col>
@@ -107,24 +115,23 @@ const BancoPreguntasLateralPrincipal = () => {
                                 </OverlayTrigger>
                             </div>
                         </Col>
+
                         <Col>
                             {showBancoPreguntas && (
                                 <div className="desplegado-container">
                                     <div className="listaBancoPreguntas-2">
                                         <div className="fondo-lista">
-                                            {listaBancoPreguntas.map((item) => (
+                                            {listarCategoriaEncuestas.map((item) => (
                                                 <div
-                                                    key={item.nombre}
+                                                    key={item.idCategoriaEncuesta}
                                                     className="encuesta-nombrelista"
-                                                    onClick={() => handleNestedClick(item.nombre)}
+                                                    onClick={() => handleOpenBancoPreguntas(item.idCategoriaEncuesta)}
                                                 >
                                                     <div className="juntar-listaBancoPreguntas-nombre">
-                                                        <div className="fondo-listaBancoPreguntas2">
+                                                        <div className="fondo-listaBancoPreguntas2" style={{cursor:'pointer', height: '100%'}}>
                                                             <span className="listaBancoPreguntas-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
-                                                            {item.icono && (
-                                                                <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: item.icono }} />
-                                                            )}
-                                                            <hr style={{ marginTop: '15px', marginBottom: '15px' }} />
+                                                            <span style={{ float: 'right' }} dangerouslySetInnerHTML={{ __html: chevronsNighBtSVG }} />
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -136,9 +143,13 @@ const BancoPreguntasLateralPrincipal = () => {
                         </Col>
                     </Col>
                 )}
-
-               
             </Col>
+
+            <ModalBancoPreguntas 
+                open={openBancoPreguntas} 
+                onClose={handleCloseBancoPreguntas} 
+                categoriaId={selectedCategoriaId}
+            />
         </div>
     )
 }

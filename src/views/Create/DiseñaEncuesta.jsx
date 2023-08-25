@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Col } from 'react-bootstrap';
 import NuevaEncuesta from './../Create/NuevaEncuesta';
 import DisenoEncuestaLateralPrincipal from './../Create/DisenoEncuestaLateralPrincipal';
@@ -10,18 +10,14 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
 }) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
-    const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
-    const [isModalVisible, setIsModalVisible] = useState(false);
    console.log(sendImagenFondo);
 
 
     const handleClickOutsideModal = (event) => {
         const modalContainer = document.getElementById('modal-container');
         if (!modalContainer.contains(event.target)) {
-            setOpenAñadirLogo(false);
             setBlurBackground(false);
-            setIsModalVisible(false);
         }
     };
 

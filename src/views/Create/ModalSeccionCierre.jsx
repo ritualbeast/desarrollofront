@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../../styles/seccionCierre.css';
-import { Container, Row, Col, Button, FormControl } from 'react-bootstrap';
+import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import styled from 'styled-components';
 
@@ -31,13 +31,11 @@ const URL = styled(FormControl)`
 
 const ModalSeccionCierre = () => {
     const [duplicarSeccionVisible, setDuplicarSeccionVisible] = useState(false);
-    const [openDuplicarSeccion, setOpenDuplicarSeccion] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
     const [editarSeccionVisible, setEditarSeccionVisible] = useState(false);
 
     const handleDuplicarSeccion = () => {
-        setOpenDuplicarSeccion(true);
         setBlurBackground(false);
         setIsModalVisible(false);
     }

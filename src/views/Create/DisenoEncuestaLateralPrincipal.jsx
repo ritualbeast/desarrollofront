@@ -16,9 +16,7 @@ const infoSVG = svgManager.getSVG('info');
 const imageSVG = svgManager.getSVG('image');
 const sidebarSVG = svgManager.getSVG('sidebar');
 const italicSVG = svgManager.getSVG('italic');
-const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
-const repeatSVG = svgManager.getSVG('repeat');
 
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
     sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
@@ -26,7 +24,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     sendImagenFondo, sendImagenFondoEstructura
 }) => {
 
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
 
     const [openDisenoPrincipal, setOpenDisenoPrincipal] = React.useState(true);
@@ -105,9 +102,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
         </Tooltip>
     );
 
-    const handleNestedClick = (nombre) => {
-        // Lógica para manejar el clic en las opciones desplegadas
-    };
 
     // lista de diseño
 

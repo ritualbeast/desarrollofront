@@ -1,9 +1,5 @@
-import React, { useState } from 'react'
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import svgManager from '../../assets/svg';
+import React from 'react'
 import '../../styles/duplicarSeccion.css';
-
-const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 
 
 const ModalDuplicarSeccion = () => {

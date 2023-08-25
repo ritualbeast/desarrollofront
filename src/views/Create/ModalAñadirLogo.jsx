@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import '../../styles/añadirLogo.css';
 
