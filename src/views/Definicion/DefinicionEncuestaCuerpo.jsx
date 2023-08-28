@@ -81,27 +81,27 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
 
     newStyle.logotipo.enumPosicion = sendPosicionLogotipo;
     newStyle.logotipo.tamanio = sendTamanoLogotipo;
-    newStyle.pieDePagina.enumPosicion = leerPosicionLogotipoPiePagina;
-    newStyle.pieDePagina.tamanio = leerTamanoLogotipoPiePagina;
+    newStyle.pieDePagina.enumPosicion = sendPosicionLogotipoPiePagina;
+    newStyle.pieDePagina.tamanio = sendTamanoLogotipoPiePagina;
     
     if (tituloTipografia === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontFamily = tipografia;
       }
       // newStyleView.fontFamily = tipografia;
-      newStyle.fuente.tituloSeccion.enumTipografia = tipografia;
+      newStyle.fuente.tituloEncuesta.enumTipografia = tipografia;
     }
     if (tituloGrosor === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontWeight = grosor;
       }
-      newStyle.fuente.tituloSeccion.enumGrosor = grosor;
+      newStyle.fuente.tituloEncuesta.enumGrosor = grosor;
     }
     if (titulotamano === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontSize = `${tamano}px`;
       }
-      newStyle.fuente.tituloSeccion.enumTamanio = `${tamano}`;
+      newStyle.fuente.tituloEncuesta.enumTamanio = `${tamano}`;
     }
     if ( tituloTipografia === 'Descripción de encuesta') {
       if (descripcionref.current) {
@@ -270,6 +270,12 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
     setSelectedFile1(null);
     setPreview1(null);
   }
+
+  const eliminarImagenPiePagina = () => {
+    setSelectedFile2(null);
+    setPreview2(null);
+  }
+
   return (
     <>
       <div className="tituloDefinicionEncuesta">
@@ -366,7 +372,7 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
                 
                 <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
                   <img src={preview2} alt="preview" 
-                  className={`${(leerTamanoLogotipoPiePagina== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipoPiePagina == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipoPiePagina == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                  className={`${(datosDefinicionEstilo.pieDePagina.tamanio== '' ? 'imagenLogotipoEncuesta': datosDefinicionEstilo.pieDePagina.tamanio == 1 ? 'imagenLogotipoEncuesta': datosDefinicionEstilo.pieDePagina.tamanio == 2 ? 'imagenLogotipoTamanoPequeno' : datosDefinicionEstilo.pieDePagina.tamanio == 3 ? 'imagenLogotipoTamanoMediano' : datosDefinicionEstilo.pieDePagina.tamanio == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
                   />
                 </div>
                 <div className="subcontenedorLogotipo">
@@ -375,7 +381,7 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
                     <input type="file" id="file-input2" style={{ display: 'none' }} onChange={onSelectFile2} />
                   </div>
                   <div className="buttonLogotipoeliminar">
-                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => setSelectedFile2(null)} />
+                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => eliminarImagenPiePagina()} />
                   </div>
                 </div>
               </div>

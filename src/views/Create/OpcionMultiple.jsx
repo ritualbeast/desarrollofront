@@ -210,7 +210,8 @@ const OpcionMultiple = ({
     sendGrosorPaso2, 
     sendTipografiaPaso2,
     contentCont,
-    obtenerPreg
+    obtenerPreg, 
+    contenEstilos,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -296,7 +297,6 @@ const OpcionMultiple = ({
     };
 
     const handleMoreOpcion = () => {
-        console.log('more')
         const newOpcion = {
             idPregunta: opcionesRespuesta.length + 1,
             checked: false,
@@ -306,7 +306,6 @@ const OpcionMultiple = ({
             preguntaValue: '', // Valor inicial de la pregunta
             orden: 0,
         };
-        console.log(newOpcion)
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);

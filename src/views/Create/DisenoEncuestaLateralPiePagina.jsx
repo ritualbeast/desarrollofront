@@ -17,7 +17,7 @@ const uploadSVG = svgManager.getSVG('upload');
 
 
 const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, sendEstado,sendPosicion,paso
-,sendPosicionImagen, sendTamanoImagen, sendPreviewPiePagina
+,sendPosicionImagen, sendTamanoImagen, sendPreviewPiePagina, contenEstilos
 }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -29,8 +29,8 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const [posicionSeleccionada, setPosicionSeleccionada] = useState('1');
     const [pasos, setPasos] = useState(paso);
     const [previewPiePagina, setPreviewPiePagina] = useState(sendPreviewPiePagina);
+    const [estilos, setEstilos] = useState(contenEstilos);  
 
-    
 
     useEffect(() => {
         ListarPosicionImagen();
@@ -42,9 +42,9 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
         const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
     }
     const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
-          sendTamanoImagen(event.target.value);
-    };
+        setTamanoSeleccionado(event.target.value);
+        sendTamanoImagen(event.target.value);
+  };
     
 
     const RadioButton = ({ id, value, checked, onChange, label }) => (
@@ -200,10 +200,13 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                     <RadioButton
                                         id={opcion.id.toString()}
                                         value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
+                                        checked={
+                                            estilos.pieDePagina.tamanio !== undefined && estilos.pieDePagina.tamanio !== ""
+                                                ? estilos.pieDePagina.tamanio === opcion.id.toString()
+                                                : tamanoSeleccionado === opcion.id.toString()
+                                        }
                                         onChange={handleChangeTamano}
                                         label={opcion.nombre}
-                                        
                                     />
                                     </div>
                                 ))}

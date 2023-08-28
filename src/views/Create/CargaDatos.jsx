@@ -375,7 +375,6 @@ const CargaDatos = ({
     }, [contentCont]);
 
     const handlePregunta = (value) => {
-        console.log(value)
         handleCambiarPregunta(indice, indiceSec, value)
     }
 

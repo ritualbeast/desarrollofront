@@ -32,6 +32,7 @@ const DisenoEncuestaLaterallogotipo = ({
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
     const [estilos, setEstilos] = useState(contenEstilos);  
 
+
     
     useEffect(() => {
         ListarPosicionImagen();
@@ -122,8 +123,10 @@ const DisenoEncuestaLaterallogotipo = ({
     };
 
     
+    
   return (
     <>
+
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -187,7 +190,11 @@ const DisenoEncuestaLaterallogotipo = ({
                                     <RadioButton
                                         id={opcion.id.toString()}
                                         value={opcion.id.toString()}
-                                        checked={tamanoSeleccionado === opcion.id.toString()}
+                                        checked={
+                                            estilos.logotipo.tamanio !== undefined && estilos.logotipo.tamanio !== ""
+                                                ? estilos.logotipo.tamanio === opcion.id.toString()
+                                                : tamanoSeleccionado === opcion.id.toString()
+                                        }
                                         onChange={handleChangeTamano}
                                         label={opcion.nombre}
                                     />
@@ -203,11 +210,21 @@ const DisenoEncuestaLaterallogotipo = ({
                             <div className="contenedorPosicion">
                                 <select className="selectPosicion" onChange={handleChangePosicion}>
                                     {posicionImagen.map((opcion) => (
-                                        <option key={opcion.id} value={opcion.id}>{opcion.etiqueta}</option>
-                                    ))    
-                                    }
+                                        <option
+                                            key={opcion.id}
+                                            value={opcion.id}
+                                            selected={
+                                                estilos.logotipo.enumPosicion !== undefined && estilos.logotipo.enumPosicion !== ""
+                                                    ? estilos.logotipo.enumPosicion === opcion.id.toString()
+                                                    : false
+                                            }
+                                        >
+                                            {opcion.etiqueta}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
+
                         </div>
                         
                    

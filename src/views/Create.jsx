@@ -74,7 +74,7 @@ const Create = () => {
           tituloEncuesta: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "1"
           },
           descripcionEncuesta: {
             enumTipografia: "",
@@ -205,12 +205,10 @@ const Create = () => {
     }
 
     const enviarPreview = (previe) => {
-        // console.log(previe)
         setIspreview(previe)
     }
 
     const enviarPreview2 = (previe2) => {
-        // console.log(previe2)
         setIspreview2(previe2)
     }
 
@@ -265,6 +263,7 @@ const Create = () => {
     };
 
     const handleSendTamanoPaso2 = (tamano, titulo) => {
+        console.log(tamano, titulo)
         setTamanoPaso2({tamano: tamano, titulo: titulo})
     }
 
@@ -299,7 +298,9 @@ const Create = () => {
     
 
     const leerestilos = () => {
-        console.log(encuestaEstilos);
+          console.log(encuestaEstilos);
+        // console.log(datosEncuesta);
+        // console.log(datosConfiguracionEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)
@@ -570,11 +571,12 @@ const Create = () => {
                                         sendFooterImagen = {sendFooterImagen}
                                         obtenerPreg = {obtenerBancoPregunta}
                                         regresarRevision={regresarRevision}
+                                        contenEstilos= {encuestaEstilos}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}
                                         handleTotalPreguntas={contentCont}
-                                        handleDatosPaso1 = {datosDefinicionEncuesta}
+                                        handleDatosPaso1 = {datosEncuesta}
                                         handleDatosConfiguracion = {datosConfiguracionEncuesta}
                                         handleEstilos = {encuestaEstilos}
                                         

@@ -153,7 +153,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
         let totalDatosContentPreg = 0;
 
         handleTotalPreguntas.forEach((item) => {
-        if (item.tipo === 'C') {
+        if (item.tipoSeccion === 'C') {
             totalContenedoresC++;
             totalDatosContentPreg += item.preguntas.length;
         }
@@ -191,7 +191,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
     const enviarEncuesta = async () => {
         try {
           const response = await  crearEncuesta(handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo, handleEstilos);
-          console.log(response);
+         
       } catch (error) {
           console.error(error);
       }
@@ -213,7 +213,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
             
             setListarCategoriaEncuestas(categorias);
     
-            const defaultCategoria = categorias.find((item) => item.value === handleDatosConfiguracion.categoria);
+            const defaultCategoria = categorias.find((item) => item.value === handleDatosConfiguracion.idCategoriaEncuesta);
             if (defaultCategoria) {
                 setSelectedCategoriaEncuesta(defaultCategoria);
             }
@@ -239,7 +239,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
 
             setListarVigenciaEncuestas(vigencia);
 
-            const defaultVigencia = vigencia.find((item) => item.value === handleDatosConfiguracion.vigencia);
+            const defaultVigencia = vigencia.find((item) => item.value === handleDatosConfiguracion.enumTipoVigencia);
             if (defaultVigencia) {  
                 setSelectedVigenciaEncuesta(defaultVigencia);
             }
@@ -261,7 +261,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
             <Col className='revision-seccion2'>
                 <Col className='revision-seccion2-1'>
                     <p style={{marginBottom:'unset'}}>Nombre de la encuesta</p>
-                    <IngreseTexto type="text" placeholder="Ingrese su texto"  value={handleDatosPaso1.nombre} readOnly
+                    <IngreseTexto type="text" placeholder="Ingrese su texto"  value={handleDatosPaso1.titulo} readOnly
                     />
                 </Col>
 

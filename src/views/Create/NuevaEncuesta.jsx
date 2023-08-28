@@ -51,8 +51,10 @@ const NuevaEncuesta = ({
   sendFooterImagen,
   obtenerPreg,
   regresarRevision,
-  estilos
+  estilos, 
+  contenEstilos,
 }) => {
+
 
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
@@ -66,6 +68,7 @@ const NuevaEncuesta = ({
     const [blurBackground, setBlurBackground] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [contentCont, setContentCont] = useState(contentInit);
+    const [estiloss, setEstilos] = useState(contenEstilos);
     const [contentOpt, setContentOpt] = useState([]);
     const [contentVari, setContentVari] = useState([]);
     const [contentCarg, setContentCarg] = useState([]);
@@ -96,32 +99,43 @@ const NuevaEncuesta = ({
     const [descripcionStyle, setDescripcionStyle] = useState({});
     const [imagenFondo, setImagenFondo] = useState(null);
 
-
   useEffect(() => {
     setImagenFondo(sendImagenFondo);
     let newStyle = {};
+    let newStylecontent = { ...estiloss};
     if (titulotamano === 'Título de sección') {
       newStyle.fontSize = `${tamano}px`;
+      
+      newStylecontent.fuente.tituloSeccion.enumTamanio = tamano;
+    
     }
     if (tituloGrosor === 'Título de sección') {
       newStyle.fontWeight = grosor;
+      newStylecontent.fuente.tituloSeccion.enumGrosor = grosor;
     }
     if (tituloTipografia === 'Título de sección') {
       newStyle.fontFamily = tipografia;
+      newStylecontent.fuente.tituloSeccion.enumFuente = tipografia;
     }
 
     setTituloStyle(newStyle);
     let newStyle2 = {};
     if (titulotamano === 'Descripción de sección') {
       newStyle2.fontSize = `${tamano}px`;
+      newStylecontent.fuente.descripcionSeccion.enumTamanio = tamano;
     }
     if (tituloGrosor === 'Descripción de sección') {
       newStyle2.fontWeight = grosor;
+      newStylecontent.fuente.descripcionSeccion.enumGrosor = grosor;
+
     }
     if (tituloTipografia === 'Descripción de sección') {
       newStyle2.fontFamily = tipografia;
+      newStylecontent.fuente.descripcionSeccion.enumFuente = tipografia;
+
     }
     setDescripcionStyle(newStyle2);
+    setEstilos(newStylecontent);
 
   }, [tamano, grosor, tipografia, imagenFondo]);
     
@@ -196,7 +210,7 @@ const NuevaEncuesta = ({
         return;
       }
     
-      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+      const seccionIndex = index; // Define el índice de la sección donde quieres añadir las preguntas
     
       const nuevoEstado = [...contentCont];
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
@@ -227,7 +241,7 @@ const NuevaEncuesta = ({
         return;
       }
     
-      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+      const seccionIndex = index; // Define el índice de la sección donde quieres añadir las preguntas
     
       const nuevoEstado = [...contentCont];
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
@@ -262,7 +276,7 @@ const NuevaEncuesta = ({
         return;
       }
     
-      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+      const seccionIndex = index; // Define el índice de la sección donde quieres añadir las preguntas
     
       const nuevoEstado = [...contentCont];
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
@@ -292,7 +306,7 @@ const NuevaEncuesta = ({
         return;
       }
     
-      const seccionIndex = 0; // Define el índice de la sección donde quieres añadir las preguntas
+      const seccionIndex = index; // Define el índice de la sección donde quieres añadir las preguntas
     
       const nuevoEstado = [...contentCont];
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
@@ -392,7 +406,6 @@ const NuevaEncuesta = ({
     };
     
     const handleAceptarEditarTitulo = (indiceSec, nuevoTitulo, comentario) => {
-      console.log(nuevoTitulo)
       const nuevoEstado = [...contentCont];
       nuevoEstado[indiceSec] = {
         ...nuevoEstado[indiceSec],
@@ -412,7 +425,6 @@ const NuevaEncuesta = ({
         });
       }
       setContentCont(nuevoEstado);
-      console.log(indiceSec)
       $(`#editTitulo${indiceSec + 1}`).removeClass("oculto");
       $(`#editTitulo${indiceSec + 1}`).removeClass("ocultar");
       $(`#editTitulo${indiceSec + 1}`).addClass("visible");
@@ -958,6 +970,7 @@ const NuevaEncuesta = ({
                                   sendGrosorPaso2={sendGrosorPaso2}
                                   sendTipografiaPaso2={sendTipografiaPaso2}
                                   obtenerPreg={obtenerPreg}
+                                  contenEstilos={contenEstilos}
                                 />
                               }  
                               if (preg.tipo == 'VE') {

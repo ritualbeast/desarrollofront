@@ -35,7 +35,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
-    
+
     
 
     const openDisenoLogotipoHandler = () => {
@@ -367,6 +367,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 sendPosicion={(posicion) => handleSendPosicion(posicion)}
                 sendPosicionImagen={(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
                 sendTamanoImagen={(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
+                contenEstilos={contenEstilos}
 
             />
         )  
@@ -383,6 +384,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 sendTamanoPaso2 = { (tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2, titulo) }
                  sendGrosorPaso2 = { (grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2, titulo) }
                  sendTipografiaPaso2 = { (tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2, titulo) }
+                 contenEstiloss={contenEstilos}
             />
         )
         }

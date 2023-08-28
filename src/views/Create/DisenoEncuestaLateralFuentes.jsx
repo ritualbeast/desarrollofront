@@ -11,7 +11,7 @@ const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
 const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia 
-    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, contenEstiloss
  }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -20,13 +20,18 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [pasos, setPasos] = useState(paso);
+    const [estilos, setEstilos] = useState(contenEstiloss);
 
-
+    
     useEffect(() => {
         ListarFuenteGrosorEncuesta();
         ListarFuenteTamanoEncuesta();
         ListarFuenteTipografiaEncuesta();
     }, []);
+
+    useEffect(() => {
+        console.log("estilos", estilos);
+    }, [estilos]);
 
 
     const ContenedorTamanoLogotipo = () => {
@@ -35,6 +40,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const handleChangeTamano = (event, titulo) => {
         if (pasos === 2) {
             sendTamanoPaso2(event.target.value, titulo);
+            
         } else {
 
             sendTamano(event.target.value, titulo);
@@ -167,10 +173,33 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     };
 
 
-    
-    
+
+    const transformarTitulo = (titulo) => {
+        const mapeoTitulos = {
+          "Nombre de encuesta": "tituloEncuesta",
+          "Descripción de encuesta": "descripcionEncuesta",
+          "Leyenda": "leyenda",
+          "Texto de botones": "textoBotones",
+          "Título de sección": "tituloSeccion",
+          "Descripción de sección": "descripcionSeccion",
+          "Preguntas": "preguntas",
+          "Opciones de respuesta": "opcionesRespuesta",
+          "Texto de cierre de encuestas": "textoCierreEncuesta"
+        };
+
+        console.log(mapeoTitulos[titulo])
+      
+        return mapeoTitulos[titulo];
+      };
+
+      const estilosaa = () => {
+        console.log('estilos', estilos);
+    }
+
+      
   return (
     <>
+        <button onClick={estilosaa}>estilos</button>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -216,36 +245,49 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
 
                                     
                                     <div className="contenedorFuenteTitulo" key={index}>
-                                    <div className="subcontenedorFuenteTitulo">
+                                        <div className="subcontenedorFuenteTitulo">
                                         <span className="fuenteTitulo">{titulo}</span>
-                                    </div>
+                                        </div>
 
-                                    <div className="subcontenedorFuenteTituloselect">
-                                        <select className="fuenteTituloSelect" onChange={ (event) => handleChangeTipografia(event, titulo)}>
-                                        <option value="">Seleccionar tipografía</option>
-                                        {TipografiaApi.map((item) => (
+                                        <div className="subcontenedorFuenteTituloselect">
+                                        <select
+                                            className="fuenteTituloSelect"
+                                            onChange={(event) => handleChangeTipografia(event, titulo)}
+                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTipografia}
+                                        >
+                                            <option value="">Seleccionar tipografía</option>
+                                            {TipografiaApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
-                                        ))}
-
+                                            ))}
                                         </select>
-                                    </div>
+                                        </div>
 
-                                    <div className="subcontenedorFuenteTituloselect2">
-                                        <select className="fuenteTituloSelect2" onChange={(event) =>handleChangeGrosor(event, titulo)}>
-                                        <option value="">Grosor</option>
-                                        {GrosorApi.map((item) => (
+                                        <div className="subcontenedorFuenteTituloselect2">
+                                        <select 
+                                            className="fuenteTituloSelect2"
+                                            onChange={(event) => handleChangeGrosor(event, titulo)}
+                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumGrosor}
+                                           
+                                        >
+                                            <option value="">Grosor</option>
+                                            {GrosorApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
-                                        ))}
-
+                                            ))}
                                         </select>
-                                        <select className="fuenteTituloSelect3" onChange={(event) => handleChangeTamano(event, titulo)}>
-                                        <option value="">Tamaño</option>
-                                        {TamanoApi.map((item) => (
+
+                                        <select 
+                                            className="fuenteTituloSelect3"
+                                            onChange={(event) => handleChangeTamano(event, titulo)}
+                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTamanio}
+
+                                            
+                                        >
+                                            <option value="">Tamaño</option>
+                                            {TamanoApi.map((item) => (
                                             <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
-                                        ))}
-
+                                            ))}
                                         </select>
-                                    </div>
+                                        </div>
                                     </div>
                                 )
 

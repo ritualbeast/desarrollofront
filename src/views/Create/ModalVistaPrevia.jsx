@@ -26,7 +26,6 @@ const ModalVistaPrevia = ({
     circleFillSVG,
     triangleFillSVG,
 }) => {
-    console.log('contentCont', contentCont)
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [activeContent, setActiveContent] = useState('windows');   
