@@ -561,6 +561,7 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
+      nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };

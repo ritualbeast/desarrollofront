@@ -243,17 +243,17 @@ const OpcionMultiple = ({
     const [configuracion7, setConfiguracion7] = useState(false);
     const [configuraciongeneral, setConfiguraciongeneral] = useState(
         {
-            esObligatoria: "",
+            esObligatoria: "N",
             mensajeEsObligatoria: "",
-            ningunaAnteriores: "",
-            otraRespuesta: "",
+            ningunaAnteriores: "N",
+            otraRespuesta: "N",
             etiquetaOtraRespuesta: "",
             enumTipoTexto: "",
             enumCantidadCaracteres: "",
             enumValidacion: "",
-            informacionPregunta: "",
-            etiquetaInformacionPregunta: "",
-            bancoPregunta: "",
+            informacionPregunta: "N",
+            etiquetaInformacionPregunta: "'Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología'",
+            bancoPregunta: "N",
             etiquetaBancoPregunta: ""
         }
     
