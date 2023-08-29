@@ -103,6 +103,9 @@ const CuadroComentarios = ({
     handleCambiarPregunta,
     preguntaVisibleOpen,
     contentCont,
+    sendTamanoPaso2, 
+    sendGrosorPaso2, 
+    sendTipografiaPaso2,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -451,6 +454,9 @@ const CuadroComentarios = ({
                     informacion = {informacionPregunta}
                     configuracion3Activa={configuracion3}
                     preguntaVisibleC={preguntaVisibleOpen}
+                    sendTamanoPaso2={sendTamanoPaso2}
+                    sendGrosorPaso2={sendGrosorPaso2}
+                    sendTipografiaPaso2={sendTipografiaPaso2}
                 />
             </Container>
         )}

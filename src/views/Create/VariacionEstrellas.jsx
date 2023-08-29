@@ -139,6 +139,9 @@ const VariacionEstrellas = ({
     handleEliminarPregunta,
     handleCambiarPregunta,
     preguntaVisibleOpen,
+    sendTamanoPaso2, 
+    sendGrosorPaso2, 
+    sendTipografiaPaso2,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -981,6 +984,9 @@ const VariacionEstrellas = ({
                     informacion = {informacionPregunta}
                     configuracion6Activa={configuracion6}
                     preguntaVisibleC={preguntaVisibleOpen}
+                    sendTamanoPaso2={sendTamanoPaso2}
+                    sendGrosorPaso2={sendGrosorPaso2}
+                    sendTipografiaPaso2={sendTipografiaPaso2}
                 />
             </Container>
         )}

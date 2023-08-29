@@ -90,14 +90,14 @@ const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosCo
   const url = 'http://desa.goitsa.me:3001/goit-notisurvey-api/v2/encuesta/crearEncuesta';
 
   const body = {
-    "enumTipoEncuesta": handleDatosConfiguracion.enum_tipo_encuesta,
-    "idCategoriaEncuesta": handleDatosConfiguracion.categoria,
-    "titulo": handleDatosPaso1.nombre,
+    "enumTipoEncuesta": localStorage.getItem('enumTipoEncuesta'),
+    "idCategoriaEncuesta": handleDatosConfiguracion.idCategoriaEncuesta,
+    "titulo": handleDatosPaso1.titulo,
     "descripcion": handleDatosPaso1.descripcion,
     "fechaInicio": handleDatosConfiguracion.fechaInicio,
     "fechaFin": handleDatosConfiguracion.fechaFin,
     "formatoPresentacion": opcionCrearEncuesta,
-    "enumTipoVigencia": handleDatosConfiguracion.enum_tipoVigencia,
+    "enumTipoVigencia": handleDatosConfiguracion.enumTipoVigencia,
     "esPublica": "S",
     "cantidadRespuesta": totalConteo,
     "imagenCabecera": handleDatosPaso1.imagenCabecera,
@@ -119,6 +119,7 @@ const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosCo
 
     // Aquí puedes manejar la respuesta de la API
     const data = await response.json();
+    console.log(data)
     return data;
     
   } catch (error) {

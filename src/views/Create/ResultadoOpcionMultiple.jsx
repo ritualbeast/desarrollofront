@@ -96,6 +96,7 @@ const ResultadoOpcionMultiple = ({
   sendGrosorPaso2, 
   sendTipografiaPaso2,
   obtenerPreg,
+  
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -130,8 +131,9 @@ const ResultadoOpcionMultiple = ({
     if (tituloTipografia === 'Opciones de respuesta') {
       newStyle.fontFamily = tipografia;
     }
-
-    setOpcionesRespuestaStyle(newStyle);
+    if (Object.keys(newStyle).length !== 0){
+      setOpcionesRespuestaStyle(newStyle);
+    }
     
     let newStyle2 = {};
     if (titulotamano === 'Preguntas') {
@@ -144,7 +146,9 @@ const ResultadoOpcionMultiple = ({
       newStyle2.fontFamily = tipografia;
     }
 
-    setPreguntasStyle(newStyle2);
+    if (Object.keys(newStyle2).length !== 0){
+      setPreguntasStyle(newStyle2);
+    }
 
 
   }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);

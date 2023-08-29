@@ -192,14 +192,11 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
         return mapeoTitulos[titulo];
       };
 
-      const estilosaa = () => {
-        console.log('estilos', estilos);
-    }
+     
 
       
   return (
     <>
-        <button onClick={estilosaa}>estilos</button>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -278,7 +275,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                         <select 
                                             className="fuenteTituloSelect3"
                                             onChange={(event) => handleChangeTamano(event, titulo)}
-                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTamanio}
+                                            // value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTamanio}
 
                                             
                                         >

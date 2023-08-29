@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/resultadoCuadroComentarios.css'
 import { Button, Container, Col } from 'react-bootstrap';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -25,6 +25,9 @@ const ResultadoCuadroComentarios = ({
     informacion,
     configuracion3Activa,
     preguntaVisibleC,
+    sendTamanoPaso2, 
+    sendGrosorPaso2, 
+    sendTipografiaPaso2,
 }) => {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -33,6 +36,53 @@ const ResultadoCuadroComentarios = ({
     const targetRef = useRef(null);
     const [isUp, setIsUp] = useState(true);
     const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
+    const tamano = sendTamanoPaso2?.tamano ;
+    const titulotamano = sendTamanoPaso2?.titulo;
+    const grosor = sendGrosorPaso2?.grosor;
+    const tituloGrosor = sendGrosorPaso2?.titulo;
+    const tipografia = sendTipografiaPaso2?.tipografia;
+    const tituloTipografia = sendTipografiaPaso2?.titulo;
+    const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
+    const [preguntasStyle, setPreguntasStyle] = useState({});
+
+
+    
+    useEffect(() => {
+        // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
+        let newStyle = {};
+        if (titulotamano === 'Opciones de respuesta') {
+        newStyle.fontSize = `${tamano}px`;
+        }
+        if (tituloGrosor === 'Opciones de respuesta') {
+        newStyle.fontWeight = grosor;
+        }
+        if (tituloTipografia === 'Opciones de respuesta') {
+        newStyle.fontFamily = tipografia;
+        }
+        if (Object.keys(newStyle).length !== 0){
+        setOpcionesRespuestaStyle(newStyle);
+        }
+        
+        let newStyle2 = {};
+        if (titulotamano === 'Preguntas') {
+        newStyle2.fontSize = `${tamano}px`;
+        }
+        if (tituloGrosor === 'Preguntas') {
+        newStyle2.fontWeight = grosor;
+        }
+        if (tituloTipografia === 'Preguntas') {
+        newStyle2.fontFamily = tipografia;
+        }
+
+        if (Object.keys(newStyle2).length !== 0){
+        setPreguntasStyle(newStyle2);
+        }
+
+
+    }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);
+
+
+
 
     const handleMouseEnterEditar = (index) => {
         $(`#editPreg${index +1}`).removeClass("oculto");
@@ -120,7 +170,8 @@ const ResultadoCuadroComentarios = ({
                 onMouseLeave={() => handleMouseLeaveEditar(index)}
             >
                 <Col style={{width:'95%', display:'flex'}}>
-                    <p>{index + 1}. {pregunta}</p>
+                <p style={{...preguntasStyle, width:'95%'}}
+                        >{index + 1}. {pregunta}</p>
                     {configuracion3Activa && (
                         <OverlayTrigger
                             trigger="click"

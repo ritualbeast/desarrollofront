@@ -15,14 +15,14 @@ import FormatoEncuestaLateralPrincipal from './../Create/FormatoEncuestaLateralP
 
 const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPreguntas, contentInit,
     sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendImagenFondo, sendFooterImagen, obtenerPreg, regresarRevision,
-    contenEstilos
+    contenEstilos, sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
 }) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [blurBackground, setBlurBackground] = useState(false);
    
    
-
+    console.log(sendPosicionLogotipo, sendTamanoLogotipo    )
     const handleClickOutsideModal = (event) => {
         const modalContainer = document.getElementById('modal-container');
         if (!modalContainer.contains(event.target)) {
@@ -61,6 +61,10 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
                             obtenerPreg = {obtenerPreg}
                             regresarRevision={regresarRevision}
                             contenEstilos={contenEstilos}
+                            sendPosicionLogotipo = {sendPosicionLogotipo}
+                            sendTamanoLogotipo = {sendTamanoLogotipo}
+                            sendPosicionLogotipoPiePagina = {sendPosicionLogotipoPiePagina}
+                            sendTamanoLogotipoPiePagina = {sendTamanoLogotipoPiePagina}
                         />
                         )
                     }

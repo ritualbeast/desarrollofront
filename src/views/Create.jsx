@@ -74,7 +74,7 @@ const Create = () => {
           tituloEncuesta: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: "1"
+            enumTamanio: ""
           },
           descripcionEncuesta: {
             enumTipografia: "",
@@ -572,6 +572,10 @@ const Create = () => {
                                         obtenerPreg = {obtenerBancoPregunta}
                                         regresarRevision={regresarRevision}
                                         contenEstilos= {encuestaEstilos}
+                                        sendPosicionLogotipo = {posicionLogotipo}
+                                        sendTamanoLogotipo = {tamanoLogotipo}
+                                        sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
+                                        sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}

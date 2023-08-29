@@ -53,6 +53,10 @@ const NuevaEncuesta = ({
   regresarRevision,
   estilos, 
   contenEstilos,
+  sendPosicionLogotipo, 
+  sendTamanoLogotipo, 
+  sendPosicionLogotipoPiePagina, 
+  sendTamanoLogotipoPiePagina,
 }) => {
 
 
@@ -98,6 +102,11 @@ const NuevaEncuesta = ({
     const [tituloStyle, setTituloStyle] = useState({});
     const [descripcionStyle, setDescripcionStyle] = useState({});
     const [imagenFondo, setImagenFondo] = useState(null);
+    const [leerPosicionLogotipo, setLeerPosicionLogotipo] = useState(sendPosicionLogotipo);
+    const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
+    const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
+    const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState(sendTamanoLogotipoPiePagina);
+
 
   useEffect(() => {
     setImagenFondo(sendImagenFondo);
@@ -117,8 +126,9 @@ const NuevaEncuesta = ({
       newStyle.fontFamily = tipografia;
       newStylecontent.fuente.tituloSeccion.enumFuente = tipografia;
     }
-
+    if (Object.keys(newStyle).length > 0) {
     setTituloStyle(newStyle);
+    }
     let newStyle2 = {};
     if (titulotamano === 'Descripción de sección') {
       newStyle2.fontSize = `${tamano}px`;
@@ -134,10 +144,19 @@ const NuevaEncuesta = ({
       newStylecontent.fuente.descripcionSeccion.enumFuente = tipografia;
 
     }
+    if (Object.keys(newStyle2).length > 0) {
     setDescripcionStyle(newStyle2);
+    }
     setEstilos(newStylecontent);
 
-  }, [tamano, grosor, tipografia, imagenFondo]);
+    setLeerPosicionLogotipo(sendPosicionLogotipo);
+    setLeerTamanoLogotipo(sendTamanoLogotipo);
+    setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
+    setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
+
+  }, [tamano, grosor, tipografia, imagenFondo, 
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina]);
+  
     
   
 
@@ -846,9 +865,13 @@ const NuevaEncuesta = ({
       }
     };
 
-
+    const verdescripcion = () => {
+      console.log(leerPosicionLogotipo, leerTamanoLogotipo )
+    }
   return (
     <>
+      <button onClick={verdescripcion}
+      >des</button>
       
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'
@@ -895,7 +918,7 @@ const NuevaEncuesta = ({
                             >
                                 <div style={{width:'96%'}}>
                                   <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
-                                  <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                  <p style={descripcionStyle}>{seccion.comentario}</p>
                                 </div>
                                 <span 
                                   style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
@@ -910,8 +933,11 @@ const NuevaEncuesta = ({
                           <div>
                             {selectedFiles[index] ? (
                               <div className="agregarImagenDefinicionEncuesta2">
-                                <div className="imageContainer">
-                                  <img src={previews[index]} alt="preview" className="imagenLogotipoEncuesta" />
+                                 <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
+            
+                                  <img src={previews[index]} alt="preview" 
+                                  className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                                  />
                                 </div>
                                 <div className="subcontenedorLogotipo">
                                   <div className="buttonLogotipoeditar">
@@ -986,6 +1012,9 @@ const NuevaEncuesta = ({
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
                                   preguntaVisibleOpen={preguntaVisible}
+                                  sendTamanoPaso2={sendTamanoPaso2}
+                                  sendGrosorPaso2={sendGrosorPaso2}
+                                  sendTipografiaPaso2={sendTipografiaPaso2}
                                 />
                               }
                               if (preg.tipo == 'CA') {
@@ -1001,6 +1030,9 @@ const NuevaEncuesta = ({
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
                                   preguntaVisibleOpen={preguntaVisible}
+                                  sendTamanoPaso2={sendTamanoPaso2}
+                                  sendGrosorPaso2={sendGrosorPaso2}
+                                  sendTipografiaPaso2={sendTipografiaPaso2}
                                 />
                               }
                               if (preg.tipo == 'CC') {
@@ -1016,6 +1048,10 @@ const NuevaEncuesta = ({
                                   handleCambiarPregunta={handleCambiarPregunta}
                                   contentCont={contentCont}
                                   preguntaVisibleOpen={preguntaVisible}
+                                  sendTamanoPaso2={sendTamanoPaso2}
+                                  sendGrosorPaso2={sendGrosorPaso2}
+                                  sendTipografiaPaso2={sendTipografiaPaso2}
+                                
                                 />
                               }
                               return '';
@@ -1097,8 +1133,11 @@ const NuevaEncuesta = ({
             
                             {footerFiles[index] ? (
                               <div className="agregarImagenDefinicionEncuesta2">
-                                <div className="imageContainer">
-                                  <img src={footerPreviews[index]} alt="preview" className="imagenLogotipoEncuesta" />
+                                <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
+             
+                                  <img src={footerPreviews[index]} alt="preview" 
+                                  className={`${(leerTamanoLogotipoPiePagina== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipoPiePagina == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipoPiePagina == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipoPiePagina == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                                  />
                                 </div>
                                 <div className="subcontenedorLogotipo">
                                   <div className="buttonLogotipoeditar">

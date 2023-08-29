@@ -47,7 +47,8 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
 
     const handleGoToDefinicion = () => {       
       window.location.href = '/create';
-      localStorage.setItem('enumTipoEncuesta', 1);
+      localStorage.setItem('enumTipoEncuesta', 1); 
+      
     };
 
   return (

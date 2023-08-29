@@ -78,12 +78,18 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
     let newStyle = {...datosDefinicionEstilo};
 
     // setear estilos de logotipo
-
+    if (sendPosicionLogotipo !== '') {
     newStyle.logotipo.enumPosicion = sendPosicionLogotipo;
+    }
+    if (sendTamanoLogotipo !== '') {
     newStyle.logotipo.tamanio = sendTamanoLogotipo;
+    }
+    if (sendPosicionLogotipoPiePagina !== '') {
     newStyle.pieDePagina.enumPosicion = sendPosicionLogotipoPiePagina;
+    }
+    if (sendTamanoLogotipoPiePagina !== '') {
     newStyle.pieDePagina.tamanio = sendTamanoLogotipoPiePagina;
-    
+    }
     if (tituloTipografia === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontFamily = tipografia;
