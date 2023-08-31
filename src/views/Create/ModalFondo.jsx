@@ -11,9 +11,15 @@ const trashSVG = svgManager.getSVG('trash');
 // crear consumo categoria de encuestas
 
 
-const ModalFondo = ({ open, onClose, sendImagenFondo }) => {
+const ModalFondo = ({ 
+    open, 
+    onClose, 
+    sendImagenFondo,
+    contenEstilos
+ }) => {
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
+    const [estilos, setEstilos] = useState(contenEstilos);
 
     // create a preview as a side effect, whenever selected file is changed
     useEffect(() => {

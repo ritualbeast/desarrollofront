@@ -40,26 +40,87 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const handleChangeTamano = (event, titulo) => {
         if (pasos === 2) {
             sendTamanoPaso2(event.target.value, titulo);
+            setEstilos({
+                ...estilos,
+                fuente: {
+                    ...estilos.fuente,
+                    [transformarTitulo(titulo)]: {
+                        ...estilos.fuente[transformarTitulo(titulo)],
+                        enumTamanio: event.target.value
+                    }
+                }
+            });
             
         } else {
 
             sendTamano(event.target.value, titulo);
+            setEstilos({
+                ...estilos,
+                fuente: {
+                    ...estilos.fuente,
+                    [transformarTitulo(titulo)]: {
+                        ...estilos.fuente[transformarTitulo(titulo)],
+                        enumTamanio: event.target.value
+                    }
+                }
+            });
         }
     };
 
     const handleChangeGrosor = (event, titulo) => {
         if (pasos === 2) {
             sendGrosorPaso2(event.target.value, titulo);
+            setEstilos({
+                ...estilos,
+                fuente: {
+                    ...estilos.fuente,
+                    [transformarTitulo(titulo)]: {
+                        ...estilos.fuente[transformarTitulo(titulo)],
+                        enumGrosor: event.target.value
+                    }
+                }   
+            });
+
         } else {
         sendGrosor(event.target.value, titulo);
+        setEstilos({
+            ...estilos,
+            fuente: {
+                ...estilos.fuente,
+                [transformarTitulo(titulo)]: {
+                    ...estilos.fuente[transformarTitulo(titulo)],
+                    enumGrosor: event.target.value
+                }
+            }
+        });
         }
     };
 
     const handleChangeTipografia = (event, titulo) => {
         if (pasos === 2) {
             sendTipografiaPaso2(event.target.value, titulo);
+            setEstilos({
+                ...estilos,
+                fuente: {
+                    ...estilos.fuente,
+                    [transformarTitulo(titulo)]: {
+                        ...estilos.fuente[transformarTitulo(titulo)],
+                        enumTipografia: event.target.value
+                    }
+                }
+            });
         } else {
         sendTipografia(event.target.value, titulo);
+        setEstilos({
+            ...estilos,
+            fuente: {
+                ...estilos.fuente,
+                [transformarTitulo(titulo)]: {
+                    ...estilos.fuente[transformarTitulo(titulo)],
+                    enumTipografia: event.target.value
+                }
+            }
+        });
         }
     };
     

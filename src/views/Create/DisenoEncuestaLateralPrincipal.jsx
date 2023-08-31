@@ -21,7 +21,7 @@ const dropletSVG = svgManager.getSVG('droplet');
 const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
     sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
     ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
-    sendImagenFondo, sendImagenFondoEstructura, contenEstilos
+    sendImagenFondo, sendImagenFondoEstructura, contenEstilos, sendColors
 }) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -35,6 +35,84 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
     const [pasos, setPasos] = React.useState(datapasos);
+    const [defaultColors, setDefaultColors] = useState(
+    [
+        [
+            { nombre: 'Rojo', color: '#ff0000' },
+            { nombre: 'Verde', color: '#00ff00' },
+            { nombre: 'Azul', color: '#0000ff' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Blanco', color: '#ffffff' },
+        ],
+        [
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Blanco', color: '#ffffff' },
+        ],
+        [
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Blanco', color: '#ffffff' },
+        ], 
+        [
+            { nombre: 'Rojo', color: '#ff0000' },
+            { nombre: 'Verde', color: '#00ff00' },
+            { nombre: 'Azul', color: '#0000ff' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Blanco', color: '#ffffff' },
+            // ... puedes añadir más aquí
+        ],
+        [
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre: 'Blanco', color: '#ffffff' },
+            // ... puedes añadir más aquí
+        ],
+        [
+            { nombre : 'Naranja', color: '#ffa500' },
+            { nombre : 'Morado', color: '#800080' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre : 'Morado', color: '#9888e2' },
+            { nombre : 'Gris', color: '#808080' },
+            { nombre : 'Rojo', color: '#ff0000' },
+            { nombre: 'Magenta', color: '#ff00ff' },
+            { nombre: 'Cyan', color: '#00ffff' },
+            { nombre: 'Amarillo', color: '#ffff00' },
+            { nombre: 'Blanco', color: '#ffffff' },
+        ], 
+    ]
+    );
 
     
 
@@ -133,26 +211,18 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
         {nombre: '6', id: 6},
     ];
 
-    const colores = [
-        {id: 1, color: '#FF0000'}, 
-        {id: 2, color: '#0000FF'},
-        {id: 3, color: '#008000'},
-        {id: 4, color: '#FFFF00'},
-        {id: 5, color: '#800080'},
-        {id: 6, color: '#FFA500'},
-        {id: 7, color: '#FF00FF'},
-        {id: 8, color: '#A52A2A'},
-        {id: 9, color: '#808080'}
-    ];
-
+    const [selectedColors, setSelectedColors] = useState(null);
     const handleClickFila = (id) => {
         if (filaSeleccionada === id) {
-          setFilaSeleccionada(null); // Desactivar la selección si se hace clic nuevamente en la misma fila
+          setFilaSeleccionada(null);
+          setSelectedColors(null); // Desactivar la selección de colores
         } else {
           setFilaSeleccionada(id);
+          setSelectedColors(defaultColors[id - 1]); // -1 porque los IDs empiezan en 1 pero los índices de los arreglos en 0
           openDisenoColoresHandler();
         }
       };
+      
 
     const handleClickElemento = (id) => {
         if (id === 1) {
@@ -239,7 +309,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
         sendTipografiaPaso2(tipografiaPaso2,titulo);
     }
 
-    const [colors, setColors] = useState([colores]);
+    const [colors, setColors] = useState(defaultColors);
 
 
     const saveColors = (colors) => {
@@ -252,6 +322,8 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
     }
 
     sendImagenFondo(imagenFondo);
+
+    
   return (
     <>
         {openDisenoPrincipal && (
@@ -310,26 +382,31 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                                 Colores
                             </div>
                             <div className="contenedorfilas">
-                            {listacolores.map((colorL) => (
-                                <div
-                                className={`fila2${filaSeleccionada === colorL.id ? ' seleccionada' : ''}`}
-                                key={colorL.id}
-                                onClick={() => handleClickFila(colorL.id)}
-                                >
-                                <div className="elemento2">
-                                {colors.map((color, index) => (
+                            {
+                                listacolores.map((colorL, index) => (
                                     <div
-                                        className="elementoColores"
-                                        key={index}
-                                        style={{ backgroundColor: color }}
+                                        className={`fila2${filaSeleccionada === colorL.id ? ' seleccionada' : ''}`}
+                                        key={colorL.id}
+                                        onClick={() => handleClickFila(colorL.id)}
                                     >
-
-                                        <span className='disenobar-nombre'>{color.nombre}</span>
+                                        <div className="elemento2">
+                                        {
+                                            // Asegúrate de que hay un conjunto de colores para este índice
+                                            defaultColors[index] ? defaultColors[index].map((colorSubArray, subIndex) => (
+                                                <div
+                                                    className="elementoColores"
+                                                    key={subIndex}
+                                                    style={{ backgroundColor: colorSubArray.color }}
+                                                >
+                                                    <span className='disenobar-nombre'></span>
+                                                </div>
+                                            )) : 'No hay colores para este elemento'
+                                        }
+                                        </div>
                                     </div>
-                                    ))}
-                                </div>
-                                </div>
-                            ))}
+                                ))
+                            }
+
                             </div>
                             
                             
@@ -404,6 +481,7 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 closeMenuFondo={setOpenDisenoFondo}
                 sendImagenFondo = {(imagen) => {recibirImagenFondo(imagen)}}
                 sendImagenFondoEstructura = {imagenFondo}
+                contenEstilos={contenEstilos}
             />
         )
         }
@@ -421,8 +499,10 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
             
                 openMenuPrincipal={setOpenDisenoPrincipal}
                 closeMenuColores={setOpenDisenoColores}
-                sendColors={(colors) => saveColors(colors)}
+                sendColors={sendColors}
                 datapasos={datapasos}
+                selectedColors={selectedColors}
+                contenEstilos={contenEstilos}
              />
         )
         }

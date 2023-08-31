@@ -44,6 +44,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     const handleChangeTamano = (event) => {
         setTamanoSeleccionado(event.target.value);
         sendTamanoImagen(event.target.value);
+        estilos.pieDePagina.tamanio = event.target.value;
   };
     
 
@@ -129,6 +130,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
 
     const handleChangePosicion = (event) => {
         sendPosicionImagen(event.target.value);
+        estilos.pieDePagina.enumPosicion = event.target.value;
     };
 
     

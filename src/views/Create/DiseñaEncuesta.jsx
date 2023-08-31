@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col } from 'react-bootstrap';
 import NuevaEncuesta from './../Create/NuevaEncuesta';
 import DisenoEncuestaLateralPrincipal from './../Create/DisenoEncuestaLateralPrincipal';
@@ -20,9 +20,13 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [blurBackground, setBlurBackground] = useState(false);
+    const [estilos, setEstilos] = useState(contenEstilos);
    
    
-    console.log(sendPosicionLogotipo, sendTamanoLogotipo    )
+    useEffect(() => {
+        console.log('estilos2');
+
+    }, [estilos])
     const handleClickOutsideModal = (event) => {
         const modalContainer = document.getElementById('modal-container');
         if (!modalContainer.contains(event.target)) {

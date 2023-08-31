@@ -11,6 +11,7 @@ import BancoPreguntasLateralPrincipal from './Create/BancoPreguntasLateralPrinci
 import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import FormatoEncuestaLateralPrincipal from './Create/FormatoEncuestaLateralPrincipal';
 import Revision from './Create/Revision';
+import NuevaEncuesta from './Create/NuevaEncuesta';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
@@ -74,42 +75,56 @@ const Create = () => {
           tituloEncuesta: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           descripcionEncuesta: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           tituloSeccion: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           descripcionSeccion: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           preguntas: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           opcionesRespuestas: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           textoCierreEncuesta: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
           },
           textoBotones: {
             enumTipografia: "",
             enumGrosor: "",
-            enumTamanio: ""
+            enumTamanio: "",
+            color: ""
+          },
+          leyenda: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: "",
+            color: ""
           }
         },
         fondo: {
@@ -314,6 +329,12 @@ const Create = () => {
         setSendFooterImagen(imagen)
     }
 
+    const [sendColor, setSendColor] = useState(null)
+    const sendcolors = (colors) => {
+        setSendColor(colors)
+    }
+
+
 
     return (
         <>
@@ -509,6 +530,7 @@ const Create = () => {
                                     sendImagenFondo = {(imagen) => handleSendImagenFondo(imagen)}
                                     sendImagenFondoEstructura = {imagenFondo}
                                     contenEstilos= {encuestaEstilos}
+                                    sendColors = {(colors) => sendcolors(colors)}
                                     
                                     />
                                 ) : null    
@@ -556,26 +578,28 @@ const Create = () => {
                                         contenEstilos= {encuestaEstilos}
                                         sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
                                         sendEstilosDefinicionEncuesta= {sendDatosEstilosDefinicionEncuesta}
-                                        
+                                        sendColors = {sendColor}
                                     />
 
-                                ) : pasos === 2 ? (<DiseñaEncuesta 
-                                        openVistaPrevia={openVistaPrevia} 
+                                ) : pasos === 2 ? (<NuevaEncuesta 
+                                        
+                                        openVistaPrevia={openVistaPrevia}
+                                        contentInit={contentCont}
                                         handleCloseVistaPrevia={handleCloseVistaPrevia}
                                         handleTotalPreguntas={recibirTotalPreguntas}
-                                        contentInit={contentCont}
-                                        sendTamanoPaso2 = {tamanoPaso2}
-                                        sendGrosorPaso2 = {grosorPaso2}
-                                        sendTipografiaPaso2 = {tipografiaPaso2}
-                                        sendImagenFondo = {imagenFondo}
-                                        sendFooterImagen = {sendFooterImagen}
+                                        sendTamanoPaso2={tamanoPaso2}
+                                        sendGrosorPaso2={grosorPaso2}
+                                        sendTipografiaPaso2={tipografiaPaso2}
+                                        sendImagenFondo={imagenFondo}
+                                        sendFooterImagen={sendFooterImagen}
                                         obtenerPreg = {obtenerBancoPregunta}
                                         regresarRevision={regresarRevision}
-                                        contenEstilos= {encuestaEstilos}
+                                        contenEstilos={encuestaEstilos}
                                         sendPosicionLogotipo = {posicionLogotipo}
                                         sendTamanoLogotipo = {tamanoLogotipo}
                                         sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
                                         sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
+                                        sendColors = {sendColor}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}

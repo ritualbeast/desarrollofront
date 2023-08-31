@@ -12,7 +12,14 @@ const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sendColors, datapasos} ) => {
+const DisenoEncuestaLateralColores = ( {
+    openMenuPrincipal, 
+    closeMenuColores, 
+    sendColors, 
+    datapasos, 
+    selectedColors,
+    contenEstilos
+} ) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -30,9 +37,11 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sen
         { id: 9, nombre: 'Botones' , isOpen: false},
         { id: 10, nombre: 'Texto de botón' , isOpen: false},
     ]);
-
+    const [defaultColores, setDefaultColores] = useState(selectedColors || []);
     const [currentColor, setCurrentColor] = useState('#FFFFFF');
-  const [savedColors, setSavedColors] = useState([]);
+    const [savedColors, setSavedColors] = useState([]);
+    const [estilos, setEstilos] = useState(contenEstilos);
+    
 
 
     const handleClickColorSeleccionado = (index) => {
@@ -80,23 +89,78 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sen
         openMenuPrincipal(true);
         closeMenuColores(false);
     }
-    const initialColors = colorEncuesta.map(() => '#fff'); // Inicializa todos los colores a '#fff'
+
+    const defaultColors = [
+        '#ff0000', // Rojo
+        '#00ff00', // Verde
+        '#0000ff', // Azul
+        '#ff00ff', // Magenta
+        '#00ffff', // Cyan
+        '#ffff00', // Amarillo
+        
+    ];
+    
+    const initialColors = colorEncuesta.map((_, index) => {
+        const colorArray = defaultColores[index % defaultColores.length];
+        return colorArray ? colorArray.color : '#FFFFFF'; // Utiliza un valor por defecto si no hay colores disponibles
+      });
     const [colors, setColors] = useState(initialColors);
     sendColors(colors);
 
-    const handleChangeComplete = (newColor, index) => {
+    const handleChangeComplete = (newColor, index, colornombre) => {
         const updatedColors = [...colors];
         updatedColors[index] = newColor.hex;
         setColors(updatedColors);
         // handleCloseColorPicker(index);
+        const estilosnuevo = { ...estilos };
+        console.log(colornombre)
+        if(transformarTitulo(colornombre) === 'fondo'){
+            console.log(estilosnuevo.fondo)
+            estilosnuevo.fondo.colorFondo = newColor.hex;
+            
+        }
+        else {
+            estilosnuevo.fuente[transformarTitulo(colornombre)].color = newColor.hex;
+        }
+        setEstilos(estilosnuevo);
+
     };
+
+
+    const transformarTitulo = (titulo) => {
+        const mapeoTitulos = {
+          "Titulo de encuesta": "tituloEncuesta",
+          "Descripción de encuesta": "descripcionEncuesta",
+          "Texto de pie de página": "leyenda",
+          "Texto de botón": "textoBotones",
+          "Título de sección": "tituloSeccion",
+          "Descripción de sección": "descripcionSeccion",
+          "Preguntas": "preguntas",
+          "Opciones de respuesta": "opcionesRespuesta",
+          "Texto de cierre de encuestas": "textoCierreEncuesta",
+          "Fondo": "fondo",
+          
+        };
+
+        console.log(mapeoTitulos[titulo])
+      
+        return mapeoTitulos[titulo];
+      };
+
+    
     const handleCloseButtonClick = (event, index) => {
         event.stopPropagation();
         handleCloseColorPicker(index);
     };
+
+    const verestilos = () => {
+        console.log(estilos);
+    }
     
   return (
     <>
+        <button onClick={verestilos}
+        >555</button>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">
@@ -150,7 +214,7 @@ const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores, sen
                                                 <div style={{ position: 'absolute', zIndex: '2', right: '70%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
                                                     <SketchPicker 
                                                         color={colors[index]}
-                                                        onChangeComplete={(newColor) => handleChangeComplete(newColor, index)} 
+                                                        onChangeComplete={(newColor) => handleChangeComplete(newColor, index, color.nombre)} 
                                                         
                                                     />
                                                     <button 

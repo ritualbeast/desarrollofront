@@ -44,7 +44,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   sendEstado3, sendPosicion3, 
   sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, 
   sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
-  sendDatosDefinicionEncuesta, contentInit, contenEstilos, sendEstilosDefinicionEncuesta
+  sendDatosDefinicionEncuesta, contentInit, contenEstilos, sendEstilosDefinicionEncuesta,
+  sendColors
 }, ref) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
@@ -65,68 +66,61 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const tituloTipografia = sendTipografia3?.titulo;
 
   // capturar el valor de todos los datos
-sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
-sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
+  sendDatosDefinicionEncuesta(datosDefinicionEncuesta);
+  sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
   const tituloref = useRef();
   const descripcionref = useRef();
   const leyendaref = useRef();
   const botonref = useRef();
-
+  const fondoRef = useRef();
+  const fondoPiePaginaRef = useRef();
+  const [fondo, setFondo] = useState('');
+  const [colors, setColors] = useState(sendColors);
 
   useEffect(() => {
+    
+  console.log('ojala');
+   
 
-    let newStyle = {...datosDefinicionEstilo};
-
-    // setear estilos de logotipo
-    if (sendPosicionLogotipo !== '') {
-    newStyle.logotipo.enumPosicion = sendPosicionLogotipo;
-    }
-    if (sendTamanoLogotipo !== '') {
-    newStyle.logotipo.tamanio = sendTamanoLogotipo;
-    }
-    if (sendPosicionLogotipoPiePagina !== '') {
-    newStyle.pieDePagina.enumPosicion = sendPosicionLogotipoPiePagina;
-    }
-    if (sendTamanoLogotipoPiePagina !== '') {
-    newStyle.pieDePagina.tamanio = sendTamanoLogotipoPiePagina;
-    }
     if (tituloTipografia === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontFamily = tipografia;
       }
-      // newStyleView.fontFamily = tipografia;
-      newStyle.fuente.tituloEncuesta.enumTipografia = tipografia;
+      
     }
     if (tituloGrosor === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontWeight = grosor;
       }
-      newStyle.fuente.tituloEncuesta.enumGrosor = grosor;
+     
     }
     if (titulotamano === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontSize = `${tamano}px`;
       }
-      newStyle.fuente.tituloEncuesta.enumTamanio = `${tamano}`;
+      
     }
+    
+
+
     if ( tituloTipografia === 'Descripción de encuesta') {
       if (descripcionref.current) {
         descripcionref.current.style.fontFamily = tipografia;
       }
-      newStyle.fuente.descripcionEncuesta.enumTipografia = tipografia;
+     
     }
     if ( tituloGrosor === 'Descripción de encuesta' ) {
       if (descripcionref.current) {
         descripcionref.current.style.fontWeight = grosor;
       }
 
-      newStyle.fuente.descripcionEncuesta.enumGrosor = grosor;
+     
     }
     if (titulotamano === 'Descripción de encuesta') {
       if (descripcionref.current) {
         descripcionref.current.style.fontSize = `${tamano}px`;
       }
-      newStyle.fuente.descripcionEncuesta.enumTamanio = `${tamano}`;
+      
     }
     if (titulotamano === 'Leyenda') {
       if (leyendaref.current) {
@@ -148,21 +142,47 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
       if (botonref.current) {
         botonref.current.style.fontSize = `${tamano}px`;
       }
-      newStyle.fuente.textoBotones.enumTamanio = `${tamano}`;
+     
     }
     if ( tituloGrosor === 'Texto de botones' ) {
       if (botonref.current) {
         botonref.current.style.fontWeight = grosor;
       }
-      newStyle.fuente.textoBotones.enumGrosor = grosor;
+      
     }
     if ( tituloTipografia === 'Texto de botones') {
       if (botonref.current) {
         botonref.current.style.fontFamily = tipografia;
       }
-      newStyle.fuente.textoBotones.enumTipografia = tipografia;
-    } 
-    setDatosDefinicionEstilo(newStyle);
+    }
+    if (datosDefinicionEstilo.fuente.tituloEncuesta.color !== '') {
+      if (tituloref.current) {
+        tituloref.current.style.color = datosDefinicionEstilo.fuente.tituloEncuesta.color;
+      }
+    }
+    if (datosDefinicionEstilo.fuente.descripcionEncuesta.color !== '') {
+      if (descripcionref.current) {
+        descripcionref.current.style.color = datosDefinicionEstilo.fuente.descripcionEncuesta.color;
+      }
+    }
+    if (datosDefinicionEstilo.fuente.leyenda.color !== '') {
+      if (leyendaref.current) {
+        leyendaref.current.style.color = datosDefinicionEstilo.fuente.leyenda.color;
+      }
+    }
+    if (datosDefinicionEstilo.fondo.colorFondo !== '') {
+      if (fondoRef.current) {
+        fondoRef.current.style.backgroundColor = datosDefinicionEstilo.fondo.colorFondo;
+      }
+    }
+    if (datosDefinicionEstilo.fondo.colorFondo !== '') {
+      if (fondoPiePaginaRef.current) {
+        console.log(datosDefinicionEstilo.fondo.colorFondo);
+        fondoPiePaginaRef.current.style.backgroundColor = datosDefinicionEstilo.fondo.colorFondo;
+        setFondo(datosDefinicionEstilo.fondo.colorFondo);
+      }
+    }
+     
     enviarPreview(preview2);
     enviarPreview2(preview1);
     setLeerPosicion(sendPosicion3);
@@ -170,11 +190,12 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
     setLeerTamanoLogotipo(sendTamanoLogotipo);
     setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
+    setDatosDefinicionEstilo(contenEstilos);
 
   }, [preview1, preview2, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
     tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
     sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
-    
+    datosDefinicionEstilo , sendColors
     
   ]);
 
@@ -282,13 +303,19 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
     setPreview2(null);
   }
 
+  const leerFondo = () => {
+    console.log(datosDefinicionEstilo.fondo.colorFondo);
+  }
+
   return (
     <>
+    <button onClick={() => leerFondo()}
+    >aaa</button>
       <div className="tituloDefinicionEncuesta">
          <span> Crear  de Encuesta </span>
       </div>
 
-      <div className="cuerpoDefinicionEncuesta">
+      <div className="cuerpoDefinicionEncuesta" style={{ backgroundColor: fondo }}>
           <div className="cabeceraDefinicionEncuesta">
               <span>Cabecera</span>
           </div>
@@ -353,7 +380,7 @@ sendEstilosDefinicionEncuesta(datosDefinicionEstilo);
 
       <br />
 
-      <div className="cuerpoDefinicionEncuesta">
+      <div className="cuerpoDefinicionEncuesta" ref={fondoPiePaginaRef}>
           <div className="cabeceraDefinicionEncuesta">
               <span>Pie de página</span>
           </div>

@@ -57,9 +57,8 @@ const NuevaEncuesta = ({
   sendTamanoLogotipo, 
   sendPosicionLogotipoPiePagina, 
   sendTamanoLogotipoPiePagina,
+  sendColors,
 }) => {
-
-
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
@@ -106,9 +105,13 @@ const NuevaEncuesta = ({
     const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
     const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
     const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState(sendTamanoLogotipoPiePagina);
-
+    const [fondoStyle, setFondoStyle] = useState();
+    const fondoPiePaginaRef = useRef();
+    const [colors, setColors] = useState(sendColors);
+    const [fondo, setFondo] = useState();
 
   useEffect(() => {
+    console.log('cambio de estilos')
     setImagenFondo(sendImagenFondo);
     let newStyle = {};
     let newStylecontent = { ...estiloss};
@@ -149,13 +152,24 @@ const NuevaEncuesta = ({
     }
     setEstilos(newStylecontent);
 
+    if (estiloss.fondo.colorFondo !== '') {
+      console.log('entro');
+      // setFondoStyle({ backgroundColor: estiloss.fondo.colorFondo });
+      setFondo(estiloss.fondo.colorFondo);
+    }
+
+
     setLeerPosicionLogotipo(sendPosicionLogotipo);
     setLeerTamanoLogotipo(sendTamanoLogotipo);
     setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
+    setEstilos(contenEstilos);
 
   }, [tamano, grosor, tipografia, imagenFondo, 
-    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina]);
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss
+  
+  
+  ]);
   
     
   
@@ -876,16 +890,7 @@ const NuevaEncuesta = ({
       
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'
-            style={
-              (sendImagenFondo == null || typeof sendImagenFondo === 'undefined') 
-              ? null
-              : {
-                  backgroundImage: `url(${URL.createObjectURL(sendImagenFondo)})`,
-                  backgroundSize: '100% 100%',           // Ajusta la imagen para cubrir el contenedor
-                  backgroundPosition: 'center',      // Centra la imagen en el contenedor
-                  backgroundRepeat: 'no-repeat'      // Evita que la imagen se repita
-                }
-            }
+            style={{ backgroundColor: fondo } }
             >
               <Col>
                   <p className='titulo-encuesta-tercero'

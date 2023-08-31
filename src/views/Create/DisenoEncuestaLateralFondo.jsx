@@ -15,7 +15,13 @@ const uploadSVG = svgManager.getSVG('upload');
 
 const trashSVG = svgManager.getSVG('trash');
 
-const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo, sendImagenFondo, sendImagenFondoEstructura}) => {
+const DisenoEncuestaLaterallogotipo = ({
+    openMenuPrincipal, 
+    closeMenuFondo, 
+    sendImagenFondo, 
+    sendImagenFondoEstructura,
+    contenEstilos
+}) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
@@ -104,6 +110,7 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo, sendI
 
     const handleRecibirImagenFondo = (imagen) => {
         setSelectedFile(imagen);
+
     }
 
     
@@ -113,6 +120,7 @@ const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuFondo, sendI
         <ModalFondo open={openFondo}
          onClose={handleCloseFondo}
          sendImagenFondo= {(imagen) => {handleRecibirImagenFondo(imagen)}}
+         contenEstilos={contenEstilos}
            />
 
         <Col className="encuesta-Segundocuerpo2">
