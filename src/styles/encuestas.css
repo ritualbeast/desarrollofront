@@ -142,11 +142,11 @@
   .encuestas-cuerpo {
     display: flex;
     flex-wrap: wrap;
-    width: 101.1%;
+    justify-content: center;
   }
   
   .encuestas-cuerpo__col {
-    flex-basis: 29.85%;
+    flex-basis: 29.4%;
     padding: 1rem;
     border: 1px solid #ccc;
     position: relative;
@@ -219,8 +219,10 @@
     width: 10%;
   }
   .modalbancopreguntas_checkicon{
-    margin-left: 7%;
-    margin-top: 7%;
+    /* margin-left: 7%;
+    margin-top: 7%; */
+    margin-left: 4%;
+    margin-top: 4%;
   }
   
   .encuestas-icon:hover{

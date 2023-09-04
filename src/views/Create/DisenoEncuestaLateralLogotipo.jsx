@@ -1,20 +1,20 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaLogo.css'
-import Logo from '../../assets/img/LOGO_VERIS.jpg'
+import { ListarEnumeradosService } from '../../services/EstilosServices';
 import Select from 'react-select';
 
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
+const uploadSVG = svgManager.getSVG('upload');
 
-const Categoria = {
+const customStyles = {
     container: (provided, state) => ({
       ...provided,
-      width: '109%',
-      marginTop: '0.5%',
+      width: '108%'
     }),
     control: (provided, state) => ({
       ...provided,
@@ -29,28 +29,34 @@ const Categoria = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
 };
 
-const DisenoEncuestaLaterallogotipo = () => {
+const DisenoEncuestaLaterallogotipo = ({openMenuPrincipal, closeMenuLogotipo, sendPreviewLogo,sendPosicionImagen, sendTamanoImagen}) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
-    const [posicion, setPosicion] = useState('');
+
+    useEffect(() => {
+        ListarPosicionImagen();
+    }, []);
 
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
+          sendTamanoImagen(event.target.value);
     };
     
     const RadioButton = ({ id, value, checked, onChange, label }) => (
         <label className="radioButton">
             <input
-                type="radio"
-                id={id}
-                value={value}
-                checked={checked}
-                onChange={onChange}
+            type="radio"
+            id={id}
+            value={value}
+            checked={checked}
+            onChange={onChange}
             />
             <span className="checkmark"></span>
             {label}
@@ -91,64 +97,83 @@ const DisenoEncuestaLaterallogotipo = () => {
         { id: 4, nombre: 'Grande' } 
     ];
 
-    const positions = [
-        { value: '1', label: 'Izquierda' },
-        { value: '2', label: 'Derecha' },
-        { value: '3', label: 'Centro' },
-        { value: '4', label: 'Arriba' },
-        { value: '5', label: 'Abajo' },
-    ]
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuLogotipo(false);
+    }
 
-    const handlePosition = (selectedOption) => {
-        setPosicion(selectedOption.value);
+    // consumo de posicion de pie de pagina
+    const [posicionImagen, setPosicionImagen] = useState([]);
+    const ListarPosicionImagen = async () => {
+        try {
+            const response = await  ListarEnumeradosService('POSICION_IMAGEN')
+            setPosicionImagen(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
     };
-   
+
+    // enviar posicion de pie de pagina
+    const handleChangePosicion = (event) => {
+        sendPosicionImagen(event.target.value);
+    };
+
+    
   return (
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
                 <div className="encuesta-subtitulo2">
                     <h2 className="encuesta-subtitulo-2">Estilo</h2>
-
                     <OverlayTrigger
-                    trigger="click"
-                    show={showTooltip}
-                    target={targetRef.current}
-                    placement="right"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}
-                    onHide={() => setShowTooltip(false)}
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
                     >
-                    <div
-                        className="help-icon"
-                        onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                    >
-                        <span
-                        ref={targetRef}
-                        style={{ marginLeft: '150px' }}
-                        dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                        />
-                    </div>
+                        <div
+                            className="help-icon"
+                            onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                        >
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
+                        </div>
                     </OverlayTrigger>
                 </div>
             </Col>
 
             <Col>
                 <div className="desplegado-container">
-                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'25%'}}>
+                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'5%'}}>
                         <div className="fondo-lista">
-                            <div className="contenedorCabeceraLogotipo">
+                            <div className="contenedorCabeceraLogotipo" style={{cursor:'pointer'}} onClick={volverMenuPrincipal}>
                                 <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
                                 <span className='cabeceraTitle'>Cabezera</span>
                             </div>
 
-                            <div className="contenedorLogotipo">
-                                <img src={Logo} width={160} height={72} alt="Logo" />
-                            </div>
+                            {sendPreviewLogo != undefined ? (
+                            <img
+                                src={sendPreviewLogo}
+                                alt="preview"
+                                style={{ height: '92px', width: '100%' }}
+                                className="imagenLogotipoEncuesta"
+                            />
+                            ) : <div className="contenedorLogotipo">
+                                    <div className='buttonLogotipo'>
+                                        <span className='buttonLogotipoText'>Imagen</span>
+                                        <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                                    </div>
+                                </div>
+                            }
 
                             <div className="contenedorContenedorTamano">
                                 <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-
                                 <div className="contenedortamanoLogotipo">
                                     <div className='radioLogotipo'>
                                     {tamano.map((opcion) => (
@@ -171,10 +196,12 @@ const DisenoEncuestaLaterallogotipo = () => {
                                 
                                 <div className="contenedorPosicion">
                                     <Select
-                                        styles={Categoria}
-                                        options={positions}
-                                        value={positions.find((option) => option.value === posicion)}
-                                        onChange={handlePosition}
+                                        styles={customStyles}
+                                        options={posicionImagen.map((opcion) => ({
+                                            value: opcion.etiqueta,
+                                            label: opcion.etiqueta,
+                                        }))}
+                                        onChange={(selectedOption) => handleChangePosicion({ target: { value: selectedOption.value } })}
                                     />
                                 </div>
                             </div>
@@ -182,7 +209,7 @@ const DisenoEncuestaLaterallogotipo = () => {
                     </div>
                 </div>
             </Col>
-        </Col>                       
+        </Col>                      
     </>
   )
 }

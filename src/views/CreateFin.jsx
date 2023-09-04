@@ -5,13 +5,19 @@ import LogoFinalizar from '../assets/img/Logo-finalizar.png'
 import ModalObtenerUrl from '../util/ModalObtenerUrl';
 const CreateFin = () => {
   const [openFondo, setOpenFondo] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [blurBackground, setBlurBackground] = useState(false);
 
   const handleCloseFondo = () => {
     setOpenFondo(false);
+    setBlurBackground(false);
+    setIsModalVisible(false);
   }
 
   const handleOpenFondo = () => {
     setOpenFondo(true);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   }
   return (
     <>

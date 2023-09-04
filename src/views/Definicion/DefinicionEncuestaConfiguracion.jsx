@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFondo.css'
@@ -29,13 +29,20 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
 };
 
-const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
+const DefinicionEncuestaConfiguracion =  forwardRef(({
+    closeMenuConfiguracion, 
+    sendDatosConfiguracionEncuesta,
+} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
+    const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
+    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
     const targetRef = useRef(null);
 
     useEffect(() => {  
@@ -46,6 +53,26 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const handleIconClick = () => {
         setShowTooltip(false);
     };
+
+    const handleEnviarDatosConfiguracion = () => {
+        // Crear un objeto con los datos
+        const datosEncuestaConf = {
+            categoria: selectedCategoriaEncuesta.value,
+            vigencia: selectedVigencia.value,
+            enum_tipo_encuesta: 1,
+            enum_tipoVigencia: 4,
+            fechaInicio : fechaInicioSeleccionada,
+            fechaFin : fechaFinSeleccionada,
+
+        };
+    
+        // Enviar los datos a la función prop
+        sendDatosConfiguracionEncuesta(datosEncuestaConf);
+    };
+
+    useImperativeHandle(ref, () => ({
+        handleEnviarDatosConfiguracion,
+    }));
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -96,7 +123,8 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     const [selectedCategoriaEncuesta, setSelectedCategoriaEncuesta] = useState({
         value: '',
         label: 'Categoria de encuesta',
-      });
+    });
+
     const ListarCategoriaEncuesta = async () => {
         try {
             const response = await  ListarCategoriasService();
@@ -115,7 +143,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     };
 
     // seleccion de categoria
-        const handleChangeCategoria = (selectedOption) => {
+    const handleChangeCategoria = (selectedOption) => {
         setSelectedCategoriaEncuesta(selectedOption);
     };
 
@@ -125,13 +153,11 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
     };
     
     // seleccion de fecha inicio
-    const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
     const handleChangeFechaInicio = (event) => {
         setFechaInicioSeleccionada(event.target.value + ' 00:00:00');
     };
 
     // seleccion de fecha fin
-    const [fechaFinSeleccionada, setFechaFinSeleccionada] = useState(null);
     const handleChangeFechaFin = (event) => {
         setFechaFinSeleccionada(event.target.value + ' 23:59:59');
     };
@@ -154,7 +180,7 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
                     >
                         <div
                             className="help-icon"
-                            onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                            onClick={() => setShowTooltip(!showTooltip)}
                         >
                             <span
                                 ref={targetRef}
@@ -224,6 +250,6 @@ const DefinicionEncuestaConfiguracion = ({closeMenuConfiguracion}) => {
         </Col>                        
     </>
   )
-}
+})
 
 export default DefinicionEncuestaConfiguracion

@@ -16,11 +16,12 @@ const infoSVG = svgManager.getSVG('info');
 const imageSVG = svgManager.getSVG('image');
 const sidebarSVG = svgManager.getSVG('sidebar');
 const italicSVG = svgManager.getSVG('italic');
-const listSVG = svgManager.getSVG('list');
 const dropletSVG = svgManager.getSVG('droplet');
-const repeatSVG = svgManager.getSVG('repeat');
 
-const DisenoEncuestaLateralPrincipal = () => {
+const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo, sendEstado2,sendPosicion2, 
+    sendTamano2, sendGrosor2, sendTipografia2, sendPosicionLogotipo, sendTamanoLogotipo
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, updateEstilos,
+}) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [openDisenoPrincipal, setOpenDisenoPrincipal] = React.useState(true);
     const [openDisenoLogotipo, setOpenDisenoLogotipo] = React.useState(false);
@@ -30,6 +31,9 @@ const DisenoEncuestaLateralPrincipal = () => {
     const [openDisenoFondo, setOpenDisenoFondo] = React.useState(false);
     const [openDisenoTransicion, setOpenDisenoTransicion] = React.useState(false);
     const [openDisenoColores, setOpenDisenoColores] = React.useState(false);
+    const [pasos, setPasos] = React.useState(datapasos);
+    const [preview, setPreview] = useState(preview3);
+    const [previewLogotipo, setPreviewLogotipo] = useState(sendPreviewLogotipo); 
     
     const openDisenoLogotipoHandler = () => {
         setOpenDisenoLogotipo(true);
@@ -95,14 +99,13 @@ const DisenoEncuestaLateralPrincipal = () => {
     );
 
     // lista de diseño
-
     const listadiseno = [  
         {nombre: 'Logotipo', id: 1, SSVG: imageSVG},
         {nombre: 'Pie de página', id: 2, SSVG: sidebarSVG},
         {nombre: 'Fuentes', id: 3 , SSVG: italicSVG},
-        {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
-        {nombre: 'Fondo', id: 5 , SSVG: dropletSVG},
-        {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
+        // {nombre: 'Disposicion', id: 4 , SSVG: listSVG},
+        {nombre: 'Fondo', id: 4 , SSVG: dropletSVG},
+        // {nombre: 'Transcición', id: 6 , SSVG: repeatSVG},
     ];
 
     const elementosPorFila = 2;
@@ -142,7 +145,7 @@ const DisenoEncuestaLateralPrincipal = () => {
           setFilaSeleccionada(id);
           openDisenoColoresHandler();
         }
-      };
+    };
 
     const handleClickElemento = (id) => {
         if (id === 1) {
@@ -153,10 +156,10 @@ const DisenoEncuestaLateralPrincipal = () => {
         } else if (id === 3) {
 
             openDisenoFuentesHandler();
-        }  else if (id === 4) {
+        }  else if (id === 5) {
 
             openDisenoDisposicionHandler();
-        } else if (id === 5) {
+        } else if (id === 4) {
 
             openDisenoFondoHandler();
         } else if (id === 6) {
@@ -168,134 +171,195 @@ const DisenoEncuestaLateralPrincipal = () => {
 
     };
 
+    const handleSendEstado = (estado) => {
+        sendEstado2(estado);
+    }
+    
+    const handleSendPosicion = (posicion) => {
+        sendPosicion2(posicion);
+    }
+
+    const handleSendTamano = (tamano, titulo) => {
+        sendTamano2(tamano, titulo);
+    }
+
+    const handleSendGrosor = (grosor, titulo) => {
+        sendGrosor2(grosor, titulo);
+    }
+
+    const handleSendTipografia = (tipografia, titulo) => {
+        sendTipografia2(tipografia, titulo);
+    }
+
+    // enviar posicion de imagen de logotipo
+    const handleSendPosicionLogotipo = (posicion) => {
+        sendPosicionLogotipo(posicion);
+    }
+
+    // enviar tamaño de imagen de logotipo
+    const handleSendTamanoLogotipo = (tamano) => {
+        sendTamanoLogotipo(tamano);
+    }
+
+    // enviar datos al paso 2
+    const handleSendTamanoPaso2 = (tamanoPaso2,titulo) => {
+        sendTamanoPaso2(tamanoPaso2,titulo);
+    }
+
+    const handleSendGrosorPaso2 = (grosorPaso2,titulo) => {
+        sendGrosorPaso2(grosorPaso2,titulo);
+    }
+
+    const handleSendTipografiaPaso2 = (tipografiaPaso2,titulo) => {
+        sendTipografiaPaso2(tipografiaPaso2,titulo);
+    }
+
   return (
     <>
         {openDisenoPrincipal && (
-             <Col className="encuesta-Segundocuerpo2">
+            <Col className="encuesta-Segundocuerpo2">
                 <Col>
-                <div className="encuesta-subtitulo2">
-                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                    <OverlayTrigger
-                    trigger="click"
-                    show={showTooltip}
-                    target={targetRef.current}
-                    placement="right"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}
-                    onHide={() => setShowTooltip(false)}
-                    >
-                    <div
-                        className="help-icon"
-                        onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                    >
-                        <span
-                        ref={targetRef}
-                        style={{ marginLeft: '150px' }}
-                        dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                        />
+                    <div className="encuesta-subtitulo2">
+                        <h2 className="encuesta-subtitulo-2">Estilo</h2>
+
+                        <OverlayTrigger
+                            trigger="click"
+                            show={showTooltip}
+                            target={targetRef.current}
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                            onHide={() => setShowTooltip(false)}
+                        >
+                        <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
+                        </div>
+                        </OverlayTrigger>
                     </div>
-                    </OverlayTrigger>
-                </div>
                 </Col>
+
                 <Col>
-                
                     <div className="desplegado-container">
-                    <div className="listaBancoPreguntas-2">
-                        <div className="fondo-lista">
-                        {filas.map((fila, index) => (
-                            <div className="fila" key={index}>
-                                {fila.map((elemento) => (
-                                <div className="elemento" key={elemento.id}  onClick={() => handleClickElemento(elemento.id)}>
-                                    <span className='disenobar-nombre'>{elemento.nombre}</span>
-                                    <br/>
-                                    <div className="svg-container">
-                                    {/* Renderizar el SVG dentro del div con radius */}
-                                    <div className="svg-div">
-                                        {<span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: elemento.SSVG }}/>}
+                        <div className="listaBancoPreguntas-2">
+                            <div className="fondo-lista">
+                                {filas.map((fila, index) => (
+                                    <div className="fila" key={index}>
+                                        {fila.map((elemento) => (
+                                            pasos === 1 && (elemento.nombre === "Disposicion" || elemento.nombre === "Transcición" ||  elemento.nombre === 'Fondo'  ) ? null :  (
+                                                <div className="elemento" key={elemento.id}  onClick={() => handleClickElemento(elemento.id)}>
+                                                    <span className='disenobar-nombre'>{elemento.nombre}</span>
+                                                    <br/>
+                                                    <div className="svg-container">
+                                                        {/* Renderizar el SVG dentro del div con radius */}
+                                                        <div className="svg-div">
+                                                            {<span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html: elemento.SSVG }}/>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        ))}
                                     </div>
-                                    </div>
-                                    
+                                ))} 
+
+                                <div className="fila">
+                                    Colores
                                 </div>
-                                ))}
-                            </div>
-                            ))}  
-                            <div className="fila">
-                                Colores
-                            </div>
-                            <div className="contenedorfilas">
-                            {listacolores.map((colorL) => (
-                                <div
-                                className={`fila2${filaSeleccionada === colorL.id ? ' seleccionada' : ''}`}
-                                key={colorL.id}
-                                onClick={() => handleClickFila(colorL.id)}
-                                >
-                                <div className="elemento2">
-                                    {colores.map((color) => (
-                                    <div
-                                        className="elementoColores"
-                                        key={color.id}
-                                        style={{ backgroundColor: color.color }}
-                                    >
-                                        <span className='disenobar-nombre'>{color.nombre}</span>
-                                    </div>
+
+                                <div className="contenedorfilas">
+                                    {listacolores.map((colorL) => (
+                                        <div
+                                        className={`fila2${filaSeleccionada === colorL.id ? ' seleccionada' : ''}`}
+                                        key={colorL.id}
+                                        onClick={() => handleClickFila(colorL.id)}
+                                        >
+                                            <div className="elemento2">
+                                                {colores.map((color) => (
+                                                    <div
+                                                        className="elementoColores"
+                                                        key={color.id}
+                                                        style={{ backgroundColor: color.color }}
+                                                    >
+                                                        <span className='disenobar-nombre'>{color.nombre}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
-                                </div>
-                            ))}
                             </div>
-                            
-                            
-                    
-                        
                         </div>
                     </div>
-                    </div>
-                
                 </Col>
             </Col>
-            
-            )}
+        )}
        
-
         {openDisenoLogotipo && (
-            <DisenoEncuestaLaterallogotipo />
-        )    
-        }
+            <DisenoEncuestaLaterallogotipo 
+              openMenuPrincipal={setOpenDisenoPrincipal}
+              closeMenuLogotipo={setOpenDisenoLogotipo}
+              sendPosicionImagen={(posicion) => handleSendPosicionLogotipo(posicion)}
+              sendTamanoImagen={(tamano) => handleSendTamanoLogotipo(tamano)}
+              sendPreviewLogo = {previewLogotipo}
+            />
+        )}
 
         {openDisenoPiePagina && (
-            <DisenoEncuestaLateralPiePagina />
-        )  
-        }
+            <DisenoEncuestaLateralPiePagina 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuPiePagina={setOpenDisenoPiePagina}
+                preview4={preview}
+                paso={pasos}
+                sendEstado={(estado) => handleSendEstado(estado)}
+                sendPosicion={(posicion) => handleSendPosicion(posicion)}
+            />
+        )}
 
         {openDisenoFuentes && (
-            <DisenoEncuestaLateralFuentes />
-        )
-        }
+            <DisenoEncuestaLateralFuentes 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFuentes={setOpenDisenoFuentes}
+                paso={pasos}
+                sendTamano={(tamano, titulo) => handleSendTamano(tamano, titulo)}
+                sendGrosor={(grosor, titulo) => handleSendGrosor(grosor, titulo)}
+                sendTipografia={(tipografia, titulo) => handleSendTipografia(tipografia, titulo)}
+                sendTamanoPaso2 = { (tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2, titulo) }
+                sendGrosorPaso2 = { (grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2, titulo) }
+                sendTipografiaPaso2 = { (tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2, titulo) }
+                updateEstilos={updateEstilos}
+            />
+        )}
 
         {openDisenoDisposicion && (
-            <DisenoEncuestaLateralDisposicion />
-        )
-        }
+            <DisenoEncuestaLateralDisposicion
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuDisposicion={setOpenDisenoDisposicion}
+            />
+        )}
 
         {openDisenoFondo && (
-            <DisenoEncuestaLateralFondo />
-        )
-        }
+            <DisenoEncuestaLateralFondo 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuFondo={setOpenDisenoFondo}
+            />
+        )}
 
         {openDisenoTransicion && (
-            <DisenoEncuestaLateralTransicion />
-        )
-        }
+            <DisenoEncuestaLateralTransicion 
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuTransicion={setOpenDisenoTransicion}
+            />
+        )}
 
         {openDisenoColores && (
-            <DisenoEncuestaLateralColores />
-        )
-        }
-
-        
-       
-                                
-                                
+            <DisenoEncuestaLateralColores
+                openMenuPrincipal={setOpenDisenoPrincipal}
+                closeMenuColores={setOpenDisenoColores}
+             />
+        )}                  
     </>
   )
 }

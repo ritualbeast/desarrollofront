@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/resultadoOpcionMultiple.css'
 import { Button, Container, Col } from 'react-bootstrap';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -16,6 +16,16 @@ const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 const chevronDownBSVG = svgManager.getSVG('chevron-down-black');
 const chevronUpSVG = svgManager.getSVG('chevron-up');
+
+const CustomCheckBox = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: ${(props) => (props.checked ? 'red' : 'white')}; /* Cambiar el color rojo aquí */
+  margin-right: 5px;
+  background-color: unset;
+`;
 
 const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
   position: absolute;
@@ -92,6 +102,11 @@ const ResultadoOpcionMultiple = ({
   informacion,
   configuracion6Activa,
   preguntaVisibleC,
+  obtenerPreg,
+  sendTamanoPaso2, 
+  sendGrosorPaso2, 
+  sendTipografiaPaso2,
+  configuracion3RC
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -100,6 +115,40 @@ const ResultadoOpcionMultiple = ({
   const targetRef = useRef(null);
   const [isUp, setIsUp] = useState(true);
   const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleC);
+  const tamano = sendTamanoPaso2?.tamano ;
+  const titulotamano = sendTamanoPaso2?.titulo;
+  const grosor = sendGrosorPaso2?.grosor;
+  const tituloGrosor = sendGrosorPaso2?.titulo;
+  const tipografia = sendTipografiaPaso2?.tipografia;
+  const tituloTipografia = sendTipografiaPaso2?.titulo;
+  const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
+  const [preguntasStyle, setPreguntasStyle] = useState({});
+  const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
+  const [configuracion3, setConfiguracion3] = useState(configuracion3RC);
+
+  useEffect(() => {
+    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
+    let newStyle = {};
+    if (titulotamano === 'Opciones de respuesta') {
+      newStyle.fontSize = `${tamano}px`;
+    } if (tituloGrosor === 'Opciones de respuesta') {
+      newStyle.fontWeight = grosor;
+    } if (tituloTipografia === 'Opciones de respuesta') {
+      newStyle.fontFamily = tipografia;
+    }
+    setOpcionesRespuestaStyle(newStyle);
+    
+    let newStyle2 = {};
+    if (titulotamano === 'Preguntas') {
+      newStyle2.fontSize = `${tamano}px`;
+    } if (tituloGrosor === 'Preguntas') {
+      newStyle2.fontWeight = grosor;
+    } if (tituloTipografia === 'Preguntas') {
+      newStyle2.fontFamily = tipografia;
+    }
+    setPreguntasStyle(newStyle2);
+
+  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);
 
   const handleMouseEnterEditar = (index) => {
     $(`#editPreg${index +1}`).removeClass("oculto");
@@ -115,8 +164,8 @@ const ResultadoOpcionMultiple = ({
 
   const handleOpenEliminarPregunta = () => {
     setOpenEliminarPregunta(true)
-    setBlurBackground(false);
-    setIsModalVisible(false);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   }
 
   const handleCloseEliminar = () => {
@@ -127,7 +176,9 @@ const ResultadoOpcionMultiple = ({
 
   const handleCloseEliminarPregunta = () => {
     closeEliminarCPM(index);
-    setOpenEliminarPregunta(false)
+    setOpenEliminarPregunta(false);
+    setBlurBackground(false);
+    setIsModalVisible(false);
   }
 
   const handleIconClick = () => {
@@ -150,7 +201,7 @@ const ResultadoOpcionMultiple = ({
     </Tooltip>
   );
 
-  const cambioIcono = (index) => {
+  const cambioIcono = () => {
     setIsUp(!isUp);
   };
 
@@ -164,8 +215,36 @@ const ResultadoOpcionMultiple = ({
     });
   };
 
+  const handleOpcionChange = (idOpcionRespuesta, value, checked, type) => {
+    if (!configuracion3) {
+      // Solo cambiamos el estado si el switch está en modo "radio"
+      if (type === 'checkbox') {
+        // Para checkbox, cambiamos el estado del checkbox actual, pero también deseleccionamos todos los demás
+        setOpcionesRespuesta((prevOpciones) =>
+          prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+          )
+        );
+      } else if (type === 'radio') {
+        // Para radio, deseleccionamos todas las opciones excepto la que se hizo clic
+        setOpcionesRespuesta((prevOpciones) =>
+          prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
+          )
+        );
+      }
+    } else {
+      // En modo "checkbox", simplemente cambiamos el estado del checkbox actual
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) =>
+          opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : opcion
+        )
+      );
+    }
+  };
+
   return (
-    <Container className='container-resultadoOpcionMultiple'>
+    <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
       <Col>
             <Col 
                 style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
@@ -187,7 +266,7 @@ const ResultadoOpcionMultiple = ({
                 onMouseLeave={() => handleMouseLeaveEditar(index)}
             >
                 <Col style={{width:'95%', display:'flex'}}>
-                    <p>{index + 1}. {pregunta}</p>
+                    <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
                     {configuracion6Activa && (
                         <OverlayTrigger
                             trigger="click"
@@ -223,37 +302,40 @@ const ResultadoOpcionMultiple = ({
       
       {preguntaVisible[index] && (
         <div>
-          {opciones.map((opcion) => (
-            <Col key={opcion.id} style={{ display: 'flex', marginBottom: '1%' }}>
+          {opcionesRespuesta.map((opcion, idx) => (
+            <CustomCheckBox 
+              key={idx} 
+              style={{ display: 'flex', marginBottom: '1%' }}
+            >
               {opcion.type === 'checkbox' ? (
                 // Opción de tipo "checkbox"
-                <div>
+                <div style={{cursor: 'pointer'}}>
                   <HiddenCheckBox
                     type={opcion.type}
                     name={`opcion_${index}`}
                     value={opcion.id}
                     checked={opcion.checked}
-                    onChange={() => {}}
+                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
                   />
-                  <StyledCheckBox checked={opcion.checked} />
+                  <StyledCheckBox checked={opcion.checked}/>
                 </div>
               ) : (
                 // Opción de tipo "radio"
-                <div>
+                <div style={{cursor: 'pointer'}}>
                   <HiddenRadioButton
                     type={opcion.type}
                     name={`opcion_${index}`}
                     value={opcion.id}
                     checked={opcion.checked}
-                    onChange={() => {}}
+                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'radio')}
                   />
-                  <StyledRadioButton checked={opcion.checked} />
+                  <StyledRadioButton checked={opcion.checked}/>
                 </div>
               )}
-              <div style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
-                {opcion.text}
+              <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '50%'}}>
+                {opcion.respuesta}
               </div>
-            </Col>
+            </CustomCheckBox>
           ))}
         </div>
       )}
@@ -276,6 +358,9 @@ const ResultadoOpcionMultiple = ({
                 setBlurBackground(false);
                 setIsModalVisible(false);
             },
+            sx: {
+              backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+            },
             }}
         >
             <Box className="encuesta_modalEliminarSeccion" sx={{ marginTop: '12%', width: '50%', height: '43%' }}>
@@ -289,7 +374,9 @@ const ResultadoOpcionMultiple = ({
                 <div className='encuesta_modal_cerrarEliminar'>
                     <Box sx={{ width: '50%', display: 'contents'}}>
                         <Col className="d-flex justify-content-center">
-                            <Button className='buttonCancelarEliminar' variant="contained" color="primary" onClick={handleCloseEliminar}>
+                            <Button className='buttonCancelarEliminar' variant="contained" color="primary" 
+                                onClick={handleCloseEliminar}
+                            >
                                 <span className='cancelar-eliminar'>Cancelar</span>
                             </Button>
                             <Button className='buttonDeleteEliminar' variant="contained" color="primary"

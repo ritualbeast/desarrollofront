@@ -49,8 +49,8 @@ const ResultadoCargaDatos = ({
 
   const handleOpenEliminarPregunta = () => {
     setOpenEliminarPregunta(true)
-    setBlurBackground(false);
-    setIsModalVisible(false);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   }
 
   const handleCloseEliminar = () => {
@@ -62,6 +62,8 @@ const ResultadoCargaDatos = ({
   const handleCloseEliminarPregunta = () => {
     handleEliminarPregunta(index, indexSec);
     setOpenEliminarPregunta(false)
+    setBlurBackground(false);
+    setIsModalVisible(false);
   }
 
   const handleIconClick = () => {
@@ -182,6 +184,9 @@ const ResultadoCargaDatos = ({
               setOpenEliminarPregunta(false);
                 setBlurBackground(false);
                 setIsModalVisible(false);
+            },
+            sx: {
+              backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
             },
             }}
         >

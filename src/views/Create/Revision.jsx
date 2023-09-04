@@ -64,6 +64,8 @@ const Categoria = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -88,6 +90,8 @@ const Vigencia = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -99,7 +103,7 @@ const options = [
     { value: 'opción 3', label: 'Opción 3' },
 ]
 
-const Revision = ({regresar, handleTotalPreguntas,}) => {
+const Revision = ({regresar, handleTotalPreguntas}) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedDateInicio, setSelectedDateInicio] = useState('');
     const [selectedDateFin, setSelectedDateFin] = useState('');
@@ -162,7 +166,6 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
     const listarEnumeradosVigencia = async () => {
         try {
             const response = await ListarEnumeradosService('TIPO_VIGENCIA');
-            console.log(response.data.listaEnumerados)
             setTipoVigencia(response.data.listaEnumerados);
             const defaultTipo = response.data.listaEnumerados.find((item) => item.id === '');
             if (defaultTipo) {
@@ -329,6 +332,7 @@ const Revision = ({regresar, handleTotalPreguntas,}) => {
                 <Button 
                     className='revision-Regresar'
                     onClick={regresar}
+                    
                 >
                     Regresar
                 </Button>

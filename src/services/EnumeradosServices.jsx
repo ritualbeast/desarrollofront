@@ -1,12 +1,11 @@
-const ListarEnumeradosService = async (idTipoEnumerado) => {
-  console.log('idTipoEnumerado', idTipoEnumerado);
+const ListarEnumeradosService = async (nemonicoTipoEnumerado, idTipoEnumerado) => {
   try {
     const canal = '808cd0b9-141f-4132-81e9-c3822436191b';
     const headers = {
       'Content-Type': 'application/json',
       Canal: canal
     };
-    const url = `http://desa.goitsa.me:3001/goit-notisurvey-api/v2/enumerados/listarEnumerados?nemonicoTipoEnumerado=${idTipoEnumerado}&idTipoEnumerado=`;
+    const url = `http://desa.goitsa.me:3001/goit-notisurvey-api/v2/enumerados/listarEnumerados?nemonicoTipoEnumerado=${nemonicoTipoEnumerado}&idTipoEnumerado=${idTipoEnumerado}`;
     const requestOptions = {
       method: 'GET',
       headers,

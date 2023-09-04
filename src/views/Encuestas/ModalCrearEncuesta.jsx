@@ -12,6 +12,8 @@ const ModalCrearEncuesta = ({ open, onClose, handleOpenCrearEncuestaPersonalizad
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [selectedOption, setSelectedOption] = useState(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [blurBackground, setBlurBackground] = useState(false);
     
     useEffect(() => {
         if (!selectedFile) {
@@ -29,6 +31,8 @@ const ModalCrearEncuesta = ({ open, onClose, handleOpenCrearEncuestaPersonalizad
         onClose();
         setPreview(undefined)
         setSelectedFile(undefined)
+        setBlurBackground(false);
+        setIsModalVisible(false);
     }
 
     const handleOptionClick = (option) => {
@@ -54,6 +58,15 @@ const ModalCrearEncuesta = ({ open, onClose, handleOpenCrearEncuestaPersonalizad
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            }}
+            BackdropProps={{
+                onClick: () => {
+                  setBlurBackground(false);
+                  setIsModalVisible(false);
+                },
+                sx: {
+                  backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+                },
             }}
         >
             <Box

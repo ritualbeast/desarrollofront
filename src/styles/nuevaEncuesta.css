@@ -6,6 +6,7 @@
   margin-left: 1.5%;
   margin-top: 0.5%;
   overflow: auto;
+  margin-bottom: 5%;
   /* min-width: 98.3%;
   min-height: 100%;
   max-width: 680px;
@@ -122,6 +123,9 @@
   .titulo-editarEncuesta:hover{
     cursor: pointer;
   }
+  .titulo-editar.oculto {
+    display: none;
+}
   .titulo-nuevaEncuesta{
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -161,7 +165,7 @@
     align-items: center;
     padding: 8px 16px;
     gap: 4px;
-    width: 113px;
+    width: 20%;
     height: 36px;
     background: #FFFFFF;
     border: 1px solid #090909;
@@ -172,6 +176,143 @@
   }
   .boton-logotipo:hover{
     cursor: pointer;
+  }
+  @media (max-width:1345px) {
+    .boton-logotipo{
+      width: 20% !important;
+    }
+    .cancelartituloSeccion{
+      width: 10% !important;
+    }
+    .guardartituloSeccion{
+      width: 10% !important;
+    }
+  }
+  @media (max-width:1266px) {
+    .boton-logotipo{
+      width: 25% !important;
+    }
+    .cancelartituloSeccion,
+    .guardartituloSeccion,
+    .cancelarOpcionMultiple,
+    .guardarOpcionMultiple,
+    .cancelarvariacionEstrellas,
+    .guardarvariacionEstrellas,
+    .cancelarCargaDatos,
+    .guardarCargaDatos,
+    .cancelarCuadroComentarios,
+    .guardarCuadroComentarios{
+      width: 13% !important;
+    }
+
+    .revision-Regresar{
+      width: 8% !important;
+    }
+    .revision-Finalizar{
+      width: 5% !important;
+    }
+  }
+  @media (max-width:1094px) {
+    .boton-logotipo{
+      width: 29% !important;
+    }
+    .cancelartituloSeccion,
+    .guardartituloSeccion,
+    .guardartituloSeccion,
+    .cancelarOpcionMultiple,
+    .guardarOpcionMultiple,
+    .cancelarvariacionEstrellas,
+    .guardarvariacionEstrellas,
+    .cancelarCargaDatos,
+    .guardarCargaDatos,
+    .cancelarCuadroComentarios,
+    .guardarCuadroComentarios{
+      width: 15% !important;
+    }
+    .revision-Regresar{
+      width: 9% !important;
+    }
+    .revision-Finalizar{
+      width: 6% !important;
+    }
+  }
+  @media (max-width:1002px) {
+    .opciones-estilos{
+      width: 30% !important;
+    }
+    .cancelartituloSeccion,
+    .guardartituloSeccion,
+    .guardartituloSeccion,
+    .cancelarOpcionMultiple,
+    .guardarOpcionMultiple,
+    .cancelarvariacionEstrellas,
+    .guardarvariacionEstrellas,
+    .cancelarCargaDatos,
+    .guardarCargaDatos,
+    .cancelarCuadroComentarios,
+    .guardarCuadroComentarios{
+      width: 12% !important;
+    }
+    .revision-Regresar{
+      width: 11% !important;
+    }
+    .revision-Finalizar{
+      width: 9% !important;
+    }
+  }
+  @media (max-width:800px) {
+    .opciones-estilos{
+      width: 35% !important;
+    }
+    .boton-logotipo{
+      width: 25% !important;
+    }
+    .cancelartituloSeccion,
+    .guardartituloSeccion,
+    .guardartituloSeccion,
+    .cancelarOpcionMultiple,
+    .guardarOpcionMultiple,
+    .cancelarvariacionEstrellas,
+    .guardarvariacionEstrellas,
+    .cancelarCargaDatos,
+    .guardarCargaDatos,
+    .cancelarCuadroComentarios,
+    .guardarCuadroComentarios{
+      width: 13% !important;
+    }
+    .revision-Regresar{
+      width: 14% !important;
+    }
+    .revision-Finalizar{
+      width: 12% !important;
+    }
+  }
+  @media (max-width:635px) {
+    .opciones-estilos{
+      width: 44% !important;
+    }
+    .boton-logotipo{
+      width: 29% !important;
+    }
+    .cancelartituloSeccion,
+    .guardartituloSeccion,
+    .guardartituloSeccion,
+    .cancelarOpcionMultiple,
+    .guardarOpcionMultiple,
+    .cancelarvariacionEstrellas,
+    .guardarvariacionEstrellas,
+    .cancelarCargaDatos,
+    .guardarCargaDatos,
+    .cancelarCuadroComentarios,
+    .guardarCuadroComentarios{
+      width: 15% !important;
+    }
+    .revision-Regresar{
+      width: 15% !important;
+    }
+    .revision-Finalizar{
+      width: 13% !important;
+    }
   }
   .textoLogotipo{
     font-family: 'Poppins', sans-serif;

@@ -138,6 +138,8 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -154,6 +156,7 @@ const CargaDatos = ({
     handleEliminarPregunta,
     handleCambiarPregunta,
     preguntaVisibleOpen,
+    contentCont,
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -173,13 +176,31 @@ const CargaDatos = ({
     const [configuracion3, setConfiguracion3] = useState(false);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [pregunta2, setPregunta2] = useState(contentPreg.pregunta2);
+    const [pesoArchivo, setPesoArchivo] = useState(contentPreg.pesoArchivo);
+    const [mensajeError, setMensajeError] = useState('Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'); 
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
-
+    const [selectedFormats, setSelectedFormats] = useState("");
+    const [configuraciongeneral, setConfiguraciongeneral] = useState(
+        {
+            esObligatoria: "N",
+            mensajeEsObligatoria: "",
+            ningunaAnteriores: "N",
+            otraRespuesta: "N",
+            etiquetaOtraRespuesta: "",
+            enumTipoTexto: "",
+            enumCantidadCaracteres: "",
+            enumValidacion: "",
+            informacionPregunta: "N",
+            etiquetaInformacionPregunta: "'Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología'",
+            bancoPregunta: "N",
+            etiquetaBancoPregunta: ""
+        }
+    );
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -187,6 +208,9 @@ const CargaDatos = ({
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
         setIsActiveLogica(true);
+        if (mostrarEditar === true) {
+            setMostrarEditar(mostrarEditar)
+        }
     };
 
     const handleConfiguracion = () => {
@@ -196,6 +220,9 @@ const CargaDatos = ({
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
         setIsActiveLogica(true);
+        if (mostrarConfiguracion === true) {
+            setMostrarConfiguracion(mostrarConfiguracion)
+        }
     };
 
     const handleLogica = () => {
@@ -205,38 +232,102 @@ const CargaDatos = ({
         setIsActiveLogica(false);
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
+        if (mostrarLogica === true) {
+            setMostrarLogica(mostrarLogica)
+        }
+    };
+
+    const updateSelectedFormats = () => {
+        let formats = [];
+        if (isCheckedPDF) formats.push("PDF");
+        if (isCheckedDOC) formats.push("DOC, DOCX");
+        if (isCheckedPNG) formats.push("PNG");
+        if (isCheckedJPG) formats.push("JPG");
+        if (isCheckedGIF) formats.push("GIF");
+
+        setSelectedFormats(formats.join(", "));
     };
 
     const handleCheckboxPDF = (event) => {
         setIsCheckedPDF(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxDOC = (event) => {
         setIsCheckedDOC(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxPNG = (event) => {
         setIsCheckedPNG(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxJPG = (event) => {
         setIsCheckedJPG(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxGIF = (event) => {
         setIsCheckedGIF(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleSwitchConfigurar1 = () => {
         setConfiguracion1(!configuracion1);
+        setConfiguraciongeneral({
+            ...configuraciongeneral,
+            esObligatoria: configuracion1 ? "N" : "S",
+            
+        })
+    };
+
+    const handleEsOBligatoriaMensaje = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                mensajeEsObligatoria: selectedValue,
+            };
+        });
+    };
+
+    const handleInformacionPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                etiquetaInformacionPregunta: selectedValue,
+            };
+        });
     };
 
     const handleSwitchConfigurar2 = () => {
         setConfiguracion2(!configuracion2);
+        setConfiguraciongeneral({
+            ...configuraciongeneral,
+            informacionPregunta: configuracion2 ? "N" : "S",
+
+        })
     };
 
     const handleSwitchConfigurar3 = () => {
         setConfiguracion3(!configuracion3);
+        setConfiguraciongeneral({
+            ...configuraciongeneral,
+            bancoPregunta: configuracion3 ? "N" : "S",
+
+        })
+    };
+
+    const handleBancoPregunta = (event) => {
+        const selectedValue = event.target.value;
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                etiquetaBancoPregunta: selectedValue,
+            };
+        });
     };
 
     const handleClearOpcion = () => {
@@ -263,13 +354,12 @@ const CargaDatos = ({
     const handleGuardarCargaDatos = () => {
         setPreguntaTemp(pregunta)
         setPregunta2Temp(pregunta2)
-        handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar);
+        handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar, configuraciongeneral, selectedFormats, mensajeError, pesoArchivo);
     };
 
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
-            console.log(response.data.listTipoPreguntas)
             setTipoPregunta(response.data.listTipoPreguntas);
             const defaultTipo = response.data.listTipoPreguntas.find((item) => item.idTipoPregunta === 4);
             if (defaultTipo) {
@@ -279,7 +369,6 @@ const CargaDatos = ({
                 }
                 setSelectedTipoPregunta(data);
             }
-            console.log(defaultTipo)
         } catch (error) {
             console.error(error);
         }
@@ -288,6 +377,11 @@ const CargaDatos = ({
     useEffect(() => {
         listarTipoPregunta();
     }, [])
+
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+    }, [contentCont]);
 
     const handlePregunta = (value) => {
         console.log(value)
@@ -422,6 +516,7 @@ const CargaDatos = ({
                                 className="numeracionRespuesta"
                                 style={{ width: '2.2%', height: '2.2%', textAlign: 'center' }}
                                 type="text"
+                                onChange={(e) => setPesoArchivo(e.target.value)}
                             />
 
                             <p style={{ marginBottom: '1%', marginLeft: '2%', marginTop: '1.3%', cursor: 'default' }}>Mb</p>
@@ -433,7 +528,7 @@ const CargaDatos = ({
                                 className="textoMensajeError"
                                 value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
                                 readOnly
-                                onChange={(e) => setPregunta(e.target.value)}
+                                onChange={(e) => setMensajeError(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />
                         </Col>
@@ -455,7 +550,8 @@ const CargaDatos = ({
                                 <MensajeError 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    placeholder="Escribe aquí..." 
+                                    placeholder="Escribe aquí..."
+                                    onChange={handleEsOBligatoriaMensaje} 
                                 />
                             </Col>
                         )}
@@ -473,8 +569,8 @@ const CargaDatos = ({
                                 <Informacion 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    placeholder="Escribe aquí..." 
-                                    value={informacionPregunta}
+                                    value={configuraciongeneral.etiquetaInformacionPregunta}
+                                    onChange={handleInformacionPregunta}
                                 />
                             </Col>
                         )}
@@ -493,6 +589,7 @@ const CargaDatos = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..."
+                                    onChange={handleBancoPregunta}
                                 />
                                 <p style={{margin: 'unset', color:'rgba(158, 158, 158, 1)', marginRight:'2%' }}>Crea un banco de preguntas del equipo para guardar y volver a seleccionar rápidamente las preguntas que más usa tu equipo</p>
                             </Col>

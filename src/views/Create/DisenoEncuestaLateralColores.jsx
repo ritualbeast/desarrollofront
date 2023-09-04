@@ -2,25 +2,15 @@ import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaColor.css'
-import { SketchPicker } from 'react-color';
-import { ChromePicker } from 'react-color';
 import CustomSketchPicker from './CustomSketchPicker';
-
-
-
-
 
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralColores = () => {
-
+const DisenoEncuestaLateralColores = ( {openMenuPrincipal, closeMenuColores} ) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
-    const [showColorPicker, setShowColorPicker] = useState(false);
-    const [selectedColor, setSelectedColor] = useState('#fff');
-    const [selectedColorOpen, setSelectedColorOpen] = useState(false);
     const [colorEncuesta, setColorEncuesta] = useState([
         {id: 1, nombre: 'Titulo de encuesta', isOpen: false},
         { id: 2, nombre: 'Descripción de encuesta' , isOpen: false},
@@ -35,22 +25,7 @@ const DisenoEncuestaLateralColores = () => {
     ]);
 
     const [currentColor, setCurrentColor] = useState('#FFFFFF');
-  const [savedColors, setSavedColors] = useState([]);
-
-  
-
-  const handleAddColor = () => {
-    setSavedColors((prevColors) => [...prevColors, currentColor]);
-  };
-
-
-
-    
-
-    const handleColorChange = (color) => {
-        setSelectedColor(color.hex);
-    };
-
+    const [savedColors, setSavedColors] = useState([]);
 
     const handleClickColorSeleccionado = (index) => {
         const updatedColorEncuesta = [...colorEncuesta];
@@ -67,14 +42,8 @@ const DisenoEncuestaLateralColores = () => {
 
     };
     
-    
-    
-
-
-
-
-  
     const targetRef = useRef(null);
+
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -100,90 +69,74 @@ const DisenoEncuestaLateralColores = () => {
         </Tooltip>
     );
 
-    
-
-    // lista tamano
-
-    const tamano = [
-        { id: 1, nombre: 'Tamaño actual' },
-        { id: 2, nombre: 'Pequeño' },
-        { id: 3, nombre: 'Mediano' },
-        { id: 4, nombre: 'Grande' } 
-    ];
-
     // lista de colores de encuesta
-
-   
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuColores(false);
+    }
     
   return (
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
-                </div>
-                </OverlayTrigger>
-            </div>
-            </Col>
-            <Col>
-            
-                <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Colores</span>
-                        </div>
-                        <div className='contenedorColorPrincipal'>
-                            {colorEncuesta.map((color, index) => (
-                                <div className="contenedorFuenteColor" key={index}>
-                                    <div className="subcontenedorFuenteTitulo">
-                                        <span className="fuenteTitulo">{color.nombre}</span>
-                                    </div>
-                                    <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
-                                        {color.isOpen && (
-                                            <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
-                                                <CustomSketchPicker
-                                                    handleCloseColorPicker={() => handleCloseColorPicker(index)}
-                                                />
-                                                
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
 
-                    
-                    </div>
-                    <br />
-                    <br />
+                    <OverlayTrigger
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
+                    >
+                        <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
+                        </div>
+                    </OverlayTrigger>
                 </div>
-                </div>
-            
             </Col>
-        </Col>
-       
-                                
-                                
+
+            <Col>
+                <div className="desplegado-container">
+                    <div className="listaBancoPreguntas-2">
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo" onClick={volverMenuPrincipal}>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                                <span className='cabeceraTitle'>Colores</span>
+                            </div>
+
+                            <div className='contenedorColorPrincipal'>
+                                {colorEncuesta.map((color, index) => (
+                                    <div className="contenedorFuenteColor" key={index}>
+                                        <div className="subcontenedorFuenteTitulo">
+                                            <span className="fuenteTitulo">{color.nombre}</span>
+                                        </div>
+
+                                        <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
+                                            {color.isOpen && (
+                                                <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
+                                                    <CustomSketchPicker
+                                                        handleCloseColorPicker={() => handleCloseColorPicker(index)}
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </Col>
+        </Col>                     
     </>
   )
 }

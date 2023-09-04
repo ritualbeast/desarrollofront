@@ -54,6 +54,8 @@ const customStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
+    paddingTop:'unset',
+    paddingBottom:'unset',
     color: state.isFocused ? 'black' : 'black',
     backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
   })
@@ -77,6 +79,8 @@ const Encuestas = () => {
   const [inputValue, setInputValue] = useState('');
   const [openModalCrearEncuestaPersonalizada, setOpenModalCrearEncuestaPersonalizada] = useState(false);
   const [openModalCrearEncuesta2, setOpenModalCrearEncuesta2] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [blurBackground, setBlurBackground] = useState(false);
 
   const handleFiltroClick = (opcion, valor) => {
     console.log('entro a la funcion')
@@ -90,14 +94,20 @@ const Encuestas = () => {
 
   const handleOpenCrearEncuesta = () => {
     setOpenModalCrearEncuesta(true);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   };
 
   const handleOpenCrearEncuestaPersonalizada = () => {
     setOpenModalCrearEncuestaPersonalizada(true);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   };
 
   const handleOpenModalCrearEncuesta2 = () => {
     setOpenModalCrearEncuesta2(true);
+    setBlurBackground(true);
+    setIsModalVisible(true);
   };
 
   const handleCategoriaChange = (selectedOption) => {

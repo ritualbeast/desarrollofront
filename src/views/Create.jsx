@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import '../styles/create.css'
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { lista } from '../prisma/data/listaEncuesta.ts';
@@ -8,15 +8,15 @@ import DefinicionEncuestaLateral from './Definicion/DefinicionEncuestaLateral';
 import DefinicionEncuestaCuerpo from './Definicion/DefinicionEncuestaCuerpo';
 import DefinicionEncuestaConfiguracion from './Definicion/DefinicionEncuestaConfiguracion';
 import BancoPreguntasLateralPrincipal from './Create/BancoPreguntasLateralPrincipal';
-import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import FormatoEncuestaLateralPrincipal from './Create/FormatoEncuestaLateralPrincipal';
 import Revision from './Create/Revision';
+import NuevaEncuesta from './Create/NuevaEncuesta';
 
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
 const chevronsLeftSVG = svgManager.getSVG('chevrons-left');
-const chevronsRightSVG = svgManager.getSVG('chevrons-right');
+const chevronsRightSVG = svgManager.getSVG('chevrons-right-rosa');
 const circle2SVG = svgManager.getSVG('circle2');
 
 const Create = () => {
@@ -34,14 +34,95 @@ const Create = () => {
     const [grosor, setGrosor] = useState({grosor: '', titulo: ''});
     const [tipografia, setTipografia] = useState({tipografia: '', titulo: ''});
     const [openVistaPrevia, setVistaPrevia] = useState(false);
-    const [contentCont, setContentCont] = useState([{ tipo: 'C', titulo: 'Seccion ', comentario: '', contentPreg: [] }]);
+    const [contentCont, setContentCont] = useState([{ 
+        tipo: 'C', 
+        titulo: 'Seccion' , 
+        comentario: '', 
+        regresar: true,
+        descripcion: '#', 
+        orden: 1,
+        imagenCabecera: '', 
+        imagenPie: '',  
+        tipoSeccion: 'C',  
+        textoAgradecimiento: 'ok',
+        urlRedireccion: '#',
+        imagenCierre: '#',   
+        textoBotonCierre: '#',
+        contentPreg: [],
+    }]);
+    const [encuestaEstilos, setEncuestaEstilos] = useState({
+        logotipo: {
+          tamanio: "1",
+          enumPosicion: ""
+        },
+        pieDePagina: {
+          tamanio: "1",
+          enumPosicion: ""
+        },
+        fuente: {
+          tituloEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          descripcionEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          tituloSeccion: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          descripcionSeccion: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          preguntas: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          opcionesRespuestas: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          textoCierreEncuesta: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          },
+          textoBotones: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: ""
+          }
+        },
+        fondo: {
+          colorFondo: "",
+          imagenFondo: ""
+        }
+    });
     const [Ispreview, setIspreview] = useState('');
     const [Ispreview2, setIspreview2] = useState('');
     const [posicionLogotipo, setPosicionLogotipo] = useState('');
     const [tamanoLogotipo, setTamanoLogotipo] = useState('');
+    const [posicionLogotipoPiePagina, setPosicionLogotipoPiePagina] = useState('');
+    const [tamanoLogotipoPiePagina, setTamanoLogotipoPiePagina] = useState('');
     const [tamanoPaso2, setTamanoPaso2] = useState({tamano: '', titulo: ''});
     const [grosorPaso2, setGrosorPaso2] = useState({grosor: '', titulo: ''});
-    const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});
+    const [tipografiaPaso2, setTipografiaPaso2] = useState({tipografia: '', titulo: ''});  
+    const [obtenerBancoPregunta, setObtenerBancoPregunta] = useState([])
+    const DefinicionEncuestaCuerpoRef = useRef(null);
+    const ConfiguracionEncuestaRef = useRef(null);
+    const [estilos, setEstilos] = useState({});
+    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
+    const [mostrarContenedorC, setMostrarContenedorC] = useState(Array(contentCont.length).fill(true));
+    const [editarTituloVisible, setEditarTituloVisible] = useState(Array(contentCont.length).fill(false));
+    const [seccionVisible, setSeccionVisible] = useState(Array(contentCont.length).fill(true));
 
     const regresarRevision = () => {
         if(pasos === 3) {
@@ -49,17 +130,21 @@ const Create = () => {
             setActiveIcon('Banco de Preguntas')
             setLateralOpciones(true)
             setActiveTab(true);
+            setEncuestaSegundoCuerpoVisible(true);
+            setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            setMostrarContenedorC(Array(contentCont.length).fill(false))
+            setEditarTituloVisible(Array(contentCont.length).fill(true))
+            setSeccionVisible((prevVisibility) => [...prevVisibility, true]);
         }
-    }
+    };
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
     };
       
     useEffect(() => {
-        // verificarLocalStorage();
         setShowBancoPreguntas(true);
-    }, []);
+    }, [Ispreview, Ispreview2]);
 
     const toggleEncuestaSegundoCuerpo = () => {
         setEncuestaSegundoCuerpoVisible(!encuestaSegundoCuerpoVisible);
@@ -80,12 +165,18 @@ const Create = () => {
     //     window.location.href = "/login";
     //     }
     // }
+    
     const [lateralOpciones, setLateralOpciones] = useState(true)
+    const [activeFuncionEnviarDatos, setActiveFuncionEnviarDatos] = useState(false)
 
     const nextPasos = () => {
         if(pasos === 1){
+            handleBotonClick();
             setPasos(2);
             setActiveTab(true);
+            setVistaPrevia(false);
+            setBlurBackground(false);
+            setIsModalVisible(false);
         }
         setActiveIcon('Banco de Preguntas')
         if (pasos === 2) {
@@ -93,41 +184,37 @@ const Create = () => {
             setActiveIcon('')
             setLateralOpciones(false)
             setActiveTab(false);
+            setEncuestaSegundoCuerpoVisible(false);
         }
-    }
+    };
 
     const enviarPreview = (previe) => {
-        console.log(previe)
         setIspreview(previe)
-    }
+    };
 
     const enviarPreview2 = (previe2) => {
         setIspreview2(previe2)
-    }
+    };
 
     const handleSendEstado = (estado) => {
         setEstados(estado)
-    }
+    };
 
     const handleSendPosicion = (posicion) => {
         setPosicion(posicion)
-    }
+    };
 
     const handleSendTamano = (tamano, titulo) => {
         setTamano({ tamano: tamano, titulo: titulo });
-    }
+    };
 
     const handleSendGrosor = (grosor, titulo) => {
         setGrosor({ grosor: grosor, titulo: titulo });  
-    }
+    };
 
     const handleSendTipografia = (tipografia, titulo) => {
         setTipografia({ tipografia: tipografia, titulo: titulo });
-    }
-
-    const handleSendDatosDefinicionEncuesta = (datos) => {
-        // console.log(datos)
-    }
+    };
 
     const handleSendPosicionLogotipo = (posicion) => {
         setPosicionLogotipo(posicion)
@@ -136,33 +223,69 @@ const Create = () => {
     const handleSendTamanoLogotipo = (tamano) => {
         setTamanoLogotipo(tamano)
     }
+
+    const handleSendPosicionLogotipoPiePagina = (posicion) => {
+        setPosicionLogotipoPiePagina(posicion)
+    }
+
+    const handleSendTamanoLogotipoPiePagina = (tamano) => {
+        setTamanoLogotipoPiePagina(tamano)
+    }
     
     const handleCloseVistaPrevia = () => {
         setVistaPrevia(false);
+        setBlurBackground(false);
+        setIsModalVisible(false);
     };
 
     const handleVistaPrevia = () => {
-        setVistaPrevia(true);
+        if (pasos === 2) {
+            setVistaPrevia(true);
+            setBlurBackground(true);
+            setIsModalVisible(true);
+        }
     };
 
     const recibirTotalPreguntas = (contentCont) => {
         setContentCont(contentCont);
-        console.log(contentCont);
     };
 
     const handleSendTamanoPaso2 = (tamano, titulo) => {
-        console.log('paso2',tamano, 'titu', titulo)
-        setTamanoPaso2(tamano, titulo)
-    }
+        setTamanoPaso2({tamano: tamano, titulo: titulo})
+    };
 
     const handleSendGrosorPaso2 = (grosor, titulo) => {
-        setGrosorPaso2(grosor , titulo)
-    }
+        setGrosorPaso2({grosor: grosor, titulo: titulo})
+    };
 
     const handleSendTipografiaPaso2 = (tipografia , titulo) => {
-        setTipografiaPaso2(tipografia , titulo)
-    }
+        setTipografiaPaso2({tipografia: tipografia, titulo: titulo})
+    };
 
+    const handleObtenerPregunta = (preguntasSeleccionadas) => {
+        setObtenerBancoPregunta(preguntasSeleccionadas);
+    };
+
+    const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState([])
+    const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState([])
+
+    const sendDatosDefinicionEncuesta = (datos) => {
+        setDatosDefinicionEncuesta(datos)
+    };
+
+    const sendDatosConfiguracionEncuesta = (datos) => {
+        setDatosConfiguracionEncuesta(datos)
+    };
+    
+    const handleBotonClick = () => {
+        DefinicionEncuestaCuerpoRef.current.handleEnviarDatos();
+        ConfiguracionEncuestaRef.current.handleEnviarDatosConfiguracion();
+    };
+
+    const handleUpdateEstilos = (nuevosEstilos) => {
+        setEstilos(nuevosEstilos);
+    };    
+      
     return (
         <>
             <div
@@ -178,61 +301,62 @@ const Create = () => {
                         
                         <Col xs={2} className="encuestas_colsg_create">
                             <div className={`encuestas_colsg_create_1 ${activeTab !== 'diseña' ? 'inactive' : ''}`}>
-                                
-                                <div className='encuestas_colsg1' style={{position: 'relative', width: '220px', height: '50px'}}>
-                                    <div style={{ 
-                                        position: 'absolute', 
-                                        top: '0', 
-                                        left: '-3px', 
-                                        width: '17.2%', 
-                                        height: '92%', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        fontFamily: 'Poppins, sans-serif',
-                                        fontStyle: 'normal',
-                                        color: 'rgba(32, 32, 32, 1)',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        1
+                                <Col className='contener-guia'>
+                                    <div className='encuestas_colsg1' style={{position: 'relative', width: '220px', height: '50px'}}>
+                                        <div style={{ 
+                                            position: 'absolute', 
+                                            top: '0', 
+                                            left: '-3px', 
+                                            width: '17.2%', 
+                                            height: '92%', 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center',
+                                            fontFamily: 'Poppins, sans-serif',
+                                            fontStyle: 'normal',
+                                            color: 'rgba(32, 32, 32, 1)',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            1
+                                        </div>
+                                        {pasos === 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
+                                        {pasos !== 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
+                                        <h2 className='encuesta-sg-create_1_1'>Definición de Encuesta</h2>
                                     </div>
-                                    {pasos === 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
-                                    {pasos !== 1 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
-                                    <h2 className='encuesta-sg-create_1_1'>Definición de Encuesta</h2>
-                                </div>
-                                
-                                <div>
-                                    <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
-                                </div>
-
-                                <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
-                                    <div style={{ 
-                                        position: 'absolute', 
-                                        top: '0', 
-                                        left: '0.5px', 
-                                        width: '17.2%', 
-                                        height: '92%', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        fontFamily: 'Poppins, sans-serif',
-                                        fontStyle: 'normal',
-                                        color: 'rgba(32, 32, 32, 1)',
-                                        fontWeight: 'bold'
-                                    }}>
-                                        2
+                                    
+                                    <div>
+                                        <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
                                     </div>
-                                    {pasos === 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
-                                    {pasos !== 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
-                               
-                                    <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
-                                </div>
 
-                                <div>
-                                    <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
-                                </div>
+                                    <div className='encuestas_colsg1' style={{position: 'relative', width: '180px', height: '50px'}}>
+                                        <div style={{ 
+                                            position: 'absolute', 
+                                            top: '0', 
+                                            left: '0.5px', 
+                                            width: '17.2%', 
+                                            height: '92%', 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            justifyContent: 'center',
+                                            fontFamily: 'Poppins, sans-serif',
+                                            fontStyle: 'normal',
+                                            color: 'rgba(32, 32, 32, 1)',
+                                            fontWeight: 'bold'
+                                        }}>
+                                            2
+                                        </div>
+                                        {pasos === 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circleSVG }}/>}
+                                        {pasos !== 2 && <span className='imgcircle' dangerouslySetInnerHTML={{ __html: circle2SVG }}/>}
+                                
+                                        <h2 className='encuesta-sg-create_1_1'>Diseña Encuesta</h2>
+                                    </div>
 
-                                <div className='encuestas_colsg1'style={{position: 'relative', width: '180px', height: '50px'}}>
+                                    <div>
+                                        <span className='imgchevron' dangerouslySetInnerHTML={{ __html: chevronsNightSVG }}/>
+                                    </div>
+                                </Col>
+
+                                <div className='encuestas_colsg2'style={{position: 'relative', width: '180px', height: '50px'}}>
                                 <div style={{ 
                                         position: 'absolute', 
                                         top: '0', 
@@ -275,94 +399,100 @@ const Create = () => {
                         <hr />
                         
                         <Col className='encuesta-cuerpo'>
-                            {lateralOpciones ? (
-                                    <Col className="encuesta-cuerpo2">
-                                        <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
-                                            <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
-                                            {encuestaSegundoCuerpoVisible ? (
-                                                <>
-                                                    <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
-                                                    <span className="encuesta-subtitulo-1">Colapsar</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
-                                                    <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
-                                                </>
-                                            )}
-                                            </div>
-                                        </Col>
+                            <div className={`encuesta-contenedor-especifico ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
+                                {lateralOpciones ? (
+                                        <Col className="encuesta-cuerpo2">
+                                            <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
+                                                <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
+                                                {encuestaSegundoCuerpoVisible ? (
+                                                    <>
+                                                        <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
+                                                        <span className="encuesta-subtitulo-1" style={{marginTop:'3%'}}>Colapsar</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%', marginTop:'0.2%'}}>Expandir</span>
+                                                        <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG}} />
+                                                    </>
+                                                )}
+                                                </div>
+                                            </Col>
 
-                                        <Col>
-                                            <div className="lista_2">
-                                                    <div className="fondo-lista">
-                                                        {lista.map((item) => (
-                                                        pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
-                                                            pasos === 2 && item.nombre === "Configuracion" ? null : (
-                                                            <div
-                                                                key={item.nombre}
-                                                                className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
-                                                                onClick={() => handleClick(item.nombre)}
-                                                            >
-                                                                <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
-                                                                    <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
-                                                                        {item.icono && (
-                                                                            <span dangerouslySetInnerHTML={{ __html: item.icono.replace(/stroke="([^"]*)"/, `stroke="${activeIcon === item.nombre ? 'rgba(255, 199, 0, 1)' : 'rgba(177, 177, 177, 1)'}"`) }}/>
-                                                                        )}
-                                                                        <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
+                                            <Col>
+                                                <div className="lista_2">
+                                                        <div className="fondo-lista">
+                                                            {lista.map((item) => (
+                                                            pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
+                                                                pasos === 2 && item.nombre === "Configuracion" ? null : (
+                                                                <div
+                                                                    key={item.nombre}
+                                                                    className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
+                                                                    onClick={() => handleClick(item.nombre)}
+                                                                >
+                                                                    <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
+                                                                        <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
+                                                                            {item.icono && (
+                                                                                <span dangerouslySetInnerHTML={{ __html: item.icono.replace(/stroke="([^"]*)"/, `stroke="${activeIcon === item.nombre ? 'rgba(255, 199, 0, 1)' : 'rgba(177, 177, 177, 1)'}"`) }}/>
+                                                                            )}
+                                                                            <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            ) 
-                                                            )
-                                                        ))}
+                                                                ) 
+                                                                )
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                            </Col>
                                         </Col>
-                                    </Col>
-                                ) : null
-                            }
+                                    ) : null
+                                }
                             
-                            {activeIcon === 'Banco de Preguntas' ? 
-                            <BancoPreguntasLateralPrincipal/>: null}
+                                {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible ? 
+                                    <BancoPreguntasLateralPrincipal
+                                        onObtenerPregunta={handleObtenerPregunta}
+                                        contentCont={contentCont}
+                                    />: null
+                                }
 
-                            {activeIcon === 'Estilo'  && (
-                                <DisenoEncuestaLateralPrincipal
-                                    datapasos={pasos}
-                                    preview3= {Ispreview}
-                                    sendPreviewLogotipo= {Ispreview2}
-                                    sendEstado2={(estado) =>  handleSendEstado(estado)}
-                                    sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
-                                    sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
-                                    sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
-                                    sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
-                                    sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
-                                    sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
-                                    sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
-                                    sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
-                                    sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
+                                {activeIcon === 'Estilo'  &&  encuestaSegundoCuerpoVisible ? 
+                                    <DisenoEncuestaLateralPrincipal
+                                        datapasos={pasos}
+                                        preview3= {Ispreview}
+                                        sendPreviewLogotipo= {Ispreview2}
+                                        sendEstado2={(estado) =>  handleSendEstado(estado)}
+                                        sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
+                                        sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
+                                        sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
+                                        sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
+                                        sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
+                                        sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
+                                        sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
+                                        sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
+                                        sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
+                                        updateEstilos={handleUpdateEstilos}
+                                    /> : null
+                                }
 
-                                    />
-                            )}
+                                {activeIcon === 'Formato' && encuestaSegundoCuerpoVisible ? 
+                                <FormatoEncuestaLateralPrincipal/> : null}
 
-                            {activeIcon === 'Formato' && (
-                                <FormatoEncuestaLateralPrincipal/>
-                            )}
+                                {activeIcon === 'Definicion' && encuestaSegundoCuerpoVisible ? 
+                                <DefinicionEncuestaLateral/> : null}
 
-                            {activeIcon === 'Definicion' && (
-                                <DefinicionEncuestaLateral/>   
-                            )}
-
-                            {activeIcon === 'Configuracion' && (
-                                <DefinicionEncuestaConfiguracion
-                                    closeMenuConfiguracion={handleClick}
-                                />
-                            )}
+                                {activeIcon === 'Configuracion' && encuestaSegundoCuerpoVisible ? 
+                                    <DefinicionEncuestaConfiguracion
+                                        ref={ConfiguracionEncuestaRef}
+                                        closeMenuConfiguracion={handleClick}
+                                        sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
+                                    /> : null
+                                }
+                            </div>
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                                {pasos === 1 
-                                ? (
+                                {pasos === 1 ? (
                                     <DefinicionEncuestaCuerpo 
+                                        ref={DefinicionEncuestaCuerpoRef}
                                         sendPreview={(previe) => enviarPreview(previe)}
                                         sendPreview2={(previe2) => enviarPreview2(previe2)}
                                         sendEstado3={estados}
@@ -370,12 +500,16 @@ const Create = () => {
                                         sendTamano3={tamanos}
                                         sendGrosor3={grosor}
                                         sendTipografia3={tipografia}
-                                        sendDatosDefinicionEncuesta={(datos) =>  handleSendDatosDefinicionEncuesta(datos)}
                                         sendPosicionLogotipo = {posicionLogotipo}
                                         sendTamanoLogotipo = {tamanoLogotipo}
+                                        sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
+                                        sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
+                                        activeFuncionEnviarDatos={activeFuncionEnviarDatos}
+                                        
+                                        sendDatosDefinicionEncuesta={sendDatosDefinicionEncuesta} 
                                     />
 
-                                ) : pasos === 2 ? (<DiseñaEncuesta 
+                                ) : pasos === 2 ? (<NuevaEncuesta 
                                         openVistaPrevia={openVistaPrevia} 
                                         handleCloseVistaPrevia={handleCloseVistaPrevia}
                                         handleTotalPreguntas={recibirTotalPreguntas}
@@ -383,10 +517,20 @@ const Create = () => {
                                         sendTamanoPaso2 = {tamanoPaso2}
                                         sendGrosorPaso2 = {grosorPaso2}
                                         sendTipografiaPaso2 = {tipografiaPaso2}
+                                        regresarRevision = {regresarRevision}
+                                        obtenerPreg = {obtenerBancoPregunta}
+                                        estilos = {estilos}
+                                        preguntaVisibleInit={preguntaVisible}
+                                        mostrarContenedorCInit={mostrarContenedorC}
+                                        editarTituloVisibleInit={editarTituloVisible}
+                                        seccionVisibleInit={seccionVisible}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}
                                         handleTotalPreguntas={contentCont}
+                                        handleDatosPaso1 = {datosDefinicionEncuesta}
+                                        handleDatosConfiguracion = {datosConfiguracionEncuesta}
+                                        handleEstilos = {encuestaEstilos}
                                     />
                                 ) : null
                                 }

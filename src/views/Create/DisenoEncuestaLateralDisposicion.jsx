@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaDisposicion.css'
+
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -10,36 +11,9 @@ const alignCenterSVG = svgManager.getSVG('align-center');
 const alignLeftSVG = svgManager.getSVG('align-left');
 const alignRightSVG = svgManager.getSVG('align-right');
 
-
-const DisenoEncuestaLateralDisposicion = () => {
-
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
+const DisenoEncuestaLateralDisposicion = ({openMenuPrincipal, closeMenuDisposicion}) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
-    
-    const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
-
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
-    const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
-    };
-    
-
-    const RadioButton = ({ id, value, checked, onChange, label }) => (
-        <label className="radioButton">
-            <input
-            type="radio"
-            id={id}
-            value={value}
-            checked={checked}
-            onChange={onChange}
-            />
-            <span className="checkmark"></span>
-            {label}
-        </label>
-        );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -67,19 +41,7 @@ const DisenoEncuestaLateralDisposicion = () => {
         </Tooltip>
     );
 
-    
-
-    // lista tamano
-
-    const tamano = [
-        { id: 1, nombre: 'Tamaño actual' },
-        { id: 2, nombre: 'Pequeño' },
-        { id: 3, nombre: 'Mediano' },
-        { id: 4, nombre: 'Grande' } 
-    ];
-
     // resaltar seleccion
-
     const [selectedItem, setSelectedItem] = useState(null);
 
     const handleClick = (item) => {
@@ -88,82 +50,81 @@ const DisenoEncuestaLateralDisposicion = () => {
         } else {
           setSelectedItem(item);
         }
-      };
+    };
     
+    const volverMenuPrincipal = () => {
+        openMenuPrincipal(true);
+        closeMenuDisposicion(false);
+    };
     
     
   return (
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
+                    <OverlayTrigger
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
+                    >
+                        <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
+                        </div>
+                    </OverlayTrigger>
                 </div>
-                </OverlayTrigger>
-            </div>
             </Col>
+
             <Col>
-            
                 <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
-                            <span className='cabeceraTitle'>Disposición</span>
+                    <div className="listaBancoPreguntas-2">
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo">
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>  
+                                <span className='cabeceraTitle'>Disposición</span>
+                            </div>
+                            
+                            <div className="contenedorDispocision">
+                                <div
+                                    className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
+                                    onClick={() => handleClick(1)}
+                                >
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignLeftSVG }}/>
+                                    <span className="1">Izquierda</span>
+                                </div>
+
+                                <div
+                                    className={`Dispocision ${selectedItem === 2 ? 'selected' : ''}`}
+                                    onClick={() => handleClick(2)}
+                                >
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignCenterSVG }}/>
+                                    <span className="2">Centro</span>
+                                </div>
+                                
+                                <div
+                                    className={`Dispocision ${selectedItem === 3 ? 'selected' : ''}`}
+                                    onClick={() => handleClick(3)}
+                                >
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignRightSVG }}/>
+                                    <span className="3">Derecha</span>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div className="contenedorDispocision">
-                            <div
-                                className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
-                                onClick={() => handleClick(1)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignLeftSVG }}/>
-                                <span className="1">Izquierda</span>
-                            </div>
-                            <div
-                                className={`Dispocision ${selectedItem === 2 ? 'selected' : ''}`}
-                                onClick={() => handleClick(2)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignCenterSVG }}/>
-                                <span className="2">Centro</span>
-                            </div>
-                            <div
-                                className={`Dispocision ${selectedItem === 3 ? 'selected' : ''}`}
-                                onClick={() => handleClick(3)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: alignRightSVG }}/>
-                                <span className="3">Derecha</span>
-                            </div>
-                        </div>
+                        <br />
+                        <br />
                     </div>
-                    <br />
-                    <br />
                 </div>
-                </div>
-            
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                      
     </>
   )
 }
