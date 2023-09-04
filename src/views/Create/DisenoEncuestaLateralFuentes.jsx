@@ -29,14 +29,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
         ListarFuenteTipografiaEncuesta();
     }, []);
 
-    useEffect(() => {
-        console.log("estilos", estilos);
-    }, [estilos]);
 
-
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
     const handleChangeTamano = (event, titulo) => {
         if (pasos === 2) {
             sendTamanoPaso2(event.target.value, titulo);
@@ -214,6 +207,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const ListarFuenteTamanoEncuesta = async () => {
         try {
             const response = await  ListarEnumeradosService('TAMANIO_LETRA')
+            console.log(response.data.listaEnumerados);
             setTamanoApi(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
@@ -248,7 +242,6 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
           "Texto de cierre de encuestas": "textoCierreEncuesta"
         };
 
-        console.log(mapeoTitulos[titulo])
       
         return mapeoTitulos[titulo];
       };
@@ -342,7 +335,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                         >
                                             <option value="">Tamaño</option>
                                             {TamanoApi.map((item) => (
-                                            <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
+                                            <option key={item.id} value={item.id}>{item.etiqueta}</option>
                                             ))}
                                         </select>
                                         </div>

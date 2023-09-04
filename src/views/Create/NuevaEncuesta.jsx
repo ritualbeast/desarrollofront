@@ -111,7 +111,6 @@ const NuevaEncuesta = ({
     const [fondo, setFondo] = useState();
 
   useEffect(() => {
-    console.log('cambio de estilos')
     setImagenFondo(sendImagenFondo);
     let newStyle = {};
     let newStylecontent = { ...estiloss};
@@ -153,10 +152,20 @@ const NuevaEncuesta = ({
     setEstilos(newStylecontent);
 
     if (estiloss.fondo.colorFondo !== '') {
-      console.log('entro');
-      // setFondoStyle({ backgroundColor: estiloss.fondo.colorFondo });
+      
       setFondo(estiloss.fondo.colorFondo);
     }
+
+    if (estiloss.fuente.tituloSeccion.color !== '') {
+      
+      setTituloStyle({ color: estiloss.fuente.tituloSeccion.color });
+    }
+
+    if (estiloss.fuente.descripcionSeccion.color !== '') {
+      
+      setDescripcionStyle({ color: estiloss.fuente.descripcionSeccion.color });
+    }
+
 
 
     setLeerPosicionLogotipo(sendPosicionLogotipo);
@@ -166,7 +175,7 @@ const NuevaEncuesta = ({
     setEstilos(contenEstilos);
 
   }, [tamano, grosor, tipografia, imagenFondo, 
-    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss, sendColors
   
   
   ]);
@@ -880,13 +889,9 @@ const NuevaEncuesta = ({
       }
     };
 
-    const verdescripcion = () => {
-      console.log(leerPosicionLogotipo, leerTamanoLogotipo )
-    }
   return (
     <>
-      <button onClick={verdescripcion}
-      >des</button>
+      
       
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'
@@ -1003,6 +1008,7 @@ const NuevaEncuesta = ({
                                   sendTipografiaPaso2={sendTipografiaPaso2}
                                   obtenerPreg={obtenerPreg}
                                   contenEstilos={contenEstilos}
+                                  sendColors= {sendColors}
                                 />
                               }  
                               if (preg.tipo == 'VE') {
@@ -1021,6 +1027,8 @@ const NuevaEncuesta = ({
                                   sendTamanoPaso2={sendTamanoPaso2}
                                   sendGrosorPaso2={sendGrosorPaso2}
                                   sendTipografiaPaso2={sendTipografiaPaso2}
+                                  contenEstilos={contenEstilos}
+                                  sendColors= {sendColors}
                                 />
                               }
                               if (preg.tipo == 'CA') {
@@ -1039,6 +1047,8 @@ const NuevaEncuesta = ({
                                   sendTamanoPaso2={sendTamanoPaso2}
                                   sendGrosorPaso2={sendGrosorPaso2}
                                   sendTipografiaPaso2={sendTipografiaPaso2}
+                                  contenEstilos={contenEstilos}
+                                  sendColors= {sendColors}
                                 />
                               }
                               if (preg.tipo == 'CC') {
@@ -1057,6 +1067,8 @@ const NuevaEncuesta = ({
                                   sendTamanoPaso2={sendTamanoPaso2}
                                   sendGrosorPaso2={sendGrosorPaso2}
                                   sendTipografiaPaso2={sendTipografiaPaso2}
+                                  contenEstilos={contenEstilos}
+                                  sendColors= {sendColors}
                                 
                                 />
                               }

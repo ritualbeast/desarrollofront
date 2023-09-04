@@ -28,6 +28,8 @@ const ResultadoCuadroComentarios = ({
     sendTamanoPaso2, 
     sendGrosorPaso2, 
     sendTipografiaPaso2,
+    contenEstilos,
+    sendColors
 }) => {
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,6 +46,8 @@ const ResultadoCuadroComentarios = ({
     const tituloTipografia = sendTipografiaPaso2?.titulo;
     const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
     const [preguntasStyle, setPreguntasStyle] = useState({});
+    const [contentEstilos, setContentEstilos] = useState(contenEstilos);
+  
 
 
     
@@ -78,8 +82,20 @@ const ResultadoCuadroComentarios = ({
         setPreguntasStyle(newStyle2);
         }
 
+        if (Object.keys(contentEstilos).length !== 0){
+            setContentEstilos(contentEstilos);
+          }
+      
+          if (contentEstilos.fuente.preguntas.color !== ''){
+            setPreguntasStyle({...newStyle2, color: contentEstilos.fuente.preguntas.color});
+          }
+      
+          if (contentEstilos.fuente.opcionesRespuestas.color !== ''){
+            setOpcionesRespuestaStyle({...newStyle, color: contentEstilos.fuente.opcionesRespuestas.color});
+          }
 
-    }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);
+
+    }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contentEstilos, sendColors]);
 
 
 

@@ -120,6 +120,13 @@ const Create = () => {
             enumTamanio: "",
             color: ""
           },
+          botones: {
+            enumTipografia: "",
+            enumGrosor: "",
+            enumTamanio: "",
+            color: ""
+            },
+
           leyenda: {
             enumTipografia: "",
             enumGrosor: "",
@@ -278,7 +285,7 @@ const Create = () => {
     };
 
     const handleSendTamanoPaso2 = (tamano, titulo) => {
-        console.log(tamano, titulo)
+       
         setTamanoPaso2({tamano: tamano, titulo: titulo})
     }
 
@@ -313,7 +320,7 @@ const Create = () => {
     
 
     const leerestilos = () => {
-          console.log(encuestaEstilos);
+         // console.log(encuestaEstilos);
         // console.log(datosEncuesta);
         // console.log(datosConfiguracionEncuesta);
       }

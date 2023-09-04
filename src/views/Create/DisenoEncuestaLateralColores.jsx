@@ -28,7 +28,7 @@ const DisenoEncuestaLateralColores = ( {
     const [colorEncuesta, setColorEncuesta] = useState([
         {id: 1, nombre: 'Titulo de encuesta', isOpen: false},
         { id: 2, nombre: 'Descripción de encuesta' , isOpen: false},
-        { id: 3, nombre: 'Titulo de sección' , isOpen: false},
+        { id: 3, nombre: 'Título de sección' , isOpen: false},
         { id: 4, nombre: 'Descripción de sección' , isOpen: false},
         { id: 5, nombre: 'Preguntas' , isOpen: false},
         { id: 6, nombre: 'Opciones de respuesta' , isOpen: false},
@@ -113,9 +113,7 @@ const DisenoEncuestaLateralColores = ( {
         setColors(updatedColors);
         // handleCloseColorPicker(index);
         const estilosnuevo = { ...estilos };
-        console.log(colornombre)
         if(transformarTitulo(colornombre) === 'fondo'){
-            console.log(estilosnuevo.fondo)
             estilosnuevo.fondo.colorFondo = newColor.hex;
             
         }
@@ -136,13 +134,13 @@ const DisenoEncuestaLateralColores = ( {
           "Título de sección": "tituloSeccion",
           "Descripción de sección": "descripcionSeccion",
           "Preguntas": "preguntas",
-          "Opciones de respuesta": "opcionesRespuesta",
+          "Opciones de respuesta": "opcionesRespuestas",
           "Texto de cierre de encuestas": "textoCierreEncuesta",
           "Fondo": "fondo",
+            "Botones": "botones",
           
         };
 
-        console.log(mapeoTitulos[titulo])
       
         return mapeoTitulos[titulo];
       };
@@ -153,14 +151,8 @@ const DisenoEncuestaLateralColores = ( {
         handleCloseColorPicker(index);
     };
 
-    const verestilos = () => {
-        console.log(estilos);
-    }
-    
   return (
     <>
-        <button onClick={verestilos}
-        >555</button>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
             <div className="encuesta-subtitulo2">

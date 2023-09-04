@@ -23,10 +23,6 @@ const DiseñaEncuesta = ({openVistaPrevia, handleCloseVistaPrevia, handleTotalPr
     const [estilos, setEstilos] = useState(contenEstilos);
    
    
-    useEffect(() => {
-        console.log('estilos2');
-
-    }, [estilos])
     const handleClickOutsideModal = (event) => {
         const modalContainer = document.getElementById('modal-container');
         if (!modalContainer.contains(event.target)) {

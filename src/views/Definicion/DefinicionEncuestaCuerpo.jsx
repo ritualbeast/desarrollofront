@@ -79,7 +79,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
 
   useEffect(() => {
     
-  console.log('ojala');
    
 
     if (tituloTipografia === 'Nombre de encuesta') {
@@ -177,9 +176,19 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     }
     if (datosDefinicionEstilo.fondo.colorFondo !== '') {
       if (fondoPiePaginaRef.current) {
-        console.log(datosDefinicionEstilo.fondo.colorFondo);
         fondoPiePaginaRef.current.style.backgroundColor = datosDefinicionEstilo.fondo.colorFondo;
         setFondo(datosDefinicionEstilo.fondo.colorFondo);
+      }
+    }
+    if (datosDefinicionEstilo.fuente.textoBotones.color !== '') {
+      if (botonref.current) {
+        botonref.current.style.color = datosDefinicionEstilo.fuente.textoBotones.color;
+      }
+    }
+
+    if (datosDefinicionEstilo.fuente.botones.color !== '') {
+      if (botonref.current) {
+        botonref.current.style.backgroundColor = datosDefinicionEstilo.fuente.botones.color;
       }
     }
      
@@ -303,14 +312,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     setPreview2(null);
   }
 
-  const leerFondo = () => {
-    console.log(datosDefinicionEstilo.fondo.colorFondo);
-  }
-
   return (
     <>
-    <button onClick={() => leerFondo()}
-    >aaa</button>
       <div className="tituloDefinicionEncuesta">
          <span> Crear  de Encuesta </span>
       </div>

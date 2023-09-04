@@ -106,6 +106,8 @@ const CuadroComentarios = ({
     sendTamanoPaso2, 
     sendGrosorPaso2, 
     sendTipografiaPaso2,
+    contenEstilos,
+    sendColors
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -457,6 +459,8 @@ const CuadroComentarios = ({
                     sendTamanoPaso2={sendTamanoPaso2}
                     sendGrosorPaso2={sendGrosorPaso2}
                     sendTipografiaPaso2={sendTipografiaPaso2}
+                    contenEstilos={contenEstilos}
+                    sendColors= {sendColors}
                 />
             </Container>
         )}

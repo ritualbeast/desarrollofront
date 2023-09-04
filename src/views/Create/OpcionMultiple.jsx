@@ -212,6 +212,7 @@ const OpcionMultiple = ({
     contentCont,
     obtenerPreg, 
     contenEstilos,
+    sendColors
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -227,8 +228,9 @@ const OpcionMultiple = ({
             checked: false,
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
-            preguntaValue: '', // Valor inicial de la pregunta
+            valor: '', // Valor inicial de la pregunta
             orden : 0,
+
             // ...
         }))
     );
@@ -303,7 +305,7 @@ const OpcionMultiple = ({
             respuesta: '',
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
-            preguntaValue: '', // Valor inicial de la pregunta
+            valor: '', // Valor inicial de la pregunta
             orden: 0,
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
@@ -346,6 +348,7 @@ const OpcionMultiple = ({
                 ...opcion,
                 respuesta: newText,
                 orden: idPregunta,
+                valor: 1,
 
             } : opcion
           )
@@ -558,7 +561,7 @@ const OpcionMultiple = ({
               return {
                 ...opcion,
                 seccionValue: '',
-                preguntaValue: '',
+                valor: '',
               };
             }
             return opcion;
@@ -590,7 +593,7 @@ const OpcionMultiple = ({
                 if (opcionIndex === index) {
                 return {
                     ...opcion,
-                    preguntaValue: selectedValue,
+                    valor: selectedValue,
                     respuesta: selectedValue,
                     orden: index + 1,
                 };
@@ -653,7 +656,7 @@ const OpcionMultiple = ({
             checked: false,
             type: 'radio',
             seccionValue: '',
-            preguntaValue: '',
+            valor: '',
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
     }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
@@ -1003,7 +1006,7 @@ const OpcionMultiple = ({
 
                                                         <select
                                                             className='select1Logica2'
-                                                            value={opcion.preguntaValue}
+                                                            value={opcion.valor}
                                                             onChange={(event) => handlePreguntaChange(index, event)}
                                                         >
                                                             <option value='' disabled hidden>Seleccionar Pregunta</option>
@@ -1057,6 +1060,8 @@ const OpcionMultiple = ({
                     sendGrosorPaso2={sendGrosorPaso2}
                     sendTipografiaPaso2={sendTipografiaPaso2}
                     obtenerPreg={obtenerPreg}
+                    contenEstilos={contenEstilos}
+                    sendColors={sendColors}
                 />
             </Container>
         )}

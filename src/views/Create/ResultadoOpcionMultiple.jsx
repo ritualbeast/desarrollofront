@@ -96,6 +96,8 @@ const ResultadoOpcionMultiple = ({
   sendGrosorPaso2, 
   sendTipografiaPaso2,
   obtenerPreg,
+  contenEstilos, 
+  sendColors
   
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -113,14 +115,10 @@ const ResultadoOpcionMultiple = ({
   const tituloTipografia = sendTipografiaPaso2?.titulo;
   const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
   const [preguntasStyle, setPreguntasStyle] = useState({});
-
+  const [contentEstilos, setContentEstilos] = useState(contenEstilos);
   
-
-
-
   
   useEffect(() => {
-    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
     let newStyle = {};
     if (titulotamano === 'Opciones de respuesta') {
       newStyle.fontSize = `${tamano}px`;
@@ -150,8 +148,20 @@ const ResultadoOpcionMultiple = ({
       setPreguntasStyle(newStyle2);
     }
 
+    if (Object.keys(contentEstilos).length !== 0){
+      setContentEstilos(contentEstilos);
+    }
 
-  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia]);
+    if (contentEstilos.fuente.preguntas.color !== ''){
+      setPreguntasStyle({...newStyle2, color: contentEstilos.fuente.preguntas.color});
+    }
+
+    if (contentEstilos.fuente.opcionesRespuestas.color !== ''){
+      setOpcionesRespuestaStyle({...newStyle, color: contentEstilos.fuente.opcionesRespuestas.color});
+    }
+
+
+  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contentEstilos, sendColors]);
 
   const handleMouseEnterEditar = (index) => {
     $(`#editPreg${index +1}`).removeClass("oculto");

@@ -160,6 +160,8 @@ const CargaDatos = ({
     sendTamanoPaso2, 
     sendGrosorPaso2, 
     sendTipografiaPaso2,
+    contenEstilos,
+    sendColors
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -432,7 +434,7 @@ const CargaDatos = ({
                                 className= '' 
                                 type="text"
                                 value={pregunta2}
-                                readOnly
+                                
                                 onChange={(e) => setPregunta2(e.target.value)}
                             />
                         </Col>
@@ -505,15 +507,30 @@ const CargaDatos = ({
                         <Col className='seccion5-cargaDatos-editar'>
                             <p style={{ marginBottom: '1%', marginTop: '1.3%', cursor: 'default' }}>Peso máximo</p>
                             
-                            <MB
+                            <input
                                 className="numeracionRespuesta"
                                 style={{ width: '2.2%', height: '2.2%', textAlign: 'center' }}
                                 type="text"
-                                onChange={(e) => setPesoArchivo(e.target.value)}
+                                value={pesoArchivo}
+                                onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    // Validar si el valor es un solo dígito numérico o una cadena vacía
+                                    if (/^\d{0,2}$/.test(inputValue) || inputValue === '') {
+                                        setPesoArchivo(inputValue);
+                                    }
+                                }}
+                                onKeyPress={(e) => {
+                                    // Validar que solo se permitan dígitos numéricos o la tecla de retroceso
+                                    if (!/^\d$/.test(e.key) && e.key !== 'Backspace') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
 
                             <p style={{ marginBottom: '1%', marginLeft: '2%', marginTop: '1.3%', cursor: 'default' }}>Mb</p>
                         </Col>
+
+
 
                         <Col className='seccion6-cargaDatos-editar'>
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
@@ -669,6 +686,8 @@ const CargaDatos = ({
                     sendTamanoPaso2={sendTamanoPaso2}
                     sendGrosorPaso2={sendGrosorPaso2}
                     sendTipografiaPaso2={sendTipografiaPaso2}
+                    contenEstilos={contenEstilos}
+                    sendColors={sendColors}
                 />
             </Container>
         )}
