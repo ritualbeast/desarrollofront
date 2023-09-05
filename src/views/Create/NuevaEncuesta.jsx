@@ -58,6 +58,8 @@ const NuevaEncuesta = ({
   sendPosicionLogotipoPiePagina, 
   sendTamanoLogotipoPiePagina,
   sendColors,
+  sendContentCont
+  
 }) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
@@ -226,7 +228,7 @@ const NuevaEncuesta = ({
         orden: contentCont.length + 1,
         imagenCabecera: '',
         imagenPie : '',
-        tipoSeccion: 'C',  
+        tipoSeccion: 'P',  
         textoAgradecimiento: 'ok',
         urlRedireccion: '',
         imagenCierre: '',   
@@ -889,6 +891,16 @@ const NuevaEncuesta = ({
       }
     };
 
+    const handleCloseSeccionCierre = () => {
+      setShowModal(false);
+    };
+
+    const sendContent = (valor) => {
+      console.log(valor);
+      sendContentCont(valor);
+    }
+
+
   return (
     <>
       
@@ -1190,7 +1202,12 @@ const NuevaEncuesta = ({
                   )
               })}
 
-              {showModal && <ModalSeccionCierre />}
+              {showModal && 
+                <ModalSeccionCierre 
+                  contentCont={contentCont}
+                  onClose={handleCloseSeccionCierre}
+                  sendContent={sendContent}
+                />}
 
               {nuevaSeccionVisible && (
                 <Container 

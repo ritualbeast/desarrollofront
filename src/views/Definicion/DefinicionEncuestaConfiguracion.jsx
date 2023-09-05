@@ -87,6 +87,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const ListarVigencia = async () => {
         try {
             const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
+            console.log(response.data.listaEnumerados);
             setVigencia(response.data.listaEnumerados);
             const defaultTipo = response.data.listaEnumerados.find((item) => item.id === '');
             if (datosConfiguracion.enumTipoVigencia !== '') {
@@ -154,6 +155,9 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
       };
 
     // seleccion de vigencia
+    const [verFechaInicio, setVerFechaInicio] = useState(false);
+    const [verFechaFin, setVerFechaFin] = useState(false);
+    const [verCantidadRespuestas, setVerCantidadRespuestas] = useState(false);
     const handleChangeVigencia = (selectedOption) => {
         setDatosConfiguracion({
             ...datosConfiguracion,
@@ -162,6 +166,21 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
             
         });
         setSelectedVigencia(selectedOption);
+        if (selectedOption.value == '3') {
+            setVerFechaInicio(true);
+            setVerFechaFin(false);
+            setVerCantidadRespuestas(false);
+        }
+        else if (selectedOption.value == '5') {
+            setVerFechaInicio(true);
+            setVerFechaFin(true);
+            setVerCantidadRespuestas(false);
+        }
+        else {
+            setVerFechaInicio(false);
+            setVerFechaFin(false);
+            setVerCantidadRespuestas(true);
+        }
     };
     
     // seleccion de fecha inicio
@@ -265,26 +284,60 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                                     value={selectedVigencia}
                                 />
                             </div>
+                            {verFechaInicio && (
+                                <>
+                                    <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">Fecha inicio</span>
+                                    </div>
+        
+                                    <div className="subcontenedorFuenteTitulo">
+                                        <input type="date" className="inputFechaInicio"
+                                        value={datosConfiguracion.fechaInicio.split(' ')[0]} 
+                                        onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
+                                    </div>
+                                </>
+                            
+                            )}
 
-                            <div className="subcontenedorFuenteTitulo">
-                                <span className="fuenteTitulo">Fecha inicio</span>
-                            </div>
+                            {verFechaFin && (
+                                <>  
+                                    <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">Fecha Fin</span>
+                                    </div>
 
-                            <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaInicio"
-                                value={datosConfiguracion.fechaInicio.split(' ')[0]} 
-                                onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
-                            </div>
+                                    <div className="subcontenedorFuenteTitulo">
+                                        <input type="date" className="inputFechaFin" 
+                                        value={datosConfiguracion.fechaFin.split(' ')[0]}
+                                        onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
+                                    </div>
+                                
+                                </>
+                            )}
+                            {verCantidadRespuestas && (
+                                <>
+                                    <div className="subcontenedorFuenteTitulo">
+                                    <span className="fuenteTitulo">Cantidad de respuestas</span>
+                                    </div>
 
-                            <div className="subcontenedorFuenteTitulo">
-                                <span className="fuenteTitulo">Fecha Fin</span>
-                            </div>
+                                    <div className="subcontenedorFuenteTitulo">
+                                        <input type="number" className="inputCantidadRespuestas" 
+                                        value={datosConfiguracion.cantidadRespuestas} 
+                                        onChange={(event) => setDatosConfiguracion({
+                                            ...datosConfiguracion,
+                                            cantidadRespuestas: event.target.value,
+                                        })} />
+                                    </div>
+                                </>
+                            )}
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
 
-                            <div className="subcontenedorFuenteTitulo">
-                                <input type="date" className="inputFechaFin" 
-                                value={datosConfiguracion.fechaFin.split(' ')[0]}
-                                onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

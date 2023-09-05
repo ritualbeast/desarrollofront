@@ -284,6 +284,15 @@ const Create = () => {
         setContentCont(contentCont);
     };
 
+    const handlerecibirContentCierre = (contentCierre) => {
+        // Crear una copia del arreglo contentCont y agregar contentCon como un nuevo elemento
+        console.log(contentCierre);
+        console.log(contentCont);
+        const newContentCont = [...contentCont, contentCierre];
+        setContentCont(newContentCont);
+    };
+    
+
     const handleSendTamanoPaso2 = (tamano, titulo) => {
        
         setTamanoPaso2({tamano: tamano, titulo: titulo})
@@ -321,7 +330,7 @@ const Create = () => {
 
     const leerestilos = () => {
          // console.log(encuestaEstilos);
-        // console.log(datosEncuesta);
+         console.log(contentCont);
         // console.log(datosConfiguracionEncuesta);
       }
 
@@ -607,6 +616,7 @@ const Create = () => {
                                         sendPosicionLogotipoPiePagina = {posicionLogotipoPiePagina}
                                         sendTamanoLogotipoPiePagina = {tamanoLogotipoPiePagina}
                                         sendColors = {sendColor}
+                                        sendContentCont = {handlerecibirContentCierre}
                                     />
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}
