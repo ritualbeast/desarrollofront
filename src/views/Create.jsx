@@ -54,7 +54,7 @@ const Create = () => {
         orden: 1,
         imagenCabecera: '', 
         imagenPie : '',  
-        tipoSeccion: 'C',  
+        tipoSeccion: 'P',  
         textoAgradecimiento: 'ok',
         urlRedireccion: '#',
         imagenCierre: '#',   
@@ -286,10 +286,7 @@ const Create = () => {
 
     const handlerecibirContentCierre = (contentCierre) => {
         // Crear una copia del arreglo contentCont y agregar contentCon como un nuevo elemento
-        console.log(contentCierre);
-        console.log(contentCont);
-        const newContentCont = [...contentCont, contentCierre];
-        setContentCont(newContentCont);
+        
     };
     
 

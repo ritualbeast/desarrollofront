@@ -39,10 +39,12 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
     const [contentCon, setContentCon] = useState(contentCont);
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [preview1, setPreview1] = useState(null);
-
+    const [textoAgradecimiento, setTextoAgradecimiento] = useState('');
+    const [urlRedireccion, setUrlRedireccion] = useState('');
     const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(''); 
     const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState('');
-
+    const [isMouseOver, setIsMouseOver] = useState(false); 
+    const [hasChanges, setHasChanges] = useState(false);
 
     const handleDuplicarSeccion = () => {
         setBlurBackground(false);
@@ -51,10 +53,13 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
 
     const handleMouseEnterDuplicar = () => {
         setDuplicarSeccionVisible(true);
+        setIsMouseOver(true); 
+        
       };
   
       const handleMouseLeaveDuplicar = () => {
         setDuplicarSeccionVisible(false);
+        setIsMouseOver(false);
       };  
 
       const onSelectFile1 = (e) => {
@@ -88,24 +93,13 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
             setPreview1(null);
         }
       };
-      const handleTextoAgradecimiento = (e) => {
-        setContentCon((prevContentCon) => ({
-            ...prevContentCon,
-            "0": {
-                ...prevContentCon["0"],
-                textoAgradecimiento: e.target.value
-            }
-        }));
-    }
-    
+      const handleTextoAgradecimiento = (e, posicion) => {
+        setTextoAgradecimiento(e.target.value)
+      };
+      
     const handleUrlRedireccion = (e) => {
-        setContentCon((prevContentCon) => ({
-            ...prevContentCon,
-            "0": {
-                ...prevContentCon["0"],
-                urlRedireccion: e.target.value
-            }
-        }));
+        
+        setUrlRedireccion(e.target.value)
     }
     
     
@@ -119,40 +113,54 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
             setContentCon({
                 ...contentCon,
                 textoAgradecimiento: '',
-                urlRedireccion: ''
+                urlRedireccion: '',
+                imagenCierre : ''
             })
 
         }
-        
         const sendContentCon = () => {
-            sendContent(contentCon);
+            sendContent(textoAgradecimiento, urlRedireccion , preview1)
+            setHasChanges(true)
         }
+
+        const handleEditarSeccion = () => {
+            setHasChanges(false)
+        }
+
+        const handleEliminarSeccion = () => {
+            onClose();
+            // clear the preview
+            setPreview1(undefined)
+            setSelectedFile1(undefined)
+            setContentCon({
+                ...contentCon,
+                textoAgradecimiento: '',
+                urlRedireccion: '',
+                imagenCierre : ''
+            })
+        }
+        
   return (
     <>
         <br />
         <Container className='encuesta-SeccionCierre'>
                 <Col className="">
+                    {isMouseOver && (
                     <Col
-                        className={`contenedor-editar-seccion ${
-                        editarSeccionVisible ? "visible" : "oculto"
-                    }`}
+                        className={"contenedor-editar-seccionC"}
                     onMouseEnter={handleMouseEnterDuplicar}
                     onMouseLeave={handleMouseLeaveDuplicar}
+                    onClick={handleEditarSeccion}
                     >
                     <p className="titulo-editarEncuesta">Editar</p>
-                    <span
-                        className='iconcoCopyRosa'
-                        style={{ marginRight: "2.7%" }}
-                        dangerouslySetInnerHTML={{ __html: copyRosaSVG }}
-                        onClick={handleDuplicarSeccion}
-                    />
-                    <span dangerouslySetInnerHTML={{ __html: trashSVG }} />
+                    
+                    <span onClick={handleEliminarSeccion} 
+                    style={{ marginLeft: "5%", backgroundColor: "red" }} dangerouslySetInnerHTML={{ __html: trashSVG }} />
                     </Col>
+                    )}
 
                     <Col
-                    className={`contenedor-tituloNuevaEncuesta ${
-                        editarSeccionVisible ? "editar-visible" : ""
-                    }`}
+                    className={"contenedor-tituloNuevaEncuestaC"}
                     onMouseEnter={handleMouseEnterDuplicar}
                     onMouseLeave={handleMouseLeaveDuplicar}
                     >
@@ -194,20 +202,29 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
                             
             
                 
-            
-                <Col className="seccion3-SeccionCierre">
-                    <p style={{ marginLeft: '2%' }}>Texto de agradecimiento</p>
-                    <Agradecimiento className= 'textoAgradecimiento' type="text" placeholder="Escribe aquí..." 
-                     onChange={handleTextoAgradecimiento}
-                    />
-                </Col>
-            
-                <Col className="seccion4-SeccionCierre">
-                    <p style={{ marginLeft: '2%' }}>Url de redirección</p>
-                    <URL className= 'urlRedireccion' type="text" placeholder="Escribe aquí..."
-                    onChange={handleUrlRedireccion}
-                    />
-                </Col>
+                {!hasChanges ? (
+                    <>
+                    <Col className="seccion3-SeccionCierre">
+                        <p style={{ marginLeft: '2%' }}>Texto de agradecimiento</p>
+                        <Agradecimiento className= 'textoAgradecimiento' type="text" placeholder="Escribe aquí..."  value={textoAgradecimiento}
+                        onChange={handleTextoAgradecimiento}
+                        />
+                    </Col>
+                
+                    <Col className="seccion4-SeccionCierre">
+                        <p style={{ marginLeft: '2%' }}>Url de redirección</p>
+                        <URL className= 'urlRedireccion' type="text" placeholder="Escribe aquí..." value={urlRedireccion}
+                        onChange={handleUrlRedireccion}
+                        />
+                    </Col>
+
+                    </>
+                ) : (
+                    <>
+                    <p style={{ marginLeft: '2%' }}>{textoAgradecimiento}</p>
+                    </>
+                )}
+                
                 
                 <Col style={{display: 'flex'}}>
                     <Button className='finalizarSeccion'>

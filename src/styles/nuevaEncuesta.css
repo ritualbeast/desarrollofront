@@ -76,9 +76,6 @@
   .contenedor-editar-seccion.visible {
     transform: translateY(0);
   }
-  .contenedor-editar-seccion {
-    display: none;
-  }
   
   .contenedor-editar-seccion.visible {
     display: flex;

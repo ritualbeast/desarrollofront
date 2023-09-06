@@ -58,7 +58,6 @@ const NuevaEncuesta = ({
   sendPosicionLogotipoPiePagina, 
   sendTamanoLogotipoPiePagina,
   sendColors,
-  sendContentCont
   
 }) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
@@ -895,12 +894,39 @@ const NuevaEncuesta = ({
       setShowModal(false);
     };
 
-    const sendContent = (valor) => {
-      console.log(valor);
-      sendContentCont(valor);
-    }
+    const sendContent = (textoAgradecimiento, urlRed, imagenCierre) => {
+      // Clonamos el estado actual en un nuevo array
+      const nuevoEstado = [...contentCont];
+    
+      // Buscamos si ya existe un objeto con el mismo 'tipoSeccion' y 'orden'
+      const objetoExistenteIndex = nuevoEstado.findIndex(
+        (objeto) =>
+          objeto.tipoSeccion === 'C' 
+      );
+      console.log(objetoExistenteIndex);
+    
+      if (objetoExistenteIndex !== -1) {
+        // Si encontramos un objeto existente, lo actualizamos
+        nuevoEstado[objetoExistenteIndex].imagenCierre = imagenCierre;
+        nuevoEstado[objetoExistenteIndex].textoAgradecimiento = textoAgradecimiento;
+        nuevoEstado[objetoExistenteIndex].urlRedireccion = urlRed;
 
-
+      } else {
+        // Si no encontramos un objeto existente, creamos uno nuevo
+        const nuevoObjeto = {
+          textoAgradecimiento: textoAgradecimiento,
+          urlRedireccion: urlRed,
+          tipoSeccion: 'C',
+          orden: nuevoEstado.length + 1,
+          imagenCierre: imagenCierre,
+        };
+        nuevoEstado.push(nuevoObjeto);
+      }
+    
+      // Actualizamos el estado con el nuevo array
+      setContentCont([...nuevoEstado]);
+    };
+    
   return (
     <>
       
@@ -914,15 +940,15 @@ const NuevaEncuesta = ({
                   
                   >Encuesta Veris1</p>
               </Col>
-
+              
               {contentCont.map((seccion, index) => {
-                  
+                if (seccion.tipoSeccion === 'P') {   
                   return (
                     <Col key={index}>
                       <Col  className='contendor-nuevaEncuesta principal'>
                         <Col 
                           id={`editTitulo${index+1}`}
-                          className={editarTituloVisible[index] ? 'titulo-editar' : 'titulo-editar oculto'}
+                          className={editarTituloVisible[index]}
                         >
                             <Col 
                                 id={`editSec${index +1}`}
@@ -988,7 +1014,7 @@ const NuevaEncuesta = ({
 
 
                             <div>
-                              {mostrarContenedorC[index] && seccion.tipoSeccion === 'C' && (
+                              {mostrarContenedorC[index] && seccion.tipoSeccion === 'P' && (
                                 <EditarTituloSeccion
                                   indiceSec={index}
                                   contentSec={seccion}
@@ -1200,6 +1226,7 @@ const NuevaEncuesta = ({
                       <br />
                     </Col>
                   )
+                } 
               })}
 
               {showModal && 

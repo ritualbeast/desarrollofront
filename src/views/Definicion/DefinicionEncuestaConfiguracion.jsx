@@ -87,7 +87,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const ListarVigencia = async () => {
         try {
             const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
-            console.log(response.data.listaEnumerados);
             setVigencia(response.data.listaEnumerados);
             const defaultTipo = response.data.listaEnumerados.find((item) => item.id === '');
             if (datosConfiguracion.enumTipoVigencia !== '') {
