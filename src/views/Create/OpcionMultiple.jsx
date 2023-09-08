@@ -272,9 +272,9 @@ const OpcionMultiple = ({
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
-
-    // Inicializa un arreglo para almacenar todas las preguntas y sus posiciones
     const todasLasPreguntasConPosiciones = [];
+    const [posicionPregunta, setPosicionPregunta] = useState(0);
+    const [posicionContentCont, setPosicionContentCont] = useState(0);
 
     // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
     contentCont.map((item, indexContentCont) => {
@@ -643,7 +643,15 @@ const OpcionMultiple = ({
         if (validacionOpcionMultiple() === false) return;
         if (validacionConfiguracion() === false) return;
         setPreguntaTemp(pregunta)
-        onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion);
+        if (configuracion2)
+        {
+            console.log('si entra a configuracion 2')
+            onAceptar(posicionPregunta, posicionContentCont, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
+        }
+        else
+        {
+            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
+        }
     };
 
     const validacionOpcionMultiple = () => {
@@ -658,7 +666,6 @@ const OpcionMultiple = ({
             toast.error('Debe agregar un mensaje de configuracion', { autoClose: 1000 });
             return false;
         }
-        
     };
 
 
@@ -714,8 +721,8 @@ const OpcionMultiple = ({
 
     const handleComplemetaria = (event) => {
         const selectedValue = JSON.parse(event.target.value);
-        const posicionContentCont = selectedValue.posicionContentCont;
-        const posicionPregunta = selectedValue.posicionPregunta;
+        setPosicionContentCont(selectedValue.posicionContentCont);
+        setPosicionPregunta(selectedValue.posicionPregunta);
       
         // Ahora puedes acceder a las posiciones seleccionadas
         console.log("Posición en contentCont:", posicionContentCont);
