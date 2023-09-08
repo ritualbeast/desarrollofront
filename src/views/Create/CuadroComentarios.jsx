@@ -203,10 +203,22 @@ const CuadroComentarios = ({
     }
 
     const handleGuardarCuadroComentarios = () => {
+        console.log(opcionesRespuesta)
+        if (!validarCuadroComentarios()) {
+            return;
+        }
+
         setPreguntaTemp(pregunta)
         handleCuadroComentarios(indice, indiceSec, pregunta, opcionesRespuesta, cancelar);
     }; 
 
+    const validarCuadroComentarios = () => {
+        if (pregunta === '' || opcionesRespuesta.length === 0) {
+
+            return false;
+        }
+        return true;
+    };
     const listarTipoPregunta = async () => {
         try {
             const response = await ListarTipoPregunta();
@@ -241,6 +253,12 @@ const CuadroComentarios = ({
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)
     }
+
+    const handleGuardarPregunta = (e) => {
+        setPregunta(e.target.value);
+    }
+
+
 
     return (
     <>
@@ -283,7 +301,7 @@ const CuadroComentarios = ({
                                     type="text"
                                     value={pregunta}
                                     placeholder="Añada un comentario sobre la charla"
-                                    onChange={(e) => setPregunta(e.target.value)}
+                                    onChange={handleGuardarPregunta}
                                 />
                             </Col>
                             

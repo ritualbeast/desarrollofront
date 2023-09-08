@@ -35,6 +35,7 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
     const [tituloTemp, setTituloTemp] = useState(contentSec.titulo);
     const [comentarioTemp, setComentarioTemp] = useState(contentSec.comentario);
     const [isInputFilled, setIsInputFilled] = useState(false);
+    const [isInputFilled2, setIsInputFilled2] = useState(false);
     const [hasChanges, setHasChanges] = useState(false);
     
     const handleEditar = () => {
@@ -49,6 +50,7 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
     }
 
     const handleGuardarEditar = () => {
+       
         if (!hasChanges) {
             // No guardar si no hay cambios en el FormControl
             return;
@@ -102,7 +104,7 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
                             onChange={(e) => {
                                 const inputValue = e.target.value.trim();
                                 setComentario(e.target.value)
-                                setIsInputFilled(e.target.value.trim() !== '');
+                                setIsInputFilled2(e.target.value.trim() !== '');
                                 setHasChanges(inputValue !== contentSec.comentario);
                             }}
                             rows={5} // Ajusta el número de filas según tus necesidades
@@ -117,7 +119,8 @@ const EditarTituloSeccion = ({indiceSec, contentSec, handleEditarCancelar, handl
                 </Button>
                     
                 <Button 
-                    className={isInputFilled ? 'guardartituloSeccion filled' : 'guardartituloSeccion'} 
+                    className={isInputFilled && isInputFilled2
+                         ? 'guardartituloSeccion filled' : 'guardartituloSeccion'} 
                     onClick={handleGuardarEditar}
                 >
                     Guardar

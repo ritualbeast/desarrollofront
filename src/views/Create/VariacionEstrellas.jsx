@@ -8,6 +8,8 @@ import { SketchPicker } from 'react-color';
 import ResultadoValoracionEstrellas from './ResultadoValoracionEstrellas';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
@@ -492,9 +494,33 @@ const VariacionEstrellas = ({
     }
 
     const handleGuardarValoracionEstrellas = () => {
+        console.log(opcionesRespuesta)
+        if (!validacionEstrella()) {
+            return;
+        }
         setPreguntaTemp(pregunta)
         onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar,configuraciongeneral,ponderacion);
     };
+
+    const validacionEstrella = () => {
+        if (pregunta === '' || opcionesRespuesta.length < 2) {
+            toast.error('La pregunta debe tener al menos 2 opciones de respuesta');
+            return false;
+        }
+    
+        // Verificar que todas las opciones tengan la propiedad 'respuesta' no vacía
+        const todasTienenRespuestaNoVacia = opcionesRespuesta.every(opcion => opcion.respuesta !== '');
+    
+        if (!todasTienenRespuestaNoVacia) {
+            toast.error('Todas las opciones de respuesta deben tener una respuesta', { autoClose: 1000 });
+            return false;
+        }
+    
+        return true;
+    }
+    
+    
+
 
     const handleIconClick = (id) => {
         setShowColorPicker((prevState) => ({
@@ -583,6 +609,7 @@ const VariacionEstrellas = ({
 
     return (
     <>
+        <ToastContainer />
         {!save && (
             <Container className='container-variacionEstrellas'>
                 <Col className='seccion1-variacionEstrellas'>
@@ -653,6 +680,7 @@ const VariacionEstrellas = ({
                                                                         value={opcion.text}
                                                                         placeholder="Ingrese una etiqueta de valoración"
                                                                         onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
+                                                                        
                                                                     />
 
                                                                     <select

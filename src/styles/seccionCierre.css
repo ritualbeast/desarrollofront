@@ -6,6 +6,10 @@
     padding-bottom: 2%;
     padding-top: 1.5%;
 }
+.margen{
+    margin-left: 2%;
+    margin-right: 2%;
+}
 .contenedor-editar-seccionC{
     display: flex;
     align-items: center;
@@ -42,6 +46,8 @@
     border-radius: 50px;
     margin-top: 2%;
     margin-left: 2%;
+    font-size: small;
+    padding: 10px;
 }
 .finalizarSeccion:hover{
     cursor: pointer;

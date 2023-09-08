@@ -4,6 +4,12 @@
     margin-right: auto;
     margin-top: 4%;
 }
+.sin-estilos-enlace {
+    text-decoration: none; /* Elimina la decoración del enlace (subrayado) */
+    color: inherit; /* Usa el color heredado (sin estilos de color) */
+    
+    /* Agrega otras propiedades de estilo según sea necesario */
+  }
 .button-obtenerURL-createFin{
     background-color: rgba(255, 240, 199, 1);
     padding-top: 1.5%;

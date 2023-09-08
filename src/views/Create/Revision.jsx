@@ -153,7 +153,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
         let totalDatosContentPreg = 0;
 
         handleTotalPreguntas.forEach((item) => {
-        if (item.tipoSeccion === 'C') {
+        if (item.tipoSeccion === 'P') {
             totalContenedoresC++;
             totalDatosContentPreg += item.preguntas.length;
         }

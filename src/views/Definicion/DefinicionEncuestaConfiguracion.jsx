@@ -117,7 +117,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const ListarCategoriaEncuesta = async () => {
         try {
             const response = await  ListarCategoriasService();
-            
             setListarCategoriaEncuestas(response.data.row);
             const defaultTipo = response.data.row.find((item) => item.idCategoriaEncuesta === '');
             if (datosConfiguracion.idCategoriaEncuesta !== '') {

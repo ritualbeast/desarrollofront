@@ -399,6 +399,7 @@ const NuevaEncuesta = ({
     }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleEditarTitulo = (index) => {
+      console.log('index', index);
       setMostrarContenedorC((prevState) => {
         const newState = [...prevState];
         newState[index] = !newState[index];
@@ -413,7 +414,7 @@ const NuevaEncuesta = ({
       setComentario(previoComentario);
     
       let obj = {
-        tipo: 'C',
+        tipo: 'P',
         titulo: previoTitulo,
         descripcion: previoComentario,
         preguntas: []
@@ -746,7 +747,8 @@ const NuevaEncuesta = ({
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, cancelar,configuraciongeneral,opcionesRespuesta) => {
+    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar,configuraciongeneral) => {
+      console.log(opcionesRespuesta)
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
@@ -894,7 +896,7 @@ const NuevaEncuesta = ({
       setShowModal(false);
     };
 
-    const sendContent = (textoAgradecimiento, urlRed, imagenCierre) => {
+    const sendContent = (textoAgradecimiento, urlRed, imagenCierre, titulo, descripcion, textobotonCierre) => {
       // Clonamos el estado actual en un nuevo array
       const nuevoEstado = [...contentCont];
     
@@ -910,6 +912,9 @@ const NuevaEncuesta = ({
         nuevoEstado[objetoExistenteIndex].imagenCierre = imagenCierre;
         nuevoEstado[objetoExistenteIndex].textoAgradecimiento = textoAgradecimiento;
         nuevoEstado[objetoExistenteIndex].urlRedireccion = urlRed;
+        nuevoEstado[objetoExistenteIndex].titulo = titulo;
+        nuevoEstado[objetoExistenteIndex].descripcion = descripcion;
+        nuevoEstado[objetoExistenteIndex].textoBotonCierre = textobotonCierre;
 
       } else {
         // Si no encontramos un objeto existente, creamos uno nuevo
@@ -919,6 +924,9 @@ const NuevaEncuesta = ({
           tipoSeccion: 'C',
           orden: nuevoEstado.length + 1,
           imagenCierre: imagenCierre,
+          titulo : titulo,
+          descripcion : descripcion,
+          textoBotonCierre : textobotonCierre
         };
         nuevoEstado.push(nuevoObjeto);
       }
@@ -1015,6 +1023,7 @@ const NuevaEncuesta = ({
 
                             <div>
                               {mostrarContenedorC[index] && seccion.tipoSeccion === 'P' && (
+                               
                                 <EditarTituloSeccion
                                   indiceSec={index}
                                   contentSec={seccion}
@@ -1234,6 +1243,11 @@ const NuevaEncuesta = ({
                   contentCont={contentCont}
                   onClose={handleCloseSeccionCierre}
                   sendContent={sendContent}
+                  tituloStyle={tituloStyle}
+                  sendTamanoPaso2={sendTamanoPaso2}
+                  sendGrosorPaso2={sendGrosorPaso2}
+                  sendTipografiaPaso2={sendTipografiaPaso2}
+
                 />}
 
               {nuevaSeccionVisible && (

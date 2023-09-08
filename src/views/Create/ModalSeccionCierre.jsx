@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../styles/seccionCierre.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
@@ -31,11 +31,19 @@ const URL = styled(FormControl)`
     }
 `;
 
-const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
+const ModalSeccionCierre = ({
+        contentCont, 
+        onClose,
+        sendContent,
+        tituloStyle,
+        sendTamanoPaso2,
+        sendGrosorPaso2,
+        sendTipografiaPaso2
+
+    }) => {
     const [duplicarSeccionVisible, setDuplicarSeccionVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
-    const [editarSeccionVisible, setEditarSeccionVisible] = useState(false);
     const [contentCon, setContentCon] = useState(contentCont);
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [preview1, setPreview1] = useState(null);
@@ -45,7 +53,35 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
     const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState('');
     const [isMouseOver, setIsMouseOver] = useState(false); 
     const [hasChanges, setHasChanges] = useState(false);
-
+    const [titulo, setTitulo] = useState('Sección de cierre');
+    const [comentario, setComentario] = useState('');
+    const [textobotonCierre, setTextobotonCierre] = useState('Finalizar');
+    const [textoCierre, setTextoCierre] = useState({});
+    const tamano = sendTamanoPaso2?.tamano ;
+    const titulotamano = sendTamanoPaso2?.titulo;
+    const grosor = sendGrosorPaso2?.grosor;
+    const tituloGrosor = sendGrosorPaso2?.titulo;
+    const tipografia = sendTipografiaPaso2?.tipografia;
+    const tituloTipografia = sendTipografiaPaso2?.titulo;
+    useEffect(() => {
+        let newStyle = {};
+    if (titulotamano === 'Texto de cierre de encuestas') {
+      newStyle.fontSize = `${tamano}px`;
+      
+    
+    }
+    if (tituloGrosor === 'Texto de cierre de encuestas') {
+      newStyle.fontWeight = grosor;
+    }
+    if (tituloTipografia === 'Texto de cierre de encuestas') {
+      newStyle.fontFamily = tipografia;
+    }
+    if (Object.keys(newStyle).length > 0) {
+    console.log(newStyle)
+    setTextoCierre(newStyle);
+    }
+    }, [tamano, titulotamano, grosor, tituloGrosor, tipografia, tituloTipografia]);
+    
     const handleDuplicarSeccion = () => {
         setBlurBackground(false);
         setIsModalVisible(false);
@@ -118,13 +154,10 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
             })
 
         }
-        const sendContentCon = () => {
-            sendContent(textoAgradecimiento, urlRedireccion , preview1)
-            setHasChanges(true)
-        }
-
+        const [hasChangeEncabezado, setHasChangeEncabezado] = useState(true)
         const handleEditarSeccion = () => {
             setHasChanges(false)
+            setHasChangeEncabezado(false)
         }
 
         const handleEliminarSeccion = () => {
@@ -139,11 +172,30 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
                 imagenCierre : ''
             })
         }
-        
+
+        const handleGuardarEncabezado = () => {
+            if (!validacionSeccionCierre()) return
+            setHasChangeEncabezado(true)
+            setHasChanges(true)
+            sendContent(textoAgradecimiento, urlRedireccion , preview1, titulo, comentario, textobotonCierre)
+        }
+
+        const validacionSeccionCierre = () => {
+            if (textoAgradecimiento === '' || urlRedireccion === '' || preview1 === null || titulo === '' || comentario === '' || textobotonCierre === ''
+            ) {
+                alert('Por favor, completa todos los campos de cierre.');
+                return false
+            }
+            return true
+        }
+
+    
+
   return (
     <>
         <br />
         <Container className='encuesta-SeccionCierre'>
+            {hasChangeEncabezado ? (
                 <Col className="">
                     {isMouseOver && (
                     <Col
@@ -155,7 +207,7 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
                     <p className="titulo-editarEncuesta">Editar</p>
                     
                     <span onClick={handleEliminarSeccion} 
-                    style={{ marginLeft: "5%", backgroundColor: "red" }} dangerouslySetInnerHTML={{ __html: trashSVG }} />
+                    style={{ marginLeft: "5%"}} dangerouslySetInnerHTML={{ __html: trashSVG }} />
                     </Col>
                     )}
 
@@ -164,13 +216,47 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
                     onMouseEnter={handleMouseEnterDuplicar}
                     onMouseLeave={handleMouseLeaveDuplicar}
                     >
-                    <p className="titulo-nuevaEncuesta">Sección de Cierre</p>
+                    <p className="titulo-nuevaEncuesta" style={tituloStyle}
+                    >{titulo}</p>
                     <span
                         style={{ display: "flex", alignItems: "center" }}
                         dangerouslySetInnerHTML={{ __html: chevronUpSVG }}
                     />
                     </Col>
                 </Col>
+            ) : (
+                <Container className='tituloSeccion-container-editar'>
+                    <Col>
+                        <p style={{ marginLeft: '2%', marginBottom: '1%', marginTop:'unset', cursor: 'default' }}>Nombre descripción</p>
+                        <input 
+                            className="textoAgradecimiento"
+                            id='titulo-editar'
+                            value={titulo}
+                            onChange={(e) => {
+                                setTitulo(e.target.value);
+                            }}
+                            placeholder='Descripción'
+                            style={tituloStyle}
+
+                        />
+                    </Col>
+
+                    <Col>
+                        <p style={{ marginLeft: '2%', marginBottom: '1%', cursor: 'default' }}>
+                            Descripción (Opcional)
+                        </p>
+                        <textarea 
+                            className="textoAgradecimiento"
+                            value={comentario}
+                            onChange={(e) => {
+                                setComentario(e.target.value)
+                            }}
+                            rows={5} // Ajusta el número de filas según tus necesidades
+                        />
+                    </Col>
+                    
+                </Container>
+            )}
 
                 {selectedFile1 ? (
                               <div className="agregarImagenDefinicionEncuesta2">
@@ -217,34 +303,66 @@ const ModalSeccionCierre = ({contentCont, onClose,sendContent}) => {
                         onChange={handleUrlRedireccion}
                         />
                     </Col>
+                    <Col>
+                        <p style={{ marginLeft: '2%' }}>Texto de Botón de cierre </p>
+                                            
+                        <Button>
+                            <input
+                                type="text"
+                                value={textobotonCierre}
+                                onChange={(e) => {
+                                    setTextobotonCierre(e.target.value);
+                                }}
+                                style={{
+                                    width: '100%',
+                                    color: '#060606',
+                                }}
+                            />
+                        </Button>
+                    </Col>
+                    
+                <Col className='seccion6-SeccionCierre'>
+                        <Button className='cancelarSeccion'
+                        onClick={closeSeccionCierre }
+                        >
+                            Cancelar
+                        </Button>
+                        <Button className='guardarSeccion' 
+                        onClick={handleGuardarEncabezado}
+                        >
+                        
+                            Guardar 
+                        </Button>
+                </Col>
+
 
                     </>
                 ) : (
                     <>
-                    <p style={{ marginLeft: '2%' }}>{textoAgradecimiento}</p>
+                        <p style={textoCierre} className='margen'>{textoAgradecimiento}</p>
+                        <a
+                            className='finalizarSeccion'
+                            href={urlRedireccion}
+                            style={{
+                            color: 'rgba(255, 255, 255, 1)',
+                            textDecoration: 'none', // Para quitar el subrayado del enlace
+                           
+                            }}
+                        >
+                            {textobotonCierre}
+                        </a>
+                       
                     </>
-                )}
+                )
+                
+                }
                 
                 
-                <Col style={{display: 'flex'}}>
-                    <Button className='finalizarSeccion'>
-                        <p style={{ marginTop: '10%', marginBottom: '10%', color: 'rgba(255, 255, 255, 1)' }}>Finalizar</p>
-                    </Button>
-                </Col>
+               
                 
-                <Col className='seccion6-SeccionCierre'>
-                    <Button className='cancelarSeccion'
-                    onClick={closeSeccionCierre}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button className='guardarSeccion'
-                    onClick={sendContentCon}
-                    >
-                    
-                        Guardar
-                    </Button>
-                </Col>
+                
+
+                <br />
         </Container>
     </>
     

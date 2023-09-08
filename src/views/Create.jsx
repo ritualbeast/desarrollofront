@@ -12,7 +12,8 @@ import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import FormatoEncuestaLateralPrincipal from './Create/FormatoEncuestaLateralPrincipal';
 import Revision from './Create/Revision';
 import NuevaEncuesta from './Create/NuevaEncuesta';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const circleSVG = svgManager.getSVG('circle');
 const chevronsNightSVG = svgManager.getSVG('chevron-rigth');
 const eyeSVG = svgManager.getSVG('eye');
@@ -199,16 +200,16 @@ const Create = () => {
         
         if(pasos === 1){
             
-            // if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
-            // || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enum_tipoVigencia === '' 
-            // || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
-            //  || datosEncuesta.titulo === ''
-            // || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
+            //  if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
+            //  || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enum_tipoVigencia === '' 
+            //  || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
+            //   || datosEncuesta.titulo === ''
+            //  || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
 
-            // ) {
-            //     alert('Por favor, complete todos los campos');
-            //     return;
-            // }
+            //  ) {
+            //     toast.error('Por favor complete todos los campos');
+            //      return;
+            //  }
             
             setPasos(2);
             setActiveTab(true);
@@ -351,6 +352,7 @@ const Create = () => {
 
     return (
         <>
+            <ToastContainer />
             <button onClick={leerestilos}>leer estilos</button>
 
             

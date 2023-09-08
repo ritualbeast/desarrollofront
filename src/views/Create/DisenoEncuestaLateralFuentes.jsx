@@ -335,7 +335,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                         >
                                             <option value="">Tamaño</option>
                                             {TamanoApi.map((item) => (
-                                            <option key={item.id} value={item.id}>{item.etiqueta}</option>
+                                            <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
                                             ))}
                                         </select>
                                         </div>

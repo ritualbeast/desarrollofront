@@ -7,6 +7,8 @@ import ResultadoCargaDatos from './ResultadoCargaDatos';
 import { useEffect } from 'react';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const trashSVG = svgManager.getSVG('trash-mini');
 
@@ -245,28 +247,24 @@ const CargaDatos = ({
     };
 
     const handleCheckboxPDF = (event) => {
+        
         setIsCheckedPDF(event.target.checked);
-        updateSelectedFormats();
     };
 
     const handleCheckboxDOC = (event) => {
         setIsCheckedDOC(event.target.checked);
-        updateSelectedFormats();
     };
 
     const handleCheckboxPNG = (event) => {
         setIsCheckedPNG(event.target.checked);
-        updateSelectedFormats();
     };
 
     const handleCheckboxJPG = (event) => {
         setIsCheckedJPG(event.target.checked);
-        updateSelectedFormats();
     };
 
     const handleCheckboxGIF = (event) => {
         setIsCheckedGIF(event.target.checked);
-        updateSelectedFormats();
     };
 
     const handleSwitchConfigurar1 = () => {
@@ -348,10 +346,23 @@ const CargaDatos = ({
     }
 
     const handleGuardarCargaDatos = () => {
+        if (!validacionCargaDatos()) {
+            return;
+        }
         setPreguntaTemp(pregunta)
         setPregunta2Temp(pregunta2)
         handleCargaArchivos(indice, indiceSec, pregunta, pregunta2, cancelar, configuraciongeneral, selectedFormats, mensajeError, pesoArchivo);
     };
+
+    const validacionCargaDatos = () => {
+        console.log(selectedFormats)
+        if (pregunta === '' || pregunta2 === '' || pesoArchivo === undefined || pesoArchivo === '' || mensajeError === ''
+            || selectedFormats === '') {
+            toast.error('Todos los campos son obligatorios', { autoClose: 1000 });
+            return false;
+        }
+        return true;
+    }
 
     const listarTipoPregunta = async () => {
         try {
@@ -372,11 +383,13 @@ const CargaDatos = ({
     
     useEffect(() => {
         listarTipoPregunta();
-    }, [])
+        updateSelectedFormats();
+    }, [isCheckedPDF, isCheckedDOC, isCheckedPNG, isCheckedJPG, isCheckedGIF]);
 
     useEffect(() => {
         setPreguntaTemp(contentPreg.pregunta)
         setPregunta(contentPreg.pregunta)
+
     }, [contentCont]);
 
     const handlePregunta = (value) => {
@@ -385,6 +398,7 @@ const CargaDatos = ({
 
     return (
     <>
+        <ToastContainer />
         {!save  && (
             <Container className='container-cargaDatos'>
                 <Col className='seccion1-cargaDatos'>
@@ -536,8 +550,8 @@ const CargaDatos = ({
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
                             <Comentario
                                 className="textoMensajeError"
-                                value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
-                                readOnly
+                                value={mensajeError}
+                                
                                 onChange={(e) => setMensajeError(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />

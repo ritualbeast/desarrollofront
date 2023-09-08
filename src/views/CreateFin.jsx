@@ -40,8 +40,8 @@ const CreateFin = () => {
           <Button className='button-obtenerURL-createFin' onClick={handleOpenFondo}>
             Obtener URL
           </Button>
-          <Button className='button-irEncuestas-createFin'>
-            Ir a encuestas
+          <Button className='button-irEncuestas-createFin' href='/encuesta'>
+            <span className='sin-estilos-enlace'>Ir a encuestas</span>
           </Button>
         </Col>
         

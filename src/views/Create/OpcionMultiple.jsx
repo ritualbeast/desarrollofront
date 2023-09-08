@@ -7,6 +7,8 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ResultadoOpcionMultiple from './ResultadoOpcionMultiple';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
@@ -270,6 +272,30 @@ const OpcionMultiple = ({
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
+
+    // Inicializa un arreglo para almacenar todas las preguntas y sus posiciones
+    const todasLasPreguntasConPosiciones = [];
+
+    // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
+    contentCont.map((item, indexContentCont) => {
+    // Verifica si el objeto actual tiene un atributo "preguntas"
+    if (item.preguntas && Array.isArray(item.preguntas)) {
+        // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
+        item.preguntas.map((pregunta, indexPregunta) => {
+        // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+        if (pregunta.pregunta) {
+            // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+            todasLasPreguntasConPosiciones.push({
+            pregunta: pregunta.pregunta,
+            posicionContentCont: indexContentCont,
+            posicionPregunta: indexPregunta,
+            });
+        }
+        });
+    }
+    });
+
+
     
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -614,9 +640,29 @@ const OpcionMultiple = ({
     )
     
     const handleGuardarOpcionMultiple = () => {
+        if (validacionOpcionMultiple() === false) return;
+        if (validacionConfiguracion() === false) return;
         setPreguntaTemp(pregunta)
         onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion);
     };
+
+    const validacionOpcionMultiple = () => {
+        if (opcionesRespuesta.length < 2) {
+            toast.error('Debe agregar al menos 2 opciones de respuesta', { autoClose: 1000 });
+            return false;
+        }
+    };
+
+    const validacionConfiguracion = () => {
+        if (configuracion1 && configuraciongeneral.mensajeEsObligatoria === '') {
+            toast.error('Debe agregar un mensaje de configuracion', { autoClose: 1000 });
+            return false;
+        }
+        
+    };
+
+
+
 
     useEffect(() => {
         setMoreContendorLogica([true]);
@@ -666,9 +712,21 @@ const OpcionMultiple = ({
         handleCambiarPregunta(indice, indiceSec, value)
     }
 
+    const handleComplemetaria = (event) => {
+        const selectedValue = JSON.parse(event.target.value);
+        const posicionContentCont = selectedValue.posicionContentCont;
+        const posicionPregunta = selectedValue.posicionPregunta;
+      
+        // Ahora puedes acceder a las posiciones seleccionadas
+        console.log("Posición en contentCont:", posicionContentCont);
+        console.log("Posición en preguntas:", posicionPregunta);
+      };
+      
+
 
     return (
     <>
+        <ToastContainer />
         {!save && (
             <Container className='container-opcionMultiple'>
                 <Col className='seccion1-opcionMultiple'>
@@ -845,12 +903,15 @@ const OpcionMultiple = ({
                         </Col>
                         {configuracion2 && (
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
-                                <select className='selectConfigurar'>
+                                <select className='selectConfigurar' onChange={handleComplemetaria}>
                                     <option value="" selected disabled hidden>Seleccionar Pregunta</option>
-                                    <option value="option1">Opción 1</option>
-                                    <option value="option2">Opción 2</option>
-                                    <option value="option3">Opción 3</option>
+                                    {todasLasPreguntasConPosiciones.map((pregunta, index) => (
+                                        <option key={index} value={JSON.stringify(pregunta)}>
+                                        {pregunta.pregunta}
+                                        </option>
+                                    ))}
                                 </select>
+
                             </Col>
                         )}
 
