@@ -30,6 +30,8 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
     const [clickedElements, setClickedElements] = useState({});
     const [dataEncuestas, setDataEncuestas] = useState([]);
     const [busqueda, setBusqueda] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [blurBackground, setBlurBackground] = useState(false);
 
     useEffect(() => {
       ListarEncuestasPublicas();
@@ -48,6 +50,8 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
       onClose();
       setPreview(undefined)
       setSelectedFile(undefined)
+      setBlurBackground(false);
+      setIsModalVisible(false);
     }
 
     const handleClick = (id) => {
@@ -96,6 +100,15 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+      }}
+      BackdropProps={{
+        onClick: () => {
+          setBlurBackground(false);
+          setIsModalVisible(false);
+        },
+        sx: {
+          backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+        },
       }}
     >
       <Box
@@ -165,109 +178,6 @@ const ModalCrearEncuestaPersonalizada = ({ open, onClose }) => {
                     </div>
                   </Col>
                 ))}
-
-                  {/* <Col
-                    md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element2'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element2')}
-                    selected={clickedElements['element2']}
-                  >
-                    <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenPosteriorEvento} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Encuesta de opinión posterior a un evento
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            Reúne información demográfica de tus encuestados.
-                        </p>
-                    </div>
-                  </Col>
-
-                  <Col
-                    md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element3'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element3')}
-                    selected={clickedElements['element3']}
-                  >
-                    <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenDatosDemograficos} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Encuesta de opinión posterior a un evento
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            Reúne información demográfica de tus encuestados.
-                        </p>
-                    </div>
-                    
-                    <div className='modalbancopreguntas_divmenudesplegable'>
-                    
-                    </div>
-                  </Col>
-
-                  <Col
-                    md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element4'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element4')}
-                    selected={clickedElements['element4']}
-                  >
-                    <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenComunidad} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Encuesta sobre la comunidad
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            Descubra más sobre la opinión de los encuestados
-                        </p>
-                    </div>
-                    
-                    <div className='modalbancopreguntas_divmenudesplegable'>
-                    
-                    </div>
-                  </Col>
-
-                  <Col
-                    md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element5'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element5')}
-                    selected={clickedElements['element5']}
-                  >
-                    <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenMembresia} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Plantilla de encuesta sobre la membresía
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            ¿Deseas recopilar opiniones de los miembros de tu organización o ...
-                        </p>
-                    </div>
-                  </Col>
-
-                  <Col
-                    md={4}
-                    className={`modalbancopreguntas_colpreguntas_ ${clickedElements['element6'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element6')}
-                    selected={clickedElements['element6']}
-                  >
-                    <div className='ContenedorEncuestaPersonalizada'>
-                        <div className='imagenColModal'>
-                            <img src={ImagenEvaluacionServicios} alt="imagen" className='imagenModal' width='100%' />
-                        </div>
-                        <h4 className='modalbancopreguntas_divpreguntasbody'>
-                            Evaluación de servicios
-                        </h4>
-                        <p style={{marginLeft:'6%', marginRight:'6%', marginTop:'2%', marginBottom:'2%'}}>
-                            Obtenga información sobre la calidad del servicio prestado.
-                        </p>
-                    </div>
-                  </Col> */}
               </Row>
           </Container>
                   

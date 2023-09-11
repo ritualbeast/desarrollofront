@@ -66,6 +66,8 @@ const Categoria = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -90,6 +92,8 @@ const Vigencia = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -402,6 +406,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
                 <Button 
                     className='revision-Regresar'
                     onClick={regresar}
+                    
                 >
                     Regresar
                 </Button>

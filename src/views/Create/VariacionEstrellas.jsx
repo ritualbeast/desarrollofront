@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Select from 'react-select';
 import '../../styles/variacionEstrellas.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import styled from 'styled-components';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ListarEnumeradosService } from '../../services/EnumeradosServices';
 
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
@@ -125,6 +126,8 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
@@ -145,7 +148,8 @@ const VariacionEstrellas = ({
     sendGrosorPaso2, 
     sendTipografiaPaso2,
     contenEstilos,
-    sendColors
+    sendColors,
+    contentCont,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -153,21 +157,21 @@ const VariacionEstrellas = ({
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
     const [isActiveLogica, setIsActiveLogica] = useState(true);
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState([
-        {
-            id: 1,
+    const opcionesApi = contentPreg.opcionesRespuesta ?? [];
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState(() =>
+        opcionesApi.map((opcionApi) => ({
+            idOpcionRespuesta: opcionApi.idOpcionRespuesta,
+            respuesta: opcionApi.respuesta,
             checked: false,
-            text: "",
-            type: 'checkbox',
+            type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            icono: starFillSVG,
-            orden: 0,
-            respuesta: '',
-            enumGrafico: 0,
-            colorOpcion: ""
-          }
-    ]);
+            icono: opcionApi.enumGrafico,
+            selectedColor: opcionApi.colorOpcion,
+            selectedIcon: opcionApi.enumGrafico,
+        }))
+    );
+    const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
@@ -196,13 +200,13 @@ const VariacionEstrellas = ({
     const [inputs, setInputs] = useState([]);
     const [pregunta, setPregunta] = useState(contentPreg.pregunta);
     const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
-    const [showColorPicker, setShowColorPicker] = useState({});
-    const [selectedColor, setSelectedColor] = useState({});
-    const [selectedIcon, setSelectedIcon] = useState({});
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
+    const [ningunaAnteriores, setNingunaAnteriores] = useState('Ninguna de las anteriores')
+    const [otraRespuesta, setOtraRespuesta] = useState('Otra respuesta');
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
+    const containerColor = useRef(null);
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -211,6 +215,9 @@ const VariacionEstrellas = ({
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
         setIsActiveLogica(true);
+        if (mostrarEditar === true) {
+            setMostrarEditar(mostrarEditar)
+        }
     };
 
     const handleConfiguracion = () => {
@@ -220,6 +227,9 @@ const VariacionEstrellas = ({
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
         setIsActiveLogica(true);
+        if (mostrarConfiguracion === true) {
+            setMostrarConfiguracion(mostrarConfiguracion)
+        }
     };
 
     const handleLogica = () => {
@@ -229,44 +239,39 @@ const VariacionEstrellas = ({
         setIsActiveLogica(false);
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
+        if (mostrarLogica === true) {
+            setMostrarLogica(mostrarLogica)
+        }
     };
 
     const handleMoreOpcion = () => {
         const newOpcion = {
-            id: opcionesRespuesta.length + 1,
+            idOpcionRespuesta: opcionesRespuesta.length + 1,
             checked: false,
-            text: "",
-            type: 'checkbox',
+            respuesta: "",
+            type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            icono: starFillSVG,
-            orden: 0,
-            respuesta: '',
-            enumGrafico: 0,
-            colorOpcion: ""
+            icono: 'star',
+            selectedColor: "#000000",
+            selectedIcon: 'star',
         };
-
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
     };
 
-    const handleOpcionTextChange = (id, newText) => {
+    const handleOpcionTextChange = (idOpcionRespuesta, newText) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) =>
-            opcion.id === id ? { 
-                ...opcion, 
-                text: newText,
-                respuesta: newText,
-                orden: id,
-            } : opcion
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, respuesta: newText } : opcion
           )
         );
     };
     
-    const handleDeleteOpcion = (id) => {
+    const handleDeleteOpcion = (idOpcionRespuesta) => {
         setOpcionesRespuesta((prevOpciones) =>
-          prevOpciones.filter((opcion) => opcion.id !== id)
+          prevOpciones.filter((opcion) => opcion.idOpcionRespuesta !== idOpcionRespuesta)
         );
     };
 
@@ -278,7 +283,7 @@ const VariacionEstrellas = ({
           } else {
             setInputs([]);
           }
-          setPonderacion(!usarPonderacion ? "S" : "N");  
+        setPonderacion(!usarPonderacion ? "S" : "N");
     };
 
     const handleSwitchConfigurar1 = () => {
@@ -289,7 +294,6 @@ const VariacionEstrellas = ({
                 esObligatoria: !configuracion1 ? "S" : "N",
             };
         });
-        
     };
 
     const handleEsOBligatoriaMensaje = (event) => {
@@ -305,20 +309,30 @@ const VariacionEstrellas = ({
 
     const handleSwitchConfigurar2 = () => {
         setConfiguracion2(!configuracion2);
-        
-
     };
+    
+    useEffect(() => {
+        // Verificar si alguna respuesta contiene "Ninguna de las anteriores" o "Otra respuesta"
+        const contieneNingunaAnteriores = opcionesRespuesta.some(
+            (opcion) => opcion.respuesta === 'Ninguna de las anteriores'
+        );
+        const contieneOtraRespuesta = opcionesRespuesta.some(
+            (opcion) => opcion.respuesta === 'Otra respuesta'
+        );
+      
+        // Actualizar los interruptores de configuración en consecuencia
+        setConfiguracion4(contieneNingunaAnteriores);
+        setConfiguracion5(contieneOtraRespuesta);
+    }, [opcionesRespuesta]);
 
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
                 ...prevConfiguracion,
-                ningunaAnteriores: !configuracion4 ? "S" : "N",
+                ningunaAnteriores: !configuracion4 ? 'S' : 'N',
             };
-        }
-        );
-
+        });
     };
 
     const handleSwitchConfigurar5 = () => {
@@ -326,10 +340,9 @@ const VariacionEstrellas = ({
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
                 ...prevConfiguracion,
-                otraRespuesta: !configuracion5 ? "S" : "N",
+                otraRespuesta: !configuracion5 ? 'S' : 'N',
             };
-        }
-        );
+        });
     };
 
     const handleOtraOpcionRespuesta = (event) => {
@@ -350,8 +363,7 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 enumTipoTexto: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleenumCantidadCaracteres = (event) => {
@@ -361,8 +373,7 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 enumCantidadCaracteres: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleenumValidacion = (event) => {
@@ -372,11 +383,8 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 enumValidacion: selectedValue,
             };
-        }
-        );
+        });
     };
-
-
 
     const handleSwitchConfigurar6 = () => {
         setConfiguracion6(!configuracion6);
@@ -385,10 +393,9 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 informacionPregunta: !configuracion6 ? "S" : "N",
             };
-        }
-        );
+        });
     };
-    
+
     const handleInformacionPregunta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
@@ -396,10 +403,8 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 etiquetaInformacionPregunta: selectedValue,
             };
-        }
-        );
+        });
     };
-
 
     const handleSwitchConfigurar7 = () => {
         setConfiguracion7(!configuracion7);
@@ -408,10 +413,9 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 bancoPregunta: !configuracion7 ? "S" : "N",
             };
-        }
-        );
+        });
     };
-     
+
     const handleBancoPregunta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
@@ -419,8 +423,7 @@ const VariacionEstrellas = ({
                 ...prevConfiguracion,
                 etiquetaBancoPregunta: selectedValue,
             };
-        }
-        );
+        });
     };
 
     const handleDragEnd = (result) => {
@@ -438,19 +441,10 @@ const VariacionEstrellas = ({
 
     const handleClearOpcion = (index) => {
         setOpcionesRespuesta((prevOpciones) => {
-          const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
-            if (opcionIndex === index) {
-              return {
-                ...opcion,
-                seccionValue: '',
-                preguntaValue: '',
-              };
-            }
-            return opcion;
-          });
-          return updatedOpciones;
+            const updatedOpciones = prevOpciones.filter((_, opcionIndex) => opcionIndex !== index);
+            return updatedOpciones;
         });
-    };
+    };    
 
     const handleSeccionChange = (index, event) => {
         const selectedValue = event.target.value;
@@ -487,11 +481,11 @@ const VariacionEstrellas = ({
     const handleCancelarVariacionEstrellas = () => {
         setPregunta(preguntaTemp)
         closeVariacionEstrellas(indice, indiceSec);
-    }
+    };
 
     const handleEliminarVariacionEstrellas = () => {
         handleEliminarPregunta(indice, indiceSec)
-    }
+    };
 
     const handleGuardarValoracionEstrellas = () => {
         console.log(opcionesRespuesta)
@@ -499,7 +493,7 @@ const VariacionEstrellas = ({
             return;
         }
         setPreguntaTemp(pregunta)
-        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar,configuraciongeneral,ponderacion);
+        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, cancelar,configuraciongeneral,ponderacion);
     };
 
     const validacionEstrella = () => {
@@ -522,65 +516,59 @@ const VariacionEstrellas = ({
     
 
 
-    const handleIconClick = (id) => {
-        setShowColorPicker((prevState) => ({
-          ...prevState,
-          [id]: !prevState[id],
-        }));
+    const handleIconClick = (idOpcionRespuesta) => {
+        setOpcionesRespuesta((prevOpciones) =>
+          prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta
+              ? { ...opcion, showColorPicker: !opcion.showColorPicker }
+              : opcion
+          )
+        );
     };
       
-    const handleColorChange = (color, id) => {
-        setSelectedColor((prevState) => ({
-          ...prevState,
-          [id]: color.hex,
-        }));
-
-        // set enumColor
-        setOpcionesRespuesta((prevOpciones) => {
-            const updatedOpciones = prevOpciones.map((opcion) => {
-                if (opcion.id === id) {
-                return {
-                    ...opcion,
-                    colorOpcion: color.hex,
-                };
-                }
-                return opcion;
-            });
-            return updatedOpciones;
-        });
+    const handleColorChange = (color, idOpcionRespuesta) => {
+        setOpcionesRespuesta((prevOpciones) =>
+            prevOpciones.map((opcion) =>
+                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedColor: color.hex } : opcion
+            )
+        );
     };
       
-    const handleCloseColorPicker = (id) => {
-        setShowColorPicker((prevState) => ({
-          ...prevState,
-          [id]: false,
-        }));
+    const handleCloseColorPicker = (idOpcionRespuesta) => {
+        setOpcionesRespuesta((prevOpciones) =>
+          prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, showColorPicker: false } : opcion
+          )
+        );
     };
 
-    const handleIconChange = (e, opcionId) => {
-        const value = e.target.value;
-        setSelectedIcon((prevSelectedIcon) => ({
-          ...prevSelectedIcon,
-          [opcionId]: value,
-        }));
-        // setenumGrafico(value);
-        setOpcionesRespuesta((prevOpciones) => {
-            const updatedOpciones = prevOpciones.map((opcion) => {
-                if (opcion.id === opcionId) {
-                return {
-                    ...opcion,
-                    enumGrafico: value,
-                };
-                }
-                return opcion;
-            });
-            return updatedOpciones;
-        });
+    const handleIconChange = (idOpcionRespuesta, newIcon) => {
+        setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, icono: newIcon } : opcion
+        ));
     };
 
     useEffect(() => {
         setMoreContendorLogica([true]);
     }, []);
+
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+        const nuevasOpcionesRespuesta = contentPreg.opcionesRespuesta?.map((opcionApi) => ({
+            idOpcionRespuesta: opcionApi.idOpcionRespuesta,
+            respuesta: opcionApi.respuesta,
+            checked: opcionApi.checked,
+            type: opcionApi.type,
+            seccionValue: opcionApi.seccionValue,
+            preguntaValue: opcionApi.preguntaValue,
+            icono: opcionApi.enumGrafico,
+            selectedColor: opcionApi.colorOpcion,
+            selectedIcon: opcionApi.enumGrafico,
+        })) ?? [];
+        setOpcionesRespuesta(nuevasOpcionesRespuesta);
+    }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
 
     const listarTipoPregunta = async () => {
         try {
@@ -599,13 +587,27 @@ const VariacionEstrellas = ({
         }
     };
     
-      useEffect(() => {
+    useEffect(() => {
         listarTipoPregunta();
-    }, [])
+        if (!contentPreg.requerida) { // Condición para verificar si la respuesta está vacía
+            handleMoreOpcion();
+        }
+        listarEnumeradosVigencia()
+    }, [contentPreg.respuesta])
 
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)
-    }
+    };
+
+    const [tipoIcono, setTipoIcono] = useState()
+    const listarEnumeradosVigencia = async () => {
+        try {
+            const response = await ListarEnumeradosService('', 6);
+            setTipoIcono(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
     <>
@@ -654,107 +656,119 @@ const VariacionEstrellas = ({
 
                         <Col className='seccion3-variacionEstrellas-editar'>
                             <DragDropContext onDragEnd={handleDragEnd}>
-                                <Droppable droppableId={`${indice}`}>
-                                    {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
-                                            {opcionesRespuesta.map((opcion, index) => {
-                                                return (
-                                                    <Draggable
-                                                        key={opcion.id.toString()}
-                                                        draggableId={opcion.id.toString()}
-                                                        index={index}
-                                                        
-                                                    >
-                                                        {(provided) => (
-                                                            <div
-                                                                ref={provided.innerRef}
-                                                                {...provided.draggableProps}
-                                                                {...provided.dragHandleProps}
-                                                            >
-                                                                <Col className="seccion3-1-variacionEstrellas-editar">
-                                                                    <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{index+1} estrella</p>
+                                {opcionesRespuesta
+                                    .filter((opcion) => opcion.respuesta !== 'Ninguna de las anteriores' && opcion.respuesta !== 'Otra respuesta')
+                                    .map((opcion, index) => {
+                                        const droppableId = `opcion-${opcion.idOpcionRespuesta ? opcion.idOpcionRespuesta.toString() : index}`;
+                                        const draggableId = `draggable-${opcion.idOpcionRespuesta ? opcion.idOpcionRespuesta.toString() : index}`;
+                                        return (
+                                            <Droppable droppableId={droppableId} key={droppableId}>
+                                                {(provided) => (
+                                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                                        <Draggable
+                                                            key={draggableId}
+                                                            draggableId={draggableId}
+                                                            index={index}
+                                                        >
+                                                            {(provided) => (
+                                                                <div
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                >
+                                                                    <Col className="seccion3-1-variacionEstrellas-editar">
+                                                                        <p style={{ marginBottom: '1%', marginRight: '2%', cursor: 'default' }}>{index+1} estrella</p>
 
-                                                                    <Respuesta
-                                                                        className="textoOpcionRespuesta"
-                                                                        type="text"
-                                                                        value={opcion.text}
-                                                                        placeholder="Ingrese una etiqueta de valoración"
-                                                                        onChange={(e) => handleOpcionTextChange(opcion.id, e.target.value)}
-                                                                        
-                                                                    />
+                                                                        <Respuesta
+                                                                            className="textoOpcionRespuesta"
+                                                                            type="text"
+                                                                            value={opcion.respuesta}
+                                                                            placeholder="Ingrese una estiqueta de valoración"
+                                                                            onChange={(e) => handleOpcionTextChange(opcion.idOpcionRespuesta, e.target.value)}
+                                                                        />
 
-                                                                    <select
-                                                                        className="selectTipoGrafico"
-                                                                        style={{ width: '20%' }}
-                                                                        value={selectedIcon[opcion.id]}
-                                                                        onChange={(e) => handleIconChange(e, opcion.id)}
-                                                                    >
-                                                                        <option value="12">Estrella</option>
-                                                                        <option value="13">Cuadrado</option>
-                                                                        <option value="14">Círculo</option>
-                                                                        <option value="14">Triángulo</option>
-                                                                    </select>
+                                                                        <select
+                                                                            className="selectTipoGrafico"
+                                                                            style={{ width: '20%' }}
+                                                                            value={opcion.selectedIcon}
+                                                                            onChange={(e) => handleIconChange(opcion.idOpcionRespuesta, e.target.value)}
+                                                                        >
+                                                                            {tipoIcono?.map((icono) => (
+                                                                                <option key={icono.id} value={icono.etiqueta}>
+                                                                                    {icono.descripcion}
+                                                                                </option>
+                                                                            ))}
+                                                                        </select>
 
-                                                                    <p style={{marginLeft: '2%'}}>Color</p>
+                                                                        <p style={{marginLeft: '2%'}}>Color</p>
 
-                                                                    <span
-                                                                        style={{
-                                                                            marginLeft: '2%',
-                                                                            cursor: 'pointer',
-                                                                            marginTop: '0.8%',
-                                                                            fill: selectedColor[opcion.id],
-                                                                            color: selectedColor[opcion.id],
-                                                                        }}
-                                                                        dangerouslySetInnerHTML={{
-                                                                            __html:
-                                                                            selectedIcon[opcion.id] === 'square'
-                                                                                ? squareFillSVG
-                                                                                : selectedIcon[opcion.id] === 'circle'
-                                                                                ? circleFillSVG
-                                                                                : selectedIcon[opcion.id] === 'triangle'
-                                                                                ? triangleFillSVG
-                                                                                : starFillSVG,
-                                                                        }}
-                                                                        onClick={() => handleIconClick(opcion.id)}
-                                                                        value={opcion.icono}
-                                                                    />
+                                                                        <span
+                                                                            style={{
+                                                                                marginLeft: '2%',
+                                                                                cursor: 'pointer',
+                                                                                marginTop: '0.8%',
+                                                                                fill: opcion.selectedColor,
+                                                                                color: opcion.selectedColor,
+                                                                            }}
+                                                                            dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                    opcion.selectedIcon === 'square' ? squareFillSVG
+                                                                                    : opcion.selectedIcon === 'circle' ? circleFillSVG
+                                                                                    : opcion.selectedIcon === 'triangle' ? triangleFillSVG
+                                                                                    : starFillSVG,
+                                                                            }}
+                                                                            onClick={() => handleIconClick(opcion.idOpcionRespuesta)}
+                                                                            value={opcion.icono}
+                                                                        />
 
-                                                                    {showColorPicker[opcion.id] && (
-                                                                        <div style={{ position: 'absolute', zIndex: '2', right: '20%', marginTop: '-3%' }}>
-                                                                            <SketchPicker
-                                                                                color={selectedColor[opcion.id]}
-                                                                                onChange={(color) => handleColorChange(color, opcion.id)}
-                                                                                onChangeComplete={() => handleCloseColorPicker(opcion.id)}
-                                                                            />
-                                                                        </div>
-                                                                    )}
+                                                                        {opcion.showColorPicker && (
+                                                                            <div
+                                                                                ref={containerColor}
+                                                                                style={{
+                                                                                    position: 'absolute',
+                                                                                    zIndex: 1000,
+                                                                                    right: '20%',
+                                                                                    marginTop: '-3%',
+                                                                                }}
+                                                                            >
+                                                                                <SketchPicker
+                                                                                    color={opcion.selectedColor}
+                                                                                    onChange={(color) => handleColorChange(color, opcion.idOpcionRespuesta)}
+                                                                                />
+                                                                                <button 
+                                                                                    style={{marginTop: '2px', padding: '5px 10px', cursor: 'pointer'}}
+                                                                                    onClick={() => handleCloseColorPicker(opcion.idOpcionRespuesta)}
+                                                                                >
+                                                                                    Cerrar
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
 
-                                                                    {usarPonderacion && (
-                                                                        inputs.map((inputNum, index) => (
-                                                                            <Ponderacion
-                                                                                className="numeracionRespuesta"
-                                                                                key={inputNum}
-                                                                                // placeholder={index + 1}
-                                                                                type="text"
-                                                                            />
-                                                                        ))
-                                                                    )}
+                                                                        {usarPonderacion && (
+                                                                            inputs.map((inputNum, index) => (
+                                                                                <Ponderacion
+                                                                                    className="numeracionRespuesta"
+                                                                                    key={inputNum}
+                                                                                    type="text"
+                                                                                />
+                                                                            ))
+                                                                        )}
 
-                                                                    <span
-                                                                        style={{ marginTop: '2%', marginLeft: '2%', cursor: 'pointer' }}
-                                                                        dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
-                                                                        onClick={() => handleDeleteOpcion(opcion.id)}
-                                                                    />
-                                                                </Col>
-                                                            </div>
-                                                        )}
-                                                    </Draggable>
-                                                );
-                                            })}
-                                            {provided.placeholder}
-                                        </div>
-                                    )}
-                                </Droppable>
+                                                                        <span
+                                                                            style={{ marginTop: '2%', marginLeft: '2%', cursor: 'pointer' }}
+                                                                            dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
+                                                                            onClick={() => handleDeleteOpcion(opcion.idOpcionRespuesta)}
+                                                                        />
+                                                                    </Col>
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )}
+                                            </Droppable>
+                                        );
+                                    })}
                             </DragDropContext>
 
                             <Col >
@@ -767,7 +781,7 @@ const VariacionEstrellas = ({
                         </Col>
 
                         <Col className='seccion5-variacionEstrellas-editar'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchChange} checked={usarPonderacion} />
                                 <span className="slider round"></span>
                             </label>
@@ -779,7 +793,7 @@ const VariacionEstrellas = ({
                 {mostrarConfiguracion && (
                     <Container className='variacionEstrellas-container-configuracion'>
                         <Col className='seccion1-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar1} checked={configuracion1}/>
                                 <span className="slider round"></span>
                             </label>
@@ -789,16 +803,16 @@ const VariacionEstrellas = ({
                             <Col className='seccion1-1-variacionEstrellas-configuracion'>
                                 <p style={{margin: 'unset' }}>Mostrar este mensaje de error cuando no se responde a esta pregunta.</p>
                                 <MensajeError 
-                                className= 'textoConfiguracion1' 
-                                type="text" 
-                                placeholder="Escribe aquí..." 
-                                onChange={handleEsOBligatoriaMensaje}
+                                    className= 'textoConfiguracion1' 
+                                    type="text" 
+                                    placeholder="Escribe aquí..." 
+                                    onChange={handleEsOBligatoriaMensaje} 
                                 />
                             </Col>
                         )}
 
                         <Col className='seccion2-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
                                 <span className="slider round"></span>
                             </label>
@@ -816,7 +830,7 @@ const VariacionEstrellas = ({
                         )}
                         
                         <Col className='seccion4-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar4} checked={configuracion4}/>
                                 <span className="slider round"></span>
                             </label>
@@ -828,12 +842,14 @@ const VariacionEstrellas = ({
                                 <Etiqueta 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
+                                    value={ningunaAnteriores}
+                                    readOnly
                                 />
                             </Col>
                         )}
 
                         <Col className='seccion5-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar5} checked={configuracion5}/>
                                 <span className="slider round"></span>
                             </label>
@@ -847,7 +863,9 @@ const VariacionEstrellas = ({
                                         className= 'textoConfiguracion1' 
                                         type="text" 
                                         placeholder="Otro (especifique)" 
+                                        value={otraRespuesta}
                                         onChange={handleOtraOpcionRespuesta}
+                                        readOnly
                                     />
                                 </Col>
                                 <Col className='seccion1-5-2-variacionEstrellas-configuracion'>
@@ -883,7 +901,7 @@ const VariacionEstrellas = ({
                         )}
 
                         <Col className='seccion1-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar6} checked={configuracion6}/>
                                 <span className="slider round"></span>
                             </label>
@@ -903,7 +921,7 @@ const VariacionEstrellas = ({
                         )}
 
                         <Col className='seccion1-variacionEstrellas-configuracion'>
-                            <label class="switch">
+                            <label className="switch">
                                 <input type="checkbox" onChange={handleSwitchConfigurar7} checked={configuracion7}/>
                                 <span className="slider round"></span>
                             </label>
@@ -931,55 +949,58 @@ const VariacionEstrellas = ({
                             <p style={{margin: 'unset', marginLeft: '6%'}}>Entonces pasar a...</p>
                         </Col>
                         <div>
-                        {moreContendorLogica.map((mostrar, index) => mostrar && (
-                            <div key={index}>
-                                <Col className='seccion2-variacionEstrellas-logica'>
-                                    {opcionesRespuesta.map((opcion, opcionIndex) => (
-                                        opcionIndex === index && (
-                                            <div key={opcion.id} style={{ width: '29%' }}>
-                                                <p style={{ margin: 'unset', width: '20%' }}>{opcion.text}</p>
-                                            </div>
-                                        )
-                                    ))}
+                            {moreContendorLogica.map((mostrar, index) => mostrar && (
+                                <div key={index}>
+                                    <Col className='seccion2-variacionEstrellas-logica'>
+                                        {opcionesRespuesta.map((opcion, opcionIndex) => (
+                                            opcion.respuesta !== 'Ninguna de las anteriores' &&
+                                            opcion.respuesta !== 'Otra respuesta' && (
+                                                opcionIndex === index && (
+                                                    <div key={opcion.idOpcionRespuesta} style={{ width: '29%' }}>
+                                                        <p style={{ margin: 'unset', width: '20%' }}>{opcion.respuesta}</p>
+                                                    </div>
+                                                )
+                                            )
+                                        ))}
 
-                                    {opcionesRespuesta.map((opcion, opcionIndex) => (
-                                        opcionIndex === index && (
-                                            <Col style={{ width: '100%' }}>
-                                                <div key={opcion.id}></div>
-                                                    <select
-                                                        className='select1Logica1'
-                                                        value={opcion.seccionValue}
-                                                        onChange={(event) => handleSeccionChange(opcionIndex, event)}
-                                                    >
-                                                        <option value='' disabled hidden>Seleccionar Sección</option>
-                                                        <option value='option1'>Sección 1</option>
-                                                        <option value='option2'>Sección 2</option>
-                                                        <option value='option3'>Sección 3</option>
-                                                    </select>
+                                        {opcionesRespuesta.map((opcion, opcionIndex) => (
+                                            opcionIndex === index && (
+                                                <Col style={{ width: '100%' }}>
+                                                    <div key={opcion.idOpcionRespuesta}></div>
+                                                        <select
+                                                            className='select1Logica1'
+                                                            value={opcion.seccionValue}
+                                                            onChange={(event) => handleSeccionChange(opcionIndex, event)}
+                                                        >
+                                                            <option value='' disabled hidden>Seleccionar Sección</option>
+                                                            <option value='option1'>Sección 1</option>
+                                                            <option value='option2'>Sección 2</option>
+                                                            <option value='option3'>Sección 3</option>
+                                                        </select>
 
-                                                    <select
-                                                        className='select1Logica2'
-                                                        value={opcion.preguntaValue}
-                                                        onChange={(event) => handlePreguntaChange(index, event)}
-                                                    >
-                                                        <option value='' disabled hidden>Seleccionar Pregunta</option>
-                                                        <option value='option1'>Pregunta 1</option>
-                                                        <option value='option2'>Pregunta 2</option>
-                                                        <option value='option3'>Pregunta 3</option>
-                                                    </select>
+                                                        <select
+                                                            className='select1Logica2'
+                                                            value={opcion.preguntaValue}
+                                                            onChange={(event) => handlePreguntaChange(index, event)}
+                                                        >
+                                                            <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                            <option value='option1'>Pregunta 1</option>
+                                                            <option value='option2'>Pregunta 2</option>
+                                                            <option value='option3'>Pregunta 3</option>
+                                                        </select>
 
-                                                    <Button className='borrarLogica'>
-                                                        <span
-                                                            style={{ marginTop: '1.3%', cursor: 'pointer' }}
-                                                            dangerouslySetInnerHTML={{ __html: trashSVG }}
-                                                            onClick={() => handleClearOpcion(index)}
-                                                        />
-                                                    </Button>
-                                            </Col>
-                                        )
-                                    ))}
-                                </Col>
-                            </div>
+                                                        <Button className='borrarLogica'>
+                                                            <span
+                                                                style={{ marginTop: '1.3%', cursor: 'pointer' }}
+                                                                dangerouslySetInnerHTML={{ __html: trashSVG }}
+                                                                onClick={() => handleClearOpcion(index)}
+                                                            />
+                                                        </Button>
+                                                </Col>
+                                            )
+                                        ))}
+                                    </Col>
+                                </div>
                             ))}
                         </div>
                     </Container> 
@@ -1003,15 +1024,12 @@ const VariacionEstrellas = ({
                     index={indice}
                     indexSec={indiceSec}
                     pregunta={pregunta}
-                    opciones={opcionesRespuesta.map((opcion) => ({
-                        ...opcion,
-                        icono: opcion.icono,
-                    }))}
-                    color={selectedColor}
-                    selectedIcon={selectedIcon}
+                    opciones={opcionesRespuesta}
                     handleEditarPregunta={handleEditarPregunta}
                     closeEliminarCPVE={handleEliminarVariacionEstrellas}
                     informacion = {informacionPregunta}
+                    configuracion4Activa={configuracion4}
+                    configuracion5Activa={configuracion5}
                     configuracion6Activa={configuracion6}
                     preguntaVisibleC={preguntaVisibleOpen}
                     sendTamanoPaso2={sendTamanoPaso2}
@@ -1019,6 +1037,11 @@ const VariacionEstrellas = ({
                     sendTipografiaPaso2={sendTipografiaPaso2}
                     contenEstilos={contenEstilos}
                     sendColors={sendColors}
+                    starFillSVG={starFillSVG}
+                    squareFillSVG={squareFillSVG}
+                    circleFillSVG={circleFillSVG}
+                    triangleFillSVG={triangleFillSVG}
+                    contentPreg={contentPreg}
                 />
             </Container>
         )}

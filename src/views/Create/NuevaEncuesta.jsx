@@ -5,7 +5,7 @@ import { Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
 import ModalAñadirLogo from '../Create/ModalAñadirLogo';
 import ModalDuplicarSeccion from './ModalDuplicarSeccion';
-import ModalSeccionCierre from './ModalSeccionCierre';
+import SeccionCierre from './SeccionCierre';
 import OpcionMultiple from './OpcionMultiple';
 import VariacionEstrellas from './VariacionEstrellas';
 import $ from 'jquery'
@@ -17,6 +17,7 @@ import EditarTituloSeccion from './EditarTituloSeccion';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import ModalLogotipo from './ModalLogotipo';
 import ModalPiePagina from './ModalPiePagina';
+import ModalSeccionCierre from './SeccionCierre';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -58,11 +59,14 @@ const NuevaEncuesta = ({
   sendPosicionLogotipoPiePagina, 
   sendTamanoLogotipoPiePagina,
   sendColors,
+  preguntaVisibleInit,
+  mostrarContenedorCInit,
+  editarTituloVisibleInit,
+  seccionVisibleInit,
   
 }) => {
     const [nuevaSeccionVisible, setNuevaSeccionVisible] = useState(false)
     const [nuevaPreguntaVisible, setNuevaPreguntaVisible] = useState(false)
-    const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [openDuplicarSeccion, setOpenDuplicarSeccion] = useState(false);
     const [openEliminarSeccion, setOpenEliminarSeccion] = useState(false);
     const buttonRef = useRef(null);
@@ -77,16 +81,15 @@ const NuevaEncuesta = ({
     const [contentVari, setContentVari] = useState([]);
     const [contentCarg, setContentCarg] = useState([]);
     const [contentCuadro, setContentCuadro] = useState([]);
-    const [contentEdit, setContentEdit] = useState([]);
     const [indexEliminar, setIndexEliminar] = useState(null);
     const [isUp, setIsUp] = useState(true);
-    const [seccionVisible, setSeccionVisible] = useState(Array(contentCont.length).fill(true));
-    const [editarTituloVisible, setEditarTituloVisible] = useState([]);
+    const [seccionVisible, setSeccionVisible] = useState(seccionVisibleInit);
+    const [editarTituloVisible, setEditarTituloVisible] = useState(editarTituloVisibleInit);
     const [tipoPregunta, setTipoPregunta] = useState([]);
-    const [titulo, setTitulo] = useState("Seccion ");
+    const [titulo, setTitulo] = useState("Seccion");
     const [comentario, setComentario] = useState("");
-    const [mostrarContenedorC, setMostrarContenedorC] = useState(new Array(contentCont.length).fill(true));
-    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
+    const [mostrarContenedorC, setMostrarContenedorC] = useState(mostrarContenedorCInit);
+    const [preguntaVisible, setPreguntaVisible] = useState(preguntaVisibleInit);
     const tamano = sendTamanoPaso2?.tamano ;
     const titulotamano = sendTamanoPaso2?.titulo;
     const grosor = sendGrosorPaso2?.grosor;
@@ -110,6 +113,8 @@ const NuevaEncuesta = ({
     const fondoPiePaginaRef = useRef();
     const [colors, setColors] = useState(sendColors);
     const [fondo, setFondo] = useState();
+    const [configuracion4, setConfiguracion4] = useState(); 
+    const [configuracion5, setConfiguracion5] = useState();
 
   useEffect(() => {
     setImagenFondo(sendImagenFondo);
@@ -181,59 +186,74 @@ const NuevaEncuesta = ({
   
   ]);
   
-    
-  
-
-    const handleCloseFondo = () => {
-      setOpenFondo(false);
-    }
     const handleOpenFondo = () => {
         setOpenFondo(true);
     }
 
+    useEffect(() => {
+      let newStyle = {};
+      if (titulotamano === 'Título de sección') {
+        newStyle.fontSize = `${tamano}px`;
+      } if (tituloGrosor === 'Título de sección') {
+        newStyle.fontWeight = grosor;
+      } if (tituloTipografia === 'Título de sección') {
+        newStyle.fontFamily = tipografia;
+      }
+  
+      setTituloStyle(newStyle);
+      let newStyle2 = {};
+      if (titulotamano === 'Descripción de sección') {
+        newStyle2.fontSize = `${tamano}px`;
+      } if (tituloGrosor === 'Descripción de sección') {
+        newStyle2.fontWeight = grosor;
+      } if (tituloTipografia === 'Descripción de sección') {
+        newStyle2.fontFamily = tipografia;
+      }
+      setDescripcionStyle(newStyle2);
+  
+    }, [tamano, grosor, tipografia]);
+
+    const handleCloseFondo = () => {
+      setOpenFondo(false);
+      setBlurBackground(false);
+      setIsModalVisible(false);
+    };
+
     const handleClosePiePagina = () => {
       setOpenPiePagina(false);
-    }
-
-    const handleOpenPiePagina = () => {
-        setOpenPiePagina(true);
-    }
-    
-
-    const handleOpenAñadirLogo = () => {
-        setOpenAñadirLogo(true);
-        setBlurBackground(false);
-        setIsModalVisible(false);
-    }
+      setBlurBackground(false);
+      setIsModalVisible(false);
+    };
 
     const handleDuplicarSeccion = () => {
-        setOpenDuplicarSeccion(true);
-        setBlurBackground(false);
-        setIsModalVisible(false);
-    }
+      setOpenDuplicarSeccion(true);
+      setBlurBackground(true);
+      setIsModalVisible(true);
+    };
 
     const handleEliminarSeccion = (index) => {
       setOpenEliminarSeccion(true)
-      setBlurBackground(false);
-      setIsModalVisible(false);
+      setBlurBackground(true);
+      setIsModalVisible(true);
       setIndexEliminar(index);
-      
-    }
+    };
 
     const handleNewContenedor = () => {
       let obj={
-        titulo: titulo,
+        tipo:'C',
+        titulo:titulo,
+        comentario:'',
+        regresar:true,
         descripcion: '', 
         orden: contentCont.length + 1,
         imagenCabecera: '',
         imagenPie : '',
-        tipoSeccion: 'P',  
+        tipoSeccion: 'C',  
         textoAgradecimiento: 'ok',
         urlRedireccion: '',
         imagenCierre: '',   
         textoBotonCierre: '',
         preguntas:[],
-        regresar:true,
       }
       setContentCont((prevCont) => [...prevCont, obj]);
       setNuevaSeccionVisible(false);
@@ -259,12 +279,26 @@ const NuevaEncuesta = ({
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
     
       preguntas.forEach((preguntaSeleccionada) => {
+        const { requerida, ...restoPropiedades } = preguntaSeleccionada;
         const obj = {
           tipo: 'OM',
           save: saveValue,
           pregunta: preguntaSeleccionada.pregunta,
           opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
           cancelar: cancelarValue,
+          configuracionPregunta: {},
+          idTipoPregunta: 1,
+          mensajeError: '',
+          mensajeErrorRequerido: '',
+          multipleRespuesta: '',
+          nemonico: "1S_1P",
+          orden: '',
+          pesoArchivo: "",
+          placeHolder: "seleccione",
+          preguntasComplementarias: [],
+          ponderacion: "",
+          requerida: requerida === true,
+          tipoArchivo: "",
         };
         contenidoActual.push(obj);
       });
@@ -276,6 +310,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleValoracionEstrellas = (index, preguntas, saveValue = false, cancelarValue = '') => {
@@ -290,12 +325,25 @@ const NuevaEncuesta = ({
       const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
     
       preguntas.forEach((preguntaSeleccionada) => {
+        const { requerida, ...restoPropiedades } = preguntaSeleccionada;
           const obj = {
           tipo: 'VE',
           save: saveValue,
           pregunta: preguntaSeleccionada.pregunta,
           opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
           cancelar: cancelarValue,
+          idTipoPregunta: 2,
+          mensajeError: '',
+          mensajeErrorRequerido: '',
+          nemonico: "1S_1P",
+          orden: '',
+          pesoArchivo: "",
+          placeHolder: "seleccione",
+          preguntasComplementarias: [],
+          ponderacion: "",
+          requerida: requerida === true,
+          tipoArchivo: "",
+          configuracionPregunta: '',
         };
         contenidoActual.push(obj);
       });
@@ -307,6 +355,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     const handleMatrizValoracion = () => {
@@ -341,6 +390,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
     
     const handleCuadroComentarios = (index, preguntas, saveValue = false, cancelarValue = '') => {
@@ -372,6 +422,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).addClass("inactive");
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
     useEffect(() => {
@@ -399,7 +450,6 @@ const NuevaEncuesta = ({
     }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleEditarTitulo = (index) => {
-      console.log('index', index);
       setMostrarContenedorC((prevState) => {
         const newState = [...prevState];
         newState[index] = !newState[index];
@@ -414,17 +464,16 @@ const NuevaEncuesta = ({
       setComentario(previoComentario);
     
       let obj = {
-        tipo: 'P',
+        tipo: 'C',
         titulo: previoTitulo,
-        descripcion: previoComentario,
+        comentario: previoComentario,
         preguntas: []
       };
     
       const nuevoEstado = [...contentCont];
       nuevoEstado[index] = obj;
       setContentCont(nuevoEstado);
-      $(`#editTitulo${index + 1}`).addClass("ocultar");
-      $(`#editTitulo${index + 1}`).removeClass("visible");
+      setEditarTituloVisible((prevVisibility) => [...prevVisibility, false]);
     };
     
     const handleCancelarEditarTitulo = (indiceSec) => {
@@ -445,8 +494,11 @@ const NuevaEncuesta = ({
         return newState;
       });
     
-      setEditarTituloVisible((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? true : false)));
-      $(`#editTitulo${indiceSec +1}`).removeClass("oculto");
+      setEditarTituloVisible((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[indiceSec] = true; // Restaura la visibilidad
+        return newVisibility;
+      });
     };
     
     const handleAceptarEditarTitulo = (indiceSec, nuevoTitulo, comentario) => {
@@ -469,19 +521,24 @@ const NuevaEncuesta = ({
         });
       }
       setContentCont(nuevoEstado);
-      $(`#editTitulo${indiceSec + 1}`).removeClass("oculto");
-      $(`#editTitulo${indiceSec + 1}`).removeClass("ocultar");
-      $(`#editTitulo${indiceSec + 1}`).addClass("visible");
-      setMostrarContenedorC((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? false : visible)));
-      setEditarTituloVisible((prevVisibility) => prevVisibility.map((visible, i) => (i === indiceSec ? true : false)));
+      setMostrarContenedorC((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[indiceSec] = false; // Oculta el contenedor editado
+        return newVisibility;
+      });
+    
+      setEditarTituloVisible((prevVisibility) => {
+        const newVisibility = [...prevVisibility];
+        newVisibility[indiceSec] = true; // Muestra el contenedor con el título editado
+        return newVisibility;
+      });    
     };
 
     const handleCloseEliminar = () => {
-        setOpenAñadirLogo(false);
-        setOpenDuplicarSeccion(false);
-        setOpenEliminarSeccion(false);
-        setBlurBackground(false);
-        setIsModalVisible(false);
+      setOpenDuplicarSeccion(false);
+      setOpenEliminarSeccion(false);
+      setBlurBackground(false);
+      setIsModalVisible(false);
     };
 
     const handleMouseEnterEditar = (index) => {
@@ -513,6 +570,7 @@ const NuevaEncuesta = ({
           setNuevaSeccionVisible(false);
         }
       };
+
     
       document.addEventListener('mousedown', handleClickOutside);
       return () => {
@@ -556,10 +614,7 @@ const NuevaEncuesta = ({
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
-    
-      if (cancelarValor === 'true') {
-        contenidoActual.splice(indicePreg, 1);
-      }
+      contenidoActual.splice(indicePreg, 1);
     
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
@@ -586,19 +641,18 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
-      nuevoEstado[indiceSec].tipoSeccion = 'P';
+      // nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
     
-
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-    }
+    };
 
     const handleCancelarValoracionEstrellas = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
@@ -619,16 +673,14 @@ const NuevaEncuesta = ({
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
-    
-      if (cancelarValor === 'true') {
-        contenidoActual.splice(indicePreg, 1);
-      }
-    
+      contenidoActual.splice(indicePreg, 1);
+
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, selectedColor, selectedIcon, cancelar, configuraciongeneral,ponderacion) => {
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState();
+    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta;
@@ -648,9 +700,12 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
-      nuevoEstado[indiceSec].tipoSeccion = 'P';
+      // nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      setConfiguracion4(configuracion4); 
+      setConfiguracion5(configuracion5);
+      setOpcionesRespuesta(opcionesRespuesta)
     };
 
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
@@ -659,7 +714,8 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-    }
+      console.log(tempCont[0].contentPreg[0].opcionesRespuesta)
+    };
 
     const handleCancelarCargaArchivos = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
@@ -705,7 +761,7 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
-      nuevoEstado[indiceSec].tipoSeccion = 'P';
+      // nuevoEstado[indiceSec].tipoSeccion = 'P';
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
@@ -717,7 +773,7 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-    }
+    };
 
     const handleCancelarCuadroComentarios = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
@@ -739,16 +795,12 @@ const NuevaEncuesta = ({
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
-      if (cancelarValor === 'true') {
-        contenidoActual.splice(indicePreg, 1);
-      }
-    
+      contenidoActual.splice(indicePreg, 1);
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar,configuraciongeneral) => {
-      console.log(opcionesRespuesta)
+    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
@@ -767,7 +819,7 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
-      nuevoEstado[indiceSec].tipoSeccion = 'P';
+      // nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
@@ -778,7 +830,7 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-    }
+    };
 
     const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
       const nuevoEstado = [...contentCont];
@@ -794,7 +846,7 @@ const NuevaEncuesta = ({
       
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
-    }
+    };
 
     const handleEliminar = (index) => {
       const nuevoEstado = [...contentCont];
@@ -832,7 +884,6 @@ const NuevaEncuesta = ({
         listarTipoPregunta();
     }, [])
 
-    // capturar imagenes de la seccion
     const onSelectFile = (index, e) => {
       const file = e.target.files[0];
       if (file) {
@@ -856,7 +907,6 @@ const NuevaEncuesta = ({
             imagenCabecera: reader.result,
           };
           setContentCont(nuevoEstado);
-
         };
     
         reader.readAsDataURL(file); // Lee el archivo como base64
@@ -896,7 +946,7 @@ const NuevaEncuesta = ({
       setShowModal(false);
     };
 
-    const sendContent = (textoAgradecimiento, urlRed, imagenCierre, titulo, descripcion, textobotonCierre) => {
+    const sendContent = (textoAgradecimiento, urlRed, imagenCierre, titulo, comentario, textobotonCierre) => {
       // Clonamos el estado actual en un nuevo array
       const nuevoEstado = [...contentCont];
     
@@ -913,7 +963,7 @@ const NuevaEncuesta = ({
         nuevoEstado[objetoExistenteIndex].textoAgradecimiento = textoAgradecimiento;
         nuevoEstado[objetoExistenteIndex].urlRedireccion = urlRed;
         nuevoEstado[objetoExistenteIndex].titulo = titulo;
-        nuevoEstado[objetoExistenteIndex].descripcion = descripcion;
+        nuevoEstado[objetoExistenteIndex].comentario = comentario;
         nuevoEstado[objetoExistenteIndex].textoBotonCierre = textobotonCierre;
 
       } else {
@@ -925,7 +975,7 @@ const NuevaEncuesta = ({
           orden: nuevoEstado.length + 1,
           imagenCierre: imagenCierre,
           titulo : titulo,
-          descripcion : descripcion,
+          comentario : comentario,
           textoBotonCierre : textobotonCierre
         };
         nuevoEstado.push(nuevoObjeto);
@@ -937,55 +987,48 @@ const NuevaEncuesta = ({
     
   return (
     <>
-      
-      
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'
             style={{ backgroundColor: fondo } }
             >
               <Col>
-                  <p className='titulo-encuesta-tercero'
-                  
-                  >Encuesta Veris1</p>
+                  <p className='titulo-encuesta-tercero'>Encuesta Veris</p>
               </Col>
               
               {contentCont.map((seccion, index) => {
-                if (seccion.tipoSeccion === 'P') {   
                   return (
                     <Col key={index}>
-                      <Col  className='contendor-nuevaEncuesta principal'>
-                        <Col 
-                          id={`editTitulo${index+1}`}
-                          className={editarTituloVisible[index]}
-                        >
-                            <Col 
-                                id={`editSec${index +1}`}
-                                className={`contenedor-editar-seccion`}
-                            >
-                                <p className='titulo-editarEncuesta' onClick={()=> {handleEditarTitulo(index)}}>Editar</p>
-                                <div style={{width: '81.6%'}}></div>
-                                <span style={{ marginRight: '2.7%', cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
-                                <span style={{cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => handleEliminarSeccion(index)}/>
-                            </Col>
-                            <Col 
-                                id={`Sec${index +1}`}
-                                className={`contenedor-tituloNuevaEncuesta `} 
-                                onMouseEnter={() => handleMouseEnterEditar(index)}
-                                onMouseLeave={() => handleMouseLeaveEditar(index)}
-                            >
-                                <div style={{width:'96%'}}>
-                                  <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
-                                  <p style={descripcionStyle}>{seccion.comentario}</p>
-                                </div>
-                                <span 
-                                  style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
-                                  onClick={() => {cambioIcono(index); visibleSeccion(index);}}
-                                  dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
-                                />
-
-                            </Col>
-                        </Col>
-
+                      <Col className='contendor-nuevaEncuesta principal'>
+                        {editarTituloVisible[index] ? (
+                          <Col>
+                              <Col 
+                                  id={`editSec${index +1}`}
+                                  className={`contenedor-editar-seccion`}
+                              >
+                                  <p className='titulo-editarEncuesta' onClick={()=> {handleEditarTitulo(index)}}>Editar</p>
+                                  <div style={{width: '81.6%'}}></div>
+                                  <span style={{ marginRight: '2.7%', cursor: 'pointer' }} dangerouslySetInnerHTML={{ __html: copyRosaSVG }} onClick={handleDuplicarSeccion}/>
+                                  <span style={{cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => handleEliminarSeccion(index)}/>
+                              </Col>
+                              <Col 
+                                  id={`Sec${index +1}`}
+                                  className={`contenedor-tituloNuevaEncuesta `} 
+                                  onMouseEnter={() => handleMouseEnterEditar(index)}
+                                  onMouseLeave={() => handleMouseLeaveEditar(index)}
+                              >
+                                  <div style={{width:'96%'}}>
+                                    <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
+                                    <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                  </div>
+                                  <span 
+                                    style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
+                                    onClick={() => {cambioIcono(index); visibleSeccion(index);}}
+                                    dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
+                                  />
+                              </Col>
+                          </Col>
+                        ) : null}
+                        
                         {seccionVisible[index] && (
                           <div>
                             {selectedFiles[index] ? (
@@ -1020,10 +1063,8 @@ const NuevaEncuesta = ({
                               </Col>
                             )}
 
-
                             <div>
-                              {mostrarContenedorC[index] && seccion.tipoSeccion === 'P' && (
-                               
+                              {mostrarContenedorC[index] && seccion.tipo === 'C' && (
                                 <EditarTituloSeccion
                                   indiceSec={index}
                                   contentSec={seccion}
@@ -1033,9 +1074,7 @@ const NuevaEncuesta = ({
                               )}
                             </div>
                             
-                            
                             {seccion.preguntas.map((preg, indexp) => { 
-                              
                               if (preg.tipo == 'OM') {
                                 return <OpcionMultiple 
                                   key={indexp}
@@ -1060,6 +1099,7 @@ const NuevaEncuesta = ({
                               }  
                               if (preg.tipo == 'VE') {
                                 return <VariacionEstrellas 
+                                  key={indexp}
                                   indice={indexp} 
                                   indiceSec = {index} 
                                   save={preg.save}
@@ -1080,6 +1120,7 @@ const NuevaEncuesta = ({
                               }
                               if (preg.tipo == 'CA') {
                                 return <CargaDatos 
+                                  key={indexp}
                                   indice={indexp} 
                                   indiceSec = {index}
                                   save={preg.save}
@@ -1100,6 +1141,7 @@ const NuevaEncuesta = ({
                               }
                               if (preg.tipo == 'CC') {
                                 return <CuadroComentarios
+                                  key={indexp}
                                   indice={indexp}
                                   indiceSec = {index}
                                   save={preg.save}
@@ -1139,7 +1181,6 @@ const NuevaEncuesta = ({
                               ref={containerRef}
                               id={`NuevaPregVisi${index + 1}`}
                               className="container-newContendorPregunta ocultar"
-                              
                             >
                               <Row className='opciones-estilos' style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
                                 <Col 
@@ -1227,7 +1268,6 @@ const NuevaEncuesta = ({
                                 </Button>
                               </Col>
                             )}
-                            
                           </div>
                         )}
                         
@@ -1236,10 +1276,10 @@ const NuevaEncuesta = ({
                     </Col>
                   )
                 } 
-              })}
+              )}
 
               {showModal && 
-                <ModalSeccionCierre 
+                <ModalSeccionCierre
                   contentCont={contentCont}
                   onClose={handleCloseSeccionCierre}
                   sendContent={sendContent}
@@ -1279,64 +1319,16 @@ const NuevaEncuesta = ({
               <span style={{marginTop: '11px', marginLeft: '5px'}} dangerouslySetInnerHTML={{ __html: chevronDownSVG }}/>
             </Button>
         </Container>
-        
-        <ModalLogotipo open={openFondo}
-         onClose={handleCloseFondo}
-           />
 
-        <ModalPiePagina open={openPiePagina}
+        <ModalLogotipo 
+          open={openFondo}
+          onClose={handleCloseFondo}
+        />
+
+        <ModalPiePagina 
+          open={openPiePagina}
           onClose={handleClosePiePagina}
         />
-        
-        <Modal
-            open={openAñadirLogo}
-            onClose={() => setOpenAñadirLogo(false)}
-            sx={{
-            width: '60%',
-            height: '60%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: 'auto',
-            marginTop: '5%',
-            }}
-            BackdropProps={{
-            onClick: () => {
-                setOpenAñadirLogo(false);
-                setBlurBackground(false);
-                setIsModalVisible(false);
-            },
-            }}
-        >
-            <Box className="encuesta_modalAñadirLogotipo" sx={{ marginTop: '12%', width: '83%', height: '88%' }}>
-                <div className="encuesta_modalAñadir_closeicon">
-                    <p className="encuesta_modalAñadir__title">Añadir Logotipo</p>
-                    <span
-                        dangerouslySetInnerHTML={{ __html: closeSVG }}
-                        onClick={() => handleCloseEliminar(false)}
-                        className="encuesta_modalAñadir__close"
-                        style={{ marginLeft: 'auto' }}
-                    />
-                </div>
-                    
-                <ModalAñadirLogo/>
-
-                <div className='encuesta_modal_cerrarLogo'>
-                    <Box sx={{ width: '50%', display: 'contents'}}>
-                        <Col className="d-flex justify-content-center">
-                            <Button className='buttoncancelarlogo' variant="contained" color="primary" onClick={handleCloseEliminar}>
-                                <span className='cancelar-logo'>Cancelar</span>
-                            </Button>
-                            <Button className='buttondeletelogo' variant="contained" color="primary"
-                                // onClick={handleEliminar}
-                            >
-                                <span className='agregarLogotipo'>Agregar logotipo</span>
-                            </Button>
-                        </Col>
-                    </Box>
-                </div>
-            </Box>
-        </Modal>
 
         <Modal
             open={openDuplicarSeccion}
@@ -1355,6 +1347,9 @@ const NuevaEncuesta = ({
                 setOpenDuplicarSeccion(false);
                 setBlurBackground(false);
                 setIsModalVisible(false);
+            },
+            sx: {
+              backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
             },
             }}
         >
@@ -1401,10 +1396,13 @@ const NuevaEncuesta = ({
             marginTop: '5%',
             }}
             BackdropProps={{
-            onClick: () => {
+              onClick: () => {
                 setOpenEliminarSeccion(false);
                 setBlurBackground(false);
                 setIsModalVisible(false);
+              },
+              sx: {
+                backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
               },
             }}
         >
@@ -1446,11 +1444,13 @@ const NuevaEncuesta = ({
             squareFillSVG={squareFillSVG}
             circleFillSVG={circleFillSVG}
             triangleFillSVG={triangleFillSVG}
+            configuracion4Activa={configuracion4}
+            configuracion5Activa={configuracion5}
+            opcionesRespuestaInit={opcionesRespuesta}
         />
         }
     </>
   )
 }
-
 
 export default NuevaEncuesta 

@@ -215,6 +215,9 @@ const CargaDatos = ({
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
         setIsActiveLogica(true);
+        if (mostrarEditar === true) {
+            setMostrarEditar(mostrarEditar)
+        }
     };
 
     const handleConfiguracion = () => {
@@ -224,6 +227,9 @@ const CargaDatos = ({
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
         setIsActiveLogica(true);
+        if (mostrarConfiguracion === true) {
+            setMostrarConfiguracion(mostrarConfiguracion)
+        }
     };
 
     const handleLogica = () => {
@@ -233,6 +239,9 @@ const CargaDatos = ({
         setIsActiveLogica(false);
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
+        if (mostrarLogica === true) {
+            setMostrarLogica(mostrarLogica)
+        }
     };
 
     const updateSelectedFormats = () => {
@@ -249,22 +258,27 @@ const CargaDatos = ({
     const handleCheckboxPDF = (event) => {
         
         setIsCheckedPDF(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxDOC = (event) => {
         setIsCheckedDOC(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxPNG = (event) => {
         setIsCheckedPNG(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxJPG = (event) => {
         setIsCheckedJPG(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleCheckboxGIF = (event) => {
         setIsCheckedGIF(event.target.checked);
+        updateSelectedFormats();
     };
 
     const handleSwitchConfigurar1 = () => {
@@ -390,6 +404,11 @@ const CargaDatos = ({
         setPreguntaTemp(contentPreg.pregunta)
         setPregunta(contentPreg.pregunta)
 
+    }, [contentCont]);
+
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
     }, [contentCont]);
 
     const handlePregunta = (value) => {
@@ -550,8 +569,8 @@ const CargaDatos = ({
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
                             <Comentario
                                 className="textoMensajeError"
-                                value={mensajeError}
-                                
+                                value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
+                                readOnly
                                 onChange={(e) => setMensajeError(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />

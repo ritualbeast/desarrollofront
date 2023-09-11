@@ -8,7 +8,6 @@ import DefinicionEncuestaLateral from './Definicion/DefinicionEncuestaLateral';
 import DefinicionEncuestaCuerpo from './Definicion/DefinicionEncuestaCuerpo';
 import DefinicionEncuestaConfiguracion from './Definicion/DefinicionEncuestaConfiguracion';
 import BancoPreguntasLateralPrincipal from './Create/BancoPreguntasLateralPrincipal';
-import DiseñaEncuesta from './Create/DiseñaEncuesta';
 import FormatoEncuestaLateralPrincipal from './Create/FormatoEncuestaLateralPrincipal';
 import Revision from './Create/Revision';
 import NuevaEncuesta from './Create/NuevaEncuesta';
@@ -24,6 +23,7 @@ const circle2SVG = svgManager.getSVG('circle2');
 const Create = () => {
     const [activeIcon, setActiveIcon] = useState('Configuracion');
     const [activeTab, setActiveTab] = useState(true);
+    const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [encuestaSegundoCuerpoVisible, setEncuestaSegundoCuerpoVisible] = useState(true);
     const [openAñadirLogo, setOpenAñadirLogo] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -48,20 +48,21 @@ const Create = () => {
     const ConfiguracionEncuestaRef = useRef(null);
     const [estilos, setEstilos] = useState({});
     const [obtenerBancoPregunta, setObtenerBancoPregunta] = useState([])
-    const [contentCont, setContentCont] = useState([{ 
-
+    const [contentCont, setContentCont] = useState([{
+        tipo: 'C', 
         titulo: 'Seccion ',
+        comentario: '',
+        regresar: true,
         descripcion: '#', 
         orden: 1,
         imagenCabecera: '', 
         imagenPie : '',  
-        tipoSeccion: 'P',  
+        tipoSeccion: 'C',  
         textoAgradecimiento: 'ok',
         urlRedireccion: '#',
         imagenCierre: '#',   
         textoBotonCierre: '#',
         preguntas: [] 
-
     }]);
     const [encuestaEstilos, setEncuestaEstilos] = useState({
         logotipo: {
@@ -139,23 +140,25 @@ const Create = () => {
           colorFondo: "",
           imagenFondo: ""
         }
-      });
-      const [datosEncuesta, setDatosEncuesta] = useState({
+    });
+    const [datosEncuesta, setDatosEncuesta] = useState({
         imagenCabecera : '',
         imagenPie : '',
         titulo : '',
         descripcion : '',
         leyenda : '',
-      });
+    });
 
-      const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState({
+    const [datosConfiguracionEncuesta, setDatosConfiguracionEncuesta] = useState({
         idCategoriaEncuesta: '',
         enumTipoVigencia: '',
         fechaInicio : '',
         fechaFin : '',
-        });
-       
-
+    });
+    const [preguntaVisible, setPreguntaVisible] = useState(Array(contentCont.length).fill(true));
+    const [mostrarContenedorC, setMostrarContenedorC] = useState(Array(contentCont.length).fill(true));
+    const [editarTituloVisible, setEditarTituloVisible] = useState(Array(contentCont.length).fill(false));
+    const [seccionVisible, setSeccionVisible] = useState(Array(contentCont.length).fill(true));
 
     const regresarRevision = () => {
         if(pasos === 3) {
@@ -163,15 +166,20 @@ const Create = () => {
             setActiveIcon('Banco de Preguntas')
             setLateralOpciones(true)
             setActiveTab(true);
+            setEncuestaSegundoCuerpoVisible(true);
+            setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            setMostrarContenedorC(Array(contentCont.length).fill(false))
+            setEditarTituloVisible(Array(contentCont.length).fill(true))
+            setSeccionVisible((prevVisibility) => [...prevVisibility, true]);
         }
-    }
+    };
 
     const handleClick = (nombre) => {
         setActiveIcon(nombre);
     };
       
     useEffect(() => {
-        
+        setShowBancoPreguntas(true);
     }, [Ispreview, Ispreview2]);
 
     const toggleEncuestaSegundoCuerpo = () => {
@@ -193,29 +201,18 @@ const Create = () => {
     //     window.location.href = "/login";
     //     }
     // }
+    
     const [lateralOpciones, setLateralOpciones] = useState(true)
     const [activeFuncionEnviarDatos, setActiveFuncionEnviarDatos] = useState(false)
 
     const nextPasos = () => {
-        
         if(pasos === 1){
-            
-            //  if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
-            //  || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enum_tipoVigencia === '' 
-            //  || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
-            //   || datosEncuesta.titulo === ''
-            //  || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
-
-            //  ) {
-            //     toast.error('Por favor complete todos los campos');
-            //      return;
-            //  }
-            
+            handleBotonClick();
             setPasos(2);
             setActiveTab(true);
-            // handleSendDatosDefinicionEncuestaPaso2();
-            
-
+            setVistaPrevia(false);
+            setBlurBackground(false);
+            setIsModalVisible(false);
         }
         setActiveIcon('Banco de Preguntas')
         if (pasos === 2) {
@@ -225,37 +222,35 @@ const Create = () => {
             setActiveTab(false);
             setEncuestaSegundoCuerpoVisible(false);
         }
-    }
+    };
 
     const enviarPreview = (previe) => {
         setIspreview(previe)
-    }
+    };
 
     const enviarPreview2 = (previe2) => {
         setIspreview2(previe2)
-    }
+    };
 
     const handleSendEstado = (estado) => {
         setEstados(estado)
-    }
+    };
 
     const handleSendPosicion = (posicion) => {
         setPosicion(posicion)
-    }
+    };
 
     const handleSendTamano = (tamano, titulo) => {
         setTamano({ tamano: tamano, titulo: titulo });
-    }
+    };
 
     const handleSendGrosor = (grosor, titulo) => {
         setGrosor({ grosor: grosor, titulo: titulo });  
-    }
+    };
 
     const handleSendTipografia = (tipografia, titulo) => {
         setTipografia({ tipografia: tipografia, titulo: titulo });
-    }
-
-    
+    };
 
     const handleSendPosicionLogotipo = (posicion) => {
         setPosicionLogotipo(posicion)
@@ -275,10 +270,16 @@ const Create = () => {
     
     const handleCloseVistaPrevia = () => {
         setVistaPrevia(false);
+        setBlurBackground(false);
+        setIsModalVisible(false);
     };
 
     const handleVistaPrevia = () => {
-        setVistaPrevia(true);
+        if (pasos === 2) {
+            setVistaPrevia(true);
+            setBlurBackground(true);
+            setIsModalVisible(true);
+        }
     };
 
     const recibirTotalPreguntas = (contentCont) => {
@@ -286,38 +287,32 @@ const Create = () => {
     };
 
     const handlerecibirContentCierre = (contentCierre) => {
-        // Crear una copia del arreglo contentCont y agregar contentCon como un nuevo elemento
-        
+        // Crear una copia del arreglo contentCont y agregar contentCon como un nuevo elemento 
     };
     
-
     const handleSendTamanoPaso2 = (tamano, titulo) => {
-       
         setTamanoPaso2({tamano: tamano, titulo: titulo})
-    }
+    };
 
     const handleSendGrosorPaso2 = (grosor, titulo) => {
         setGrosorPaso2({grosor: grosor, titulo: titulo})
-    }
+    };
 
     const handleSendTipografiaPaso2 = (tipografia , titulo) => {
         setTipografiaPaso2({tipografia: tipografia, titulo: titulo})
-    }
+    };
 
     const handleObtenerPregunta = (preguntasSeleccionadas) => {
         setObtenerBancoPregunta(preguntasSeleccionadas);
     };
 
-
-
     const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState([])
-
     const sendDatosDefinicionEncuesta = (datos) => {
         setDatosEncuesta(datos)
+        setDatosDefinicionEncuesta(datos)
       };
 
     const sendDatosConfiguracionEncuesta = (datos) => {
-       
         setDatosConfiguracionEncuesta(datos)
     }
 
@@ -325,7 +320,15 @@ const Create = () => {
         setEncuestaEstilos(datos)
     }
     
+    const handleBotonClick = () => {
+        DefinicionEncuestaCuerpoRef.current.handleEnviarDatos();
+        ConfiguracionEncuestaRef.current.handleEnviarDatosConfiguracion();
+    };
 
+    const handleUpdateEstilos = (nuevosEstilos) => {
+        setEstilos(nuevosEstilos);
+    };  
+    
     const leerestilos = () => {
          // console.log(encuestaEstilos);
          console.log(contentCont);
@@ -334,7 +337,6 @@ const Create = () => {
 
     const [imagenFondo, setImagenFondo] = useState(null)
     const handleSendImagenFondo = (imagen) => {
-        
         setImagenFondo(imagen)
     }
 
@@ -348,15 +350,11 @@ const Create = () => {
         setSendColor(colors)
     }
 
-
-
     return (
         <>
             <ToastContainer />
             <button onClick={leerestilos}>leer estilos</button>
 
-            
-        
             <div
                 id="modal-container"
                 className={`encuesta-container ${blurBackground ? 'encuesta-blur' : ''}`}
@@ -468,113 +466,105 @@ const Create = () => {
                         <hr />
                         
                         <Col className='encuesta-cuerpo'>
-                        <div className={`encuesta-contenedor-especifico ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                       
-                            {lateralOpciones ? (
-                                    <Col className="encuesta-cuerpo2">
-                                        <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
-                                            <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
-                                            {encuestaSegundoCuerpoVisible ? (
-                                                <>
-                                                    <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
-                                                    <span className="encuesta-subtitulo-1">Colapsar</span>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%'}}>Expandir</span>
-                                                    <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG }} />
-                                                </>
-                                            )}
-                                            </div>
-                                        </Col>
+                            <div className={`encuesta-contenedor-especifico ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
+                                {lateralOpciones ? (
+                                        <Col className="encuesta-cuerpo2">
+                                            <Col style={{paddingTop: '9.5%', paddingBottom: '12%'}}>
+                                                <div className='encuesta-subtitulo1' onClick={toggleEncuestaSegundoCuerpo}>
+                                                {encuestaSegundoCuerpoVisible ? (
+                                                    <>
+                                                        <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsLeftSVG }} />
+                                                        <span className="encuesta-subtitulo-1" style={{marginTop:'3%'}}>Colapsar</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="encuesta-subtitulo-1" style={{paddingLeft: '8%', marginTop:'0.2%'}}>Expandir</span>
+                                                        <span style={{display: 'flex'}} dangerouslySetInnerHTML={{ __html: chevronsRightSVG}} />
+                                                    </>
+                                                )}
+                                                </div>
+                                            </Col>
 
-                                        <Col>
-                                            <div className="lista_2">
-                                                    <div className="fondo-lista">
-                                                        {lista.map((item) => (
-                                                            
-                                                        pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
-                                                            pasos === 2 && item.nombre === "Configuracion" ? null : (
-                                                            <div
-                                                                key={item.nombre}
-                                                                className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
-                                                                onClick={() => handleClick(item.nombre)}
-                                                            >
-                                                                <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
-                                                                    <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
-                                                                        {item.icono && (
-                                                                            <span dangerouslySetInnerHTML={{ __html: item.icono.replace(/stroke="([^"]*)"/, `stroke="${activeIcon === item.nombre ? 'rgba(255, 199, 0, 1)' : 'rgba(177, 177, 177, 1)'}"`) }}/>
-                                                                        )}
-                                                                        <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
+                                            <Col>
+                                                <div className="lista_2">
+                                                        <div className="fondo-lista">
+                                                            {lista.map((item) => (
+                                                            pasos === 1 && (item.nombre === "Formato" || item.nombre === "Banco de Preguntas") ? null : (
+                                                                pasos === 2 && item.nombre === "Configuracion" ? null : (
+                                                                <div
+                                                                    key={item.nombre}
+                                                                    className={`lista-container ${activeIcon === item.nombre ? 'active' : ''} ${activeIcon && activeIcon !== item.nombre ? 'inactive' : ''}`}
+                                                                    onClick={() => handleClick(item.nombre)}
+                                                                >
+                                                                    <div className={`juntar-lista-nombre ${activeIcon === item.nombre ? 'active' : ''}`}>
+                                                                        <div className={`fondo-lista2 ${activeIcon === item.nombre ? 'active-background' : ''}`}>
+                                                                            {item.icono && (
+                                                                                <span dangerouslySetInnerHTML={{ __html: item.icono.replace(/stroke="([^"]*)"/, `stroke="${activeIcon === item.nombre ? 'rgba(255, 199, 0, 1)' : 'rgba(177, 177, 177, 1)'}"`) }}/>
+                                                                            )}
+                                                                            <span className="lista-nombre" style={{ textAlign: 'center' }}>{item.nombre}</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            ) 
-                                                            )
-                                                        ))}
+                                                                ) 
+                                                                )
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                            </Col>
                                         </Col>
-                                    </Col>
-                                ) : null
-                            }
+                                    ) : null
+                                }
                             
-                            {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible ? 
+                                {activeIcon === 'Banco de Preguntas' && encuestaSegundoCuerpoVisible ? 
                                     <BancoPreguntasLateralPrincipal
                                         onObtenerPregunta={handleObtenerPregunta}
+                                        contentCont={contentCont}
                                     />: null
                                 }
 
-                            {activeIcon === 'Estilo'  && encuestaSegundoCuerpoVisible ? (
-                                <DisenoEncuestaLateralPrincipal
-                                    datapasos={pasos}
-                                    preview3= {Ispreview}
-                                    sendPreviewLogotipo= {Ispreview2}
-                                    sendEstado2={(estado) =>  handleSendEstado(estado)}
-                                    sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
-                                    sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
-                                    sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
-                                    sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
-                                    sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
-                                    sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
-                                    sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
-                                    sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
-                                    sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
-                                    sendPosicionLogotipoPiePagina = {(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
-                                    sendTamanoLogotipoPiePagina = {(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
-                                    sendImagenFondo = {(imagen) => handleSendImagenFondo(imagen)}
-                                    sendImagenFondoEstructura = {imagenFondo}
-                                    contenEstilos= {encuestaEstilos}
-                                    sendColors = {(colors) => sendcolors(colors)}
-                                    
-                                    />
-                                ) : null    
-                            }
+                                {activeIcon === 'Estilo'  &&  encuestaSegundoCuerpoVisible ? 
+                                    <DisenoEncuestaLateralPrincipal
+                                        datapasos={pasos}
+                                        preview3= {Ispreview}
+                                        sendPreviewLogotipo= {Ispreview2}
+                                        sendEstado2={(estado) =>  handleSendEstado(estado)}
+                                        sendPosicion2={(posicion) =>  handleSendPosicion(posicion)}
+                                        sendTamano2={(tamano, titulo) =>  handleSendTamano(tamano, titulo)}
+                                        sendGrosor2={(grosor, titulo) =>  handleSendGrosor(grosor, titulo)}
+                                        sendTipografia2={(tipografia, titulo) =>  handleSendTipografia(tipografia, titulo)}
+                                        sendPosicionLogotipo={(posicion) =>  handleSendPosicionLogotipo(posicion)}
+                                        sendTamanoLogotipo={(tamano) =>  handleSendTamanoLogotipo(tamano)}
+                                        sendTamanoPaso2 = {(tamanoPaso2, titulo) => handleSendTamanoPaso2(tamanoPaso2,titulo)}
+                                        sendGrosorPaso2 = {(grosorPaso2, titulo) => handleSendGrosorPaso2(grosorPaso2,titulo)}
+                                        sendTipografiaPaso2 = {(tipografiaPaso2, titulo) => handleSendTipografiaPaso2(tipografiaPaso2,titulo)}
+                                        updateEstilos={handleUpdateEstilos}
+                                        sendPosicionLogotipoPiePagina = {(posicion) => handleSendPosicionLogotipoPiePagina(posicion)}
+                                        sendTamanoLogotipoPiePagina = {(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
+                                        sendImagenFondo = {(imagen) => handleSendImagenFondo(imagen)}
+                                        sendImagenFondoEstructura = {imagenFondo}
+                                        contenEstilos= {encuestaEstilos}
+                                        sendColors = {(colors) => sendcolors(colors)}
+                                    /> : null
+                                }
 
-                            {activeIcon === 'Formato' && encuestaSegundoCuerpoVisible ? (
-                                <FormatoEncuestaLateralPrincipal/>
-                            ) : null
-                            }
+                                {activeIcon === 'Formato' && encuestaSegundoCuerpoVisible ? 
+                                <FormatoEncuestaLateralPrincipal/> : null}
 
-                            {activeIcon === 'Definicion' && encuestaSegundoCuerpoVisible ? (
-                                <DefinicionEncuestaLateral/>   
-                            ) : null
-                            }
+                                {activeIcon === 'Definicion' && encuestaSegundoCuerpoVisible ? 
+                                <DefinicionEncuestaLateral/> : null}
 
-                            {activeIcon === 'Configuracion' && encuestaSegundoCuerpoVisible ? (
-                                <DefinicionEncuestaConfiguracion
-                                    ref={ConfiguracionEncuestaRef}
-                                    closeMenuConfiguracion={handleClick}
-                                    sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
-                                    contentInit={datosConfiguracionEncuesta}
-                                />
-                            ) : null
-                            }
+                                {activeIcon === 'Configuracion' && encuestaSegundoCuerpoVisible ? 
+                                    <DefinicionEncuestaConfiguracion
+                                        ref={ConfiguracionEncuestaRef}
+                                        closeMenuConfiguracion={handleClick}
+                                        sendDatosConfiguracionEncuesta = {sendDatosConfiguracionEncuesta}
+                                        contentInit={datosConfiguracionEncuesta}
+                                    /> : null
+                                }
                             </div>
 
                             <Col className={`encuesta-Tercerocuerpo2 ${encuestaSegundoCuerpoVisible ? 'encuesta-abierto' : 'encuesta-cerrado'}`}>
-                                {pasos === 1 
-                                ? (
+                                {pasos === 1 ? (
                                     <DefinicionEncuestaCuerpo 
                                         ref={DefinicionEncuestaCuerpoRef}
                                         sendPreview={(previe) => enviarPreview(previe)}
@@ -597,18 +587,22 @@ const Create = () => {
                                     />
 
                                 ) : pasos === 2 ? (<NuevaEncuesta 
-                                        
-                                        openVistaPrevia={openVistaPrevia}
-                                        contentInit={contentCont}
+                                        openVistaPrevia={openVistaPrevia} 
                                         handleCloseVistaPrevia={handleCloseVistaPrevia}
                                         handleTotalPreguntas={recibirTotalPreguntas}
-                                        sendTamanoPaso2={tamanoPaso2}
-                                        sendGrosorPaso2={grosorPaso2}
-                                        sendTipografiaPaso2={tipografiaPaso2}
+                                        contentInit={contentCont}
+                                        sendTamanoPaso2 = {tamanoPaso2}
+                                        sendGrosorPaso2 = {grosorPaso2}
+                                        sendTipografiaPaso2 = {tipografiaPaso2}
+                                        regresarRevision = {regresarRevision}
+                                        obtenerPreg = {obtenerBancoPregunta}
+                                        estilos = {estilos}
+                                        preguntaVisibleInit={preguntaVisible}
+                                        mostrarContenedorCInit={mostrarContenedorC}
+                                        editarTituloVisibleInit={editarTituloVisible}
+                                        seccionVisibleInit={seccionVisible}
                                         sendImagenFondo={imagenFondo}
                                         sendFooterImagen={sendFooterImagen}
-                                        obtenerPreg = {obtenerBancoPregunta}
-                                        regresarRevision={regresarRevision}
                                         contenEstilos={encuestaEstilos}
                                         sendPosicionLogotipo = {posicionLogotipo}
                                         sendTamanoLogotipo = {tamanoLogotipo}
@@ -620,10 +614,9 @@ const Create = () => {
                                 ) : pasos === 3 ? ( <Revision
                                         regresar={regresarRevision}
                                         handleTotalPreguntas={contentCont}
-                                        handleDatosPaso1 = {datosEncuesta}
+                                        handleDatosPaso1 = {datosDefinicionEncuesta}
                                         handleDatosConfiguracion = {datosConfiguracionEncuesta}
                                         handleEstilos = {encuestaEstilos}
-                                        
                                     />
                                 ) : null
                                 }

@@ -7,6 +7,33 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
+import Select from 'react-select';
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '108%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
+
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
@@ -60,7 +87,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
             <span className="checkmark"></span>
             {label}
         </label>
-        );
+    );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -116,9 +143,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
     }
 
     // consumo de posicion de pie de pagina
-
     const [posicionImagen, setPosicionImagen] = useState([]);
-
     const ListarPosicionImagen = async () => {
         try {
             const response = await  ListarEnumeradosService('POSICION_IMAGEN')
@@ -214,6 +239,43 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                 ))}
                                 </div>
                             </div>
+
+                            {pasos === 1 ? (
+                                <>
+                                    <div className="contenedorCabeceraLogotipo">
+                                        <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                                        <span className='cabeceraTitle'>Agregar botón pie de pagina</span>
+                                    </div>
+
+                                    <div className="contenedorbuton">
+                                        <button className="botonGuardar" onClick={() => handleEstadoClick('Guardar')}>
+                                        Guardar
+                                        </button>
+                                        <button className="botonEnviar" onClick={() => handleEstadoClick('Enviar')}>
+                                        Enviar
+                                        </button>
+                                        <button className="botonActualizar" onClick={() => handleEstadoClick('Actualizar')}>
+                                        Actualizar
+                                        </button>
+                                    </div>
+
+                                    <div className="contenedorContenedorPosicion">
+                                        <span className='contenedorPosicionLabel'>Posición</span>
+                                        
+                                        <div className="contenedorPosicion">
+                                            <Select
+                                                styles={customStyles}
+                                                options={posicionImagen.map((opcion) => ({
+                                                    value: opcion.etiqueta,
+                                                    label: opcion.etiqueta,
+                                                }))}
+                                                onChange={(selectedOption) => handlePosicionClick({ target: { value: selectedOption.value } })}
+                                            />
+                                        </div>
+                                    </div> 
+                                </>
+                            ) : null
+                            }
                         </div>
 
                         <div className="contenedorContenedorPosicion">
@@ -277,10 +339,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                 </div>
             
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                       
     </>
   )
 }

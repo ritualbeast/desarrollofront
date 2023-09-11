@@ -1,64 +1,193 @@
 import React, {useState, useEffect} from 'react';
 import { Container, Row, Col, Button, Image } from 'react-bootstrap';
-
-import { Select, Pagination, Box, Modal, Menu, MenuItem, Accordion, AccordionDetails, AccordionSummary} from '@mui/material';
-
-import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import { Box, Modal, Accordion, AccordionDetails, AccordionSummary} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import SearchIcon from '@mui/icons-material/Search';
 import svgManager from '../../assets/svg';
 import '../../styles/modalBancopreguntas.css';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {ListarCategoriasService} from '../../services/EncuestasServices';
 import checkcircle from '../../assets/img/check-circle.png';
+import { BancoPreguntas } from '../../services/PreguntaServices';
+import Select from 'react-select';
+import styled from 'styled-components';
 
-const alertSVG = svgManager.getSVG('alert');
 const xSVG = svgManager.getSVG('x');
-const searchSVG = svgManager.getSVG('search');
 
+const customStyles = {
+  container: (provided, state) => ({
+    ...provided,
+    width: '96%'
+  }),
+  control: (provided, state) => ({
+    ...provided,
+    width:'102.5%',
+    backgroundColor: 'white',
+    color: 'black',
+    borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+    boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+    "&:hover": {
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    paddingTop:'unset',
+    paddingBottom:'unset',
+    color: state.isFocused ? 'black' : 'black',
+    backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+  })
+};
 
-const ModalBancoPreguntas = ({ open, onClose }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState('');
+const BuscarPreguntas = styled.input`
+    width: 100% !important;
+    height: 50% !important;
+    border: 1px solid #ccc !important;
+    outline: none;
+
+    &:focus {
+        border: 2px solid rgba(255, 206, 72, 1) !important;
+    }
+`;
+
+const ModalBancoPreguntas = ({ open, onClose, categoriaId }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [blurBackground, setBlurBackground] = useState(false);
   const [listarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
   const [clickedElements, setClickedElements] = useState({});
+  const [listarBancoPreguntas, setListarBancoPreguntas] = useState([]);
+  const [selectedCategoriaEncuesta, setSelectedCategoriaEncuesta] = useState({
+      value: '',
+      label: 'Todas las categorías',
+  });
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleClick = (id) => {
-    setClickedElements((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+  const handleClick = (id, preguntaItem) => {
+    setClickedElements((prevState) => {
+      // Comprueba si el elemento ya ha sido seleccionado
+      if (prevState[id]) {
+        // Si ya ha sido seleccionado, elimínalo del estado
+        const newState = { ...prevState };
+        delete newState[id];
+        return newState;
+      } else {
+        // Si no ha sido seleccionado, agrégalo al estado con toda la información
+        return { ...prevState, [id]: preguntaItem };
+      }
+    });
   };
 
-  const countClickedElements = Object.values(clickedElements).filter((value) => value === true).length;
+  const countClickedElements = Object.keys(clickedElements).length;
 
   useEffect(() => {
+    const ListarCategoriaEncuesta = async () => {
+      try {
+        const response = await ListarCategoriasService();
+        setListarCategoriaEncuestas(response.data.row);
+        
+        // Busca la categoría correspondiente al ID y establece el valor y el nombre
+        const matchingCategoria = response.data.row.find((item) => item.idCategoriaEncuesta === categoriaId);
+        if (matchingCategoria) {
+          setSelectedCategoriaEncuesta({
+            value: matchingCategoria.idCategoriaEncuesta,
+            label: matchingCategoria.nombre,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const BancoPreguntaEncuesta = async (idCategoria) => {
+      try {
+        const response = await BancoPreguntas(idCategoria);
+        setListarBancoPreguntas(response.data.items);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     ListarCategoriaEncuesta();
-  }, []);
-  const handleChange = (event) => {
-    setSelectedAnswer(event.target.value);
+    BancoPreguntaEncuesta(categoriaId);
+  }, [categoriaId]);
+
+  const handleChangeCategoria = async(selectedOption) => {
+    const selectedIdCategoria = selectedOption.value;
+    setSelectedCategoriaEncuesta(selectedOption);
+    try {
+      const response = await BancoPreguntas(selectedIdCategoria);
+      setListarBancoPreguntas(response.data.items);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const data = [
-    {
-      pregunta: 'Lorem ipsum 1',
-      respuestas: ['Mostrar respuestas 1', 'Respuesta 1 de la pregunta 1', 'Respuesta 2 de la pregunta 1']
-    },
-    {
-      pregunta: 'Lorem ipsum 2',
-      respuestas: ['Mostrar respuestas 2', 'Respuesta 1 de la pregunta 2', 'Respuesta 2 de la pregunta 2']
-    },
-    // Agrega más objetos de datos aquí si es necesario
-  ];
+  const handleBuscarPreguntas = (event) => {
+    setSearchTerm(event.target.value);
+  }
 
-  const rows = Math.ceil(data.length / 2); // Calcular el número de filas
-   // crear consumo categoria de encuestas
- 
-   const ListarCategoriaEncuesta = async () => {
-     try {
-       const response = await  ListarCategoriasService();
-       setListarCategoriaEncuestas(response.data.row);
-     } catch (error) {
-       console.error(error);
-     }
-   };
+  const handleGuardar = () => {
+    const preguntasSeleccionadas = Object.values(clickedElements).map((preguntaItem) => {
+      const tipoPregunta = preguntaItem.tipoPregunta;
+  
+      if (tipoPregunta === 'OM') {
+        return {
+          ...preguntaItem,
+          // Propiedades adicionales específicas para el tipo 'OM'
+          save: true,
+          cancelar: true,
+          configuracionPregunta: {},
+          mensajeError: '',
+          mensajeErrorRequerido: '',
+          multipleRespuesta: '',
+          nemonico: "1S_1P",
+          orden: '',
+          pesoArchivo: "",
+          placeHolder: "seleccione",
+          preguntasComplementarias: [],
+          ponderacion: "",
+          requerida: true,
+          tipoArchivo: "",
+        };
+      } else if (tipoPregunta === 'VE') {
+        const opcionesRespuesta = preguntaItem.opcionesRespuesta || []; // Asegúrate de que opcionesRespuesta esté definido
+        const opcionesConCamposAdicionales = opcionesRespuesta.map((opcion) => ({
+            ...opcion,
+            icono: 'circle',
+            selectedColor: '#000000',
+            selectedIcon: 'star',
+        }));
+
+        return {
+          ...preguntaItem,
+          opcionesRespuesta: opcionesConCamposAdicionales,
+          // Propiedades adicionales específicas para el tipo 'VE'
+          save: true,
+          cancelar: true,
+          mensajeError: '',
+          mensajeErrorRequerido: '',
+          nemonico: "1S_1P",
+          orden: '',
+          pesoArchivo: "",
+          placeHolder: "seleccione",
+          preguntasComplementarias: [],
+          ponderacion: "",
+          requerida: "",
+          tipoArchivo: "",
+          configuracionPregunta: '',
+        };
+      }
+
+      return {
+        ...preguntaItem,
+      };
+
+    });
+    onClose(preguntasSeleccionadas)
+    setClickedElements({});
+    setBlurBackground(false);
+    setIsModalVisible(false);
+  }
 
   return (
     <Modal
@@ -69,13 +198,22 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}
+      BackdropProps={{
+        onClick: () => {
+          setBlurBackground(false);
+          setIsModalVisible(false);
+        },
+        sx: {
+          backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+        },
+      }}
     >
       <Box
         style={{
           backgroundColor: 'white',
           borderRadius: '8px',
           width: '80%',
-          height: '80%',
+          height: '90%',
           resize: 'both',
           minWidth: '40%',
         }}
@@ -86,27 +224,37 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
               <p>Banco de preguntas</p>
             </Grid>
             <Grid  className='modalbancopreguntas_coltitle2'>
-              <span dangerouslySetInnerHTML={{ __html: xSVG }} onClick={onClose} />
+              <span style={{cursor:'pointer'}} dangerouslySetInnerHTML={{ __html: xSVG }} onClick={onClose} />
             </Grid>
           </Row>
 
           <Row className='modalbancopreguntas_rowfiltro'>
             <Col xs={3} className='modalbancopreguntas_col1'>
-              <select className='modalbancopreguntas_select'>
-                <option value="todas">Todas las categorias</option>
-                {listarCategoriaEncuestas.map((item, index) => (
-                  <option key={index} value={item.idCategoriaEncuesta}>{item.nombre}</option>
-                ))  
-                }
-                
-              </select>
+                <Select 
+                    className='modalbancopreguntas_select'
+                    styles={customStyles}
+                    onChange={handleChangeCategoria} 
+                    options={listarCategoriaEncuestas.map((item) => ({
+                        label: item.nombre,
+                        value: item.idCategoriaEncuesta,
+                    }))}
+                    value={selectedCategoriaEncuesta}
+                />
             </Col>
             <Col xs={9} className='modalbancopreguntas_col2'>
-              <input className='modalbancopreguntas_input' type="text" placeholder="Buscar preguntas" />
-              <div className='modalbancopreguntas_searchIconContainer'>
-                <span className='modalbancopreguntas_searchIcon'
-                 dangerouslySetInnerHTML={{ __html: searchSVG }} />
-              </div>
+                <BuscarPreguntas 
+                  className='modalbancopreguntas_input' 
+                  type="text" 
+                  placeholder="Buscar preguntas" 
+                  value={searchTerm}
+                  onChange={handleBuscarPreguntas}
+                />
+                <SearchIcon className="search-icon" onClick={handleBuscarPreguntas} style={{
+                  width: '4% !important',
+                  marginTop: '0.2%',
+                  cursor: 'pointer',
+                  right: '1%',
+                }} />
             </Col>
           </Row>
 
@@ -116,116 +264,59 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
             </Col>
             <Col className='modalbancopreguntas_coltitle3'>
               <p className='modalbancopreguntas_seleccionadas'> {countClickedElements} seleccionadas</p>
-              <p className='modalbancopreguntas_preguntastotal'>0 Preguntas</p>
+              <p className='modalbancopreguntas_preguntastotal'>{listarBancoPreguntas.length} Preguntas</p>
             </Col>
           </Row>
           
           <Container className='modalbancopreguntas_divpreguntas'>
-            <Row className='modalbancopreguntas_rowpreguntas'>
-                  <Col
-                    md={6}
-                    className={`modalbancopreguntas_colpreguntas ${clickedElements['element1'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element1')}
-                  >
-                    {clickedElements['element1'] ? (
-                    <div className='modalbancopreguntas_checkicon'>
-                      <Image src={checkcircle} width="40px" height="40px" alt="checkcircle" />
-                      </div>
-                    ) : null}
-                    <div className='modalbancopreguntas_divpreguntasbody'>
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam pariatur molestiae quisquam ipsum iusto et quae deserunt hic magnam temporibus! Beatae ullam odio expedita dolor quos soluta autem inventore et?
-                    </div>
-                    <div className='modalbancopreguntas_divmenudesplegable'>
-                    <Accordion className = 'modalbancopreguntas_divmenudesplegableSelect'>
-                      <AccordionSummary
-                        expandIcon= {<ExpandMoreIcon/>}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        onClick={(event) => event.stopPropagation()} 
+              <Row className='modalbancopreguntas_rowpreguntas'>
+                  {listarBancoPreguntas
+                  .filter((preguntaItem) => preguntaItem.pregunta.includes(searchTerm))
+                  .map((preguntaItem, index) => (
+                      <Col
+                        md={6}
+                        key={index}
+                        className={`modalbancopreguntas_colpreguntas ${clickedElements[`element${index}`] ? 'clicked' : ''}`}
+                        onClick={() => handleClick(`element${index}`, preguntaItem)}
                       >
-                        Mostrar respuestas
-                      </AccordionSummary>
-                      <AccordionDetails className='modalbancopreguntas_acordion'>
-                        <ul className='modalbancopreguntas_ul'>
-                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
-                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
-                        </ul>
-                      </AccordionDetails>
+                        {clickedElements[`element${index}`] ? (
+                          <div className='modalbancopreguntas_checkicon'>
+                            <Image src={checkcircle} width="40px" height="40px" alt="checkcircle" />
+                          </div>
+                        ) : null}
 
-                    </Accordion>
-                    </div>
-                  </Col>
-                  <Col
-                    md={6}
-                    className={`modalbancopreguntas_colpreguntas ${clickedElements['element2'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element2')}
-                  >
-                    {clickedElements['element2'] ? (
-                    <div className='modalbancopreguntas_checkicon'>
-                      <Image src={checkcircle} width="40px" height="40px" alt="checkcircle" />
-                      </div>
-                    ) : null}
-                    <div className='modalbancopreguntas_divpreguntasbody'>
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam pariatur molestiae quisquam ipsum iusto et quae deserunt hic magnam temporibus! Beatae ullam odio expedita dolor quos soluta autem inventore et?
-                    </div>
-                    <div className='modalbancopreguntas_divmenudesplegable'>
-                    <Accordion className = 'modalbancopreguntas_divmenudesplegableSelect'>
-                      <AccordionSummary
-                        expandIcon= {<ExpandMoreIcon/>}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        onClick={(event) => event.stopPropagation()} 
-                      >
-                        Mostrar respuestas
-                      </AccordionSummary>
-                      <AccordionDetails className='modalbancopreguntas_acordion'>
-                        <ul className='modalbancopreguntas_ul'>
-                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
-                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
-                        </ul>
-                      </AccordionDetails>
+                        <div className='modalbancopreguntas_divpreguntasbody'>
+                          {preguntaItem.pregunta}
+                        </div>
 
-                    </Accordion>
-                    </div>
-                  </Col>
-                  <Col
-                    md={6}
-                    className={`modalbancopreguntas_colpreguntas ${clickedElements['element3'] ? 'clicked' : ''}`}
-                    onClick={() => handleClick('element3')}
-                  >
-                    {clickedElements['element3'] ? (
-                    <div className='modalbancopreguntas_checkicon'>
-                      <Image src={checkcircle} width="40px" height="40px" alt="checkcircle" />
-                      </div>
-                    ) : null}
-                    <div className='modalbancopreguntas_divpreguntasbody'>
-                      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam pariatur molestiae quisquam ipsum iusto et quae deserunt hic magnam temporibus! Beatae ullam odio expedita dolor quos soluta autem inventore et?
-                    </div>
-                    <div className='modalbancopreguntas_divmenudesplegable'>
-                    <Accordion className = 'modalbancopreguntas_divmenudesplegableSelect'>
-                      <AccordionSummary
-                        expandIcon= {<ExpandMoreIcon/>}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                        onClick={(event) => event.stopPropagation()} 
-                      >
-                        Mostrar respuestas
-                      </AccordionSummary>
-                      <AccordionDetails className='modalbancopreguntas_acordion'>
-                        <ul className='modalbancopreguntas_ul'>
-                          <li className='modalbancopreguntas_li'>Respuesta 1 de la pregunta 1</li>
-                          <li className='modalbancopreguntas_li'>Respuesta 2 de la pregunta 1</li>
-                        </ul>
-                      </AccordionDetails>
+                        <div className='modalbancopreguntas_divmenudesplegable'>
+                          <Accordion className = 'modalbancopreguntas_divmenudesplegableSelect'>
+                            <AccordionSummary
+                              expandIcon= {<ExpandMoreIcon/>}
+                              aria-controls="panel1a-content"
+                              id="panel1a-header"
+                              onClick={(event) => event.stopPropagation()} 
+                              style={{ minHeight: '10px' }}
+                            >
+                              Mostrar respuestas
+                            </AccordionSummary>
 
-                    </Accordion>
-                    </div>
-                  </Col>
+                            <AccordionDetails className='modalbancopreguntas_acordion'>
+                              <ul className='modalbancopreguntas_ul'>
+                                  {preguntaItem.opcionesRespuesta.map((respuesta, respuestaIndex) => (
+                                    <li key={respuestaIndex} className='modalbancopreguntas_li'>{respuesta.respuesta}</li>
+                                  ))}
+                              </ul>
+                            </AccordionDetails>
+                          </Accordion>
+                        </div>
+                      </Col>
+                  ))}
               </Row>
           </Container>
            
           <Row className='modalbancopreguntas_rowpaginacion'>
-            <Col className='modalbancopreguntas_colpaginacion' style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Col className='modalbancopreguntas_colpaginacion'>
               <Button
                 className='buttoncancelarEncuestas'
                 variant="contained"
@@ -238,13 +329,11 @@ const ModalBancoPreguntas = ({ open, onClose }) => {
                 className={`buttondeleteEncuestas ${countClickedElements === 0 ? 'disabled' : ''}`}
                 variant="contained"
                 color="primary"
-                onClick={onClose}
+                onClick={handleGuardar}
                 disabled={countClickedElements === 0}
               >
                 {countClickedElements === 0 ? 'Agregar pregunta/s' : `Agregar ${countClickedElements} pregunta${countClickedElements > 1 ? 's' : ''}`}
               </Button>
-
-
             </Col>
           </Row>
         </Container >

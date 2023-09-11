@@ -1,28 +1,121 @@
-import React, { useEffect, useRef, useState, useContext } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaFuente.css'
 import { ListarEnumeradosService } from '../../services/EstilosServices';
-
+import Select from 'react-select';
 
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
-const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia 
-    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, contenEstiloss
+const Tipografía = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '98%',
+      marginBottom: '2%',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
+
+const Grosor = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '48%',
+      marginRight: '3%',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
+
+const Tamaño = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '48%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
+
+const DisenoEncuestaLateralFuentes = ({
+    openMenuPrincipal, 
+    closeMenuFuentes,
+    paso, sendTamano, 
+    sendGrosor,
+    sendTipografia,
+    sendTamanoPaso2, 
+    sendGrosorPaso2,
+    sendTipografiaPaso2,
+    updateEstilos,
  }) => {
-
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
-    
-    const [filaSeleccionada, setFilaSeleccionada] = useState(null);
-    const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [pasos, setPasos] = useState(paso);
-    const [estilos, setEstilos] = useState(contenEstiloss);
-
+    const [estilos, setEstilos] = useState({});
+    console.log(estilos)
     
+    const actualizarEstilo = (titulo, tipo, valor) => {
+        const nuevosEstilos = {
+            ...estilos,
+            [titulo]: {
+                ...estilos[titulo],
+                [tipo]: valor
+            }
+        };
+        setEstilos(nuevosEstilos);
+        // Llama a la función de devolución de llamada del padre para actualizar el estado en el componente padre
+        updateEstilos(nuevosEstilos);
+    };    
+
     useEffect(() => {
         ListarFuenteGrosorEncuesta();
         ListarFuenteTamanoEncuesta();
@@ -31,6 +124,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
 
 
     const handleChangeTamano = (event, titulo) => {
+        const value = event.value;
         if (pasos === 2) {
             sendTamanoPaso2(event.target.value, titulo);
             setEstilos({
@@ -43,6 +137,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                     }
                 }
             });
+            sendTamanoPaso2(value, titulo);
             
         } else {
 
@@ -58,9 +153,11 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                 }
             });
         }
+        actualizarEstilo(titulo, 'tamano', value);
     };
 
     const handleChangeGrosor = (event, titulo) => {
+        const value = event.value;
         if (pasos === 2) {
             sendGrosorPaso2(event.target.value, titulo);
             setEstilos({
@@ -87,9 +184,11 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
             }
         });
         }
+        actualizarEstilo(titulo, 'grosor', value);
     };
 
     const handleChangeTipografia = (event, titulo) => {
+        const value = event.value;
         if (pasos === 2) {
             sendTipografiaPaso2(event.target.value, titulo);
             setEstilos({
@@ -115,6 +214,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
             }
         });
         }
+        actualizarEstilo(titulo, 'tipografia', value);
     };
     
 
@@ -181,14 +281,12 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
         "Preguntas",
         "Opciones de respuesta",
         "Texto de cierre de encuestas",
-        
-      ];
+    ];
 
-      const volverMenuPrincipal = () => {
+    const volverMenuPrincipal = () => {
         openMenuPrincipal(true);
         closeMenuFuentes(false);
     }
-
 
     //consumo de grosor de fuentes
     const [GrosorApi, setGrosorApi] = useState([]);
@@ -202,12 +300,10 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
       };
 
     // consumo de tamano de fuentes
-
     const [TamanoApi, setTamanoApi] = useState([]);
     const ListarFuenteTamanoEncuesta = async () => {
         try {
             const response = await  ListarEnumeradosService('TAMANIO_LETRA')
-            console.log(response.data.listaEnumerados);
             setTamanoApi(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
@@ -215,9 +311,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     };
 
     // consumo de tipografia de fuentes
-
     const [TipografiaApi, setTipografiaApi] = useState([]);
-
     const ListarFuenteTipografiaEncuesta = async () => {
         try {
             const response = await  ListarEnumeradosService('TIPOGRAFIA')
@@ -253,110 +347,93 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
+
+                    <OverlayTrigger
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
+                    >
+                        <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
+                        </div>
+                    </OverlayTrigger>
                 </div>
-                </OverlayTrigger>
-            </div>
             </Col>
             <Col>
-            
                 <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>  
-                            <span className='cabeceraTitle'>Fuentes</span>
+                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'5%'}}>
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo" style={{cursor:'pointer'}} onClick={volverMenuPrincipal}>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>  
+                                <span className='cabeceraTitle'>Fuentes</span>
+                            </div>
+
+                            <div>
+                                {titulos.map((titulo, index) => (
+                                    pasos === 2 && (titulo === "Nombre de encuesta" || titulo === "Descripción de encuesta" ||
+                                    titulo === "Leyenda" || titulo === "Texto de botones") ||
+                                    pasos === 1 && (titulo === "Título de sección" || titulo === "Descripción de sección" || 
+                                    titulo === "Preguntas" || titulo === "Opciones de respuesta" || titulo === "Texto de cierre de encuestas")
+                                    ? null : (
+                                        <div className="contenedorFuenteTitulo" key={index}>
+                                            <div className="subcontenedorFuenteTitulo">
+                                                <span className="fuenteTitulo">{titulo}</span>
+                                            </div>
+
+                                            <div className="subcontenedorFuenteTituloselect">
+                                                <Select
+                                                    styles={Tipografía}
+                                                    options={TipografiaApi.map((item) => ({
+                                                        value: item.etiqueta,
+                                                        label: item.descripcion,
+                                                    }))}
+                                                    onChange={(selectedOption) => handleChangeTipografia(selectedOption, titulo)}
+                                                    placeholder="Seleccionar tipografía"
+                                                />
+                                            </div>
+
+                                            <div className="subcontenedorFuenteTituloselect2">
+                                                <Select
+                                                    styles={Grosor}
+                                                    options={GrosorApi.map((item) => ({
+                                                        value: item.etiqueta,
+                                                        label: item.descripcion,
+                                                    }))}
+                                                    onChange={(selectedOption) => handleChangeGrosor(selectedOption, titulo)}
+                                                    placeholder="Grosor"
+                                                />
+
+                                                <Select
+                                                    styles={Tamaño}
+                                                    options={TamanoApi.map((item) => ({
+                                                        value: item.etiqueta,
+                                                        label: item.etiqueta,
+                                                    }))}
+                                                    onChange={(event) => handleChangeTamano(event, titulo)}
+                                                    placeholder="Tamaño"
+                                                />
+                                            </div>
+                                        </div>
+                                    )
+                                ))}
+                            </div>
                         </div>
-                        <div>
-                            {titulos.map((titulo, index) => (
-                                pasos === 2 && (titulo === "Nombre de encuesta" || titulo === "Descripción de encuesta" ||
-                                 titulo === "Leyenda" || titulo === "Texto de botones") ||
-                                pasos === 1 && (titulo === "Título de sección" || titulo === "Descripción de sección" || 
-                                titulo === "Preguntas" || titulo === "Opciones de respuesta" || titulo === "Texto de cierre de encuestas")
-                                 ? null : (
-
-                                    
-                                    <div className="contenedorFuenteTitulo" key={index}>
-                                        <div className="subcontenedorFuenteTitulo">
-                                        <span className="fuenteTitulo">{titulo}</span>
-                                        </div>
-
-                                        <div className="subcontenedorFuenteTituloselect">
-                                        <select
-                                            className="fuenteTituloSelect"
-                                            onChange={(event) => handleChangeTipografia(event, titulo)}
-                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTipografia}
-                                        >
-                                            <option value="">Seleccionar tipografía</option>
-                                            {TipografiaApi.map((item) => (
-                                            <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
-                                            ))}
-                                        </select>
-                                        </div>
-
-                                        <div className="subcontenedorFuenteTituloselect2">
-                                        <select 
-                                            className="fuenteTituloSelect2"
-                                            onChange={(event) => handleChangeGrosor(event, titulo)}
-                                            value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumGrosor}
-                                           
-                                        >
-                                            <option value="">Grosor</option>
-                                            {GrosorApi.map((item) => (
-                                            <option key={item.id} value={item.etiqueta}>{item.descripcion}</option>
-                                            ))}
-                                        </select>
-
-                                        <select 
-                                            className="fuenteTituloSelect3"
-                                            onChange={(event) => handleChangeTamano(event, titulo)}
-                                            // value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTamanio}
-
-                                            
-                                        >
-                                            <option value="">Tamaño</option>
-                                            {TamanoApi.map((item) => (
-                                            <option key={item.id} value={item.etiqueta}>{item.etiqueta}</option>
-                                            ))}
-                                        </select>
-                                        </div>
-                                    </div>
-                                )
-
-                            ))}
-                        </div>
-
-                    
                     </div>
                     <br />
                     <br />
                 </div>
-                </div>
-            
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                       
     </>
   )
 }

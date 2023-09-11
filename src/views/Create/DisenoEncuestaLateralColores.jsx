@@ -2,8 +2,6 @@ import React, { useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaColor.css'
-import { SketchPicker } from 'react-color';
-import { ChromePicker } from 'react-color';
 import CustomSketchPicker from './CustomSketchPicker';
 import { colors } from '@mui/material';
 
@@ -22,9 +20,6 @@ const DisenoEncuestaLateralColores = ( {
 } ) => {
 
     const [showTooltip, setShowTooltip] = React.useState(false);
-    const [showColorPicker, setShowColorPicker] = useState(false);
-    const [selectedColor, setSelectedColor] = useState('#fff');
-    const [selectedColorOpen, setSelectedColorOpen] = useState(false);
     const [colorEncuesta, setColorEncuesta] = useState([
         {id: 1, nombre: 'Titulo de encuesta', isOpen: false},
         { id: 2, nombre: 'Descripción de encuesta' , isOpen: false},
@@ -42,8 +37,6 @@ const DisenoEncuestaLateralColores = ( {
     const [savedColors, setSavedColors] = useState([]);
     const [estilos, setEstilos] = useState(contenEstilos);
     
-
-
     const handleClickColorSeleccionado = (index) => {
         const updatedColorEncuesta = [...colorEncuesta];
         updatedColorEncuesta[index].isOpen = true;
@@ -57,6 +50,7 @@ const DisenoEncuestaLateralColores = ( {
     };
     
     const targetRef = useRef(null);
+
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -82,9 +76,7 @@ const DisenoEncuestaLateralColores = ( {
         </Tooltip>
     );
 
-
     // lista de colores de encuesta
-
     const volverMenuPrincipal = () => {
         openMenuPrincipal(true);
         closeMenuColores(false);
@@ -180,66 +172,110 @@ const DisenoEncuestaLateralColores = ( {
             </div>
             </Col>
             <Col>
-            
                 <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
-                            <span className='cabeceraTitle'>Colores</span>
-                        </div>
-                        <div className='contenedorColorPrincipal'>
-                        {colorEncuesta.map((color, index) => (
-                            datapasos === 1 &&  (color.nombre === 'Titulo de sección' || color.nombre === 'Descripción de sección' || 
-                            color.nombre === 'Preguntas' || color.nombre === 'Opciones de respuesta' ) ? null :  (
-                            <div className="contenedorFuenteColor" key={index}>
-                                
+                    <div className="listaBancoPreguntas-2">
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo">
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                                <span className='cabeceraTitle'>Colores</span>
+                            </div>
+                            <div className='contenedorColorPrincipal'>
+                                {colorEncuesta.map((color, index) => (
+                                    datapasos === 1 &&  (color.nombre === 'Titulo de sección' || color.nombre === 'Descripción de sección' || 
+                                    color.nombre === 'Preguntas' || color.nombre === 'Opciones de respuesta' ) ? null :  (
+                                    <div className="contenedorFuenteColor" key={index}>
+                                        
+                                            
+                                            <>
+                                                <div className="subcontenedorFuenteTitulo">
+                                                    <span className="fuenteTitulo">{color.nombre}</span>
+                                                </div>
+                                                <div className="contenedorColorSeleccionado"
+                                                style={{ backgroundColor: colors[index] }}  
+                                                onClick={() => handleClickColorSeleccionado(index)}>
+                                                    {color.isOpen && (
+                                                        <div style={{ position: 'absolute', zIndex: '2', right: '70%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
+                                                            <CustomSketchPicker 
+                                                                color={colors[index]}
+                                                                onChangeComplete={(newColor) => handleChangeComplete(newColor, index, color.nombre)} 
+                                                                
+                                                            />
+                                                            <button 
+                                                                style={{marginTop: '10px', padding: '5px 10px', cursor: 'pointer'}}
+                                                                onClick={(event) => handleCloseButtonClick(event, index)}
+                                                            >
+                                                                Cerrar
+                                                            </button>
+
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </>  
+                                            
+                                        
                                     
-                                      <>
+                                    </div>
+                                    )
+                                ))}
+                            </div>
+
+                        <OverlayTrigger
+                            trigger="click"
+                            show={showTooltip}
+                            target={targetRef.current}
+                            placement="right"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={renderTooltip}
+                            onHide={() => setShowTooltip(false)}
+                        >
+                            <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                                <span
+                                    ref={targetRef}
+                                    style={{ marginLeft: '150px' }}
+                                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                />
+                            </div>
+                        </OverlayTrigger>
+                        </div>
+                    </div>
+                </div>
+            </Col>
+
+            <Col>
+                <div className="desplegado-container">
+                    <div className="listaBancoPreguntas-2">
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo" onClick={volverMenuPrincipal}>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                                <span className='cabeceraTitle'>Colores</span>
+                            </div>
+
+                            <div className='contenedorColorPrincipal'>
+                                {colorEncuesta.map((color, index) => (
+                                    <div className="contenedorFuenteColor" key={index}>
                                         <div className="subcontenedorFuenteTitulo">
                                             <span className="fuenteTitulo">{color.nombre}</span>
                                         </div>
-                                        <div className="contenedorColorSeleccionado"
-                                        style={{ backgroundColor: colors[index] }}  
-                                        onClick={() => handleClickColorSeleccionado(index)}>
-                                            {color.isOpen && (
-                                                <div style={{ position: 'absolute', zIndex: '2', right: '70%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
-                                                    <SketchPicker 
-                                                        color={colors[index]}
-                                                        onChangeComplete={(newColor) => handleChangeComplete(newColor, index, color.nombre)} 
-                                                        
-                                                    />
-                                                    <button 
-                                                        style={{marginTop: '10px', padding: '5px 10px', cursor: 'pointer'}}
-                                                        onClick={(event) => handleCloseButtonClick(event, index)}
-                                                    >
-                                                        Cerrar
-                                                    </button>
 
+                                        <div className="contenedorColorSeleccionado" onClick={() => handleClickColorSeleccionado(index)}>
+                                            {color.isOpen && (
+                                                <div style={{ position: 'absolute', zIndex: '2', right: '70%' }}>
+                                                    <CustomSketchPicker
+                                                        handleCloseColorPicker={() => handleCloseColorPicker(index)}
+                                                    />
                                                 </div>
                                             )}
                                         </div>
-                                      </>  
-                                    
-                                 
-                               
+                                    </div>
+                                ))}
                             </div>
-                            )
-                        ))}
                         </div>
-
-                    
+                        <br />
+                        <br />
                     </div>
-                    <br />
-                    <br />
                 </div>
-                </div>
-            
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                     
     </>
   )
 }

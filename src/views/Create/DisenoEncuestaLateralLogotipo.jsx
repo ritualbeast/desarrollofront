@@ -7,11 +7,38 @@ import { RadioGroup } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
+import Select from 'react-select';
+
 const helpCircleSVG = svgManager.getSVG('help-circle');
 const xSVG = svgManager.getSVG('x');
 const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 const uploadSVG = svgManager.getSVG('upload');
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '108%'
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      width:'102.5%',
+      backgroundColor: 'white',
+      color: 'black',
+      borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      boxShadow: state.isFocused ? '0 0 0 2px rgba(255, 206, 72, 0.2)' : 'none',
+      "&:hover": {
+        borderColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#ccc',
+      },
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      paddingTop:'unset',
+      paddingBottom:'unset',
+      color: state.isFocused ? 'black' : 'black',
+      backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
+    })
+};
 
 const DisenoEncuestaLaterallogotipo = ({
     openMenuPrincipal, 
@@ -22,8 +49,6 @@ const DisenoEncuestaLaterallogotipo = ({
     sendTamanoImagen,
     contenEstilos
 }) => {
-
-
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
     
@@ -31,21 +56,17 @@ const DisenoEncuestaLaterallogotipo = ({
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
     const [estilos, setEstilos] = useState(contenEstilos);  
-
-
     
     useEffect(() => {
         ListarPosicionImagen();
         setLogotipo(sendPreviewLogo);
     }, [logotipo]);
 
-
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
           sendTamanoImagen(event.target.value);
     };
     
-
     const RadioButton = ({ id, value, checked, onChange, label }) => (
         <label className="radioButton">
             <input
@@ -103,9 +124,7 @@ const DisenoEncuestaLaterallogotipo = ({
     }
 
     // consumo de posicion de pie de pagina
-    
     const [posicionImagen, setPosicionImagen] = useState([]);
-
     const ListarPosicionImagen = async () => {
         try {
             const response = await  ListarEnumeradosService('POSICION_IMAGEN')
@@ -116,13 +135,10 @@ const DisenoEncuestaLaterallogotipo = ({
     };
 
     // enviar posicion de pie de pagina
-
-
     const handleChangePosicion = (event) => {
         sendPosicionImagen(event.target.value);
     };
 
-    
     
   return (
     <>
@@ -235,10 +251,7 @@ const DisenoEncuestaLaterallogotipo = ({
                 </div>
             
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                      
     </>
   )
 }

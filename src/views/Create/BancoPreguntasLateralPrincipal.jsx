@@ -11,7 +11,7 @@ const infoSVG = svgManager.getSVG('info');
 const xSVG = svgManager.getSVG('x');
 const chevronsNighBtSVG = svgManager.getSVG('chevron-rigth-black');
 
-const BancoPreguntasLateralPrincipal = ({onObtenerPregunta}) => {
+const BancoPreguntasLateralPrincipal = ({onObtenerPregunta, contentCont}) => {
     const [activeIcon, setActiveIcon] = useState('Banco de Preguntas');
     const [showBancoPreguntas, setShowBancoPreguntas] = useState(true);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -23,7 +23,7 @@ const BancoPreguntasLateralPrincipal = ({onObtenerPregunta}) => {
     const [listarCategoriaEncuestas, setListarCategoriaEncuestas] = useState([]);
     const [openBancoPreguntas, setOpenBancoPreguntas] = useState(false);
     const [selectedCategoriaId, setSelectedCategoriaId] = useState(null);
-
+    
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -74,11 +74,15 @@ const BancoPreguntasLateralPrincipal = ({onObtenerPregunta}) => {
     const handleOpenBancoPreguntas = (idCategoriaEncuesta) => {
         setSelectedCategoriaId(idCategoriaEncuesta);
         setOpenBancoPreguntas(true);
+        setBlurBackground(true);
+        setIsModalVisible(true);
     };
 
     const handleCloseBancoPreguntas = (preguntasSeleccionadas) => {
         setOpenBancoPreguntas(false);
         onObtenerPregunta(preguntasSeleccionadas)
+        setBlurBackground(false);
+        setIsModalVisible(false);
     };
     
     return (
@@ -149,6 +153,7 @@ const BancoPreguntasLateralPrincipal = ({onObtenerPregunta}) => {
                 open={openBancoPreguntas} 
                 onClose={handleCloseBancoPreguntas} 
                 categoriaId={selectedCategoriaId}
+                contentCont={contentCont}
             />
         </div>
     )

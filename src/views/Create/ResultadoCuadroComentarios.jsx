@@ -19,7 +19,8 @@ const chevronUpSVG = svgManager.getSVG('chevron-up');
 const ResultadoCuadroComentarios = ({
     index, 
     indexSec, 
-    pregunta, 
+    pregunta,
+    opciones,
     handleEliminarPregunta, 
     handleEditarPregunta,
     informacion,
@@ -114,8 +115,8 @@ const ResultadoCuadroComentarios = ({
 
     const handleOpenEliminarPregunta = () => {
         setOpenEliminarPregunta(true)
-        setBlurBackground(false);
-        setIsModalVisible(false);
+        setBlurBackground(true);
+        setIsModalVisible(true);
     }
 
     const handleCloseEliminar = () => {
@@ -127,6 +128,8 @@ const ResultadoCuadroComentarios = ({
     const handleCloseEliminarPregunta = () => {
         setOpenEliminarPregunta(false)
         handleEliminarPregunta(index, indexSec)
+        setBlurBackground(false);
+        setIsModalVisible(false);
     }
 
     const handleIconClick = () => {
@@ -224,6 +227,7 @@ const ResultadoCuadroComentarios = ({
         {preguntaVisible[index] && (
             <textarea
                 style={{ width: '98.8%', border: '1px solid #ccc' }}
+                value={opciones[0]?.respuesta}
                 className="textodePregunta"
                 rows={5} // Ajusta el número de filas según tus necesidades
                 
@@ -248,6 +252,9 @@ const ResultadoCuadroComentarios = ({
                 setBlurBackground(false);
                 setIsModalVisible(false);
             },
+            sx: {
+                backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+            },
             }}
         >
             <Box className="encuesta_modalEliminarSeccion" sx={{ marginTop: '12%', width: '50%', height: '43%' }}>
@@ -265,7 +272,7 @@ const ResultadoCuadroComentarios = ({
                                 <span className='cancelar-eliminar'>Cancelar</span>
                             </Button>
                             <Button className='buttonDeleteEliminar' variant="contained" color="primary"
-                                onClick={() => {handleCloseEliminarPregunta(indexSec, index)}}
+                                onClick={handleCloseEliminarPregunta}
                             >
                                 <span className='eliminar'>Eliminar</span>
                             </Button>

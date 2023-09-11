@@ -25,7 +25,12 @@ const ModalVistaPrevia = ({
     squareFillSVG,
     circleFillSVG,
     triangleFillSVG,
+    configuracion4Activa,
+    configuracion5Activa,
+    opcionesRespuestaInit,
 }) => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [blurBackground, setBlurBackground] = useState(false);
     const [selectedFile, setSelectedFile] = useState()
     const [preview, setPreview] = useState()
     const [activeContent, setActiveContent] = useState('windows');   
@@ -62,6 +67,9 @@ const ModalVistaPrevia = ({
                 squareFillSVG={squareFillSVG}
                 circleFillSVG={circleFillSVG}
                 triangleFillSVG={triangleFillSVG}
+                configuracion4Activa={configuracion4Activa}
+                configuracion5Activa={configuracion5Activa}
+                opcionesRespuestaInit={opcionesRespuestaInit}
             />;
         } else {
             return null;
@@ -69,7 +77,20 @@ const ModalVistaPrevia = ({
     };
       
     return (
-        <Modal className='ModalVistaPrevia' open={open} onClose={onClose}>
+        <Modal 
+            className='ModalVistaPrevia' 
+            open={open} 
+            onClose={onClose}
+            BackdropProps={{
+                onClick: () => {
+                  setBlurBackground(false);
+                  setIsModalVisible(false);
+                },
+                sx: {
+                  backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+                },
+            }}
+        >
             <Box className='Box-ModalVistaPrevia'>
                 <div className="encuesta_modalAñadir_closeicon">
                     <h3 className='ObtenerUrl'>Vista Previa</h3>

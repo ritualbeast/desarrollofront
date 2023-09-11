@@ -12,9 +12,9 @@ const chevronsdownSVG = svgManager.getSVG('chevrons-down');
 
 
 const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion}) => {
-
     const [showTooltip, setShowTooltip] = React.useState(false);
     const targetRef = useRef(null);
+
     const handleIconClick = () => {
         setShowTooltip(false);
     };
@@ -41,7 +41,6 @@ const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion
     );
 
     // resaltar seleccion
-
     const [selectedItem, setSelectedItem] = useState(null);
 
     const handleClick = (item) => {
@@ -51,8 +50,6 @@ const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion
           setSelectedItem(item);
         }
       };
-    
-
           
     const volverMenuPrincipal = () => {
         openMenuPrincipal(true);
@@ -63,74 +60,80 @@ const DisenoEncuestaLateralTransicion = ({openMenuPrincipal, closeMenuTransicion
     <>
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
-                </div>
-                </OverlayTrigger>
-            </div>
-            </Col>
-            <Col>
-            
-                <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
-                            <span className='cabeceraTitle'>Disposición</span>
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
+
+                    <OverlayTrigger
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
+                    >
+                        <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                            <span
+                                ref={targetRef}
+                                style={{ marginLeft: '150px' }}
+                                dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                            />
                         </div>
-                        
-                        <div className="contenedorDispocision">
-                            <div
-                                className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
-                                onClick={() => handleClick(1)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: slashSVG }}/>
-                                <span className="1">Ninguna</span>
+                    </OverlayTrigger>
+                </div>
+            </Col>
+
+            <Col>
+                <div className="desplegado-container">
+                    <div className="listaBancoPreguntas-2">
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo">
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
+                                <span className='cabeceraTitle'>Disposición</span>
                             </div>
-                            <div
-                                className={`Dispocision ${selectedItem === 2 ? 'selected' : ''}`}
-                                onClick={() => handleClick(2)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsrightSVG }}/>
-                                <span className="2">Izquierda a derecha</span>
+                            
+                            <div className="contenedorDispocision">
+                                <div
+                                    className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
+                                    onClick={() => handleClick(1)}
+                                >
+                                    <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: slashSVG }}/>
+                                    <span className="1">Ninguna</span>
+                                </div>
+                                
+                                <div className="contenedorDispocision">
+                                    <div
+                                        className={`Dispocision ${selectedItem === 1 ? 'selected' : ''}`}
+                                        onClick={() => handleClick(1)}
+                                    >
+                                        <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: slashSVG }}/>
+                                        <span className="1">Ninguna</span>
+                                    </div>
+
+                                    <div
+                                        className={`Dispocision ${selectedItem === 2 ? 'selected' : ''}`}
+                                        onClick={() => handleClick(2)}
+                                    >
+                                        <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsrightSVG }}/>
+                                        <span className="2">Izquierda a derecha</span>
+                                    </div>
+
+                                    <div
+                                        className={`Dispocision ${selectedItem === 3 ? 'selected' : ''}`}
+                                        onClick={() => handleClick(3)}
+                                    >
+                                        <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsdownSVG }}/>
+                                        <span className="3">Arriba a abajo</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div
-                                className={`Dispocision ${selectedItem === 3 ? 'selected' : ''}`}
-                                onClick={() => handleClick(3)}
-                            >
-                                <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: chevronsdownSVG }}/>
-                                <span className="3">Arriba a abajo</span>
-                            </div>
+                            <br />
+                            <br />
                         </div>
                     </div>
-                    <br />
-                    <br />
-                </div>
-                </div>
-            
+                /</div>
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                      
     </>
   )
 }

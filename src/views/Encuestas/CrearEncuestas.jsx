@@ -8,7 +8,6 @@ import ModalBancoPreguntas from './ModalBancoPreguntas';
 import {ListarEncuestas} from '../../services/EncuestasServices';
 import { makeStyles } from "@material-ui/core";
 
-
 const pagination = makeStyles({
   root: {
     "& li.Mui-selected": {
@@ -27,7 +26,6 @@ const paginationStyle = {
     backgroundColor: '#f3cd4f !important',
   },
 };
-
 
 const CopySVG = svgManager.getSVG('copy');
 const VerticalSVG = svgManager.getSVG('vertical');
@@ -156,87 +154,83 @@ const CrearEncuestas = ({tipofiltro, valorfiltro, nombrefiltro, orden}) => {
     // Llama a fetchData con la primera página y el nuevo tamaño
     };
 
-  return (
-    <div>
-      
-      <ModalEliminarEncuestas open={openEliminar} onClose={handleCloseEliminar} eliminarid = {openEliminarId} eliminarEncuesta={ListarEncuestass} />
-      <ModalBancoPreguntas open={openBancoPreguntas} onClose={handleCloseBancoPreguntas} />
-      <Row className="encuestas-cuerpo">
-        {filteredEncuestas.map((encuesta) => (
-        
-            <Col xs={4} className="encuestas-cuerpo__col">
-            <div className="encuestas-titulo">
-                <h4 className="encuestas-titulo__h4">{encuesta.titulo}</h4>
-  
-                <Select
-                    className="encuestas-icon"
-                    open={isMenuOpen(encuesta.idEncuesta)}
-                    onClose={handleCloseMenu}
-                    onOpen={handleOpenMenu}
-                    IconComponent={({ className }) => (
-                        <span
-                        dangerouslySetInnerHTML={{ __html: VerticalSVG }}
-                        className={className}
-                        style={{marginRight: '4px', marginRight: '4%', top: '16%' }}
-                        />
-                    )}
-                >
-                    <MenuItem className="encuesta-item">
-                        <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
-                        Duplicar
-                    </MenuItem>
-                    <MenuItem className="encuesta-item">
-                        <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
-                        Visualizar
-                    </MenuItem>
-                    <MenuItem className="encuesta-item">
-                        <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
-                        Compartir
-                    </MenuItem>
-                    <MenuItem className="encuesta-item">
-                        <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
-                        Ver datos
-                    </MenuItem>
-                    <MenuItem className="encuesta-item">
-                        <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
-                        Publicar
-                    </MenuItem>
-                    <MenuItem className="encuesta-item" onClick={() => handleOpenEliminar(encuesta.idEncuesta)}> 
-                        <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
-                        Eliminar
-                    </MenuItem>
-                </Select>
-            </div>
-            <p>Creación: {encuesta.fechaInicio.split(' ')[0]}</p>
-              <Button variant="primary" className="encuestas-editarbutton"
-              onClick={handleOpenBancoPreguntas}
-  
-              >
-                Editar encuesta
-              </Button>
-            </Col>
-          
-        ))
-        }
-        
-        </Row>
-        <Row className="encuestas-paginacion">
-          <Col xs={12} className="encuestas-paginacion__col">
-          <TablePagination
-            rowsPerPageOptions={[9]} // Agrega las opciones de tamaño de página que necesites
-            component="div"
-            count={totalItems}
-            rowsPerPage={size}
-            page={pagina - 1} // Resta 1 para que coincida con Material-UI
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+    return (
+      <div>
+          <ModalEliminarEncuestas open={openEliminar} onClose={handleCloseEliminar} eliminarid = {openEliminarId} eliminarEncuesta={ListarEncuestass} />
+          <ModalBancoPreguntas open={openBancoPreguntas} onClose={handleCloseBancoPreguntas} />
 
-          </Col>
-        </Row>
+          <Row className="encuestas-cuerpo">
+            {filteredEncuestas.map((encuesta) => (
+                <Col xs={4} className="encuestas-cuerpo__col">
+                  <div className="encuestas-titulo">
+                      <h4 className="encuestas-titulo__h4">{encuesta.titulo}</h4>
+        
+                      <Select
+                          className="encuestas-icon"
+                          open={isMenuOpen(encuesta.idEncuesta)}
+                          onClose={handleCloseMenu}
+                          onOpen={handleOpenMenu}
+                          IconComponent={({ className }) => (
+                              <span
+                              dangerouslySetInnerHTML={{ __html: VerticalSVG }}
+                              className={className}
+                              style={{marginRight: '4px', marginRight: '4%', top: '16%' }}
+                              />
+                          )}
+                      >
+                          <MenuItem className="encuesta-item">
+                              <span dangerouslySetInnerHTML={{ __html: CopySVG }} />
+                              Duplicar
+                          </MenuItem>
+                          <MenuItem className="encuesta-item">
+                              <span dangerouslySetInnerHTML={{ __html: EyeSVG }} />
+                              Visualizar
+                          </MenuItem>
+                          <MenuItem className="encuesta-item">
+                              <span dangerouslySetInnerHTML={{ __html: ShareSVG }} />
+                              Compartir
+                          </MenuItem>
+                          <MenuItem className="encuesta-item">
+                              <span dangerouslySetInnerHTML={{ __html: DatabaseSVG }} />
+                              Ver datos
+                          </MenuItem>
+                          <MenuItem className="encuesta-item">
+                              <span dangerouslySetInnerHTML={{ __html: SendSVG }} />
+                              Publicar
+                          </MenuItem>
+                          <MenuItem className="encuesta-item" onClick={() => handleOpenEliminar(encuesta.idEncuesta)}> 
+                              <span dangerouslySetInnerHTML={{ __html: TrashSVG }} />
+                              Eliminar
+                          </MenuItem>
+                      </Select>
+                  </div>
+
+                  <p>Creación: {encuesta.fechaInicio.split(' ')[0]}</p>
+                  
+                  <Button variant="primary" className="encuestas-editarbutton"
+                    onClick={handleOpenBancoPreguntas}
+                  >
+                    Editar encuesta
+                  </Button>
+                </Col>
+            ))}
+          </Row>
+
+          <Row className="encuestas-paginacion">
+            <Col xs={12} className="encuestas-paginacion__col">
+              <TablePagination
+                rowsPerPageOptions={[9]} // Agrega las opciones de tamaño de página que necesites
+                component="div"
+                count={totalItems}
+                rowsPerPage={size}
+                page={pagina - 1} // Resta 1 para que coincida con Material-UI
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Col>
+          </Row>
       </div>
     );
-  };
-  
+};
 
 export default CrearEncuestas

@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
-import {  Box, Modal} from '@mui/material';
+import { Select, Pagination, Box, Modal} from '@mui/material';
 import svgManager from '../../assets/svg';
+import {EliminarEncuesta} from '../../services/EncuestasServices';
 import '../../styles/modalanadirFondo.css';
 
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const closeSVG = svgManager.getSVG('close');
 const trashSVG = svgManager.getSVG('trash');
+const alertSVG = svgManager.getSVG('alert');
 // crear consumo categoria de encuestas
 
 

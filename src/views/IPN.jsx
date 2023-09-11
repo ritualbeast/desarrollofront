@@ -62,6 +62,8 @@ const customStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
+    paddingTop:'unset',
+    paddingBottom:'unset',
     color: state.isFocused ? 'black' : 'black',
     backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
   })

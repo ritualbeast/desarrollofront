@@ -8,6 +8,7 @@ import $ from 'jquery'
 import { Box, Modal } from '@mui/material';
 import ModalEliminarPregunta from './ModalEliminarPregunta';
 import styled from 'styled-components';
+import { ListarEnumeradosService } from '../../services/EnumeradosServices';
 
 const trashSVG = svgManager.getSVG('trash');
 const warningLightSVG = svgManager.getSVG('warning-light');
@@ -55,19 +56,26 @@ function ResultadoValoracionEstrellas({
     indexSec, 
     pregunta, 
     opciones, 
-    color, 
-    selectedIcon, 
     handleEditarPregunta, 
     closeEliminarCPVE,
     informacion,
+    configuracion4Activa,
+    configuracion5Activa,
     configuracion6Activa,
     preguntaVisibleC,
     sendTamanoPaso2, 
     sendGrosorPaso2, 
     sendTipografiaPaso2,
     contenEstilos, 
-    sendColors
+    sendColors,
+    starFillSVG,
+    squareFillSVG,
+    circleFillSVG,
+    triangleFillSVG,
 }) {
+    console.log('opciones -->>', opciones)
+    // console.log('configuracion4Activa -->>', configuracion4Activa)
+    // console.log('configuracion5Activa -->>', configuracion5Activa)
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -86,8 +94,8 @@ function ResultadoValoracionEstrellas({
     const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
     const [preguntasStyle, setPreguntasStyle] = useState({});
     const [contentEstilos, setContentEstilos] = useState(contenEstilos);
-  
-
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
+    const [tipoIcono, setTipoIcono] = useState()
 
     useEffect(() => {
         // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
@@ -136,13 +144,17 @@ function ResultadoValoracionEstrellas({
       }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contentEstilos, sendColors]);
     
 
-    const Opcion1 = () => {
-        setNingunaOpcion(!ningunaOpcion);
+    const handleOpcionChange = (idOpcionRespuesta, value, checked) => {
+        setOpcionesRespuesta((prevOpciones) =>
+            prevOpciones.map((opcion) =>
+                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
+            )
+        );
     };
 
-    const Opcion2 = () => {
-        setOtro(!otro);
-    };
+    useEffect(() => {
+        handleOpcionChange()
+    }, [])
 
     const handleMouseEnterEditar = (index) => {
         $(`#editPreg${index +1}`).removeClass("oculto");
@@ -158,8 +170,8 @@ function ResultadoValoracionEstrellas({
     
     const handleOpenEliminarPregunta = () => {
         setOpenEliminarPregunta(true)
-        setBlurBackground(false);
-        setIsModalVisible(false);
+        setBlurBackground(true);
+        setIsModalVisible(true);
     };
     
     const handleCloseEliminar = () => {
@@ -171,6 +183,8 @@ function ResultadoValoracionEstrellas({
     const handleCloseEliminarPregunta = () => {
         closeEliminarCPVE(index);
         setOpenEliminarPregunta(false)
+        setBlurBackground(false);
+        setIsModalVisible(false);
     };
 
     const handleIconClick = () => {
@@ -205,6 +219,39 @@ function ResultadoValoracionEstrellas({
         newVisibility[index] = !newVisibility[index];
         return newVisibility;
       });
+    };
+
+    const listarEnumeradosVigencia = async () => {
+        try {
+            const response = await ListarEnumeradosService('', 6);
+            setTipoIcono(response.data.listaEnumerados);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await ListarEnumeradosService('', 6);
+                setTipoIcono(response.data.listaEnumerados);
+    
+                // Luego de obtener los datos, puedes continuar con el resto del código
+                handleOpcionChange();
+                // Resto del código...
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    
+        fetchData(); // Llama a la función asincrónica
+    }, []);    
+
+    const iconoSVG = {
+        star: starFillSVG,
+        square: squareFillSVG,
+        circle: circleFillSVG,
+        triangle: triangleFillSVG,
     };
 
     return (
@@ -268,63 +315,86 @@ function ResultadoValoracionEstrellas({
             {preguntaVisible[index] && (
                 <div>
                     <Col style={{ display: 'flex' }}>
-                        {opciones.map((opcion) => (
-                            <Col key={opcion.id} style={{ marginRight: '2%' }}>
-                                <Col>
-                                <div style={opcionesRespuestaStyle}>
-                                    {opcion.text}
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                    <span
-                                        style={{
-                                            marginLeft: '2%',
-                                            cursor: 'pointer',
-                                            marginTop: '0.8%',
-                                            fill: color[opcion.icono],
-                                            stroke: color[opcion.icono],
-                                        }}
-                                        dangerouslySetInnerHTML={{
-                                            __html: selectedIcon[opcion.icono] || opcion.icono,
-                                        }}
-                                    />
-                                </div>
+                        {opcionesRespuesta.map((opcion, index) => (
+                            opcion.respuesta !== 'Ninguna de las anteriores' &&
+                            opcion.respuesta !== 'Otra respuesta' && (
+                                <Col key={index} style={{ marginRight: '2%' }}>
+                                    <Col>
+                                        <div style={{ textAlign: 'center' }}>
+                                            {opcion.respuesta}
+                                        </div>
+                                        <br />
+                                        <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                            <span
+                                                style={{
+                                                    marginLeft: '2%',
+                                                    cursor: 'pointer',
+                                                    marginTop: '0.8%',
+                                                    fill: opcion.selectedColor,
+                                                    stroke: opcion.selectedColor,
+                                                }}
+                                                dangerouslySetInnerHTML={{
+                                                    __html:
+                                                    iconoSVG[opcion.selectedIcon] ||
+                                                    (tipoIcono ? iconoSVG[tipoIcono.find((icono) => icono.id === opcion.icono)?.etiqueta] : '') ||
+                                                    opcion.icono, // Utiliza el icono si no se encuentra una etiqueta coincidente
+                                                }}
+                                            />
+                                        </div>
+                                    </Col>
                                 </Col>
-                            </Col>
+                            )
                         ))}
                     </Col>
-
-                    <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                        <Col style={{display: 'flex'}}>
-                            <div>
-                                <HiddenRadioButton
-                                    type="radio"
-                                    checked={ningunaOpcion}
-                                    onChange={Opcion1}
-                                />
-                                <StyledRadioButton checked={ningunaOpcion} />
-                            </div>
-                            <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                Ninguna Opcion
-                            </div>
-                        </Col>
-                    </Col>
-
-                    <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                        <Col style={{display: 'flex'}}>
-                            <div>
-                                <HiddenRadioButton
-                                    type="radio"
-                                    checked={otro}
-                                    onChange={Opcion2}
-                                />
-                                <StyledRadioButton checked={otro} />
-                            </div>
-                            <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                Otro
-                            </div>
-                        </Col>
-                    </Col>
                 </div>
+            )}
+
+            {configuracion4Activa && (
+                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                    <Col style={{ display: 'flex' }}>
+                        <div>
+                            <HiddenRadioButton
+                                type={opcionesRespuesta.type}
+                                checked={opcionesRespuesta.checked}
+                                onChange={() =>
+                                    handleOpcionChange(
+                                    opcionesRespuesta.idOpcionRespuesta,
+                                    opcionesRespuesta.respuesta,
+                                    opcionesRespuesta.checked
+                                    )
+                                }
+                            />
+                            <StyledRadioButton checked={opcionesRespuesta.checked} />
+                        </div>
+                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                            Ninguna de las anteriores
+                        </div>
+                    </Col>
+                </Col>
+            )}
+
+            {configuracion5Activa && (
+                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                    <Col style={{ display: 'flex' }}>
+                        <div>
+                            <HiddenRadioButton
+                                type={opcionesRespuesta.type}
+                                checked={opcionesRespuesta.checked}
+                                onChange={() =>
+                                    handleOpcionChange(
+                                    opcionesRespuesta.idOpcionRespuesta,
+                                    opcionesRespuesta.respuesta,
+                                    opcionesRespuesta.checked
+                                    )
+                                }
+                            />
+                            <StyledRadioButton checked={opcionesRespuesta.checked} />
+                        </div>
+                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                            Otra respuesta
+                        </div>
+                    </Col>
+                </Col>
             )}
 
             <Modal
@@ -344,6 +414,9 @@ function ResultadoValoracionEstrellas({
                 setOpenEliminarPregunta(false);
                     setBlurBackground(false);
                     setIsModalVisible(false);
+                },
+                sx: {
+                    backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
                 },
                 }}
             >

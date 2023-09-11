@@ -142,6 +142,9 @@ const CuadroComentarios = ({
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
         setIsActiveLogica(true);
+        if (mostrarEditar === true) {
+            setMostrarEditar(mostrarEditar)
+        }
     };
 
     const handleConfiguracion = () => {
@@ -151,6 +154,9 @@ const CuadroComentarios = ({
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
         setIsActiveLogica(true);
+        if (mostrarConfiguracion === true) {
+            setMostrarConfiguracion(mostrarConfiguracion)
+        }
     };
 
     const handleLogica = () => {
@@ -160,6 +166,9 @@ const CuadroComentarios = ({
         setIsActiveLogica(false);
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
+        if (mostrarLogica === true) {
+            setMostrarLogica(mostrarLogica)
+        }
     };
 
     const handleSwitchConfigurar1 = () => {

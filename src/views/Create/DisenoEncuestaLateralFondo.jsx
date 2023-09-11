@@ -39,31 +39,10 @@ const DisenoEncuestaLaterallogotipo = ({
     const handleCloseFondo = () => {
         setOpenFondo(false);
     }
+
     const handleOpenFondo = () => {
         setOpenFondo(true);
     }
-
-    const ContenedorTamanoLogotipo = () => {
-        const [tamanoSeleccionado, setTamanoSeleccionado] = useState('1');
-    }
-    const handleChangeTamano = (event) => {
-          setTamanoSeleccionado(event.target.value);
-    };
-    
-
-    const RadioButton = ({ id, value, checked, onChange, label }) => (
-        <label className="radioButton">
-            <input
-            type="radio"
-            id={id}
-            value={value}
-            checked={checked}
-            onChange={onChange}
-            />
-            <span className="checkmark"></span>
-            {label}
-        </label>
-        );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -112,8 +91,6 @@ const DisenoEncuestaLaterallogotipo = ({
         setSelectedFile(imagen);
 
     }
-
-    
     
   return (
     <>
@@ -125,89 +102,49 @@ const DisenoEncuestaLaterallogotipo = ({
 
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Fondo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Fondo</h2>
+
+                    <OverlayTrigger
+                        trigger="click"
+                        show={showTooltip}
+                        target={targetRef.current}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={renderTooltip}
+                        onHide={() => setShowTooltip(false)}
+                    >
+                    <div className="help-icon" onClick={() => setShowTooltip(!showTooltip)}>
+                        <span
+                            ref={targetRef}
+                            style={{ marginLeft: '150px' }}
+                            dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                        />
+                    </div>
+                    </OverlayTrigger>
                 </div>
-                </OverlayTrigger>
-            </div>
             </Col>
+
             <Col>
-            
                 <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}  onClick={volverMenuPrincipal}/> 
-                            <span className='cabeceraTitle'>Fondo</span>
-                        </div>
-                        {/* <div className="contenedorLogotipo">
-                            <div className='buttonLogotipo' onClick={handleOpenFondo}>
-                                <span className='buttonLogotipoText'>Imagen</span>
-                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'5%'}}>
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo" style={{cursor:'pointer'}}  onClick={volverMenuPrincipal}>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/> 
+                                <span className='cabeceraTitle'>Fondo</span>
                             </div>
-                        
-                        </div> */}
-                        {selectedFile != undefined ? (
-                            <>
-                                <img
-                                     src={URL.createObjectURL(selectedFile)}
-                                    alt="preview"
-                                    style={{ height: '92px', width: '70%' }}
-                                    className="imagenLogotipoEncuesta"
-                                />
-                                <div>
-                                    <span dangerouslySetInnerHTML={{ __html: trashSVG }} style={{ cursor: 'pointer' }} onClick={() => setSelectedFile(undefined)} />
 
-
+                            <div className="contenedorLogotipo">
+                                <div className='buttonLogotipo' onClick={handleOpenFondo}>
+                                    <span className='buttonLogotipoText'>Imagen</span>
+                                    <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
                                 </div>
-                                
-
-                            </>
-                       
-                        ) : 
-                        <div className="contenedorLogotipo">
-                            <div className='buttonLogotipo' onClick={handleOpenFondo}>
-                                <span className='buttonLogotipoText'>Imagen</span>
-                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
                             </div>
-                        
                         </div>
-
-
-
-                        }
-                        
-                        
-                   
-                    
-                    
                     </div>
                 </div>
-                </div>
-            
             </Col>
-        </Col>
-       
-                                
-                                
+        </Col>                      
     </>
   )
 }
