@@ -597,7 +597,19 @@ const NuevaEncuesta = ({
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria) => {
+      
+      if (complementaria) {
+        console.log(indicePreg, indiceSec);
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        contenidoActual[indicePreg].preguntasComplementarias = [opcionesRespuesta] ;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        setContentCont(nuevoEstado);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+      } else {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta;
@@ -621,6 +633,7 @@ const NuevaEncuesta = ({
       // nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      }
     };
     
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
