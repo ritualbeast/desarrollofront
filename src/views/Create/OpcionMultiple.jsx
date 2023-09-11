@@ -646,7 +646,8 @@ const OpcionMultiple = ({
         if (configuracion2)
         {
             console.log('si entra a configuracion 2')
-            onAceptar(posicionPregunta, posicionContentCont, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
+            console.log(indice, indiceSec )
+            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont);
         }
         else
         {
@@ -910,7 +911,7 @@ const OpcionMultiple = ({
                         </Col>
                         {configuracion2 && (
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
-                                <select className='selectConfigurar' onChange={handleComplemetaria}>
+                                <select className='selectConfigurar' onChange={handleComplemetaria} value={posicionContentCont}>
                                     <option value="" selected disabled hidden>Seleccionar Pregunta</option>
                                     {todasLasPreguntasConPosiciones.map((pregunta, index) => (
                                         <option key={index} value={JSON.stringify(pregunta)}>

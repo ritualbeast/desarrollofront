@@ -565,17 +565,46 @@ const NuevaEncuesta = ({
       setContentCont(nuevoEstado);
     };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
+      const preguntaComplementaria = {
+        pregunta: pregunta,
+        nemonico: '1S_1P',
+        idTipoPregunta: 1,
+        orden: indiceSec,
+        requerida: '',
+        placeHolder: 'seleccione',
+        mensajeErrorRequerido: '',
+        mensajeError: '',
+        tipoArchivo: '',
+        pesoArchivo: '',
+        multipleRespuesta:  multipleRespuesta,
+        ponderacion: ponderacion,
+        configuracionPregunta: configuraciongeneral,
+        opcionesRespuesta: opcionesRespuesta,
+      };
+
       
       if (complementaria) {
-        console.log(indicePreg, indiceSec);
+        
         const nuevoEstado = [...contentCont];
-        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-        contenidoActual[indicePreg].preguntasComplementarias = [opcionesRespuesta] ;
-        nuevoEstado[indiceSec].preguntas = contenidoActual;
-        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
+        if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
+        contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+        nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+        nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+        // contenidoActual.splice(posicionPregunta, 1);
         setContentCont(nuevoEstado);
         setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+        } else {
+          const nuevoEstado = [...contentCont];
+          const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
+          contenidoActual[posicionPregunta].preguntasComplementarias = [preguntaComplementaria];
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          setContentCont(nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+        }
 
       } else {
       const nuevoEstado = [...contentCont];
