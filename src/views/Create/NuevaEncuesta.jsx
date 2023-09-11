@@ -585,7 +585,8 @@ const NuevaEncuesta = ({
 
       
       if (complementaria) {
-        
+        console.log(contentCont);
+        console.log(contentCont[indiceSec]);
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
@@ -605,6 +606,7 @@ const NuevaEncuesta = ({
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
         }
+        contentCont.splice(indiceSec, 1);
 
       } else {
       const nuevoEstado = [...contentCont];
