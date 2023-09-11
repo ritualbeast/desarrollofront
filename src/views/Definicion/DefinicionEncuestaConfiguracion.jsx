@@ -37,7 +37,9 @@ const customStyles = {
 };
 
 const DefinicionEncuestaConfiguracion =  forwardRef(({
-    closeMenuConfiguracion, sendDatosConfiguracionEncuesta,contentInit} , ref) => {
+    closeMenuConfiguracion, 
+    sendDatosConfiguracionEncuesta,contentInit
+} , ref) => {
     const [showTooltip, setShowTooltip] = React.useState(false);
     const [fechaInicioSeleccionada, setFechaInicioSeleccionada] = useState(null);
     const [datosConfiguracion, setDatosConfiguracion] = useState(contentInit);
@@ -45,7 +47,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const targetRef = useRef(null);
 
     useEffect(() => {  
-        
         ListarVigencia();
         ListarCategoriaEncuesta();
     }, []); 
@@ -101,8 +102,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         label: 'Seleccionar tipo de vigencia',
     });
 
-    
-    
     const ListarVigencia = async () => {
         try {
             const response = await  ListarEnumeradosService('TIPO_VIGENCIA')
@@ -144,18 +143,12 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                     value: datosConfiguracion.idCategoriaEncuesta,
                     label: datosConfiguracion.nombreCategoria,
                 });
-
-            }
-
-
-            else if (defaultTipo) {
-            
-            setDatosConfiguracion({...datosConfiguracion, 
-                idCategoriaEncuesta: defaultTipo.idCategoriaEncuesta,
-                nombreCategoria: defaultTipo.nombre
-            });
+            } else if (defaultTipo) {
+                setDatosConfiguracion({...datosConfiguracion, 
+                    idCategoriaEncuesta: defaultTipo.idCategoriaEncuesta,
+                    nombreCategoria: defaultTipo.nombre
+                });
             } 
-            
         } catch (error) {
             console.error(error);
         }
@@ -164,13 +157,12 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     // seleccion de categoria
     const handleChangeCategoria = (selectedOption) => {
         setDatosConfiguracion({
-          ...datosConfiguracion,
-          idCategoriaEncuesta: selectedOption.value,
+            ...datosConfiguracion,
+            idCategoriaEncuesta: selectedOption.value,
             nombreCategoria: selectedOption.label,
-          
         });
         setSelectedCategoriaEncuesta(selectedOption);
-      };
+    };
 
     // seleccion de vigencia
     const [verFechaInicio, setVerFechaInicio] = useState(false);
@@ -181,20 +173,17 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
             ...datosConfiguracion,
             enumTipoVigencia: selectedOption.value,
             vigencia: selectedOption.label,
-            
         });
         setSelectedVigencia(selectedOption);
         if (selectedOption.value == '3') {
             setVerFechaInicio(true);
             setVerFechaFin(false);
             setVerCantidadRespuestas(false);
-        }
-        else if (selectedOption.value == '5') {
+        } else if (selectedOption.value == '5') {
             setVerFechaInicio(true);
             setVerFechaFin(true);
             setVerCantidadRespuestas(false);
-        }
-        else {
+        } else {
             setVerFechaInicio(false);
             setVerFechaFin(false);
             setVerCantidadRespuestas(true);
@@ -207,9 +196,6 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
         const fechaInicio = new Date(event.target.value);
         const fechaActual = new Date();
         fechaActual.setHours(0, 0, 0, 0);
-
-        
-
         if (fechaInicio >= fechaActual) {
             setDatosConfiguracion({
                 ...datosConfiguracion,
@@ -225,19 +211,16 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
     const handleChangeFechaFin = (event) => {
         const fechaFin = new Date(event.target.value);
         const fechaInicio = new Date(fechaInicioSeleccionada);
-
         if (fechaFin >= fechaInicio) {
             setDatosConfiguracion({
                 ...datosConfiguracion,
                 fechaFin: event.target.value + ' 23:59:59',
             });
-            
         } else {
             alert("La fecha de fin no puede ser menor a la fecha de inicio");
         }
     };
     
-   
   return (
     <>
         <Col className="encuesta-Segundocuerpo2">
@@ -270,7 +253,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
 
             <Col>
                 <div className="desplegado-container">
-                    <div className="listaBancoPreguntas-2">
+                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'5%'}}>
                         <div className="fondo-lista">
                             <div className="subcontenedorFuenteTitulo">
                                 <span className="fuenteTitulo">Categoria</span>
@@ -286,7 +269,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                                     }))}
                                     value={selectedCategoriaEncuesta} // Utilizar selectedCategoriaEncuesta en lugar de datosConfiguracion.categoria
                                 />
-                                </div>
+                            </div>
 
                             <div className="subcontenedorFuenteTitulo">
                                 <span className="fuenteTitulo">Vigencia</span>
@@ -303,60 +286,58 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
                                     value={selectedVigencia}
                                 />
                             </div>
+
                             {verFechaInicio && (
                                 <>
                                     <div className="subcontenedorFuenteTitulo">
-                                    <span className="fuenteTitulo">Fecha inicio</span>
+                                        <span className="fuenteTitulo">Fecha inicio</span>
                                     </div>
         
                                     <div className="subcontenedorFuenteTitulo">
-                                        <input type="date" className="inputFechaInicio"
-                                        value={datosConfiguracion.fechaInicio.split(' ')[0]} 
-                                        onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} />
+                                        <input 
+                                            type="date" 
+                                            className="inputFechaInicio"
+                                            value={datosConfiguracion.fechaInicio.split(' ')[0]} 
+                                            onChange={handleChangeFechaInicio} min={fechaActual.toISOString().split('T')[0]} 
+                                        />
                                     </div>
                                 </>
-                            
                             )}
 
                             {verFechaFin && (
                                 <>  
                                     <div className="subcontenedorFuenteTitulo">
-                                    <span className="fuenteTitulo">Fecha Fin</span>
+                                        <span className="fuenteTitulo">Fecha Fin</span>
                                     </div>
 
                                     <div className="subcontenedorFuenteTitulo">
-                                        <input type="date" className="inputFechaFin" 
-                                        value={datosConfiguracion.fechaFin.split(' ')[0]}
-                                        onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} />
+                                        <input 
+                                            type="date" 
+                                            className="inputFechaFin" 
+                                            value={datosConfiguracion.fechaFin.split(' ')[0]}
+                                            onChange={handleChangeFechaFin} disabled={!fechaInicioSeleccionada} min={fechaInicioSeleccionada ? fechaInicioSeleccionada.split(' ')[0] : ''} 
+                                        />
                                     </div>
                                 
                                 </>
                             )}
+
                             {verCantidadRespuestas && (
                                 <>
                                     <div className="subcontenedorFuenteTitulo">
-                                    <span className="fuenteTitulo">Cantidad de respuestas</span>
+                                        <span className="fuenteTitulo">Cantidad de respuestas</span>
                                     </div>
 
                                     <div className="subcontenedorFuenteTitulo">
                                         <input type="number" className="inputCantidadRespuestas" 
-                                        value={datosConfiguracion.cantidadRespuestas} 
-                                        onChange={(event) => setDatosConfiguracion({
+                                            value={datosConfiguracion.cantidadRespuestas} 
+                                            onChange={(event) => setDatosConfiguracion({
                                             ...datosConfiguracion,
                                             cantidadRespuestas: event.target.value,
                                         })} />
                                     </div>
                                 </>
                             )}
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-
-                            
                         </div>
                     </div>
                 </div>

@@ -115,6 +115,7 @@ const NuevaEncuesta = ({
     const [fondo, setFondo] = useState();
     const [configuracion4, setConfiguracion4] = useState(); 
     const [configuracion5, setConfiguracion5] = useState();
+    // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
 
   useEffect(() => {
     setImagenFondo(sendImagenFondo);
@@ -122,68 +123,45 @@ const NuevaEncuesta = ({
     let newStylecontent = { ...estiloss};
     if (titulotamano === 'Título de sección') {
       newStyle.fontSize = `${tamano}px`;
-      
       newStylecontent.fuente.tituloSeccion.enumTamanio = tamano;
-    
-    }
-    if (tituloGrosor === 'Título de sección') {
+    } if (tituloGrosor === 'Título de sección') {
       newStyle.fontWeight = grosor;
       newStylecontent.fuente.tituloSeccion.enumGrosor = grosor;
-    }
-    if (tituloTipografia === 'Título de sección') {
+    } if (tituloTipografia === 'Título de sección') {
       newStyle.fontFamily = tipografia;
       newStylecontent.fuente.tituloSeccion.enumFuente = tipografia;
-    }
-    if (Object.keys(newStyle).length > 0) {
+    } if (Object.keys(newStyle).length > 0) {
     setTituloStyle(newStyle);
-    }
-    let newStyle2 = {};
+    } let newStyle2 = {};
     if (titulotamano === 'Descripción de sección') {
       newStyle2.fontSize = `${tamano}px`;
       newStylecontent.fuente.descripcionSeccion.enumTamanio = tamano;
-    }
-    if (tituloGrosor === 'Descripción de sección') {
+    } if (tituloGrosor === 'Descripción de sección') {
       newStyle2.fontWeight = grosor;
       newStylecontent.fuente.descripcionSeccion.enumGrosor = grosor;
-
-    }
-    if (tituloTipografia === 'Descripción de sección') {
+    } if (tituloTipografia === 'Descripción de sección') {
       newStyle2.fontFamily = tipografia;
       newStylecontent.fuente.descripcionSeccion.enumFuente = tipografia;
 
-    }
-    if (Object.keys(newStyle2).length > 0) {
+    } if (Object.keys(newStyle2).length > 0) {
     setDescripcionStyle(newStyle2);
-    }
-    setEstilos(newStylecontent);
+    } setEstilos(newStylecontent);
 
     if (estiloss.fondo.colorFondo !== '') {
-      
       setFondo(estiloss.fondo.colorFondo);
-    }
-
-    if (estiloss.fuente.tituloSeccion.color !== '') {
-      
+    } if (estiloss.fuente.tituloSeccion.color !== '') {
       setTituloStyle({ color: estiloss.fuente.tituloSeccion.color });
-    }
-
-    if (estiloss.fuente.descripcionSeccion.color !== '') {
-      
+    } if (estiloss.fuente.descripcionSeccion.color !== '') {
       setDescripcionStyle({ color: estiloss.fuente.descripcionSeccion.color });
     }
-
-
 
     setLeerPosicionLogotipo(sendPosicionLogotipo);
     setLeerTamanoLogotipo(sendTamanoLogotipo);
     setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
     setEstilos(contenEstilos);
-
   }, [tamano, grosor, tipografia, imagenFondo, 
     sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss, sendColors
-  
-  
   ]);
   
     const handleOpenFondo = () => {
@@ -265,7 +243,31 @@ const NuevaEncuesta = ({
     const handleSeccionCierre = () => {
       setShowModal(true);
       setNuevaSeccionVisible(false);
-    };    
+    };
+
+    useEffect(() => {
+      if (obtenerPreg && obtenerPreg.length > 0) {
+        // Filtrar las preguntas que son de tipo "OM"
+        const preguntasOM = obtenerPreg.filter(preg => preg.tipoPregunta === 'OM');
+        const preguntasVE = obtenerPreg.filter(preg => preg.tipoPregunta === 'VE');
+        const preguntasCA = obtenerPreg.filter(preg => preg.tipoPregunta === 'CA');
+        const preguntasCC = obtenerPreg.filter(preg => preg.tipoPregunta === 'CC');
+    
+        if (preguntasOM.length > 0) {
+          const seccionIndex = 0; // Puedes cambiar esto para añadir las preguntas a una sección diferente
+          handleOptionMultiple(seccionIndex, preguntasOM, true, 'true');
+        } if (preguntasVE.length > 0) {
+          const seccionIndex = 0;
+          handleValoracionEstrellas(seccionIndex, preguntasVE, true, 'true');
+        } if (preguntasCA.length > 0) {
+          const seccionIndex = 0;
+          handleCargaArchivo(seccionIndex, preguntasCA, true, 'true')
+        } if (preguntasCC.length > 0) {
+          const seccionIndex = 0;
+          handleCuadroComentarios(seccionIndex, preguntasCC, true, 'true')
+        }
+      }
+    }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleOptionMultiple = (index, preguntas, saveValue = false, cancelarValue = '') => {
       if (!Array.isArray(preguntas)) {
@@ -356,6 +358,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      // setOpcionesRespuesta(preguntas[0].opcionesRespuesta)
     };
 
     const handleMatrizValoracion = () => {
@@ -424,30 +427,6 @@ const NuevaEncuesta = ({
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
-
-    useEffect(() => {
-      if (obtenerPreg && obtenerPreg.length > 0) {
-        // Filtrar las preguntas que son de tipo "OM"
-        const preguntasOM = obtenerPreg.filter(preg => preg.tipoPregunta === 'OM');
-        const preguntasVE = obtenerPreg.filter(preg => preg.tipoPregunta === 'VE');
-        const preguntasCA = obtenerPreg.filter(preg => preg.tipoPregunta === 'CA');
-        const preguntasCC = obtenerPreg.filter(preg => preg.tipoPregunta === 'CC');
-    
-        if (preguntasOM.length > 0) {
-          const seccionIndex = 0; // Puedes cambiar esto para añadir las preguntas a una sección diferente
-          handleOptionMultiple(seccionIndex, preguntasOM, true, true);
-        } if (preguntasVE.length > 0) {
-          const seccionIndex = 0;
-          handleValoracionEstrellas(seccionIndex, preguntasVE, true, true);
-        } if (preguntasCA.length > 0) {
-          const seccionIndex = 0;
-          handleCargaArchivo(seccionIndex, preguntasCA, true, true)
-        } if (preguntasCC.length > 0) {
-          const seccionIndex = 0;
-          handleCuadroComentarios(seccionIndex, preguntasCC, true, true)
-        }
-      }
-    }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleEditarTitulo = (index) => {
       setMostrarContenedorC((prevState) => {
@@ -585,8 +564,6 @@ const NuevaEncuesta = ({
         $(`#NuevaPreg${index +1}`).addClass("inactive");
         $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
         $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
-        
-        
       }else{
         $(`#NuevaPregVisi${index +1}`).removeClass("ocultar");
         $(`#NuevaPreg${index +1}`).addClass("active");
@@ -679,7 +656,6 @@ const NuevaEncuesta = ({
       setContentCont(nuevoEstado);
     };
 
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState();
     const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
@@ -705,7 +681,6 @@ const NuevaEncuesta = ({
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
       setConfiguracion4(configuracion4); 
       setConfiguracion5(configuracion5);
-      setOpcionesRespuesta(opcionesRespuesta)
     };
 
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
@@ -714,7 +689,7 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-      console.log(tempCont[0].contentPreg[0].opcionesRespuesta)
+      console.log(tempCont[0].preguntas[0].opcionesRespuesta)
     };
 
     const handleCancelarCargaArchivos = (indicePreg, indiceSec) => {
@@ -1081,7 +1056,7 @@ const NuevaEncuesta = ({
                                   indice={indexp} 
                                   indiceSec = {index} 
                                   save={preg.save}
-                                  contentPreg = {preg}
+                                  preguntas = {preg}
                                   closeopmul={handleCancelarOpcionMultiple} 
                                   onAceptar={handleAceptarOpcionMultiple} 
                                   handleEditarPregunta={handleEditarOpcionMultiple}
@@ -1103,7 +1078,7 @@ const NuevaEncuesta = ({
                                   indice={indexp} 
                                   indiceSec = {index} 
                                   save={preg.save}
-                                  contentPreg = {preg}
+                                  preguntas = {preg}
                                   closeVariacionEstrellas={handleCancelarValoracionEstrellas}
                                   onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
                                   handleEditarPregunta={handleEditarValoracionEstrellas}
@@ -1124,7 +1099,7 @@ const NuevaEncuesta = ({
                                   indice={indexp} 
                                   indiceSec = {index}
                                   save={preg.save}
-                                  contentPreg = {preg}
+                                  preguntas = {preg}
                                   closeCargaArchivos={handleCancelarCargaArchivos}
                                   handleCargaArchivos={handleAceptarCargaArchivos}
                                   handleEditarPregunta={handleEditarCargaDatos}
@@ -1145,7 +1120,7 @@ const NuevaEncuesta = ({
                                   indice={indexp}
                                   indiceSec = {index}
                                   save={preg.save}
-                                  contentPreg = {preg}
+                                  preguntas = {preg}
                                   closeCuadroComentarios={handleCancelarCuadroComentarios}
                                   handleCuadroComentarios={handleAceptarCuadroComentarios}
                                   handleEditarPregunta={handleEditarCuadroComentarios}
@@ -1184,8 +1159,8 @@ const NuevaEncuesta = ({
                             >
                               <Row className='opciones-estilos' style={{width: '25%', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', position: 'absolute', zIndex: '2', background: 'white', marginTop: '9%' }}>
                                 <Col 
-                                className='container-newContendorPregunta-pt1' 
-                                onClick={() => { 
+                                  className='container-newContendorPregunta-pt1' 
+                                  onClick={() => { 
                                     // Define la pregunta predeterminada
                                     const defaultPregunta = [{ 
                                       pregunta: '' // Puedes definir más propiedades aquí si es necesario
@@ -1198,11 +1173,11 @@ const NuevaEncuesta = ({
                                 </Col>
                                     
                                 <Col className='container-newContendorPregunta-pt2' 
-                                onClick={() => {
-                                  const defaultPregunta =[{
-                                    pregunta:''
-                                  }]
-                                  handleValoracionEstrellas(index, defaultPregunta)}}
+                                  onClick={() => {
+                                    const defaultPregunta =[{
+                                      pregunta:''
+                                    }]
+                                    handleValoracionEstrellas(index, defaultPregunta)}}
                                 >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: starSVG }}/>
                                   <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'VE')?.descripcion}</p>
@@ -1434,7 +1409,7 @@ const NuevaEncuesta = ({
         { openVistaPrevia && <ModalVistaPrevia
             open={openVistaPrevia}
             onClose={handleCloseVistaPrevia}
-            contentCont={contentCont}
+            contentContInit={contentCont}
             showModal={showModal}
             sendTamanoPaso2={sendTamanoPaso2}
             sendGrosorPaso2={sendGrosorPaso2}
@@ -1444,9 +1419,6 @@ const NuevaEncuesta = ({
             squareFillSVG={squareFillSVG}
             circleFillSVG={circleFillSVG}
             triangleFillSVG={triangleFillSVG}
-            configuracion4Activa={configuracion4}
-            configuracion5Activa={configuracion5}
-            opcionesRespuestaInit={opcionesRespuesta}
         />
         }
     </>

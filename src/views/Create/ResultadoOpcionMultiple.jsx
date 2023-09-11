@@ -20,7 +20,7 @@ const chevronUpSVG = svgManager.getSVG('chevron-up');
 const CustomCheckBox = styled.label`
   position: relative;
   display: inline-block;
-  width: 20px;
+  width: 50%;
   height: 20px;
   background-color: ${(props) => (props.checked ? 'red' : 'white')}; /* Cambiar el color rojo aquí */
   margin-right: 5px;
@@ -46,6 +46,7 @@ const StyledCheckBox = styled.div`
   margin-top: 3%;
   margin-left: 0.4%;
   margin-right: 2%;
+  cursor: pointer;
 
   &:after {
     content: '${(props) => (props.checked ? '\u2713' : '')}';
@@ -352,12 +353,19 @@ const ResultadoOpcionMultiple = ({
                     name={`opcion_${index}`}
                     value={opcion.id}
                     checked={opcion.checked}
-                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'radio')}
+                    onChange={() => 
+                      handleOpcionChange(
+                        opcion.idOpcionRespuesta, 
+                        opcion.respuesta, 
+                        opcion.checked, 
+                        'radio'
+                      )
+                    }
                   />
                   <StyledRadioButton checked={opcion.checked}/>
                 </div>
               )}
-              <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '50%'}}>
+              <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
                 {opcion.respuesta}
               </div>
             </CustomCheckBox>

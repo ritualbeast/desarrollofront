@@ -95,7 +95,7 @@ const CuadroComentarios = ({
     indice, 
     indiceSec, 
     save, 
-    contentPreg, 
+    preguntas, 
     closeCuadroComentarios, 
     handleCuadroComentarios, 
     handleEditarPregunta, 
@@ -121,9 +121,9 @@ const CuadroComentarios = ({
     const [configuracion2, setConfiguracion2] = useState(false);
     const [configuracion3, setConfiguracion3] = useState(false);
     const [configuracion4, setConfiguracion4] = useState(false);
-    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
-    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
-    const opcionesApi = contentPreg.opcionesRespuesta ?? [];
+    const [pregunta, setPregunta] = useState(preguntas.pregunta);
+    const [preguntaTemp, setPreguntaTemp] = useState(preguntas.pregunta);
+    const opcionesApi = preguntas.opcionesRespuesta ?? [];
     const [opcionesRespuesta, setOpcionesRespuesta] = useState(() =>
         opcionesApi.map((opcionApi) => ({
         id: opcionApi.idOpcionRespuesta,
@@ -250,14 +250,14 @@ const CuadroComentarios = ({
     }, [])
 
     useEffect(() => {
-        setPreguntaTemp(contentPreg.pregunta)
-        setPregunta(contentPreg.pregunta)
-        const nuevasOpcionesRespuesta = contentPreg.opcionesRespuesta?.map((opcionApi) => ({
+        setPreguntaTemp(preguntas.pregunta)
+        setPregunta(preguntas.pregunta)
+        const nuevasOpcionesRespuesta = preguntas.opcionesRespuesta?.map((opcionApi) => ({
             id: opcionApi.idOpcionRespuesta,
             respuesta: opcionApi.respuesta,
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
-    }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
+    }, [contentCont, preguntas.pregunta, preguntas.opcionesRespuesta]);
 
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)

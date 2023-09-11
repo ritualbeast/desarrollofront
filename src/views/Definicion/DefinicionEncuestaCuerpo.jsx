@@ -231,9 +231,9 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     const datosEncuesta = {
       imagenCabecera: preview64,
       imagenPie: preview64_2,
-      nombre: inputNombreRef.current.value,
-      descripcion: inputDescripcionRef.current.value,
-      leyenda: inputLeyendaRef.current.value
+      // nombre: inputNombreRef.current.value,
+      // descripcion: inputDescripcionRef.current.value,
+      // leyenda: inputLeyendaRef.current.value
     };
 
     // Enviar los datos a la función prop
@@ -315,9 +315,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
         setPreview2(null);
     }
   };
-  
-
-  
 
   const handleEnviarNombre = (e) => {
     const nuevoEstado = { ...datosDefinicionEncuesta};

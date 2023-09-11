@@ -2,10 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Col, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import svgManager from '../../assets/svg';
 import '../../styles/disenoEncuestaLogo.css'
-import Logo from '../../assets/img/LOGO_VERIS.jpg'
-import { RadioGroup } from '@material-ui/core';
-import { FormControlLabel } from '@material-ui/core';
-import { Radio } from '@material-ui/core';
 import { ListarEnumeradosService } from '../../services/EstilosServices';
 import Select from 'react-select';
 
@@ -49,9 +45,7 @@ const DisenoEncuestaLaterallogotipo = ({
     sendTamanoImagen,
     contenEstilos
 }) => {
-    const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
     const [showTooltip, setShowTooltip] = React.useState(false);
-    
     const [filaSeleccionada, setFilaSeleccionada] = useState(null);
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
@@ -79,7 +73,7 @@ const DisenoEncuestaLaterallogotipo = ({
             <span className="checkmark"></span>
             {label}
         </label>
-        );
+    );
   
     const targetRef = useRef(null);
     const handleIconClick = () => {
@@ -107,10 +101,7 @@ const DisenoEncuestaLaterallogotipo = ({
         </Tooltip>
     );
 
-    
-
     // lista tamano
-
     const tamano = [
         { id: 1, nombre: 'Tamaño actual' },
         { id: 2, nombre: 'Pequeño' },
@@ -139,117 +130,98 @@ const DisenoEncuestaLaterallogotipo = ({
         sendPosicionImagen(event.target.value);
     };
 
-    
   return (
     <>
-
         <Col className="encuesta-Segundocuerpo2">
             <Col>
-            <div className="encuesta-subtitulo2">
-                <h2 className="encuesta-subtitulo-2">Estilo</h2>
-                <OverlayTrigger
-                trigger="click"
-                show={showTooltip}
-                target={targetRef.current}
-                placement="right"
-                delay={{ show: 250, hide: 400 }}
-                overlay={renderTooltip}
-                onHide={() => setShowTooltip(false)}
-                >
-                <div
-                    className="help-icon"
-                    onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                >
-                    <span
-                    ref={targetRef}
-                    style={{ marginLeft: '150px' }}
-                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                    />
-                </div>
-                </OverlayTrigger>
-            </div>
-            </Col>
-            <Col>
-            
-                <div className="desplegado-container">
-                <div className="listaBancoPreguntas-2">
-                    <div className="fondo-lista">
-                        <div className="contenedorCabeceraLogotipo">
-                            <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }} onClick={volverMenuPrincipal}/>
-                            <span className='cabeceraTitle'>Cabezera</span>
-                        </div>
-                        {sendPreviewLogo != undefined ? (
-                        <img
-                            src={sendPreviewLogo}
-                            alt="preview"
-                            style={{ height: '92px', width: '100%' }}
-                            className="imagenLogotipoEncuesta"
+                <div className="encuesta-subtitulo2">
+                    <h2 className="encuesta-subtitulo-2">Estilo</h2>
+                    <OverlayTrigger
+                    trigger="click"
+                    show={showTooltip}
+                    target={targetRef.current}
+                    placement="right"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={renderTooltip}
+                    onHide={() => setShowTooltip(false)}
+                    >
+                    <div
+                        className="help-icon"
+                        onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                    >
+                        <span
+                        ref={targetRef}
+                        style={{ marginLeft: '150px' }}
+                        dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
                         />
-                        ) : 
-                        <div className="contenedorLogotipo">
-                            <div className='buttonLogotipo'>
-                                <span className='buttonLogotipoText'>Imagen</span>
-                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
+                    </div>
+                    </OverlayTrigger>
+                </div>
+            </Col>
+
+            <Col>
+                <div className="desplegado-container">
+                    <div className="listaBancoPreguntas-2" style={{paddingBottom:'5%'}}>
+                        <div className="fondo-lista">
+                            <div className="contenedorCabeceraLogotipo" style={{cursor:'pointer'}} onClick={volverMenuPrincipal}>
+                                <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  chevronleftSVG }}/>
+                                <span className='cabeceraTitle'>Cabezera</span>
                             </div>
-                        
-                        </div>
-
-
-
-                        }
-                        <div className="contenedorContenedorTamano">
-                            <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
-                            <div className="contenedortamanoLogotipo">
-                                <div className='radioLogotipo'>
-                                {tamano.map((opcion) => (
-                                    <div key={opcion.id} className="radioOption">
-                                    <RadioButton
-                                        id={opcion.id.toString()}
-                                        value={opcion.id.toString()}
-                                        checked={
-                                            estilos.logotipo.tamanio !== undefined && estilos.logotipo.tamanio !== ""
-                                                ? estilos.logotipo.tamanio === opcion.id.toString()
-                                                : tamanoSeleccionado === opcion.id.toString()
-                                        }
-                                        onChange={handleChangeTamano}
-                                        label={opcion.nombre}
-                                    />
+                            {sendPreviewLogo != undefined ? (
+                            <img
+                                src={sendPreviewLogo}
+                                alt="preview"
+                                style={{ height: '92px', width: '100%' }}
+                                className="imagenLogotipoEncuesta"
+                            />
+                            ) :  <div className="contenedorLogotipo">
+                                    <div className='buttonLogotipo'>
+                                        <span className='buttonLogotipoText'>Imagen</span>
+                                        <span style={{marginTop: '7px'}} dangerouslySetInnerHTML={{ __html:  uploadSVG }}/>
                                     </div>
-                                ))}
+                                </div>
+                            }
+                            
+                            <div className="contenedorContenedorTamano">
+                                <span className='contenedortamanoLogotipoTamano'>Tamaño</span>
+                                <div className="contenedortamanoLogotipo">
+                                    <div className='radioLogotipo'>
+                                    {tamano.map((opcion) => (
+                                        <div key={opcion.id} className="radioOption">
+                                        <RadioButton
+                                            id={opcion.id.toString()}
+                                            value={opcion.id.toString()}
+                                            checked={
+                                                estilos.logotipo.tamanio !== undefined && estilos.logotipo.tamanio !== ""
+                                                    ? estilos.logotipo.tamanio === opcion.id.toString()
+                                                    : tamanoSeleccionado === opcion.id.toString()
+                                            }
+                                            onChange={handleChangeTamano}
+                                            label={opcion.nombre}
+                                        />
+                                        </div>
+                                    ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="contenedorContenedorPosicion">
+                                <span className='contenedorPosicionLabel'>Posición</span>
+                                
+                                <div className="contenedorPosicion">
+                                    <Select
+                                        styles={customStyles}
+                                        options={posicionImagen.map((opcion) => ({
+                                            value: opcion.etiqueta,
+                                            label: opcion.etiqueta,
+                                        }))}
+                                        onChange={(selectedOption) => handleChangePosicion({ target: { value: selectedOption.value } })}
+                                    />
                                 </div>
                             </div>
                         </div>
-
-                        <div className="contenedorContenedorPosicion">
-                            <span className='contenedorPosicionLabel'>Posición</span>
-                            
-                            <div className="contenedorPosicion">
-                                <select className="selectPosicion" onChange={handleChangePosicion}>
-                                    {posicionImagen.map((opcion) => (
-                                        <option
-                                            key={opcion.id}
-                                            value={opcion.id}
-                                            selected={
-                                                estilos.logotipo.enumPosicion !== undefined && estilos.logotipo.enumPosicion !== ""
-                                                    ? estilos.logotipo.enumPosicion === opcion.id.toString()
-                                                    : false
-                                            }
-                                        >
-                                            {opcion.etiqueta}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                        </div>
-                        
-                   
-                    
-                    
                     </div>
                 </div>
-                </div>
-            
             </Col>
         </Col>                      
     </>

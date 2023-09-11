@@ -73,9 +73,7 @@ function ResultadoValoracionEstrellas({
     circleFillSVG,
     triangleFillSVG,
 }) {
-    console.log('opciones -->>', opciones)
-    // console.log('configuracion4Activa -->>', configuracion4Activa)
-    // console.log('configuracion5Activa -->>', configuracion5Activa)
+    // console.log('opciones -->>', opciones)
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -254,6 +252,49 @@ function ResultadoValoracionEstrellas({
         triangle: triangleFillSVG,
     };
 
+    const handleIconFClick = (opcion) => {
+        setOpcionesRespuesta((prevOpciones) =>
+            prevOpciones.map((prevOpcion) =>
+                prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+                    ? {
+                          ...prevOpcion,
+                          selectedColor:
+                              prevOpcion.selectedColor === prevOpcion.colorDefault
+                                  ? prevOpcion.colorOpcion // Cambia a colorOpcion
+                                  : prevOpcion.colorDefault, // Cambia a colorDefault
+                      }
+                    : prevOpcion
+            )
+        );
+    };
+    
+    const handleIconMouseOver = (opcion) => {
+        setOpcionesRespuesta((prevOpciones) =>
+            prevOpciones.map((prevOpcion) =>
+                prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+                    ? {
+                          ...prevOpcion,
+                          hoverColor: opcion.colorOpcion, // Cambia a colorOpcion al pasar el mouse por encima
+                      }
+                    : prevOpcion
+            )
+        );
+        console.log('opcion entra -->>', opcion)
+    };
+    
+    const handleIconMouseLeave = (opcion) => {
+        setOpcionesRespuesta((prevOpciones) =>
+            prevOpciones.map((prevOpcion) =>
+                prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+                    ? {
+                          ...prevOpcion,
+                          hoverColor: null, // Restaura el color predeterminado al salir del mouse
+                      }
+                    : prevOpcion
+            )
+        );
+    };
+
     return (
         <Container className='container-resultadoOpcionMultiple'>
             <Col>
@@ -330,15 +371,18 @@ function ResultadoValoracionEstrellas({
                                                     marginLeft: '2%',
                                                     cursor: 'pointer',
                                                     marginTop: '0.8%',
-                                                    fill: opcion.selectedColor,
-                                                    stroke: opcion.selectedColor,
+                                                    fill: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                    stroke: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
                                                 }}
+                                                onMouseOver={() => handleIconMouseOver(opcion)}
+                                                onMouseLeave={() => handleIconMouseLeave(opcion)}
                                                 dangerouslySetInnerHTML={{
                                                     __html:
                                                     iconoSVG[opcion.selectedIcon] ||
-                                                    (tipoIcono ? iconoSVG[tipoIcono.find((icono) => icono.id === opcion.icono)?.etiqueta] : '') ||
-                                                    opcion.icono, // Utiliza el icono si no se encuentra una etiqueta coincidente
+                                                    (tipoIcono ? iconoSVG[tipoIcono.find((enumGrafico) => enumGrafico.id === opcion.enumGrafico)?.etiqueta] : '') ||
+                                                    opcion.enumGrafico, // Utiliza el enumGrafico si no se encuentra una etiqueta coincidente
                                                 }}
+                                                onClick={() => handleIconFClick(opcion, index)}
                                             />
                                         </div>
                                     </Col>
@@ -356,6 +400,7 @@ function ResultadoValoracionEstrellas({
                             <HiddenRadioButton
                                 type={opcionesRespuesta.type}
                                 checked={opcionesRespuesta.checked}
+                                value={opcionesRespuesta.idOpcionRespuesta}
                                 onChange={() =>
                                     handleOpcionChange(
                                     opcionesRespuesta.idOpcionRespuesta,

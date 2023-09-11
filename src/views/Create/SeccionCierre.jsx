@@ -99,7 +99,7 @@ const ModalSeccionCierre = ({seccionVisibleInit, handleCancelarCierre, handleGua
         //   tipo: 'C',
         //   titulo: previoTitulo,
         //   comentario: previoComentario,
-        //   contentPreg: []
+        //   preguntas: []
         // };
       
         // const nuevoEstado = [...contentCont];

@@ -151,7 +151,7 @@ const CargaDatos = ({
     indice, 
     indiceSec, 
     save, 
-    contentPreg, 
+    preguntas, 
     closeCargaArchivos, 
     handleCargaArchivos, 
     handleEditarPregunta, 
@@ -181,12 +181,12 @@ const CargaDatos = ({
     const [configuracion1, setConfiguracion1] = useState(false);
     const [configuracion2, setConfiguracion2] = useState(false);
     const [configuracion3, setConfiguracion3] = useState(false);
-    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
-    const [pregunta2, setPregunta2] = useState(contentPreg.pregunta2);
-    const [pesoArchivo, setPesoArchivo] = useState(contentPreg.pesoArchivo);
+    const [pregunta, setPregunta] = useState(preguntas.pregunta);
+    const [pregunta2, setPregunta2] = useState(preguntas.pregunta2);
+    const [pesoArchivo, setPesoArchivo] = useState(preguntas.pesoArchivo);
     const [mensajeError, setMensajeError] = useState('Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'); 
-    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
-    const [pregunta2Temp, setPregunta2Temp] = useState(contentPreg.pregunta2);
+    const [preguntaTemp, setPreguntaTemp] = useState(preguntas.pregunta);
+    const [pregunta2Temp, setPregunta2Temp] = useState(preguntas.pregunta2);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
@@ -401,14 +401,14 @@ const CargaDatos = ({
     }, [isCheckedPDF, isCheckedDOC, isCheckedPNG, isCheckedJPG, isCheckedGIF]);
 
     useEffect(() => {
-        setPreguntaTemp(contentPreg.pregunta)
-        setPregunta(contentPreg.pregunta)
+        setPreguntaTemp(preguntas.pregunta)
+        setPregunta(preguntas.pregunta)
 
     }, [contentCont]);
 
     useEffect(() => {
-        setPreguntaTemp(contentPreg.pregunta)
-        setPregunta(contentPreg.pregunta)
+        setPreguntaTemp(preguntas.pregunta)
+        setPregunta(preguntas.pregunta)
     }, [contentCont]);
 
     const handlePregunta = (value) => {
