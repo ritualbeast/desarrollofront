@@ -131,8 +131,15 @@ const ModalBancoPreguntas = ({ open, onClose, categoriaId }) => {
       const tipoPregunta = preguntaItem.tipoPregunta;
   
       if (tipoPregunta === 'OM') {
+        const opcionesRespuesta = preguntaItem.opcionesRespuesta || []; // Asegúrate de que opcionesRespuesta esté definido
+        const opcionesConCamposAdicionales = opcionesRespuesta.map((opcion) => ({
+            ...opcion,
+            checked: false,
+            type: 'radio',
+        }));
         return {
           ...preguntaItem,
+          opcionesRespuesta: opcionesConCamposAdicionales,
           // Propiedades adicionales específicas para el tipo 'OM'
           save: true,
           cancelar: true,
@@ -153,9 +160,9 @@ const ModalBancoPreguntas = ({ open, onClose, categoriaId }) => {
         const opcionesRespuesta = preguntaItem.opcionesRespuesta || []; // Asegúrate de que opcionesRespuesta esté definido
         const opcionesConCamposAdicionales = opcionesRespuesta.map((opcion) => ({
             ...opcion,
-            icono: 'circle',
-            selectedColor: '#000000',
             selectedIcon: 'star',
+            colorDefault: "#e0dcdc",
+            selectedColor: "#e0dcdc",
         }));
 
         return {

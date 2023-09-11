@@ -21,6 +21,7 @@ const StyledCheckBox = styled.div`
   margin-top: 3%;
   margin-left: 0.4%;
   margin-right: 2%;
+  cursor: pointer;
 
   &:after {
     content: '${(props) => (props.checked ? '\u2713' : '')}';
@@ -30,7 +31,6 @@ const StyledCheckBox = styled.div`
     position: absolute;
     top: -2px;
     left: 3px;
-
   }
 `;
 
@@ -67,24 +67,50 @@ const StyledRadioButton = styled.div`
   }
 `;
 
+const contieneNingunaDeLasAnterioresOtraRespuesta = (contentCont) => {
+  // Itera sobre contentCont, contentPreg y opcionesRespuesta
+  for (const contenedor of contentCont) {
+    for (const pregunta of contenedor.contentPreg) {
+      for (const opcion of pregunta.opcionesRespuesta) {
+        if (opcion.respuesta === 'Ninguna de las anteriores' || opcion.respuesta === 'Otra respuesta') {
+          return true; // Si se encuentra una de las respuestas, devuelve true
+        }
+      }
+    }
+  }
+  return false; // Si no se encuentra ninguna, devuelve false
+};
+
+const obtenerTodasLasOpcionesRespuesta = (contentCont) => {
+  const todasLasOpcionesRespuesta = [];
+
+  // Itera sobre contentCont, contentPreg y opcionesRespuesta
+  for (const contenedor of contentCont) {
+    for (const pregunta of contenedor.contentPreg) {
+      todasLasOpcionesRespuesta.push(...pregunta.opcionesRespuesta);
+    }
+  }
+
+  return todasLasOpcionesRespuesta;
+};
+
 const VistaPrevia = ({ 
-  contentCont, 
+  contentContInit, 
   estilos, 
   starFillSVG, 
   squareFillSVG, 
   circleFillSVG, 
-  triangleFillSVG, 
-  configuracion4Activa,
-  configuracion5Activa,
-  opcionesRespuestaInit
+  triangleFillSVG,
 }) => {
     const tituloRef = useRef(null);
     const descripcionRef = useRef(null);
     const preguntasRef = useRef(null);
     const [tipoIcono, setTipoIcono] = useState()
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState(opcionesRespuestaInit);
-    console.log(configuracion4Activa)
-    console.log(configuracion5Activa)
+    const [configuracion4, setConfiguracion4] = useState(false); 
+    const [configuracion5, setConfiguracion5] = useState(false);
+    const [contentCont, setContentCont] = useState(contentContInit)
+    const [opcionesRespuesta, setOpcionesRespuesta] = useState(obtenerTodasLasOpcionesRespuesta(contentCont));
+    // console.log('opcionesRespuesta -->>', opcionesRespuesta)
 
     useEffect(() => {
       if (estilos['Título de sección']) {
@@ -114,19 +140,89 @@ const VistaPrevia = ({
         }
       }
 
-  }, [estilos]);
+      if (contentCont) {
+        // Verifica si alguna opción cumple con la lógica en todos los contentCont
+        const contieneNingunaOtra = contieneNingunaDeLasAnterioresOtraRespuesta(contentCont);
+  
+        // Puedes utilizar contieneNingunaOtra como necesites en tu componente
+        setConfiguracion4(contieneNingunaOtra);
+        setConfiguracion5(contieneNingunaOtra);
+      }
+  }, [estilos, contentCont]);
 
   if (!Array.isArray(contentCont) || contentCont.length === 0) {
     return null;
   }
-  console.log('contentCont: ', contentCont)
+  // console.log('contentCont: ', contentCont)
 
-  const handleOpcionChange = (idOpcionRespuesta, value, checked) => {
-    setOpcionesRespuesta((prevOpciones) =>
+  const handleOpcionChangeOM = (opcion, idOpcionRespuesta, value, checked, type) => {
+    if ((type === 'checkbox') && (checked === false)) {
+      opcion.checked = true
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) =>
+          opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+        )
+      );
+    } else if ((type === 'checkbox') && (checked === true)) {
+      opcion.checked = false
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) =>
+          opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+        )
+      );
+    } 
+    
+    
+    else if ((type === 'radio') && (checked === false)) {
+      opcion.checked = true
+          
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) => {
+          if (opcion && !opcion.checked === true) { // Verifica si 'opcion' existe antes de acceder a 'checked'
+            opcion.checked = false
+            console.log('No seleccionado:', opcion);
+          }
+          return opcion; // Importante devolver la opción después de modificarla
+        })
+      );
+    }
+    
+    // opcionesRespuesta.map((opcion) => {
+    //   if (!opcion.checked === true) {
+    //     opcion.checked = false
+    //     console.log('No seleccionado:', opcion);
+    //   }
+    // });
+    
+    // else if ((type === 'radio') && (checked === true) && (idOpcionRespuesta)) {
+    //   opcion.checked = false
+    //   setOpcionesRespuesta((prevOpciones) =>
+    //     prevOpciones.map((opcion) =>
+    //       opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
+    //     )
+    //   );
+    // }
+    console.log('opcion -->>', opcion)
+    console.log('opcionesRespuesta -->>', opcionesRespuesta)
+  };
+
+  const handleOpcionChangeVE = (opcion, idOpcionRespuesta, value, checked) => {
+    if (opcion.checked === false) {
+      // opcion.checked === true
+      setOpcionesRespuesta((prevOpciones) =>
         prevOpciones.map((opcion) =>
             opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
         )
-    );
+      );
+    } else if (checked === true) {
+      // opcion.checked === false
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((opcion) =>
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
+        )
+      );
+    }
+    console.log(opcion)
   };
 
   const iconoSVG = {
@@ -136,6 +232,73 @@ const VistaPrevia = ({
     triangle: triangleFillSVG,
   };
 
+  const handleIconFClick = (opcion) => {
+    if (opcion.selectedColor === opcion.colorDefault) {
+      opcion.selectedColor = opcion.colorOpcion;
+      setOpcionesRespuesta((prevOpciones) =>
+      prevOpciones.map((prevOpcion) =>
+        prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+          ? {
+              ...prevOpcion,
+              selectedColor:
+                prevOpcion.selectedColor === prevOpcion.colorDefault
+                  ? prevOpcion.colorOpcion
+                  : prevOpcion.colorDefault,
+            }
+            : prevOpcion
+        ) 
+      );
+
+    } else if (opcion.selectedColor === opcion.colorOpcion) {
+      opcion.selectedColor = opcion.colorDefault;
+      setOpcionesRespuesta((prevOpciones) =>
+      prevOpciones.map((prevOpcion) =>
+        prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+          ? {
+              ...prevOpcion,
+              selectedColor:
+                prevOpcion.selectedColor === prevOpcion.colorOpcion
+                  ? prevOpcion.colorDefault
+                  : prevOpcion.colorOpcion,
+            }
+            : prevOpcion
+        ) 
+      );
+    }
+  };
+
+  const handleIconMouseOver = (opcion) => {
+    if (opcion.colorDefault) {
+      opcion.hoverColor = opcion.colorOpcion;
+      setOpcionesRespuesta((prevOpciones) =>
+        prevOpciones.map((prevOpcion) =>
+          prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+            ? {
+                ...prevOpcion,
+                hoverColor: opcion.colorOpcion,
+              }
+            : prevOpcion
+        )
+      );
+    }
+  };
+  
+  const handleIconMouseLeave = (opcion) => {
+    if (opcion.colorOpcion) {
+      opcion.hoverColor = null;
+      setOpcionesRespuesta((prevOpciones) =>
+          prevOpciones.map((prevOpcion) =>
+              prevOpcion.idOpcionRespuesta === opcion.idOpcionRespuesta
+                  ? {
+                        ...prevOpcion,
+                        hoverColor: null,
+                    }
+                  : prevOpcion
+          )
+      );
+    }
+  };
+  
   return (
     <>
         <Container>
@@ -159,31 +322,33 @@ const VistaPrevia = ({
                                   <p ref={preguntasRef}>{indicePreg + 1}. {pregunta.pregunta}</p>
                                 </Col>
 
-                                {pregunta.opcionesRespuesta.map((opcion, indiceOpcion) => (
+                                {pregunta.opcionesRespuesta.map((opcion) => (
                                   <Col key={opcion.id} style={{ display: 'flex', marginBottom: '1%' }}>
                                     {opcion.type === 'checkbox' ? (
                                       // Opción de tipo "checkbox"
-                                      <div>
+                                      <div >
                                         <HiddenCheckBox
                                           type={opcion.type}
                                           name={`opcion_${index}`}
                                           value={opcion.id}
                                           checked={opcion.checked}
-                                          onChange={() => {}}
                                         />
-                                        <StyledCheckBox checked={opcion.checked} />
+                                        <StyledCheckBox checked={opcion.checked} 
+                                        onClick={() => handleOpcionChangeOM(opcion, opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
+                                        />
                                       </div>
                                     ) : (
                                       // Opción de tipo "radio"
-                                      <div>
+                                      <div >
                                         <HiddenRadioButton
                                           type={opcion.type}
                                           name={`opcion_${index}`}
                                           value={opcion.id}
                                           checked={opcion.checked}
-                                          onChange={() => {}}
                                         />
-                                        <StyledRadioButton checked={opcion.checked} />
+                                        <StyledRadioButton checked={opcion.checked} 
+                                          onClick={() => handleOpcionChangeOM(opcion, opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'radio')}
+                                        />
                                       </div>
                                     )}
                                     <div style={{ marginBottom: '0.4%', marginLeft: '2%'}}>
@@ -194,7 +359,7 @@ const VistaPrevia = ({
                               </Container>
                           );
                       } else if (pregunta.tipo === 'VE' && pregunta.save) {
-                          const { opcionesRespuesta, ningunaOpcion, otro } = pregunta;
+                          const {opcionesRespuesta} = pregunta;
                           return (
                             <Container style={{marginLeft:'1.4%', width: '92.8%'}} className='container-resultadoOpcionMultiple'>
                                 <Col>
@@ -202,10 +367,10 @@ const VistaPrevia = ({
                                 </Col>
 
                                 <Col style={{ display: 'flex' }}>
-                                {opcionesRespuesta.map((opcion, index) => (
+                                {opcionesRespuesta.map((opcion) => (
                                   opcion.respuesta !== 'Ninguna de las anteriores' &&
                                   opcion.respuesta !== 'Otra respuesta' && (
-                                    <Col key={opcion.id} style={{ marginRight: '2%' }}>
+                                    <Col key={opcion.index} style={{ marginRight: '2%' }}>
                                       <Col>
                                         <div style={{ textAlign: 'center' }}>
                                             {opcion.respuesta}
@@ -217,15 +382,18 @@ const VistaPrevia = ({
                                                     marginLeft: '2%',
                                                     cursor: 'pointer',
                                                     marginTop: '0.8%',
-                                                    fill: opcion.selectedColor,
-                                                    stroke: opcion.selectedColor,
+                                                    fill: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                    stroke: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
                                                 }}
+                                                onMouseOver={() => handleIconMouseOver(opcion)}
+                                                onMouseLeave={() => handleIconMouseLeave(opcion)}
                                                 dangerouslySetInnerHTML={{
                                                     __html:
                                                     iconoSVG[opcion.selectedIcon] ||
-                                                    (tipoIcono ? iconoSVG[tipoIcono.find((icono) => icono.id === opcion.icono)?.etiqueta] : '') ||
-                                                    opcion.icono,
+                                                    (tipoIcono ? iconoSVG[tipoIcono.find((enumGrafico) => enumGrafico.id === opcion.enumGrafico)?.etiqueta] : '') ||
+                                                    opcion.enumGrafico,
                                                 }}
+                                                onClick={() => handleIconFClick(opcion)}
                                             />
                                         </div>
                                       </Col>
@@ -233,7 +401,7 @@ const VistaPrevia = ({
                                   )))}
                                 </Col>
                                 
-                                {configuracion4Activa && (
+                                {configuracion4 && (
                                   <Col style={{ marginRight: '2%', marginTop: '1%' }}>
                                       <Col style={{ display: 'flex' }}>
                                           <div>
@@ -241,7 +409,7 @@ const VistaPrevia = ({
                                                   type={opcionesRespuesta.type}
                                                   checked={opcionesRespuesta.checked}
                                                   onChange={() =>
-                                                      handleOpcionChange(
+                                                      handleOpcionChangeVE(
                                                       opcionesRespuesta.idOpcionRespuesta,
                                                       opcionesRespuesta.respuesta,
                                                       opcionesRespuesta.checked
@@ -257,7 +425,7 @@ const VistaPrevia = ({
                                   </Col>
                                 )}
 
-                                {configuracion5Activa && (
+                                {configuracion5 && (
                                   <Col style={{ marginRight: '2%', marginTop: '1%' }}>
                                       <Col style={{ display: 'flex' }}>
                                           <div>
@@ -265,7 +433,7 @@ const VistaPrevia = ({
                                                   type={opcionesRespuesta.type}
                                                   checked={opcionesRespuesta.checked}
                                                   onChange={() =>
-                                                      handleOpcionChange(
+                                                      handleOpcionChangeVE(
                                                       opcionesRespuesta.idOpcionRespuesta,
                                                       opcionesRespuesta.respuesta,
                                                       opcionesRespuesta.checked

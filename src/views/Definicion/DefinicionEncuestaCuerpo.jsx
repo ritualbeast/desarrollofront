@@ -139,9 +139,23 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
 
-  }, [preview1, preview2, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
-    tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
-    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
+  }, [preview1, 
+    preview2, 
+    sendPosicion3, 
+    sendTamano3, 
+    sendGrosor3, 
+    sendTipografia3,
+    tamano, 
+    tituloGrosor, 
+    grosor, 
+    tituloTipografia, 
+    tipografia, 
+    titulotamano, 
+    datosDefinicionEncuesta,
+    sendPosicionLogotipo, 
+    sendTamanoLogotipo, 
+    sendPosicionLogotipoPiePagina, 
+    sendTamanoLogotipoPiePagina,
   ]);
 
   // capturar el valor de todos los datos

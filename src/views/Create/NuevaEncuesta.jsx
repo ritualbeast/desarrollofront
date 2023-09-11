@@ -95,6 +95,7 @@ const NuevaEncuesta = ({
     const [descripcionStyle, setDescripcionStyle] = useState({});
     const [configuracion4, setConfiguracion4] = useState(); 
     const [configuracion5, setConfiguracion5] = useState();
+    // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
 
     useEffect(() => {
       let newStyle = {};
@@ -171,7 +172,31 @@ const NuevaEncuesta = ({
     const handleSeccionCierre = () => {
       setShowModal(true);
       setNuevaSeccionVisible(false);
-    };    
+    };
+
+    useEffect(() => {
+      if (obtenerPreg && obtenerPreg.length > 0) {
+        // Filtrar las preguntas que son de tipo "OM"
+        const preguntasOM = obtenerPreg.filter(preg => preg.tipoPregunta === 'OM');
+        const preguntasVE = obtenerPreg.filter(preg => preg.tipoPregunta === 'VE');
+        const preguntasCA = obtenerPreg.filter(preg => preg.tipoPregunta === 'CA');
+        const preguntasCC = obtenerPreg.filter(preg => preg.tipoPregunta === 'CC');
+    
+        if (preguntasOM.length > 0) {
+          const seccionIndex = 0; // Puedes cambiar esto para añadir las preguntas a una sección diferente
+          handleOptionMultiple(seccionIndex, preguntasOM, true, 'true');
+        } if (preguntasVE.length > 0) {
+          const seccionIndex = 0;
+          handleValoracionEstrellas(seccionIndex, preguntasVE, true, 'true');
+        } if (preguntasCA.length > 0) {
+          const seccionIndex = 0;
+          handleCargaArchivo(seccionIndex, preguntasCA, true, 'true')
+        } if (preguntasCC.length > 0) {
+          const seccionIndex = 0;
+          handleCuadroComentarios(seccionIndex, preguntasCC, true, 'true')
+        }
+      }
+    }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleOptionMultiple = (index, preguntas, saveValue = false, cancelarValue = '') => {
       if (!Array.isArray(preguntas)) {
@@ -219,30 +244,6 @@ const NuevaEncuesta = ({
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
-    useEffect(() => {
-      if (obtenerPreg && obtenerPreg.length > 0) {
-        // Filtrar las preguntas que son de tipo "OM"
-        const preguntasOM = obtenerPreg.filter(preg => preg.tipoPregunta === 'OM');
-        const preguntasVE = obtenerPreg.filter(preg => preg.tipoPregunta === 'VE');
-        const preguntasCA = obtenerPreg.filter(preg => preg.tipoPregunta === 'CA');
-        const preguntasCC = obtenerPreg.filter(preg => preg.tipoPregunta === 'CC');
-    
-        if (preguntasOM.length > 0) {
-          const seccionIndex = 0; // Puedes cambiar esto para añadir las preguntas a una sección diferente
-          handleOptionMultiple(seccionIndex, preguntasOM, true, 'true');
-        } if (preguntasVE.length > 0) {
-          const seccionIndex = 0;
-          handleValoracionEstrellas(seccionIndex, preguntasVE, true, 'true');
-        } if (preguntasCA.length > 0) {
-          const seccionIndex = 0;
-          handleCargaArchivo(seccionIndex, preguntasCA, true, 'true')
-        } if (preguntasCC.length > 0) {
-          const seccionIndex = 0;
-          handleCuadroComentarios(seccionIndex, preguntasCC, true, 'true')
-        }
-      }
-    }, [obtenerPreg]); // Depende de obtenerPreg
-    
     const handleValoracionEstrellas = (index, preguntas, saveValue = false, cancelarValue = '') => {
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
@@ -286,6 +287,7 @@ const NuevaEncuesta = ({
       $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
       $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      // setOpcionesRespuesta(preguntas[0].opcionesRespuesta)
     };
 
     const handleMatrizValoracion = () => {
@@ -584,7 +586,6 @@ const NuevaEncuesta = ({
       setContentCont(nuevoEstado);
     };
 
-    const [opcionesRespuesta, setOpcionesRespuesta] = useState();
     const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].contentPreg];
@@ -609,7 +610,6 @@ const NuevaEncuesta = ({
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
       setConfiguracion4(configuracion4); 
       setConfiguracion5(configuracion5);
-      setOpcionesRespuesta(opcionesRespuesta)
     };
 
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
@@ -1248,7 +1248,7 @@ const NuevaEncuesta = ({
         { openVistaPrevia && <ModalVistaPrevia
             open={openVistaPrevia}
             onClose={handleCloseVistaPrevia}
-            contentCont={contentCont}
+            contentContInit={contentCont}
             showModal={showModal}
             sendTamanoPaso2={sendTamanoPaso2}
             sendGrosorPaso2={sendGrosorPaso2}
@@ -1258,9 +1258,6 @@ const NuevaEncuesta = ({
             squareFillSVG={squareFillSVG}
             circleFillSVG={circleFillSVG}
             triangleFillSVG={triangleFillSVG}
-            configuracion4Activa={configuracion4}
-            configuracion5Activa={configuracion5}
-            opcionesRespuestaInit={opcionesRespuesta}
         />
         }
     </>

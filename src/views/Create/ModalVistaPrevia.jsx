@@ -13,7 +13,7 @@ const tabletSVG = svgManager.getSVG('tablet');
 const ModalVistaPrevia = ({
     open, 
     onClose, 
-    contentCont, 
+    contentContInit, 
     indice, 
     indiceSec, 
     showModal,
@@ -25,9 +25,9 @@ const ModalVistaPrevia = ({
     squareFillSVG,
     circleFillSVG,
     triangleFillSVG,
-    configuracion4Activa,
-    configuracion5Activa,
-    opcionesRespuestaInit,
+    // configuracion4Activa,
+    // configuracion5Activa,
+    // opcionesRespuestaInit,
 }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [blurBackground, setBlurBackground] = useState(false);
@@ -55,7 +55,7 @@ const ModalVistaPrevia = ({
     const renderContent = () => {
         if (activeContent === 'windows' || activeContent === 'tablet' || activeContent === 'smartphone') {
             return <VistaPrevia 
-                contentCont={contentCont}
+                contentContInit={contentContInit}
                 indice={indice}
                 indiceSec={indiceSec}
                 showModal={showModal}
@@ -67,9 +67,6 @@ const ModalVistaPrevia = ({
                 squareFillSVG={squareFillSVG}
                 circleFillSVG={circleFillSVG}
                 triangleFillSVG={triangleFillSVG}
-                configuracion4Activa={configuracion4Activa}
-                configuracion5Activa={configuracion5Activa}
-                opcionesRespuestaInit={opcionesRespuestaInit}
             />;
         } else {
             return null;

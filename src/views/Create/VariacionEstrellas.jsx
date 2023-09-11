@@ -18,13 +18,6 @@ const squareFillSVG = svgManager.getSVG('square-fill');
 const circleFillSVG = svgManager.getSVG('circle-fill');
 const triangleFillSVG = svgManager.getSVG('triangle-fill');
 
-// const opciones = [
-//     { id: 1, icono: 'star' },
-//     { id: 2, icono: 'square' },
-//     { id: 3, icono: 'circle' },
-//     { id: 4, icono: 'triangle' },
-// ];
-
   const Pregunta = styled(FormControl)`
     width: 94.2% !important;
     border: 1px solid #ccc !important;
@@ -166,9 +159,11 @@ const VariacionEstrellas = ({
             type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            icono: opcionApi.enumGrafico,
-            selectedColor: opcionApi.colorOpcion,
+            enumGrafico: opcionApi.enumGrafico,
+            colorOpcion: opcionApi.colorOpcion,
+            colorDefault: "#e0dcdc",
             selectedIcon: opcionApi.enumGrafico,
+            selectedColor: "#e0dcdc",
         }))
     );
     const [opcionText, setOpcionText] = useState("");
@@ -252,9 +247,11 @@ const VariacionEstrellas = ({
             type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            icono: 'star',
-            selectedColor: "#000000",
+            enumGrafico: 'star',
+            colorOpcion: "#e0dcdc",
+            colorDefault: "#e0dcdc",
             selectedIcon: 'star',
+            selectedColor: "#e0dcdc",
         };
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
@@ -327,21 +324,47 @@ const VariacionEstrellas = ({
     }, [opcionesRespuesta]);
 
     const handleSwitchConfigurar4 = () => {
+        // Invierte el valor de configuracion4
         setConfiguracion4(!configuracion4);
+      
+        // Actualiza las opciones de respuesta
+        setOpcionesRespuesta((prevOpcionesRespuesta) => {
+            // Filtra las opciones de respuesta que no contienen 'Ninguna de las anteriores'
+            const nuevasOpciones = prevOpcionesRespuesta.filter(
+                (opcion) => opcion.respuesta !== 'Ninguna de las anteriores'
+            );
+        
+            return nuevasOpciones;
+        });
+      
+        // Actualiza el estado de configuraciongeneral según el valor de configuracion4
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
                 ...prevConfiguracion,
-                ningunaAnteriores: !configuracion4 ? 'S' : 'N',
+                ningunaAnteriores: configuracion4 ? 'S' : 'N',
             };
         });
     };
-
+    
     const handleSwitchConfigurar5 = () => {
+        // Invierte el valor de configuracion4
         setConfiguracion5(!configuracion5);
+      
+        // Actualiza las opciones de respuesta
+        setOpcionesRespuesta((prevOpcionesRespuesta) => {
+            // Filtra las opciones de respuesta que no contienen 'Ninguna de las anteriores'
+            const nuevasOpciones = prevOpcionesRespuesta.filter(
+                (opcion) => opcion.respuesta !== 'Otra respuesta'
+            );
+        
+            return nuevasOpciones;
+        });
+      
+        // Actualiza el estado de configuraciongeneral según el valor de configuracion4
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
                 ...prevConfiguracion,
-                otraRespuesta: !configuracion5 ? 'S' : 'N',
+                ningunaAnteriores: configuracion4 ? 'S' : 'N',
             };
         });
     };
@@ -506,7 +529,7 @@ const VariacionEstrellas = ({
     const handleColorChange = (color, idOpcionRespuesta) => {
         setOpcionesRespuesta((prevOpciones) =>
             prevOpciones.map((opcion) =>
-                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedColor: color.hex } : opcion
+                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, colorOpcion: color.hex } : opcion
             )
         );
     };
@@ -522,7 +545,7 @@ const VariacionEstrellas = ({
     const handleIconChange = (idOpcionRespuesta, newIcon) => {
         setOpcionesRespuesta((prevOpciones) =>
         prevOpciones.map((opcion) =>
-            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, icono: newIcon } : opcion
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, enumGrafico: newIcon } : opcion
         ));
     };
 
@@ -540,9 +563,11 @@ const VariacionEstrellas = ({
             type: opcionApi.type,
             seccionValue: opcionApi.seccionValue,
             preguntaValue: opcionApi.preguntaValue,
-            icono: opcionApi.enumGrafico,
-            selectedColor: opcionApi.colorOpcion,
+            enumGrafico: opcionApi.enumGrafico,
+            colorOpcion: opcionApi.colorOpcion,
+            colorDefault: opcionApi.colorDefault,
             selectedIcon: opcionApi.enumGrafico,
+            selectedColor: opcionApi.selectedColor,
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
     }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
@@ -669,9 +694,9 @@ const VariacionEstrellas = ({
                                                                             value={opcion.selectedIcon}
                                                                             onChange={(e) => handleIconChange(opcion.idOpcionRespuesta, e.target.value)}
                                                                         >
-                                                                            {tipoIcono?.map((icono) => (
-                                                                                <option key={icono.id} value={icono.etiqueta}>
-                                                                                    {icono.descripcion}
+                                                                            {tipoIcono?.map((enumGrafico) => (
+                                                                                <option key={enumGrafico.id} value={enumGrafico.etiqueta}>
+                                                                                    {enumGrafico.descripcion}
                                                                                 </option>
                                                                             ))}
                                                                         </select>
@@ -683,8 +708,8 @@ const VariacionEstrellas = ({
                                                                                 marginLeft: '2%',
                                                                                 cursor: 'pointer',
                                                                                 marginTop: '0.8%',
-                                                                                fill: opcion.selectedColor,
-                                                                                color: opcion.selectedColor,
+                                                                                fill: opcion.colorOpcion,
+                                                                                color: opcion.colorOpcion,
                                                                             }}
                                                                             dangerouslySetInnerHTML={{
                                                                                 __html:
@@ -694,7 +719,7 @@ const VariacionEstrellas = ({
                                                                                     : starFillSVG,
                                                                             }}
                                                                             onClick={() => handleIconClick(opcion.idOpcionRespuesta)}
-                                                                            value={opcion.icono}
+                                                                            value={opcion.enumGrafico}
                                                                         />
 
                                                                         {opcion.showColorPicker && (
@@ -708,7 +733,7 @@ const VariacionEstrellas = ({
                                                                                 }}
                                                                             >
                                                                                 <SketchPicker
-                                                                                    color={opcion.selectedColor}
+                                                                                    color={opcion.colorOpcion}
                                                                                     onChange={(color) => handleColorChange(color, opcion.idOpcionRespuesta)}
                                                                                 />
                                                                                 <button 
