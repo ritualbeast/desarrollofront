@@ -17,6 +17,7 @@ import EditarTituloSeccion from './EditarTituloSeccion';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import ModalLogotipo from './ModalLogotipo';
 import ModalPiePagina from './ModalPiePagina';
+import OpcionMultipleComplementaria from './OpcionMultipleComplementaria';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -606,13 +607,15 @@ const NuevaEncuesta = ({
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
         }
+        contenidoActual.splice(indicePreg, 1);
+
         contentCont.splice(indiceSec, 1);
 
       } else {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta;
-      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
       contenidoActual[indicePreg].idTipoPregunta = 1;
       contenidoActual[indicePreg].orden = indiceSec;
       contenidoActual[indicePreg].requerida = '';
@@ -796,7 +799,7 @@ const NuevaEncuesta = ({
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].nemonico = '1S_1P';
+      contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
       contenidoActual[indicePreg].idTipoPregunta = 5;
       contenidoActual[indicePreg].orden = indiceSec;
       contenidoActual[indicePreg].requerida = '';
@@ -994,7 +997,8 @@ const NuevaEncuesta = ({
               </Col>
               
               {contentCont.map((seccion, index) => {
-                if (seccion.tipoSeccion === 'P') {   
+                if (seccion.tipoSeccion === 'P' ) { 
+                    
                   return (
                     <Col key={index}>
                       <Col  className='contendor-nuevaEncuesta principal'>
@@ -1079,8 +1083,36 @@ const NuevaEncuesta = ({
                             
                             
                             {seccion.preguntas.map((preg, indexp) => { 
-                              
                               if (preg.tipo == 'OM') {
+                                if (preg.preguntasComplementarias && preg.preguntasComplementarias.length > 0) {
+                                  
+                                  preg.preguntasComplementarias.map((preguntaComplementaria, indexComplementaria) => {
+                                    console.log(preguntaComplementaria);
+                                    return <OpcionMultipleComplementaria
+                                      key={indexp}
+                                      indice={indexp}
+                                      indiceSec = {index}
+                                      save={preg.save}
+                                      contentPreg = {preg}
+                                      closeopmul={handleCancelarOpcionMultiple}
+                                      onAceptar={handleAceptarOpcionMultiple}
+                                      handleEditarPregunta={handleEditarOpcionMultiple}
+                                      handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                      handleCambiarPregunta={handleCambiarPregunta}
+                                      contentCont={contentCont}
+                                      preguntaVisibleOpen={preguntaVisible}
+                                      sendTamanoPaso2={sendTamanoPaso2}
+                                      sendGrosorPaso2={sendGrosorPaso2}
+                                      sendTipografiaPaso2={sendTipografiaPaso2}
+                                      obtenerPreg={obtenerPreg}
+                                      contenEstilos={contenEstilos} 
+                                      sendColors= {sendColors}
+                                      complementaria={true}
+                                    />
+                                  })
+                                  
+                                }
+                                   
                                 return <OpcionMultiple 
                                   key={indexp}
                                   indice={indexp} 
@@ -1164,6 +1196,7 @@ const NuevaEncuesta = ({
                                 />
                               }
                               return '';
+                              
                             })}
                             
                             <Col className='seccion4-nuevaEcuesta'>
