@@ -321,10 +321,6 @@ const Create = () => {
         setEncuestaEstilos(datos)
     }
     
-    const handleBotonClick = () => {
-        DefinicionEncuestaCuerpoRef.current.handleEnviarDatos();
-        ConfiguracionEncuestaRef.current.handleEnviarDatosConfiguracion();
-    };
 
     const handleUpdateEstilos = (nuevosEstilos) => {
         setEstilos(nuevosEstilos);
@@ -342,9 +338,7 @@ const Create = () => {
     }
 
     const [sendFooterImagen, setSendFooterImagen] = useState(null)
-    const handleSendFooterImagen = (imagen) => {
-        setSendFooterImagen(imagen)
-    }
+    
 
     const [sendColor, setSendColor] = useState(null)
     const sendcolors = (colors) => {
