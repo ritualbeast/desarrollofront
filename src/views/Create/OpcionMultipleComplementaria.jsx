@@ -9,8 +9,7 @@ import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import styled from 'styled-components';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { type } from '@testing-library/user-event/dist/type';
-
+import ResultadoOpcionMultipleComplementaria from './ResultadoOpcionMultipleComplementaria';
 const minusCircleSVG = svgManager.getSVG('minus-circle');
 const plushCircleSVG = svgManager.getSVG('plush-circle');
 const trashSVG = svgManager.getSVG('trash-mini');
@@ -193,18 +192,16 @@ const customStyles = {
     }),
     option: (provided, state) => ({
       ...provided,
-      paddingTop:'unset',
-      paddingBottom:'unset',
       color: state.isFocused ? 'black' : 'black',
       backgroundColor: state.isFocused ? 'rgba(255, 206, 72, 1)' : '#FFFFFF',
     })
 };
 
-const OpcionMultiple = ({
+const OpcionMultipleComplementaria = ({
     indice, 
     indiceSec, 
     save, 
-    preguntas, 
+    contentPreg, 
     closeopmul, 
     onAceptar, 
     handleEditarPregunta, 
@@ -226,25 +223,26 @@ const OpcionMultiple = ({
     const [isActiveEditar, setIsActiveEditar] = useState(false);
     const [isActiveConfiguracion, setIsActiveConfiguracion] = useState(true);
     const [isActiveLogica, setIsActiveLogica] = useState(true);
-    const opcionesApi = preguntas.opcionesRespuesta ?? [];
+    const opcionesApi = contentPreg.opcionesRespuesta ?? [];
     const [opcionesRespuesta, setOpcionesRespuesta] = useState(() =>
         opcionesApi.map((opcionApi) => ({
-            idOpcionRespuesta: opcionApi.idOpcionRespuesta,
+            idPregunta: opcionApi.idPregunta,
             respuesta: opcionApi.respuesta,
             checked: false,
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
-            preguntaValue: '', // Valor inicial de la pregunta
+            valor: '', // Valor inicial de la pregunta
+            orden : 0,
+
             // ...
         }))
     );
-    const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
     const [configuracion2, setConfiguracion2] = useState(false);
     const [configuracion3, setConfiguracion3] = useState(false);
-    const [configuracion4, setConfiguracion4] = useState(false);
+    const [configuracion4, setConfiguracion4] = useState(false); 
     const [configuracion5, setConfiguracion5] = useState(false);
     const [configuracion6, setConfiguracion6] = useState(false);
     const [configuracion7, setConfiguracion7] = useState(false);
@@ -265,60 +263,39 @@ const OpcionMultiple = ({
         }
     
     );
+    
     const [multipleRespuesta, setMultipleRespuesta] = useState("S");
     const [ponderacion, setPonderacion] = useState("S");
     const [inputs, setInputs] = useState([]);
-    const [pregunta, setPregunta] = useState(preguntas.pregunta);
-    const [preguntaTemp, setPreguntaTemp] = useState(preguntas.pregunta);
+    const [pregunta, setPregunta] = useState(contentPreg.pregunta);
+    const [preguntaTemp, setPreguntaTemp] = useState(contentPreg.pregunta);
     const [cancelar, setCancelar] = useState('true');
     const [tipoPregunta, setTipoPregunta] = useState([]);
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
-    const [todasLasPreguntasConPosiciones, setTodasLasPreguntasConPosiciones] = useState([]);
+    const todasLasPreguntasConPosiciones = [];
     const [posicionPregunta, setPosicionPregunta] = useState(0);
     const [posicionContentCont, setPosicionContentCont] = useState(0);
-    const [verLogicaPreguntas, setVerLogicaPreguntas] = useState(false);
 
-    const verPreguntas = (seccionPosicion) => {
-        console.log('si entra a ver preguntas');
-        const preguntasDeSeccion = [];
-      
-        // Verifica si la posición de la sección es válida
-        if (seccionPosicion >= 0 && seccionPosicion < contentCont.length) {
-          const seccion = contentCont[seccionPosicion];
-      
-          // Verifica si la sección tiene un atributo "preguntas" y si es un arreglo
-          if (seccion.preguntas && Array.isArray(seccion.preguntas)) {
-            seccion.preguntas.forEach((pregunta, indexPregunta) => {
-              // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-              if (pregunta.pregunta) {
-                preguntasDeSeccion.push({
-                  pregunta: pregunta.pregunta,
-                  posicionPregunta: indexPregunta,
-                  nemonico : pregunta.nemonico,
-                });
-              }
+    // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
+    contentCont.map((item, indexContentCont) => {
+    // Verifica si el objeto actual tiene un atributo "preguntas"
+    if (item.preguntas && Array.isArray(item.preguntas)) {
+        // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
+        item.preguntas.map((pregunta, indexPregunta) => {
+        // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+        if (pregunta.pregunta) {
+            // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+            todasLasPreguntasConPosiciones.push({
+            pregunta: pregunta.pregunta,
+            posicionContentCont: indexContentCont,
+            posicionPregunta: indexPregunta,
             });
-      
-            // Limpia las preguntas anteriores antes de agregar las nuevas preguntas
-            setTodasLasPreguntasConPosiciones([]);
-            setTodasLasPreguntasConPosiciones((prevPreguntas) => [...prevPreguntas, ...preguntasDeSeccion]);
-            setVerLogicaPreguntas(!verLogicaPreguntas);
-          }
-        } else {
-          console.log('La posición de la sección no es válida.');
         }
-      
-        console.log(todasLasPreguntasConPosiciones);
-      };
-      
-    const seccionesConPosicion = contentCont.map((item, indexContentCont) => {
-        return {
-          titulo: item.titulo,
-          posicionContentCont: indexContentCont
-        };
-      });
-      
+        });
+    }
+    });
+
 
     
     const handleEditar = () => {
@@ -328,9 +305,6 @@ const OpcionMultiple = ({
         setIsActiveEditar(false)
         setIsActiveConfiguracion(true);
         setIsActiveLogica(true);
-        if (mostrarEditar === true) {
-            setMostrarEditar(mostrarEditar)
-        }
     };
 
     const handleConfiguracion = () => {
@@ -340,9 +314,6 @@ const OpcionMultiple = ({
         setIsActiveConfiguracion(false)
         setIsActiveEditar(true);
         setIsActiveLogica(true);
-        if (mostrarConfiguracion === true) {
-            setMostrarConfiguracion(mostrarConfiguracion)
-        }
     };
 
     const handleLogica = () => {
@@ -352,44 +323,38 @@ const OpcionMultiple = ({
         setIsActiveLogica(false);
         setIsActiveEditar(true);
         setIsActiveConfiguracion(true);
-        if (mostrarLogica === true) {
-            setMostrarLogica(mostrarLogica)
-        }
     };
-    
-    const [contadorOpciones, setContadorOpciones] = useState(opcionesRespuesta.length + 1);
-    let newType = configuracion3 ? 'checkbox' : 'radio';
+
     const handleMoreOpcion = () => {
         const newOpcion = {
-            idOpcionRespuesta: contadorOpciones,
+            idPregunta: opcionesRespuesta.length + 1,
             checked: false,
-            respuesta: "",
-            type: newType,
-            seccionValue: '',
-            preguntaValue: '',
+            respuesta: '',
+            type: 'radio',
+            seccionValue: '', // Valor inicial de la sección
+            valor: '', // Valor inicial de la pregunta
             orden: 0,
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
-        setOpcionText("");
+        
         setMoreContendorLogica((prevLogica) => [...prevLogica, true]);
-        setContadorOpciones(contadorOpciones + 1);
     };
 
-    const handleOpcionChange = (idOpcionRespuesta, value, checked, type) => {
+    const handleOpcionChange = (idPregunta, value, checked, type) => {
         if (!configuracion3) {
           // Solo cambiamos el estado si el switch está en modo "radio"
           if (type === 'checkbox') {
             // Para checkbox, cambiamos el estado del checkbox actual, pero también deseleccionamos todos los demás
             setOpcionesRespuesta((prevOpciones) =>
               prevOpciones.map((opcion) =>
-                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
+                opcion.idPregunta === idPregunta ? { ...opcion, checked: !checked } : { ...opcion, checked: false }
               )
             );
           } else if (type === 'radio') {
             // Para radio, deseleccionamos todas las opciones excepto la que se hizo clic
             setOpcionesRespuesta((prevOpciones) =>
               prevOpciones.map((opcion) =>
-                opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: true } : { ...opcion, checked: false }
+                opcion.idPregunta === idPregunta ? { ...opcion, checked: true } : { ...opcion, checked: false }
               )
             );
           }
@@ -397,23 +362,29 @@ const OpcionMultiple = ({
           // En modo "checkbox", simplemente cambiamos el estado del checkbox actual
           setOpcionesRespuesta((prevOpciones) =>
             prevOpciones.map((opcion) =>
-              opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, checked: !checked } : opcion
+              opcion.idPregunta === idPregunta ? { ...opcion, checked: !checked } : opcion
             )
           );
         }
     };
 
-    const handleOpcionTextChange = (idOpcionRespuesta, newText) => {
+    const handleOpcionTextChange = (idPregunta, newText) => {
         setOpcionesRespuesta((prevOpciones) =>
           prevOpciones.map((opcion) =>
-            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, respuesta: newText } : opcion
+            opcion.idPregunta === idPregunta ? { 
+                ...opcion,
+                respuesta: newText,
+                orden: idPregunta,
+                valor: 1,
+
+            } : opcion
           )
         );
     };
     
-    const handleDeleteOpcion = (idOpcionRespuesta) => {
+    const handleDeleteOpcion = (idPregunta) => {
         setOpcionesRespuesta((prevOpciones) =>
-          prevOpciones.filter((opcion) => opcion.idOpcionRespuesta !== idOpcionRespuesta)
+          prevOpciones.filter((opcion) => opcion.idPregunta !== idPregunta)
         );
     };
 
@@ -436,6 +407,7 @@ const OpcionMultiple = ({
                 esObligatoria: !configuracion1 ? "S" : "N",
             };
         });
+        
     };
 
     const handleEsOBligatoriaMensaje = (event) => {
@@ -451,6 +423,8 @@ const OpcionMultiple = ({
 
     const handleSwitchConfigurar2 = () => {
         setConfiguracion2(!configuracion2);
+        
+
     };
 
     const handleSwitchConfigurar3 = () => {
@@ -464,7 +438,20 @@ const OpcionMultiple = ({
           
         );
         setMultipleRespuesta(!configuracion3 ? "S" : "N");
-    };  
+        // setConfiguracionAdicional((prevConfiguracion) => {
+        //     const updatedConfiguracion = prevConfiguracion.map((configuracion, configuracionIndex) => {
+        //         if (configuracionIndex === 0) {
+        //             return {
+        //                 ...configuracion,
+        //                 multipleRespuesta: !configuracion3 ? "S" : "N",
+        //             };
+        //         }
+        //         return configuracion;
+        //     });
+        //     return updatedConfiguracion;
+        // }
+        // );
+    };                  
 
     const handleSwitchConfigurar4 = () => {
         setConfiguracion4(!configuracion4);
@@ -475,10 +462,10 @@ const OpcionMultiple = ({
             };
         }
         );
+
     };
 
     const handleSwitchConfigurar5 = () => {
-        console.log('si entra a configuracion 5')
         setConfiguracion5(!configuracion5);
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
@@ -507,7 +494,8 @@ const OpcionMultiple = ({
                 ...prevConfiguracion,
                 enumTipoTexto: selectedValue,
             };
-        });
+        }
+        );
     };
 
     const handleenumCantidadCaracteres = (event) => {
@@ -517,7 +505,8 @@ const OpcionMultiple = ({
                 ...prevConfiguracion,
                 enumCantidadCaracteres: selectedValue,
             };
-        });
+        }
+        );
     };
 
     const handleenumValidacion = (event) => {
@@ -527,8 +516,11 @@ const OpcionMultiple = ({
                 ...prevConfiguracion,
                 enumValidacion: selectedValue,
             };
-        });
+        }
+        );
     };
+
+
 
     const handleSwitchConfigurar6 = () => {
         setConfiguracion6(!configuracion6);
@@ -552,6 +544,7 @@ const OpcionMultiple = ({
         );
     };
 
+
     const handleSwitchConfigurar7 = () => {
         setConfiguracion7(!configuracion7);
         setConfiguraciongeneral((prevConfiguracion) => {
@@ -562,7 +555,7 @@ const OpcionMultiple = ({
         }
         );
     };
-
+     
     const handleBancoPregunta = (event) => {
         const selectedValue = event.target.value;
         setConfiguraciongeneral((prevConfiguracion) => {
@@ -573,6 +566,7 @@ const OpcionMultiple = ({
         }
         );
     };
+
 
     const handleDragEnd = (result) => {
         if (!result.destination) return; // No se soltó en una ubicación válida
@@ -594,7 +588,7 @@ const OpcionMultiple = ({
               return {
                 ...opcion,
                 seccionValue: '',
-                preguntaValue: '',
+                valor: '',
               };
             }
             return opcion;
@@ -604,7 +598,6 @@ const OpcionMultiple = ({
     };
 
     const handleSeccionChange = (index, event) => {
-        console.log(event.target.value)
         const selectedValue = event.target.value;
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
@@ -618,7 +611,6 @@ const OpcionMultiple = ({
             });
             return updatedOpciones;
         });
-        verPreguntas(selectedValue);
     };
       
     const handlePreguntaChange = (index, event) => {
@@ -628,7 +620,9 @@ const OpcionMultiple = ({
                 if (opcionIndex === index) {
                 return {
                     ...opcion,
+                    valor: selectedValue,
                     respuesta: selectedValue,
+                    orden: index + 1,
                 };
                 }
                 return opcion;
@@ -640,18 +634,15 @@ const OpcionMultiple = ({
     const handleCancelarOpcionMultiple = () => {
         setPregunta(preguntaTemp)
         closeopmul(indice, indiceSec);
-    };
+    }
 
     const handleEliminarOpcionMultiple = () => (
         handleEliminarPregunta(indice, indiceSec)
-    );
+    )
     
     const handleGuardarOpcionMultiple = () => {
         if (validacionOpcionMultiple() === false) return;
-        if (validacionConfiguracion1() === false) return;
-        if (validacionConfiguracion5() === false) return;
-        if (validacionConfiguracion6() === false) return;   
-        if (validacionConfiguracion7() === false) return;
+        if (validacionConfiguracion() === false) return;
         setPreguntaTemp(pregunta)
         if (configuracion2)
         {
@@ -663,53 +654,6 @@ const OpcionMultiple = ({
         {
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
         }
-        
-
-    };
-
-    const validacionConfiguracion1 = () => {
-        if (configuracion1)
-        {
-            if (configuraciongeneral.mensajeEsObligatoria === '') {
-                toast.error('Debe agregar un mensaje de configuracion', { autoClose: 1000 });
-                return false;
-            }
-        }
-    };
-
-
-    const validacionConfiguracion5 = () => {
-        console.log(configuracion5)
-        if (configuracion5) 
-        {
-            console.log('si entra a configuracion 5')   
-            if (configuraciongeneral.etiquetaOtraRespuesta === '' || configuraciongeneral.enumTipoTexto === '' 
-            || configuraciongeneral.enumCantidadCaracteres === '' || configuraciongeneral.enumValidacion === '') { 
-                
-                toast.error('Debe llenar todos los campos de la configuracion Agregar "otra"', { autoClose: 1000 });
-                return false;
-            } 
-        }
-    };
-
-    const validacionConfiguracion6 = () => {
-        if (configuracion6)
-        {
-            if (configuraciongeneral.etiquetaInformacionPregunta === '') {
-                toast.error('Debe agregar un mensaje de información', { autoClose: 1000 });
-                return false;
-            }
-        }
-    };
-    const validacionConfiguracion7 = () => {
-        if (configuracion7)
-        {
-            if (configuraciongeneral.etiquetaBancoPregunta === '') {
-                toast.error('Debe agregar un mensaje de banco de preguntas', { autoClose: 1000 });
-                return false;
-         
-            }
-        }
     };
 
     const validacionOpcionMultiple = () => {
@@ -719,24 +663,20 @@ const OpcionMultiple = ({
         }
     };
 
+    const validacionConfiguracion = () => {
+        if (configuracion1 && configuraciongeneral.mensajeEsObligatoria === '') {
+            toast.error('Debe agregar un mensaje de configuracion', { autoClose: 1000 });
+            return false;
+        }
+    };
+
+
+
 
     useEffect(() => {
         setMoreContendorLogica([true]);
+        
     }, []);
-
-    useEffect(() => {
-        setPreguntaTemp(preguntas.pregunta)
-        setPregunta(preguntas.pregunta)
-        const nuevasOpcionesRespuesta = preguntas.opcionesRespuesta?.map((opcionApi) => ({
-            idOpcionRespuesta: opcionApi.idOpcionRespuesta,
-            respuesta: opcionApi.respuesta,
-            checked: opcionApi.checked,
-            type: opcionApi.type,
-            seccionValue: opcionApi.seccionValue,
-            preguntaValue: opcionApi.preguntaValue,
-        })) ?? [];
-        setOpcionesRespuesta(nuevasOpcionesRespuesta);
-    }, [contentCont, preguntas.pregunta, preguntas.opcionesRespuesta]);
 
     const listarTipoPregunta = async () => {
         try {
@@ -756,15 +696,30 @@ const OpcionMultiple = ({
     };
     
     useEffect(() => {
+        
         listarTipoPregunta();
-        if (!preguntas.requerida) { // Condición para verificar si la respuesta está vacía
-            handleMoreOpcion();
-        }
-    }, [preguntas.respuesta])
+        handleMoreOpcion();
+    }, [])
+
+    
+    useEffect(() => {
+        setPreguntaTemp(contentPreg.pregunta)
+        setPregunta(contentPreg.pregunta)
+        const nuevasOpcionesRespuesta = contentPreg.opcionesRespuesta?.map((opcionApi) => ({
+            idPregunta: opcionApi.idPregunta,
+            respuesta: opcionApi.respuesta,
+            checked: false,
+            type: 'radio',
+            seccionValue: '',
+            valor: '',
+        })) ?? [];
+        setOpcionesRespuesta(nuevasOpcionesRespuesta);
+    }, [contentCont, contentPreg.pregunta, contentPreg.opcionesRespuesta]);
+
 
     const handlePregunta = (value) => {
         handleCambiarPregunta(indice, indiceSec, value)
-    };     
+    }
 
     const handleComplemetaria = (event) => {
         const selectedValue = JSON.parse(event.target.value);
@@ -776,12 +731,6 @@ const OpcionMultiple = ({
         console.log("Posición en preguntas:", posicionPregunta);
       };
       
-    const handlever = () => {
-        console.log(configuracion5)
-        
-    
-    } 
-
 
 
     return (
@@ -832,8 +781,8 @@ const OpcionMultiple = ({
                         <Col className='seccion3-opcionMultiple-editar'>
                             <DragDropContext onDragEnd={handleDragEnd}>
                                 {opcionesRespuesta.map((opcion, index) => {
-                                    const droppableId = `opcion-${opcion.idOpcionRespuesta ? opcion.idOpcionRespuesta.toString() : index}`;
-                                    const draggableId = `draggable-${opcion.idOpcionRespuesta ? opcion.idOpcionRespuesta.toString() : index}`;
+                                    const droppableId = `opcion-${opcion.idPregunta ? opcion.idPregunta.toString() : index}`;
+                                    const draggableId = `draggable-${opcion.idPregunta ? opcion.idPregunta.toString() : index}`;
                                     return (
                                         <Droppable droppableId={droppableId} key={droppableId}>
                                             {(provided) => (
@@ -851,7 +800,7 @@ const OpcionMultiple = ({
                                                             >
                                                                 <Col className="seccion3-1-opcionMultiple-editar">
                                                                     <CustomCheckBox
-                                                                        key={opcion.idOpcionRespuesta}
+                                                                        key={opcion.idPregunta}
                                                                         className={`custom-checkbox ${opcion.type === 'radio' ? 'custom-radio' : ''}`}
                                                                         checked={opcion.checked}
                                                                     >
@@ -861,7 +810,7 @@ const OpcionMultiple = ({
                                                                                     type="checkbox"
                                                                                     style={{ width: '100%', height: '100%' }}
                                                                                     checked={opcion.checked}
-                                                                                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
+                                                                                    onChange={() => handleOpcionChange(opcion.idPregunta, opcion.respuesta, opcion.checked, 'checkbox')}
                                                                                 />
                                                                                 <StyledCheckBox checked={opcion.checked} />
                                                                             </>
@@ -871,7 +820,7 @@ const OpcionMultiple = ({
                                                                                     type="radio"
                                                                                     style={{ width: '100%', height: '100%' }}
                                                                                     checked={opcion.checked}
-                                                                                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'radio')}
+                                                                                    onChange={() => handleOpcionChange(opcion.idPregunta, opcion.respuesta, opcion.checked, 'radio')}
                                                                                 />
                                                                                 <StyledRadioButton checked={opcion.checked} />
                                                                             </>
@@ -884,7 +833,7 @@ const OpcionMultiple = ({
                                                                         type="text"
                                                                         value={opcion.respuesta}
                                                                         placeholder="Ingrese una opción de respuesta"
-                                                                        onChange={(e) => handleOpcionTextChange(opcion.idOpcionRespuesta, e.target.value)}
+                                                                        onChange={(e) => handleOpcionTextChange(opcion.idPregunta, e.target.value)}
                                                                     />
 
                                                                     {usarPonderacion && (
@@ -900,7 +849,7 @@ const OpcionMultiple = ({
                                                                     <span
                                                                         style={{ marginTop: '1.3%', marginLeft: '2%', cursor: 'pointer' }}
                                                                         dangerouslySetInnerHTML={{ __html: minusCircleSVG }}
-                                                                        onClick={() => handleDeleteOpcion(opcion.idOpcionRespuesta)}
+                                                                        onClick={() => handleDeleteOpcion(opcion.idPregunta)}
                                                                     />
                                                                 </Col>
                                                             </div>
@@ -948,8 +897,8 @@ const OpcionMultiple = ({
                                 <MensajeError 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    placeholder="Escribe aquí..."
-                                    onChange={handleEsOBligatoriaMensaje} 
+                                    placeholder="Escribe aquí..." 
+                                    onChange={handleEsOBligatoriaMensaje}
                                 />
                             </Col>
                         )}
@@ -1064,7 +1013,7 @@ const OpcionMultiple = ({
                                     className= 'textoConfiguracion1' 
                                     type="text" 
                                     placeholder="Escribe aquí..." 
-                                    defaultValue={informacionPregunta}
+                                    value={informacionPregunta}
                                     onChange={handleInformacionPregunta}
                                 />
                             </Col>
@@ -1104,7 +1053,7 @@ const OpcionMultiple = ({
                                     <Col className='seccion2-opcionMultiple-logica'>
                                         {opcionesRespuesta.map((opcion, opcionIndex) => (
                                             opcionIndex === index && (
-                                                <div key={opcion.idOpcionRespuesta} style={{ width: '29%' }}>
+                                                <div key={opcion.idPregunta} style={{ width: '29%' }}>
                                                     <p style={{ margin: 'unset', width: '20%' }}>{opcion.respuesta}</p>
                                                 </div>
                                             )
@@ -1113,35 +1062,28 @@ const OpcionMultiple = ({
                                         {opcionesRespuesta.map((opcion, opcionIndex) => (
                                             opcionIndex === index && (
                                                 <Col style={{ width: '100%' }}>
-                                                    <div key={opcion.idOpcionRespuesta}></div>
+                                                    <div key={opcion.idPregunta}></div>
                                                         <select
                                                             className='select1Logica1'
                                                             value={opcion.seccionValue}
                                                             onChange={(event) => handleSeccionChange(opcionIndex, event)}
                                                         >
                                                             <option value='' disabled hidden>Seleccionar Sección</option>
-                                                            {seccionesConPosicion.map((seccion, index) => (
-                                                                <option key={index} value={seccion.posicionContentCont}>
-                                                                    {seccion.titulo}
-                                                                </option>
-                                                            ))}
-
+                                                            <option value='option1'>Sección 1</option>
+                                                            <option value='option2'>Sección 2</option>
+                                                            <option value='option3'>Sección 3</option>
                                                         </select>
 
                                                         <select
-                                                        className='select1Logica2'
-                                                        value= {opcion.valor}
-                                                        onChange={(event) => handlePreguntaChange(index, event)}
-                                                        disabled={!verLogicaPreguntas} // Aquí se habilitará o deshabilitará el select
+                                                            className='select1Logica2'
+                                                            value={opcion.valor}
+                                                            onChange={(event) => handlePreguntaChange(index, event)}
                                                         >
-                                                        <option value='' disabled hidden>Seleccionar Pregunta</option>
-                                                        {todasLasPreguntasConPosiciones.map((pregunta, index) => (
-                                                            <option key={index} value={pregunta.nemonico}>
-                                                            {pregunta.pregunta}
-                                                            </option>
-                                                        ))}
+                                                            <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                            <option value='option1'>Pregunta 1</option>
+                                                            <option value='option2'>Pregunta 2</option>
+                                                            <option value='option3'>Pregunta 3</option>
                                                         </select>
-
 
                                                         <Button className='borrarLogica'>
                                                             <span
@@ -1174,7 +1116,7 @@ const OpcionMultiple = ({
 
         {save && (
             <Container>
-                <ResultadoOpcionMultiple 
+                <ResultadoOpcionMultipleComplementaria
                     index={indice}
                     indexSec={indiceSec}
                     pregunta={pregunta} 
@@ -1190,7 +1132,6 @@ const OpcionMultiple = ({
                     obtenerPreg={obtenerPreg}
                     contenEstilos={contenEstilos}
                     sendColors={sendColors}
-                    configuracion3RC={configuracion3}
                 />
             </Container>
         )}
@@ -1198,4 +1139,4 @@ const OpcionMultiple = ({
   )
 }
 
-export default OpcionMultiple
+export default OpcionMultipleComplementaria

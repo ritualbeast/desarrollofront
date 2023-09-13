@@ -207,7 +207,7 @@ const Create = () => {
 
     const nextPasos = () => {
         if(pasos === 1){
-            handleBotonClick();
+            
             setPasos(2);
             setActiveTab(true);
             setVistaPrevia(false);
@@ -313,6 +313,7 @@ const Create = () => {
       };
 
     const sendDatosConfiguracionEncuesta = (datos) => {
+        
         setDatosConfiguracionEncuesta(datos)
     }
 
@@ -332,7 +333,7 @@ const Create = () => {
     const leerestilos = () => {
          // console.log(encuestaEstilos);
          console.log(contentCont);
-        // console.log(datosConfiguracionEncuesta);
+         console.log(datosConfiguracionEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)
@@ -353,7 +354,7 @@ const Create = () => {
     return (
         <>
             <ToastContainer />
-            <button onClick={leerestilos}>leer estilos</button>
+            <button onClick={leerestilos}>leers estilos</button>
 
             <div
                 id="modal-container"
