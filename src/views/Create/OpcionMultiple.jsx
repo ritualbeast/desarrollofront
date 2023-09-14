@@ -235,7 +235,7 @@ const OpcionMultiple = ({
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
             preguntaValue: '', // Valor inicial de la pregunta
-            // ...
+            valor: 0,
         }))
     );
     const [opcionText, setOpcionText] = useState("");
@@ -391,6 +391,7 @@ const OpcionMultiple = ({
             seccionValue: '',
             preguntaValue: '',
             orden: 0,
+            valor: 0,
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         setOpcionText("");
@@ -432,7 +433,21 @@ const OpcionMultiple = ({
             opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, respuesta: newText } : opcion
           )
         );
+
     };
+    const handleOpcionPonderacion = (idOpcionRespuesta, newPonderacion) => {
+        // Verificar si newPonderacion es una cadena vacía, un número válido entre 0 y 10 o "." para borrar
+        if (newPonderacion === "" || newPonderacion === "." || (/^\d+(\.\d*)?$/.test(newPonderacion) && parseFloat(newPonderacion) >= 0 && parseFloat(newPonderacion) <= 10)) {
+            console.log(newPonderacion, idOpcionRespuesta);
+            setOpcionesRespuesta((prevOpciones) =>
+                prevOpciones.map((opcion) =>
+                    opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, valor: newPonderacion } : opcion
+                )
+            );
+        }
+    };
+    
+    
     
     const handleDeleteOpcion = (idOpcionRespuesta) => {
         setOpcionesRespuesta((prevOpciones) =>
@@ -659,6 +674,8 @@ const OpcionMultiple = ({
             return updatedOpciones;
         });
     };
+   
+    
 
     const handleCancelarOpcionMultiple = () => {
         setPregunta(preguntaTemp)
@@ -675,6 +692,7 @@ const OpcionMultiple = ({
         if (validacionConfiguracion5() === false) return;
         if (validacionConfiguracion6() === false) return;   
         if (validacionConfiguracion7() === false) return;
+        if (validarCheckedRespuestas() === false) return;
         setPreguntaTemp(pregunta)
         if (configuracion2)
         {
@@ -742,6 +760,15 @@ const OpcionMultiple = ({
         }
     };
 
+    const validarCheckedRespuestas = () => {
+        const respuestas = opcionesRespuesta.filter((opcion) => opcion.checked);
+        if (respuestas.length === 0) {
+            toast.error('Debe seleccionar al menos una opción de respuesta', { autoClose: 1000 });
+            return false;
+        }
+    };
+    
+
 
     useEffect(() => {
         setMoreContendorLogica([true]);
@@ -757,6 +784,7 @@ const OpcionMultiple = ({
             type: opcionApi.type,
             seccionValue: opcionApi.seccionValue,
             preguntaValue: opcionApi.preguntaValue,
+            valor: opcionApi.valor,
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
     }, [contentCont, preguntas.pregunta, preguntas.opcionesRespuesta]);
@@ -799,11 +827,7 @@ const OpcionMultiple = ({
         console.log("Posición en preguntas:", posicionPregunta);
       };
       
-    const handlever = () => {
-        console.log(configuracion5)
-        
     
-    } 
 
 
 
@@ -911,13 +935,16 @@ const OpcionMultiple = ({
                                                                     />
 
                                                                     {usarPonderacion && (
-                                                                        inputs.map((inputNum, index) => (
                                                                             <Ponderacion
                                                                                 className="numeracionRespuesta"
-                                                                                key={inputNum}
+                                                                                
                                                                                 type="text"
+                                                                                value={
+                                                                                    console.log('uh',opcion) ||
+                                                                                    opcion.valor}
+                                                                                onChange={(e) => handleOpcionPonderacion(opcion.idOpcionRespuesta, e.target.value)}
                                                                             />
-                                                                        ))
+                                                                        
                                                                     )}
 
                                                                     <span
@@ -1013,15 +1040,7 @@ const OpcionMultiple = ({
                             </label>
                             <p style={{ margin: 'unset', cursor: 'default' }}>Agregar como opción de respuesta "Ninguna de las anteriores"</p>
                         </Col>
-                        {configuracion4 && (
-                            <Col className='seccion1-4-opcionMultiple-configuracion'>
-                                <p style={{margin: 'unset' }}>Etiqueta</p>
-                                <Etiqueta 
-                                    className= 'textoConfiguracion1' 
-                                    type="text" 
-                                />
-                            </Col>
-                        )}
+                        
 
                         <Col className='seccion5-opcionMultiple-configuracion'>
                             <label className="switch">

@@ -602,7 +602,7 @@ const NuevaEncuesta = ({
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
       const preguntaComplementaria = {
         pregunta: pregunta,
-        nemonico: '1S_1P',
+        nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
         idTipoPregunta: 1,
         orden: indiceSec,
         requerida: '',

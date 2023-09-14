@@ -171,6 +171,7 @@ const VariacionEstrellas = ({
             colorDefault: "#e0dcdc",
             selectedIcon: opcionApi.enumGrafico,
             selectedColor: "#e0dcdc",
+            valor : 0,
         }))
     );
     const [opcionText, setOpcionText] = useState("");
@@ -283,6 +284,7 @@ const VariacionEstrellas = ({
             colorDefault: "#e0dcdc",
             selectedIcon: 'star',
             selectedColor: "#e0dcdc",
+            valor : 0,
         };
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
@@ -545,7 +547,8 @@ const VariacionEstrellas = ({
         if (validacionConfiguracion1() === false) return;
         if (validacionConfiguracion4() === false) return;
         if (validacionConfiguracion5() === false) return;
-
+        if (validacionConfiguracion6() === false) return;
+        if (validacionConfiguracion7() === false) return;
 
         if (!validacionEstrella()) {
             return;
@@ -600,6 +603,27 @@ const VariacionEstrellas = ({
             } 
         }
     };
+
+    const validacionConfiguracion6 = () => {
+        if (configuracion6)
+        {
+            if (configuraciongeneral.etiquetaInformacionPregunta === '') {
+                toast.error('Debe agregar un mensaje de información', { autoClose: 1000 });
+                return false;
+            }
+        }
+    };
+    const validacionConfiguracion7 = () => {
+        if (configuracion7)
+        {
+            if (configuraciongeneral.etiquetaBancoPregunta === '') {
+                toast.error('Debe agregar un mensaje de banco de preguntas', { autoClose: 1000 });
+                return false;
+         
+            }
+        }
+    };
+
 
 
     
@@ -661,6 +685,7 @@ const VariacionEstrellas = ({
             colorDefault: opcionApi.colorDefault,
             selectedIcon: opcionApi.enumGrafico,
             selectedColor: opcionApi.selectedColor,
+            valor : opcionApi.valor,
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
     }, [contentCont, preguntas.pregunta, preguntas.opcionesRespuesta]);
@@ -711,6 +736,19 @@ const VariacionEstrellas = ({
         setPosicionPregunta(selectedValue.posicionPregunta);
       
       };
+
+      const handleOpcionPonderacion = (idOpcionRespuesta, newPonderacion) => {
+        // Verificar si newPonderacion es una cadena vacía, un número válido entre 0 y 10 o "." para borrar
+        if (newPonderacion === "" || newPonderacion === "." || (/^\d+(\.\d*)?$/.test(newPonderacion) && parseFloat(newPonderacion) >= 0 && parseFloat(newPonderacion) <= 10)) {
+            console.log(newPonderacion, idOpcionRespuesta);
+            setOpcionesRespuesta((prevOpciones) =>
+                prevOpciones.map((opcion) =>
+                    opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, valor: newPonderacion } : opcion
+                )
+            );
+        }
+    };
+    
 
     return (
     <>
@@ -848,13 +886,16 @@ const VariacionEstrellas = ({
                                                                         )}
 
                                                                         {usarPonderacion && (
-                                                                            inputs.map((inputNum, index) => (
-                                                                                <Ponderacion
-                                                                                    className="numeracionRespuesta"
-                                                                                    key={inputNum}
-                                                                                    type="text"
-                                                                                />
-                                                                            ))
+                                                                            <Ponderacion
+                                                                                className="numeracionRespuesta"
+                                                                                
+                                                                                type="text"
+                                                                                value={
+                                                                                    console.log('uh',opcion) ||
+                                                                                    opcion.valor}
+                                                                                onChange={(e) => handleOpcionPonderacion(opcion.idOpcionRespuesta, e.target.value)}
+                                                                            />
+                                                                        
                                                                         )}
 
                                                                         <span
