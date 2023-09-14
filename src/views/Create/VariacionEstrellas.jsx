@@ -209,6 +209,30 @@ const VariacionEstrellas = ({
     const [otraRespuesta, setOtraRespuesta] = useState('Otra respuesta');
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
     const containerColor = useRef(null);
+    const todasLasPreguntasConPosicion = [];
+    const [posicionContentCont, setPosicionContentCont] = useState(0);
+    const [posicionPregunta, setPosicionPregunta] = useState(0);
+
+     // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
+     contentCont.map((item, indexContentCont) => {
+        // Verifica si el objeto actual tiene un atributo "preguntas"
+        if (item.preguntas && Array.isArray(item.preguntas)) {
+            // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
+            item.preguntas.map((pregunta, indexPregunta) => {
+                
+            // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+            if (pregunta.pregunta) {
+                // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+                todasLasPreguntasConPosicion.push({
+                pregunta: pregunta.pregunta,
+                posicionContentCont: indexContentCont,
+                posicionPregunta: indexPregunta,
+                });
+            }
+            });
+        }
+        });
+
 
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
@@ -254,7 +278,7 @@ const VariacionEstrellas = ({
             type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            enumGrafico: 'star',
+            enumGrafico: '',
             colorOpcion: "#e0dcdc",
             colorDefault: "#e0dcdc",
             selectedIcon: 'star',
@@ -317,22 +341,21 @@ const VariacionEstrellas = ({
     
     useEffect(() => {
         // Verificar si alguna respuesta contiene "Ninguna de las anteriores" o "Otra respuesta"
+
         const contieneNingunaAnteriores = opcionesRespuesta.some(
             (opcion) => opcion.respuesta === 'Ninguna de las anteriores'
         );
         const contieneOtraRespuesta = opcionesRespuesta.some(
             (opcion) => opcion.respuesta === 'Otra respuesta'
         );
-      
         // Actualizar los interruptores de configuración en consecuencia
-        setConfiguracion4(contieneNingunaAnteriores);
-        setConfiguracion5(contieneOtraRespuesta);
+        // setConfiguracion4(contieneNingunaAnteriores);
+        // setConfiguracion5(contieneOtraRespuesta);
     }, [opcionesRespuesta]);
 
     const handleSwitchConfigurar4 = () => {
         // Invierte el valor de configuracion4
         setConfiguracion4(!configuracion4);
-      
         // Actualiza las opciones de respuesta
         setOpcionesRespuesta((prevOpcionesRespuesta) => {
             // Filtra las opciones de respuesta que no contienen 'Ninguna de las anteriores'
@@ -519,6 +542,11 @@ const VariacionEstrellas = ({
 
     const handleGuardarValoracionEstrellas = () => {
         console.log(opcionesRespuesta)
+        if (validacionConfiguracion1() === false) return;
+        if (validacionConfiguracion4() === false) return;
+        if (validacionConfiguracion5() === false) return;
+
+
         if (!validacionEstrella()) {
             return;
         }
@@ -543,6 +571,37 @@ const VariacionEstrellas = ({
         return true;
     }
     
+    const validacionConfiguracion1 = () => {
+        if (configuracion1 === true && configuraciongeneral.mensajeEsObligatoria === '') {
+            toast.error('Debe ingresar un mensaje de error');
+            return false;
+        }
+        return true;
+    }
+
+    const validacionConfiguracion4 = () => {    
+        if (configuracion4 === true && configuraciongeneral.etiquetaOtraRespuesta === '') {
+            toast.error('Debe ingresar una etiqueta para la opción "Ninguna de las anteriores"');
+            return false;
+        }
+        return true;
+    }
+
+    const validacionConfiguracion5 = () => {
+        console.log(configuracion5)
+        if (configuracion5) 
+        {
+            console.log('si entra a configuracion 5')   
+            if (configuraciongeneral.etiquetaOtraRespuesta === '' || configuraciongeneral.enumTipoTexto === '' 
+            || configuraciongeneral.enumCantidadCaracteres === '' || configuraciongeneral.enumValidacion === '') { 
+                
+                toast.error('Debe llenar todos los campos de la configuracion Agregar "otra"', { autoClose: 1000 });
+                return false;
+            } 
+        }
+    };
+
+
     
 
 
@@ -573,9 +632,13 @@ const VariacionEstrellas = ({
     };
 
     const handleIconChange = (idOpcionRespuesta, newIcon) => {
+
+        console.log(newIcon)
+        const EnumGrafico = newIcon === 'square' ? 13 : newIcon === 'circle' ? 14 : newIcon === 'triangle' ? 40 : newIcon === 'star' ? 12 : 0
+        console.log(EnumGrafico)
         setOpcionesRespuesta((prevOpciones) =>
         prevOpciones.map((opcion) =>
-            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, enumGrafico: newIcon } : opcion
+            opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, enumGrafico: EnumGrafico } : opcion
         ));
     };
 
@@ -635,11 +698,19 @@ const VariacionEstrellas = ({
     const listarEnumeradosVigencia = async () => {
         try {
             const response = await ListarEnumeradosService('', 6);
+             
             setTipoIcono(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
         }
     };
+
+    const handleComplemetaria = (event) => {
+        const selectedValue = JSON.parse(event.target.value);
+        setPosicionContentCont(selectedValue.posicionContentCont);
+        setPosicionPregunta(selectedValue.posicionPregunta);
+      
+      };
 
     return (
     <>
@@ -852,11 +923,13 @@ const VariacionEstrellas = ({
                         </Col>
                         {configuracion2 && (
                             <Col className='seccion1-2-variacionEstrellas-configuracion'>
-                                <select className='selectConfigurar'>
-                                    <option value="" selected disabled hidden>Seleccionar Pregunta</option>
-                                    <option value="option1">Opción 1</option>
-                                    <option value="option2">Opción 2</option>
-                                    <option value="option3">Opción 3</option>
+                                <select className='selectConfigurar' onChange={handleComplemetaria} value={posicionContentCont}>
+                                   <option value="" selected disabled hidden>Seleccionar Pregunta</option>
+                                    {todasLasPreguntasConPosicion.map((pregunta, index) => (
+                                        <option key={index} value={JSON.stringify(pregunta)}>
+                                        {pregunta.pregunta}
+                                        </option>
+                                    ))}
                                 </select>
                             </Col>
                         )}
@@ -874,8 +947,8 @@ const VariacionEstrellas = ({
                                 <Etiqueta 
                                     className= 'textoConfiguracion1' 
                                     type="text" 
-                                    value={ningunaAnteriores}
-                                    readOnly
+                                    defaultValue={ningunaAnteriores}
+                                    
                                 />
                             </Col>
                         )}

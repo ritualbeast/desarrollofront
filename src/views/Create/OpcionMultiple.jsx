@@ -275,9 +275,32 @@ const OpcionMultiple = ({
     const [informacionPregunta, setInformacionPregunta] = useState('Considerar que debe ser unicamente en nuestras centrales medicas de Quito y exceptuando optometría y sicología')
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
     const [todasLasPreguntasConPosiciones, setTodasLasPreguntasConPosiciones] = useState([]);
+    const todasLasPreguntasConPosicion = [];
     const [posicionPregunta, setPosicionPregunta] = useState(0);
     const [posicionContentCont, setPosicionContentCont] = useState(0);
     const [verLogicaPreguntas, setVerLogicaPreguntas] = useState(false);
+    
+    
+    
+      // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
+      contentCont.map((item, indexContentCont) => {
+        // Verifica si el objeto actual tiene un atributo "preguntas"
+        if (item.preguntas && Array.isArray(item.preguntas)) {
+            // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
+            item.preguntas.map((pregunta, indexPregunta) => {
+                
+            // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+            if (pregunta.pregunta) {
+                // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+                todasLasPreguntasConPosicion.push({
+                pregunta: pregunta.pregunta,
+                posicionContentCont: indexContentCont,
+                posicionPregunta: indexPregunta,
+                });
+            }
+            });
+        }
+        });
 
     const verPreguntas = (seccionPosicion) => {
         console.log('si entra a ver preguntas');
@@ -965,7 +988,7 @@ const OpcionMultiple = ({
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
                                 <select className='selectConfigurar' onChange={handleComplemetaria} value={posicionContentCont}>
                                     <option value="" selected disabled hidden>Seleccionar Pregunta</option>
-                                    {todasLasPreguntasConPosiciones.map((pregunta, index) => (
+                                    {todasLasPreguntasConPosicion.map((pregunta, index) => (
                                         <option key={index} value={JSON.stringify(pregunta)}>
                                         {pregunta.pregunta}
                                         </option>

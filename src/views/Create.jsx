@@ -57,7 +57,7 @@ const Create = () => {
         orden: 1,
         imagenCabecera: '', 
         imagenPie : '',  
-        tipoSeccion: 'C',  
+        tipoSeccion: 'P',  
         textoAgradecimiento: 'ok',
         urlRedireccion: '#',
         imagenCierre: '#',   
@@ -348,7 +348,7 @@ const Create = () => {
     return (
         <>
             <ToastContainer />
-            <button onClick={leerestilos}>leers estilos</button>
+            <button onClick={leerestilos}>leersA estilos</button>
 
             <div
                 id="modal-container"
