@@ -207,6 +207,18 @@ const Create = () => {
 
     const nextPasos = () => {
         if(pasos === 1){
+
+            if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
+                || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enumTipoVigencia === '' 
+                || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
+                || datosEncuesta.titulo === ''
+                || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
+
+                  ) {
+                 toast.error('Por favor complete todos los campos', {autoClose: 1000});
+                  return;
+              }
+            
             
             setPasos(2);
             setActiveTab(true);
@@ -230,6 +242,7 @@ const Create = () => {
 
     const enviarPreview2 = (previe2) => {
         setIspreview2(previe2)
+
     };
 
     const handleSendEstado = (estado) => {
@@ -327,9 +340,10 @@ const Create = () => {
     };  
     
     const leerestilos = () => {
-         // console.log(encuestaEstilos);
-         console.log(contentCont);
-         console.log(datosConfiguracionEncuesta);
+         console.log(encuestaEstilos);
+         // console.log(contentCont);
+         // console.log(datosConfiguracionEncuesta);
+         console.log(datosEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)

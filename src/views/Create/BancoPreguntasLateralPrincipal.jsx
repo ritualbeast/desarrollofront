@@ -64,7 +64,7 @@ const BancoPreguntasLateralPrincipal = ({onObtenerPregunta, contentCont}) => {
 
     const ListarCategoriaEncuesta = async () => {
         try {
-          const response = await  ListarCategoriasService();
+          const response = await  ListarCategoriasService(localStorage.getItem('enumTipoEncuesta'),);
           setListarCategoriaEncuestas(response.data.row);
         } catch (error) {
           console.error(error);

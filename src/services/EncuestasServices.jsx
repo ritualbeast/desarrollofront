@@ -1,5 +1,5 @@
 
-const ListarCategoriasService = async () => {
+const ListarCategoriasService = async (tipoEncuesta) => {
   try {
     const canal = '808cd0b9-141f-4132-81e9-c3822436191b';
     const headers = {
@@ -10,7 +10,7 @@ const ListarCategoriasService = async () => {
       method: 'GET',
       headers,
     };
-    const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/categoria/listarCategorias', requestOptions);
+    const response = await fetch('http://desa.goitsa.me:3001/goit-notisurvey-api/v2/categoria/listarCategorias?tipoEncuesta='+tipoEncuesta, requestOptions);
     const data = await response.json();
 
     return data;

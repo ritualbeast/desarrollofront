@@ -127,7 +127,7 @@ const ModalCrearEncuesta2 = ({ open, onClose }) => {
           </div>
 
           <div className={`modalCrearEncuesta_button ${selectedOption === 'opcion3' ? 'selected' : ''}`}
-              onClick={() => handleOptionClick('opcion3','P')}
+              onClick={() => handleOptionClick('opcion3','U')}
           >
               <span style={{ marginTop: '10px', marginLeft: '5px', marginRight: '10px' }} dangerouslySetInnerHTML={{ __html: PlusSqareSVG }} />
               

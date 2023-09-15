@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, forwardRef, useImperativeHandle} from 'react'
+import React, {useState, useEffect, useRef, forwardRef} from 'react'
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
 import styled from 'styled-components';
@@ -41,30 +41,16 @@ const Leyenda = styled.textarea`
 `;
 
 const DefinicionEncuestaCuerpo =  forwardRef(({
-  sendEstado3, 
-  sendPosicion3, 
-  sendTamano3, 
-  sendGrosor3, 
-  sendTipografia3, 
-  sendPreview, 
-  sendPreview2, 
-  sendPosicionLogotipo, 
-  sendTamanoLogotipo, 
-  sendPosicionLogotipoPiePagina, 
-  sendTamanoLogotipoPiePagina,
-  sendDatosDefinicionEncuesta, 
-  contentInit, 
-  contenEstilos, 
-  sendEstilosDefinicionEncuesta,
-  sendColors,
+  sendEstado3, sendPosicion3, 
+  sendTamano3, sendGrosor3, sendTipografia3, sendPreview, sendPreview2, 
+  sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina,
+  sendDatosDefinicionEncuesta, contentInit, contenEstilos, sendEstilosDefinicionEncuesta,
+  sendColors
 }, ref) => {
   const [selectedFile1, setSelectedFile1] = useState(null);
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
-  const [preview64, setPreview64] = useState(null);
-  const [preview64_2, setPreview64_2] = useState(null);
-  // const [preview, setPreview] = useState(null);
   const [leerPosicion, setLeerPosicion] = useState(sendPosicion3);
   const [datosDefinicionEncuesta, setDatosDefinicionEncuesta] = useState(contentInit);
   const [datosDefinicionEstilo, setDatosDefinicionEstilo] = useState(contenEstilos);
@@ -72,22 +58,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [leerTamanoLogotipo, setLeerTamanoLogotipo] = useState(sendTamanoLogotipo);
   const [leerPosicionLogotipoPiePagina, setLeerPosicionLogotipoPiePagina] = useState(sendPosicionLogotipoPiePagina);
   const [leerTamanoLogotipoPiePagina, setLeerTamanoLogotipoPiePagina] = useState(sendTamanoLogotipoPiePagina);
-  // capturar tamaño de letra para enviar a create
-  const [tamanoNombreDefinicion, setTamanoNombreDefinicion] = useState(0);
-  const [tamanoDescripcionDefinicion, setTamanoDescripcionDefinicion] = useState(0);
-  const [tamanoLeyendaDefinicion, setTamanoLeyendaDefinicion] = useState(0);
-  const [tamanoBotonDefinicion, setTamanoBotonDefinicion] = useState(0);
-  // capturar grosor de letra para enviarl a create
-  const [grosorNombreDefinicion, setGrosorNombreDefinicion] = useState('');
-  const [grosorDescripcionDefinicion, setGrosorDescripcionDefinicion] = useState('');
-  const [grosorLeyendaDefinicion, setGrosorLeyendaDefinicion] = useState('');
-  const [grosorBotonDefinicion, setGrosorBotonDefinicion] = useState('');
-  // capturar tipografia de letra para enviar a create
-  const [tipografiaNombreDefinicion, setTipografiaNombreDefinicion] = useState('');
-  const [tipografiaDescripcionDefinicion, setTipografiaDescripcionDefinicion] = useState('');
-  const [tipografiaLeyendaDefinicion, setTipografiaLeyendaDefinicion] = useState('');
-  const [tipografiaBotonDefinicion, setTipografiaBotonDefinicion] = useState('');
-
   const tamano = sendTamano3?.tamano ;
   const titulotamano = sendTamano3?.titulo;
   const grosor = sendGrosor3?.grosor;
@@ -106,47 +76,62 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const fondoPiePaginaRef = useRef();
   const [fondo, setFondo] = useState('');
   const [colors, setColors] = useState(sendColors);
-  const inputNombreRef = useRef(null);
-  const inputDescripcionRef = useRef(null);
-  const inputLeyendaRef = useRef(null);
 
   useEffect(() => {
+    console.log(datosDefinicionEstilo);
+   
+
     if (tituloTipografia === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontFamily = tipografia;
       }
-    } if (tituloGrosor === 'Nombre de encuesta') {
+      
+    }
+    if (tituloGrosor === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontWeight = grosor;
       }
-    } if (titulotamano === 'Nombre de encuesta') {
+     
+    }
+    if (titulotamano === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontSize = `${tamano}px`;
       }
+      
     }
     
+
+
     if ( tituloTipografia === 'Descripción de encuesta') {
       if (descripcionref.current) {
         descripcionref.current.style.fontFamily = tipografia;
       }
-    } if ( tituloGrosor === 'Descripción de encuesta' ) {
+     
+    }
+    if ( tituloGrosor === 'Descripción de encuesta' ) {
       if (descripcionref.current) {
         descripcionref.current.style.fontWeight = grosor;
       }
-    } if (titulotamano === 'Descripción de encuesta') {
+
+     
+    }
+    if (titulotamano === 'Descripción de encuesta') {
       if (descripcionref.current) {
         descripcionref.current.style.fontSize = `${tamano}px`;
       }
       
-    } if (titulotamano === 'Leyenda') {
+    }
+    if (titulotamano === 'Leyenda') {
       if (leyendaref.current) {
         leyendaref.current.style.fontSize = `${tamano}px`;
       }
-    } if ( tituloGrosor === 'Leyenda' ) {
+    }
+    if ( tituloGrosor === 'Leyenda' ) {
       if (leyendaref.current) {
         leyendaref.current.style.fontWeight = grosor;
       }
-    } if ( tituloTipografia === 'Leyenda') {
+    }
+    if ( tituloTipografia === 'Leyenda') {
       if (leyendaref.current) {
         leyendaref.current.style.fontFamily = tipografia;
       }
@@ -156,40 +141,52 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
       if (botonref.current) {
         botonref.current.style.fontSize = `${tamano}px`;
       }
-    } if ( tituloGrosor === 'Texto de botones' ) {
+     
+    }
+    if ( tituloGrosor === 'Texto de botones' ) {
       if (botonref.current) {
         botonref.current.style.fontWeight = grosor;
       }
-    } if ( tituloTipografia === 'Texto de botones') {
+      
+    }
+    if ( tituloTipografia === 'Texto de botones') {
       if (botonref.current) {
         botonref.current.style.fontFamily = tipografia;
       }
-    } if (datosDefinicionEstilo.fuente.tituloEncuesta.color !== '') {
+    }
+    if (datosDefinicionEstilo.fuente.tituloEncuesta.color !== '') {
       if (tituloref.current) {
         tituloref.current.style.color = datosDefinicionEstilo.fuente.tituloEncuesta.color;
       }
-    } if (datosDefinicionEstilo.fuente.descripcionEncuesta.color !== '') {
+    }
+    if (datosDefinicionEstilo.fuente.descripcionEncuesta.color !== '') {
       if (descripcionref.current) {
         descripcionref.current.style.color = datosDefinicionEstilo.fuente.descripcionEncuesta.color;
       }
-    } if (datosDefinicionEstilo.fuente.leyenda.color !== '') {
+    }
+    if (datosDefinicionEstilo.fuente.leyenda.color !== '') {
       if (leyendaref.current) {
         leyendaref.current.style.color = datosDefinicionEstilo.fuente.leyenda.color;
       }
-    } if (datosDefinicionEstilo.fondo.colorFondo !== '') {
+    }
+    if (datosDefinicionEstilo.fondo.colorFondo !== '') {
       if (fondoRef.current) {
         fondoRef.current.style.backgroundColor = datosDefinicionEstilo.fondo.colorFondo;
       }
-    } if (datosDefinicionEstilo.fondo.colorFondo !== '') {
+    }
+    if (datosDefinicionEstilo.fondo.colorFondo !== '') {
       if (fondoPiePaginaRef.current) {
         fondoPiePaginaRef.current.style.backgroundColor = datosDefinicionEstilo.fondo.colorFondo;
         setFondo(datosDefinicionEstilo.fondo.colorFondo);
       }
-    } if (datosDefinicionEstilo.fuente.textoBotones.color !== '') {
+    }
+    if (datosDefinicionEstilo.fuente.textoBotones.color !== '') {
       if (botonref.current) {
         botonref.current.style.color = datosDefinicionEstilo.fuente.textoBotones.color;
       }
-    } if (datosDefinicionEstilo.fuente.botones.color !== '') {
+    }
+
+    if (datosDefinicionEstilo.fuente.botones.color !== '') {
       if (botonref.current) {
         botonref.current.style.backgroundColor = datosDefinicionEstilo.fuente.botones.color;
       }
@@ -204,45 +201,12 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
     setDatosDefinicionEstilo(contenEstilos);
 
-  }, [preview1, 
-    preview2, 
-    sendPosicion3, 
-    sendTamano3, 
-    sendGrosor3, 
-    sendTipografia3,
-    tamano, 
-    tituloGrosor, 
-    grosor, 
-    tituloTipografia, 
-    tipografia, 
-    titulotamano, 
-    datosDefinicionEncuesta,
-    sendPosicionLogotipo, 
-    sendTamanoLogotipo, 
-    sendPosicionLogotipoPiePagina, 
-    sendTamanoLogotipoPiePagina, 
-    datosDefinicionEstilo, 
-    sendColors
+  }, [preview1, preview2, sendPosicion3, sendTamano3, sendGrosor3, sendTipografia3,
+    tamano, tituloGrosor, grosor, tituloTipografia, tipografia, titulotamano, datosDefinicionEncuesta,
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, 
+    datosDefinicionEstilo , sendColors
+    
   ]);
-
-  // capturar el valor de todos los datos
-  const handleEnviarDatos = async () => {
-    // Crear un objeto con los datos
-    const datosEncuesta = {
-      imagenCabecera: preview64,
-      imagenPie: preview64_2,
-      // nombre: inputNombreRef.current.value,
-      // descripcion: inputDescripcionRef.current.value,
-      // leyenda: inputLeyendaRef.current.value
-    };
-
-    // Enviar los datos a la función prop
-    sendDatosDefinicionEncuesta(datosEncuesta);
-  };
-
-  useImperativeHandle(ref, () => ({
-    handleEnviarDatos,
-  }));
 
   const enviarPreview = (previe) => {
     sendPreview(previe);
@@ -266,6 +230,11 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                 base64String = base64String.replace("data:image/png;base64,", "");
                 // Utiliza la cadena modificada
                 setPreview1(reader.result);
+                const nuevoEstado = { ...datosDefinicionEncuesta};
+                nuevoEstado.imagenCabecera = base64String;
+                setDatosDefinicionEncuesta(nuevoEstado);
+              
+
             };
 
             reader.onerror = (error) => {
@@ -273,6 +242,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
             };
 
             reader.readAsDataURL(file); // Lee el archivo como base64
+
         } else {
             alert('Por favor, selecciona un archivo de imagen válido.');
             setSelectedFile1(null);
@@ -283,6 +253,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
         setPreview1(null);
     }
   };
+
   
   const onSelectFile2 = (e) => {
     const file = e.target.files[0];
@@ -298,7 +269,12 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                 base64String = base64String.replace("data:image/png;base64,", "");
                 // Utiliza la cadena modificada
                 setPreview2(reader.result);
-            };
+
+                
+                const nuevoEstado = { ...datosDefinicionEncuesta};
+                nuevoEstado.imagenPie = base64String;
+                setDatosDefinicionEncuesta(nuevoEstado);
+              };
 
             reader.onerror = (error) => {
                 console.error(error);
@@ -315,6 +291,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
         setPreview2(null);
     }
   };
+
+  
 
   const handleEnviarNombre = (e) => {
     const nuevoEstado = { ...datosDefinicionEncuesta};
@@ -337,11 +315,17 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const eliminarImagenLogotipo = () => {
     setSelectedFile1(null);
     setPreview1(null);
+    const nuevoEstado = { ...datosDefinicionEncuesta};
+    nuevoEstado.imagenCabecera = '';
+    setDatosDefinicionEncuesta(nuevoEstado);
   }
 
   const eliminarImagenPiePagina = () => {
     setSelectedFile2(null);
     setPreview2(null);
+    const nuevoEstado = { ...datosDefinicionEncuesta};
+    nuevoEstado.imagenPie = '';
+    setDatosDefinicionEncuesta(nuevoEstado);
   }
 
   return (
@@ -359,16 +343,14 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
             <div className="agregarImagenDefinicionEncuesta2">
               <div className={`${leerPosicionLogotipo == '' ? 'imagenContainer' : leerPosicionLogotipo == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipo == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
                 <img src={preview1} alt="preview" 
-                  className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
+                className={`${(leerTamanoLogotipo== '' ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 1 ? 'imagenLogotipoEncuesta': leerTamanoLogotipo == 2 ? 'imagenLogotipoTamanoPequeno' : leerTamanoLogotipo == 3 ? 'imagenLogotipoTamanoMediano' : leerTamanoLogotipo == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
                 />
               </div>
-
               <div className="subcontenedorLogotipo">
                 <div className="buttonLogotipoeditar">
                   <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById('file-input1').click()} />
                   <input type="file" id="file-input1" style={{ display: 'none' }} onChange={onSelectFile1} />
                 </div>
-
                 <div className="buttonLogotipoeliminar">
                   <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={() => eliminarImagenLogotipo()} />
                 </div>
@@ -440,12 +422,11 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
               <div className="agregarImagenDefinicionEncuesta2">
 
                 
-                <div className={`${leerPosicionLogotipoPiePagina == '' ? 'imagenContainer' : leerPosicionLogotipoPiePagina == 38 ? 'posicionLogotipoEncuesta': leerPosicionLogotipoPiePagina == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
+                <div className={`${datosDefinicionEstilo.pieDePagina.enumPosicion == '' ? 'imagenContainer' : datosDefinicionEstilo.pieDePagina.enumPosicion == 38 ? 'posicionLogotipoEncuesta': datosDefinicionEstilo.pieDePagina.enumPosicion == 39 ? 'posicionLogotipoEncuesta2' : null}`}>
                   <img src={preview2} alt="preview" 
                   className={`${(datosDefinicionEstilo.pieDePagina.tamanio== '' ? 'imagenLogotipoEncuesta': datosDefinicionEstilo.pieDePagina.tamanio == 1 ? 'imagenLogotipoEncuesta': datosDefinicionEstilo.pieDePagina.tamanio == 2 ? 'imagenLogotipoTamanoPequeno' : datosDefinicionEstilo.pieDePagina.tamanio == 3 ? 'imagenLogotipoTamanoMediano' : datosDefinicionEstilo.pieDePagina.tamanio == 4 ? 'imagenLogotipoTamanoGrande' : null)}`}
                   />
                 </div>
-
                 <div className="subcontenedorLogotipo">
                   <div className="buttonLogotipoeditar">
                     <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: edit2SVG }} onClick={() => document.getElementById('file-input2').click()} />
@@ -456,14 +437,14 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
                   </div>
                 </div>
               </div>
-
-          ) : (
+            ) : (
               <div className="agregarImagenDefinicionEncuesta">
                 <span style={{ marginTop: '7px' }} dangerouslySetInnerHTML={{ __html: uploadCloudSVG }} onClick={() => document.getElementById('file-input2').click()} />
                 <span style={{ color:'rgba(130, 130, 130, 1)', marginTop:'1%', marginBottom:'1%' }}>Agregue imagen o logotipo a la encuesta</span>
                 <input type="file" id="file-input2" style={{ display: 'none' }} onChange={onSelectFile2} />
               </div>
-          )}
+            )
+          }
       </div>
 
       {sendEstado3 === '' ? null : (
@@ -481,6 +462,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
       <br />
     </>
   )
-})
+}
+)
 
 export default DefinicionEncuestaCuerpo 

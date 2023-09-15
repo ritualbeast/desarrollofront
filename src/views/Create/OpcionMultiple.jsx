@@ -390,7 +390,7 @@ const OpcionMultiple = ({
             type: newType,
             seccionValue: '',
             preguntaValue: '',
-            orden: 0,
+            orden: opcionesRespuesta.length + 1,
             valor: 0,
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);

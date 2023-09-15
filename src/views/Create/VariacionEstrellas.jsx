@@ -285,6 +285,7 @@ const VariacionEstrellas = ({
             selectedIcon: 'star',
             selectedColor: "#e0dcdc",
             valor : 0,
+            orden: opcionesRespuesta.length + 1,
         };
 
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);

@@ -387,7 +387,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
                     </Col>
 
                     <Col
-                        className={`revision-seccion4-2-3 ${contenedorSeleccionado === 'P' ? 'seleccionado' : ''}`}
+                        className={`revision-seccion4-2-3 ${contenedorSeleccionado === 'U' ? 'seleccionado' : ''}`}
                         onClick={() => setContenedorSeleccionado('P')}
                     >
                         <Col style={{display:'flex'}}>

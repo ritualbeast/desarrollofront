@@ -116,7 +116,7 @@ const DefinicionEncuestaConfiguracion =  forwardRef(({
       });
     const ListarCategoriaEncuesta = async () => {
         try {
-            const response = await  ListarCategoriasService();
+            const response = await  ListarCategoriasService(localStorage.getItem('enumTipoEncuesta'));
             setListarCategoriaEncuestas(response.data.row);
             const defaultTipo = response.data.row.find((item) => item.idCategoriaEncuesta === '');
             if (datosConfiguracion.idCategoriaEncuesta !== '') {

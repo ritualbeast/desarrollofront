@@ -82,7 +82,7 @@ const ModalBancoPreguntas = ({ open, onClose, categoriaId }) => {
   useEffect(() => {
     const ListarCategoriaEncuesta = async () => {
       try {
-        const response = await ListarCategoriasService();
+        const response = await ListarCategoriasService(localStorage.getItem('enumTipoEncuesta'),);
         setListarCategoriaEncuestas(response.data.row);
         
         // Busca la categoría correspondiente al ID y establece el valor y el nombre

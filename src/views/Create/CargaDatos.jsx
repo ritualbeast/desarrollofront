@@ -569,8 +569,8 @@ const CargaDatos = ({
                             <p style={{ marginBottom: '1%', cursor: 'default' }}>Cuando se cargue un archivo erróneo, mostrar este mensaje de error.</p>
                             <Comentario
                                 className="textoMensajeError"
-                                value='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
-                                readOnly
+                                defaultValue='Solo los archivos PDF, DOC, DOCX, PNG, JPG, JPEG, GIF son compatibles.'
+                                
                                 onChange={(e) => setMensajeError(e.target.value)}
                                 rows={5} // Ajusta el número de filas según tus necesidades
                             />

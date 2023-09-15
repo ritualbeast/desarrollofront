@@ -113,8 +113,11 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
         sendEstado(estado);
     }
 
-    const handlePosicionClick = (posicion) => {
-        sendPosicion(posicion);
+    const handlePosicionClick = (event) => {
+        sendPosicion(event.target.value);
+        const nuevoEstilo = { ...estilos };
+        nuevoEstilo.pieDePagina.enumPosicion = event.target.value;
+        setEstilos(nuevoEstilo);
     }
 
     // consumo de posicion de pie de pagina
@@ -235,7 +238,7 @@ const DisenoEncuestaLateralPiePagina = ({openMenuPrincipal, closeMenuPiePagina, 
                                                 <Select
                                                     styles={customStyles}
                                                     options={posicionImagen.map((opcion) => ({
-                                                        value: opcion.etiqueta,
+                                                        value: opcion.id,
                                                         label: opcion.etiqueta,
                                                     }))}
                                                     onChange={(selectedOption) => handlePosicionClick({ target: { value: selectedOption.value } })}

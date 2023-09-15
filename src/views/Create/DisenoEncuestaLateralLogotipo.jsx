@@ -51,6 +51,7 @@ const DisenoEncuestaLaterallogotipo = ({
     const [logotipo, setLogotipo] = useState(sendPreviewLogo);
     const [estilos, setEstilos] = useState(contenEstilos);  
     
+    
     useEffect(() => {
         ListarPosicionImagen();
         setLogotipo(sendPreviewLogo);
@@ -59,6 +60,10 @@ const DisenoEncuestaLaterallogotipo = ({
     const handleChangeTamano = (event) => {
           setTamanoSeleccionado(event.target.value);
           sendTamanoImagen(event.target.value);
+          const nuevoEstilo = { ...estilos };
+            nuevoEstilo.logotipo.tamanio = event.target.value;
+            setEstilos(nuevoEstilo);
+
     };
     
     const RadioButton = ({ id, value, checked, onChange, label }) => (
@@ -128,6 +133,9 @@ const DisenoEncuestaLaterallogotipo = ({
     // enviar posicion de pie de pagina
     const handleChangePosicion = (event) => {
         sendPosicionImagen(event.target.value);
+        const nuevoEstilo = { ...estilos };
+        nuevoEstilo.logotipo.enumPosicion = event.target.value;
+        setEstilos(nuevoEstilo);
     };
 
   return (
@@ -212,7 +220,7 @@ const DisenoEncuestaLaterallogotipo = ({
                                     <Select
                                         styles={customStyles}
                                         options={posicionImagen.map((opcion) => ({
-                                            value: opcion.etiqueta,
+                                            value: opcion.id,
                                             label: opcion.etiqueta,
                                         }))}
                                         onChange={(selectedOption) => handleChangePosicion({ target: { value: selectedOption.value } })}
