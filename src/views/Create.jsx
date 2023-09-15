@@ -208,16 +208,16 @@ const Create = () => {
     const nextPasos = () => {
         if(pasos === 1){
 
-            if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
-                || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enumTipoVigencia === '' 
-                || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
-                || datosEncuesta.titulo === ''
-                || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
+            // if (datosConfiguracionEncuesta.categoria === '' || datosConfiguracionEncuesta.vigencia === '' 
+            //     || datosConfiguracionEncuesta.enum_tipo_encuesta === '' || datosConfiguracionEncuesta.enumTipoVigencia === '' 
+            //     || datosConfiguracionEncuesta.fechaInicio === '' || datosConfiguracionEncuesta.fechaFin === ''
+            //     || datosEncuesta.titulo === ''
+            //     || datosEncuesta.descripcion === '' || datosEncuesta.leyenda === ''
 
-                  ) {
-                 toast.error('Por favor complete todos los campos', {autoClose: 1000});
-                  return;
-              }
+            //       ) {
+            //      toast.error('Por favor complete todos los campos', {autoClose: 1000});
+            //       return;
+            //   }
             
             
             setPasos(2);

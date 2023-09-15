@@ -218,7 +218,12 @@ const DisenoEncuestaLaterallogotipo = ({
                                 
                                 <div className="contenedorPosicion">
                                     <Select
+
                                         styles={customStyles}
+                                        value = {posicionImagen.map((opcion) => ({
+                                            value: opcion.id,
+                                            label: opcion.etiqueta,
+                                        })).filter(({ value }) => value === estilos.logotipo.enumPosicion)}
                                         options={posicionImagen.map((opcion) => ({
                                             value: opcion.id,
                                             label: opcion.etiqueta,
