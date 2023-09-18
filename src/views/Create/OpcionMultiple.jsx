@@ -218,7 +218,9 @@ const OpcionMultiple = ({
     obtenerPreg, 
     contenEstilos,
     sendColors,
-    complementaria
+    complementariaValue,
+    prueba,
+    
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -238,6 +240,7 @@ const OpcionMultiple = ({
             valor: 0,
         }))
     );
+    const complementarias = preguntas.preguntasComplementarias ?? [];
     const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
@@ -826,6 +829,7 @@ const OpcionMultiple = ({
         console.log("Posición en contentCont:", posicionContentCont);
         console.log("Posición en preguntas:", posicionPregunta);
       };
+
       
     
 
@@ -1208,7 +1212,7 @@ const OpcionMultiple = ({
                     </Button>
                         
                     <Button className='guardarOpcionMultiple' onClick={handleGuardarOpcionMultiple}>
-                        Guardar
+                        Guardar {prueba}
                     </Button>
                 </Col>
             </Container>
@@ -1233,9 +1237,11 @@ const OpcionMultiple = ({
                     contenEstilos={contenEstilos}
                     sendColors={sendColors}
                     configuracion3RC={configuracion3}
+                    complementarias={complementarias}
                 />
             </Container>
         )}
+        
     </>
   )
 }

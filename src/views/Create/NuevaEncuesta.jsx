@@ -17,8 +17,6 @@ import EditarTituloSeccion from './EditarTituloSeccion';
 import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import ModalLogotipo from './ModalLogotipo';
 import ModalPiePagina from './ModalPiePagina';
-import OpcionMultipleComplementaria from './OpcionMultipleComplementaria';
-
 import ModalSeccionCierre from './ModalSeccionCierre';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
@@ -222,7 +220,7 @@ const NuevaEncuesta = ({
       let obj={
         tipo:'C',
         titulo:titulo,
-        comentario:'',
+        descripcion:'',
         regresar:true,
         descripcion: '', 
         orden: contentCont.length + 1,
@@ -271,7 +269,8 @@ const NuevaEncuesta = ({
       }
     }, [obtenerPreg]); // Depende de obtenerPreg
 
-    const handleOptionMultiple = (index, preguntas, saveValue = false, cancelarValue = '') => {
+    const handleOptionMultiple = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
+      console.log(saveValue);
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
         return;
@@ -287,6 +286,7 @@ const NuevaEncuesta = ({
         const obj = {
           tipo: 'OM',
           save: saveValue,
+          complementariaValue: complementariaValue,
           pregunta: preguntaSeleccionada.pregunta,
           opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
           cancelar: cancelarValue,
@@ -317,7 +317,7 @@ const NuevaEncuesta = ({
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
-    const handleValoracionEstrellas = (index, preguntas, saveValue = false, cancelarValue = '') => {
+    const handleValoracionEstrellas = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
         return;
@@ -333,6 +333,7 @@ const NuevaEncuesta = ({
           const obj = {
           tipo: 'VE',
           save: saveValue,
+          complementariaValue: complementariaValue,
           pregunta: preguntaSeleccionada.pregunta,
           opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
           cancelar: cancelarValue,
@@ -439,7 +440,7 @@ const NuevaEncuesta = ({
     
       const seccionActual = contentCont[index];
       const previoTitulo = seccionActual.titulo;
-      const previoComentario = seccionActual.comentario;
+      const previoComentario = seccionActual.descripcion;
     
       setTitulo(previoTitulo);
       setComentario(previoComentario);
@@ -447,7 +448,7 @@ const NuevaEncuesta = ({
       let obj = {
         tipo: 'C',
         titulo: previoTitulo,
-        comentario: previoComentario,
+        descripcion: previoComentario,
         preguntas: []
       };
     
@@ -463,7 +464,7 @@ const NuevaEncuesta = ({
     
       // Obtiene los datos previos de "titulo" y "comentario" desde la sección actual
       const previoTitulo = seccionActual.titulo;
-      const previoComentario = seccionActual.comentario;
+      const previoComentario = seccionActual.descripcion;
     
       // Actualiza los estados del formulario o componente con los datos previos
       setTitulo(previoTitulo);
@@ -488,7 +489,7 @@ const NuevaEncuesta = ({
         ...nuevoEstado[indiceSec],
         indice: indiceSec,
         titulo: nuevoTitulo,
-        comentario: comentario,
+        descripcion: comentario,
         regresar: false,
       };
       if (!nuevoEstado[indiceSec].regresar) {
@@ -619,14 +620,15 @@ const NuevaEncuesta = ({
 
       
       if (complementaria) {
-        console.log(contentCont);
-        console.log(contentCont[indiceSec]);
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
+        console.log(contenidoActual[posicionPregunta]);
+        console.log(contenidoActual[indicePreg].preguntasComplementarias);
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
         nuevoEstado[posicionContentCont].preguntas = contenidoActual;
         nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+        contenidoActual[posicionPregunta].complementariaValue = true;
         // contenidoActual.splice(posicionPregunta, 1);
         setContentCont(nuevoEstado);
         setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
@@ -637,6 +639,7 @@ const NuevaEncuesta = ({
           contenidoActual[posicionPregunta].preguntasComplementarias = [preguntaComplementaria];
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].complementariaValue = true;
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
         }
@@ -674,6 +677,8 @@ const NuevaEncuesta = ({
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+      console.log(indicePreg);
+      console.log(contPregTemp);
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
@@ -986,7 +991,7 @@ const NuevaEncuesta = ({
         nuevoEstado[objetoExistenteIndex].textoAgradecimiento = textoAgradecimiento;
         nuevoEstado[objetoExistenteIndex].urlRedireccion = urlRed;
         nuevoEstado[objetoExistenteIndex].titulo = titulo;
-        nuevoEstado[objetoExistenteIndex].comentario = comentario;
+        nuevoEstado[objetoExistenteIndex].descripcion = comentario;
         nuevoEstado[objetoExistenteIndex].textoBotonCierre = textobotonCierre;
 
       } else {
@@ -998,7 +1003,7 @@ const NuevaEncuesta = ({
           orden: nuevoEstado.length + 1,
           imagenCierre: imagenCierre,
           titulo : titulo,
-          comentario : comentario,
+          descripcion : comentario,
           textoBotonCierre : textobotonCierre
         };
         nuevoEstado.push(nuevoObjeto);
@@ -1007,6 +1012,7 @@ const NuevaEncuesta = ({
       // Actualizamos el estado con el nuevo array
       setContentCont([...nuevoEstado]);
     };
+
     
   return (
     <>
@@ -1043,7 +1049,7 @@ const NuevaEncuesta = ({
                               >
                                   <div style={{width:'96%'}}>
                                     <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
-                                    <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.comentario}</p>
+                                    <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.descripcion}</p>
                                   </div>
                                   <span 
                                     style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
@@ -1100,57 +1106,90 @@ const NuevaEncuesta = ({
                             </div>
                             
                             {seccion.preguntas.map((preg, indexp) => { 
-                              if (preg.tipo == 'OM') {
-                                if (preg.preguntasComplementarias && preg.preguntasComplementarias.length > 0) {
-                                  
-                                  preg.preguntasComplementarias.map((preguntaComplementaria, indexComplementaria) => {
-                                    console.log(preguntaComplementaria);
-                                    return <OpcionMultipleComplementaria
-                                      key={indexp}
-                                      indice={indexp}
-                                      indiceSec = {index}
-                                      save={preg.save}
-                                      contentPreg = {preg}
-                                      closeopmul={handleCancelarOpcionMultiple}
-                                      onAceptar={handleAceptarOpcionMultiple}
-                                      handleEditarPregunta={handleEditarOpcionMultiple}
-                                      handleEliminarPregunta={handleEliminarOpcionMultiple}
-                                      handleCambiarPregunta={handleCambiarPregunta}
-                                      contentCont={contentCont}
-                                      preguntaVisibleOpen={preguntaVisible}
-                                      sendTamanoPaso2={sendTamanoPaso2}
-                                      sendGrosorPaso2={sendGrosorPaso2}
-                                      sendTipografiaPaso2={sendTipografiaPaso2}
-                                      obtenerPreg={obtenerPreg}
-                                      contenEstilos={contenEstilos} 
-                                      sendColors= {sendColors}
-                                      complementaria={true}
-                                    />
-                                  })
-                                  
+                              if (preg.tipo === 'OM') {
+                                if (preg.preguntasComplementarias.length > 0) {
+                                  return (
+                                    <>
+                                      <OpcionMultiple 
+                                        key={indexp}
+                                        indice={indexp} 
+                                        indiceSec={index} 
+                                        save={preg.save}
+                                        complementariaValue={preg.complementariaValue}
+                                        preguntas={preg}
+                                        closeopmul={handleCancelarOpcionMultiple} 
+                                        onAceptar={handleAceptarOpcionMultiple} 
+                                        handleEditarPregunta={handleEditarOpcionMultiple}
+                                        handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                        handleCambiarPregunta={handleCambiarPregunta}
+                                        contentCont={contentCont}
+                                        preguntaVisibleOpen={preguntaVisible}
+                                        sendTamanoPaso2={sendTamanoPaso2}
+                                        sendGrosorPaso2={sendGrosorPaso2}
+                                        sendTipografiaPaso2={sendTipografiaPaso2}
+                                        obtenerPreg={obtenerPreg}
+                                        contenEstilos={contenEstilos}
+                                        sendColors={sendColors}
+                                      />
+                                      {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
+                                        
+                                        console.log('indexpComplementaria', indexpComplementaria),
+                                        console.log('indexp', indexp),
+                                        console.log('index', index),
+                                        <OpcionMultiple
+
+                                          key={indexpComplementaria}
+                                          indice={indexp}
+                                          indiceSec={index}
+                                          save={preg.save}
+                                          complementariaValue={pregComplementaria.complementariaValue}
+                                          preguntas={pregComplementaria}
+                                          closeopmul={handleCancelarOpcionMultiple}
+                                          onAceptar={handleAceptarOpcionMultiple}
+                                          handleEditarPregunta={handleEditarOpcionMultiple}
+                                          handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                          handleCambiarPregunta={handleCambiarPregunta}
+                                          contentCont={contentCont}
+                                          preguntaVisibleOpen={preguntaVisible}
+                                          sendTamanoPaso2={sendTamanoPaso2}
+                                          sendGrosorPaso2={sendGrosorPaso2}
+                                          sendTipografiaPaso2={sendTipografiaPaso2}
+                                          obtenerPreg={obtenerPreg}
+                                          contenEstilos={contenEstilos}
+                                          sendColors={sendColors}
+                                          prueba = 'prueba'
+                                        />
+                                      ))}
+                                    </>
+                                  );
                                 }
-                                   
-                                return <OpcionMultiple 
-                                  key={indexp}
-                                  indice={indexp} 
-                                  indiceSec = {index} 
-                                  save={preg.save}
-                                  preguntas = {preg}
-                                  closeopmul={handleCancelarOpcionMultiple} 
-                                  onAceptar={handleAceptarOpcionMultiple} 
-                                  handleEditarPregunta={handleEditarOpcionMultiple}
-                                  handleEliminarPregunta={handleEliminarOpcionMultiple}
-                                  handleCambiarPregunta={handleCambiarPregunta}
-                                  contentCont={contentCont}
-                                  preguntaVisibleOpen={preguntaVisible}
-                                  sendTamanoPaso2={sendTamanoPaso2}
-                                  sendGrosorPaso2={sendGrosorPaso2}
-                                  sendTipografiaPaso2={sendTipografiaPaso2}
-                                  obtenerPreg={obtenerPreg}
-                                  contenEstilos={contenEstilos}
-                                  sendColors= {sendColors}
-                                />
-                              }  
+                              
+                                return (
+                                  <OpcionMultiple 
+                                    key={indexp}
+                                    indice={indexp} 
+                                    indiceSec={index} 
+                                    save={preg.save}
+                                    complementariaValue={preg.complementariaValue}
+                                    preguntas={preg}
+                                    closeopmul={handleCancelarOpcionMultiple} 
+                                    onAceptar={handleAceptarOpcionMultiple} 
+                                    handleEditarPregunta={handleEditarOpcionMultiple}
+                                    handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                    handleCambiarPregunta={handleCambiarPregunta}
+                                    contentCont={contentCont}
+                                    preguntaVisibleOpen={preguntaVisible}
+                                    sendTamanoPaso2={sendTamanoPaso2}
+                                    sendGrosorPaso2={sendGrosorPaso2}
+                                    sendTipografiaPaso2={sendTipografiaPaso2}
+                                    obtenerPreg={obtenerPreg}
+                                    contenEstilos={contenEstilos}
+                                    sendColors={sendColors}
+                                  />
+                                );
+                              }
+                              
+                              
                               if (preg.tipo == 'VE') {
                                 return <VariacionEstrellas 
                                   key={indexp}
@@ -1249,7 +1288,7 @@ const NuevaEncuesta = ({
                                   }}
                                 >
                                   <span style={{ marginTop: '2%', marginLeft:'6%', marginRight: '3%' }} dangerouslySetInnerHTML={{ __html: editSVG }}/>
-                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'OM')?.descripcion}</p>
+                                  <p style={{ marginTop: '2%', marginBottom: '2%' }}>{tipoPregunta.find(item => item.tipo === 'OM')?.descripcion}777</p>
                                 </Col>
                                     
                                 <Col className='container-newContendorPregunta-pt2' 

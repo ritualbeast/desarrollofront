@@ -51,7 +51,7 @@ const Create = () => {
     const [contentCont, setContentCont] = useState([{
         tipo: 'C', 
         titulo: 'Seccion ',
-        comentario: '',
+        descripcion: '',
         regresar: true,
         descripcion: '#', 
         orden: 1,
@@ -340,10 +340,10 @@ const Create = () => {
     };  
     
     const leerestilos = () => {
-         console.log(encuestaEstilos);
-         // console.log(contentCont);
+        // console.log(encuestaEstilos);
+         console.log(contentCont);
          // console.log(datosConfiguracionEncuesta);
-         console.log(datosEncuesta);
+        // console.log(datosEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)

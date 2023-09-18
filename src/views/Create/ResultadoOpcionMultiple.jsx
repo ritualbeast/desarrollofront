@@ -109,7 +109,8 @@ const ResultadoOpcionMultiple = ({
   obtenerPreg,
   contenEstilos, 
   sendColors,
-  configuracion3RC
+  configuracion3RC,
+  complementarias
   
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -269,160 +270,168 @@ const ResultadoOpcionMultiple = ({
     }
   };
 
+  const ver = () => {
+    console.log(complementarias);
+  }
+
+
   return (
-    <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
-      <Col>
-            <Col 
-                style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
-                id={`editPreg${index +1}`}
-                className={`contenedor-editar-pregunta`}
-            >
-                <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
-                <p className='titulo-editarOpciones'>Opciones</p>
-                <p className='titulo-editarMover'>Mover</p>
-                <p className='titulo-editarDuplicar'>Duplicar</p>
-                <div style={{width: '52%'}}></div>
-                <span style={{cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={handleOpenEliminarPregunta}/>
-            </Col>
-            <Col 
-                style={{marginLeft: 'unset', marginRight: 'unset'}}
-                id={`Preg${index +1}`}
-                className={`contenedor-tituloNuevaEncuesta `} 
-                onMouseEnter={() => handleMouseEnterEditar(index)}
-                onMouseLeave={() => handleMouseLeaveEditar(index)}
-            >
-                <Col style={{width:'95%', display:'flex'}}>
-                    <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
-                    {configuracion6Activa && (
-                        <OverlayTrigger
-                            trigger="click"
-                            show={showTooltip}
-                            target={targetRef.current}
-                            placement="right"
-                            delay={{ show: 250, hide: 400 }}
-                            overlay={renderTooltip}
-                            onHide={() => setShowTooltip(false)}
-                        >
-                            <div
-                                className='help-icon-r'
-                                onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
-                            >
-                                <span
-                                    ref={targetRef}
-                                    style={{display:'flex', alignItems:'center', justifyContent:'center'}}
-                                    dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
-                                />
-                            </div>
-                        </OverlayTrigger>
-                    )}
-                </Col>
-                <Col style={{width:'5%'}}>
-                    <span 
-                        style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
-                        onClick={() => {cambioIcono(index); visiblePregunta(index);}}
-                        dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
+    <>
+      <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
+        <Col>
+              <Col 
+                  style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
+                  id={`editPreg${index +1}`}
+                  className={`contenedor-editar-pregunta`}
+              >
+                  <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
+                  <p className='titulo-editarOpciones'>Opciones</p>
+                  <p className='titulo-editarMover'>Mover</p>
+                  <p className='titulo-editarDuplicar'>Duplicar</p>
+                  <div style={{width: '52%'}}></div>
+                  <span style={{cursor: 'pointer'}} dangerouslySetInnerHTML={{ __html: trashSVG }} onClick={handleOpenEliminarPregunta}/>
+              </Col>
+              <Col 
+                  style={{marginLeft: 'unset', marginRight: 'unset'}}
+                  id={`Preg${index +1}`}
+                  className={`contenedor-tituloNuevaEncuesta `} 
+                  onMouseEnter={() => handleMouseEnterEditar(index)}
+                  onMouseLeave={() => handleMouseLeaveEditar(index)}
+              >
+                  <Col style={{width:'95%', display:'flex'}}>
+                      <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
+                      {configuracion6Activa && (
+                          <OverlayTrigger
+                              trigger="click"
+                              show={showTooltip}
+                              target={targetRef.current}
+                              placement="right"
+                              delay={{ show: 250, hide: 400 }}
+                              overlay={renderTooltip}
+                              onHide={() => setShowTooltip(false)}
+                          >
+                              <div
+                                  className='help-icon-r'
+                                  onClick={() => setShowTooltip(!showTooltip)} // Alternar el estado de showTooltip al hacer clic en el ícono de ayuda
+                              >
+                                  <span
+                                      ref={targetRef}
+                                      style={{display:'flex', alignItems:'center', justifyContent:'center'}}
+                                      dangerouslySetInnerHTML={{ __html: helpCircleSVG }}
+                                  />
+                              </div>
+                          </OverlayTrigger>
+                      )}
+                  </Col>
+                  <Col style={{width:'5%'}}>
+                      <span 
+                          style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 
+                          onClick={() => {cambioIcono(index); visiblePregunta(index);}}
+                          dangerouslySetInnerHTML={{ __html: currentIcon(index) }} 
+                      />
+                  </Col>
+              </Col>
+        </Col>
+        
+        {preguntaVisible[index] && (
+          <div>
+            {opcionesRespuesta.map((opcion, idx) => (
+              <CustomCheckBox 
+                key={idx} 
+                style={{ display: 'flex', marginBottom: '1%' }}
+              >
+                {opcion.type === 'checkbox' ? (
+                  // Opción de tipo "checkbox"
+                  <div style={{cursor: 'pointer'}}>
+                    <HiddenCheckBox
+                      type={opcion.type}
+                      name={`opcion_${index}`}
+                      value={opcion.id}
+                      checked={opcion.checked}
+                      onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
                     />
-                </Col>
-            </Col>
-      </Col>
-      
-      {preguntaVisible[index] && (
-        <div>
-          {opcionesRespuesta.map((opcion, idx) => (
-            <CustomCheckBox 
-              key={idx} 
-              style={{ display: 'flex', marginBottom: '1%' }}
-            >
-              {opcion.type === 'checkbox' ? (
-                // Opción de tipo "checkbox"
-                <div style={{cursor: 'pointer'}}>
-                  <HiddenCheckBox
-                    type={opcion.type}
-                    name={`opcion_${index}`}
-                    value={opcion.id}
-                    checked={opcion.checked}
-                    onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
-                  />
-                  <StyledCheckBox checked={opcion.checked}/>
+                    <StyledCheckBox checked={opcion.checked}/>
+                  </div>
+                ) : (
+                  // Opción de tipo "radio"
+                  <div style={{cursor: 'pointer'}}>
+                    <HiddenRadioButton
+                      type={opcion.type}
+                      name={`opcion_${index}`}
+                      value={opcion.id}
+                      checked={opcion.checked}
+                      onChange={() => 
+                        handleOpcionChange(
+                          opcion.idOpcionRespuesta, 
+                          opcion.respuesta, 
+                          opcion.checked, 
+                          'radio'
+                        )
+                      }
+                    />
+                    <StyledRadioButton checked={opcion.checked}/>
+                  </div>
+                )}
+                <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
+                  {opcion.respuesta}
                 </div>
-              ) : (
-                // Opción de tipo "radio"
-                <div style={{cursor: 'pointer'}}>
-                  <HiddenRadioButton
-                    type={opcion.type}
-                    name={`opcion_${index}`}
-                    value={opcion.id}
-                    checked={opcion.checked}
-                    onChange={() => 
-                      handleOpcionChange(
-                        opcion.idOpcionRespuesta, 
-                        opcion.respuesta, 
-                        opcion.checked, 
-                        'radio'
-                      )
-                    }
-                  />
-                  <StyledRadioButton checked={opcion.checked}/>
-                </div>
-              )}
-              <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
-                {opcion.respuesta}
-              </div>
-            </CustomCheckBox>
-          ))}
-        </div>
-      )}
+              </CustomCheckBox>
+            ))}
+          </div>
+        )}
 
-      <Modal
-            open={openEliminarPregunta}
-            onClose={() => setOpenEliminarPregunta(false)}
-            sx={{
-            width: '60%',
-            height: '60%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: 'auto',
-            marginTop: '5%',
-            }}
-            BackdropProps={{
-            onClick: () => {
-              setOpenEliminarPregunta(false);
-                setBlurBackground(false);
-                setIsModalVisible(false);
-            },
-            sx: {
-              backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
-            },
-            }}
-        >
-            <Box className="encuesta_modalEliminarSeccion" sx={{ marginTop: '12%', width: '50%', height: '43%' }}>
-                <div className="encuesta_modalDuplciar_closeicon">
-                    <span style={{marginTop: '5.8%'}} dangerouslySetInnerHTML={{ __html: warningLightSVG }}/>
-                    <p className="encuesta_modalElimninar__title">Eliminar Sección</p>
-                </div>
-                    
-                <ModalEliminarPregunta/>
+        <Modal
+              open={openEliminarPregunta}
+              onClose={() => setOpenEliminarPregunta(false)}
+              sx={{
+              width: '60%',
+              height: '60%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: 'auto',
+              marginTop: '5%',
+              }}
+              BackdropProps={{
+              onClick: () => {
+                setOpenEliminarPregunta(false);
+                  setBlurBackground(false);
+                  setIsModalVisible(false);
+              },
+              sx: {
+                backdropFilter: 'blur(5px)', // Para aplicar un desenfoque al fondo de la modal
+              },
+              }}
+          >
+              <Box className="encuesta_modalEliminarSeccion" sx={{ marginTop: '12%', width: '50%', height: '43%' }}>
+                  <div className="encuesta_modalDuplciar_closeicon">
+                      <span style={{marginTop: '5.8%'}} dangerouslySetInnerHTML={{ __html: warningLightSVG }}/>
+                      <p className="encuesta_modalElimninar__title">Eliminar Sección</p>
+                  </div>
+                      
+                  <ModalEliminarPregunta/>
 
-                <div className='encuesta_modal_cerrarEliminar'>
-                    <Box sx={{ width: '50%', display: 'contents'}}>
-                        <Col className="d-flex justify-content-center">
-                            <Button className='buttonCancelarEliminar' variant="contained" color="primary" 
-                                onClick={handleCloseEliminar}
-                            >
-                                <span className='cancelar-eliminar'>Cancelar</span>
-                            </Button>
-                            <Button className='buttonDeleteEliminar' variant="contained" color="primary"
-                                onClick={handleCloseEliminarPregunta}
-                            >
-                                <span className='eliminar'>Eliminar</span>
-                            </Button>
-                        </Col>
-                    </Box>
-                </div>
-            </Box>
-      </Modal>
-    </Container>
+                  <div className='encuesta_modal_cerrarEliminar'>
+                      <Box sx={{ width: '50%', display: 'contents'}}>
+                          <Col className="d-flex justify-content-center">
+                              <Button className='buttonCancelarEliminar' variant="contained" color="primary" 
+                                  onClick={handleCloseEliminar}
+                              >
+                                  <span className='cancelar-eliminar'>Cancelar</span>
+                              </Button>
+                              <Button className='buttonDeleteEliminar' variant="contained" color="primary"
+                                  onClick={handleCloseEliminarPregunta}
+                              >
+                                  <span className='eliminar'>Eliminar</span>
+                              </Button>
+                          </Col>
+                      </Box>
+                  </div>
+              </Box>
+        </Modal>
+      </Container>
+    </>
+    
   );
 };
 
