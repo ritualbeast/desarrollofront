@@ -3,7 +3,7 @@ import '../../styles/revision.css'
 import { FormControl, Col, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import svgManager from '../../assets/svg';
-import { ListarEnumeradosService } from '../../services/EnumeradosServices';
+import { ListarEnumeradosService } from '../../services/EstilosServices';
 import styled from 'styled-components';
 import Select from 'react-select';
 import { crearEncuesta } from '../../services/EncuestasServices';
@@ -209,7 +209,7 @@ const Revision = ({regresar, handleTotalPreguntas,handleDatosPaso1,handleDatosCo
     });
     const ListarCategoriaEncuesta = async () => {
         try {
-            const response = await ListarCategoriasService();
+            const response = await ListarCategoriasService(localStorage.getItem('enumTipoEncuesta'));
             const categorias = response.data.row.map((item) => ({
                 label: item.nombre,
                 value: item.idCategoriaEncuesta,

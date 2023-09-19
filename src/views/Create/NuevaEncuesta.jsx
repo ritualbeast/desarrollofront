@@ -449,8 +449,20 @@ const NuevaEncuesta = ({
         tipo: 'C',
         titulo: previoTitulo,
         descripcion: previoComentario,
+        regresar: true,
+        orden: index + 1,
+        imagenCabecera: '',
+        imagenPie : '',
+        tipoSeccion: 'P',
+        textoAgradecimiento: 'ok',
+        urlRedireccion: '',
+        imagenCierre: '',
+        textoBotonCierre: '',
+
         preguntas: []
       };
+
+      
     
       const nuevoEstado = [...contentCont];
       nuevoEstado[index] = obj;
@@ -601,6 +613,7 @@ const NuevaEncuesta = ({
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
+      
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -1132,7 +1145,7 @@ const NuevaEncuesta = ({
                                         sendColors={sendColors}
                                       />
                                       {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
-                                        
+                                        console.log('pregComplementariaS', pregComplementaria),
                                         console.log('indexpComplementaria', indexpComplementaria),
                                         console.log('indexp', indexp),
                                         console.log('index', index),

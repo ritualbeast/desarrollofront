@@ -70,6 +70,7 @@ const ListarEncuestas = async (tipo, valor, nombre= '', orden='', pagina, size, 
 };
 
 const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosConfiguracion, contenedorSeleccionado, totalConteo, encuestaEstilos) => {
+  const startime = performance.now();
   console.log('handleTotalPreguntas', handleTotalPreguntas);
   console.log('handleDatosPaso1', handleDatosPaso1);
   console.log('handleDatosConfiguracion', handleDatosConfiguracion);
@@ -115,7 +116,8 @@ const crearEncuesta = async (handleTotalPreguntas,handleDatosPaso1,handleDatosCo
       body: JSON.stringify(body),
     });
 
-    
+    const endtime = performance.now();
+    console.log('Tiempo de ejecución: ', endtime - startime);
 
     // Aquí puedes manejar la respuesta de la API
     const data = await response.json();

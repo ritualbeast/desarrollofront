@@ -110,7 +110,8 @@ const ResultadoOpcionMultiple = ({
   contenEstilos, 
   sendColors,
   configuracion3RC,
-  complementarias
+  complementarias,
+  complementariaValue
   
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -131,7 +132,7 @@ const ResultadoOpcionMultiple = ({
   const [contentEstilos, setContentEstilos] = useState(contenEstilos);
   const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
   const [configuracion3, setConfiguracion3] = useState(configuracion3RC);
-  
+ 
   useEffect(() => {
     let newStyle = {};
     if (titulotamano === 'Opciones de respuesta') {
@@ -277,6 +278,8 @@ const ResultadoOpcionMultiple = ({
 
   return (
     <>
+      <button onClick={ver}>ver
+      </button>
       <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
         <Col>
               <Col 

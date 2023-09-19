@@ -237,7 +237,9 @@ const OpcionMultiple = ({
             type: 'radio',
             seccionValue: '', // Valor inicial de la sección
             preguntaValue: '', // Valor inicial de la pregunta
-            valor: 0,
+            valor: '',
+            orden : 0,
+
         }))
     );
     const complementarias = preguntas.preguntasComplementarias ?? [];
@@ -394,7 +396,7 @@ const OpcionMultiple = ({
             seccionValue: '',
             preguntaValue: '',
             orden: opcionesRespuesta.length + 1,
-            valor: 0,
+            valor: '1',
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         setOpcionText("");
@@ -788,6 +790,7 @@ const OpcionMultiple = ({
             seccionValue: opcionApi.seccionValue,
             preguntaValue: opcionApi.preguntaValue,
             valor: opcionApi.valor,
+            orden: opcionApi.orden,
         })) ?? [];
         setOpcionesRespuesta(nuevasOpcionesRespuesta);
     }, [contentCont, preguntas.pregunta, preguntas.opcionesRespuesta]);
@@ -1238,9 +1241,12 @@ const OpcionMultiple = ({
                     sendColors={sendColors}
                     configuracion3RC={configuracion3}
                     complementarias={complementarias}
+                    complementariaValue={complementariaValue}
                 />
             </Container>
         )}
+
+
         
     </>
   )
