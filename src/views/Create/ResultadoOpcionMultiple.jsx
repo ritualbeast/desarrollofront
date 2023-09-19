@@ -111,7 +111,9 @@ const ResultadoOpcionMultiple = ({
   sendColors,
   configuracion3RC,
   complementarias,
-  complementariaValue
+  complementariaValue,
+  indiceComplementaria,
+  banderaComplementaria
   
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -272,14 +274,21 @@ const ResultadoOpcionMultiple = ({
   };
 
   const ver = () => {
-    console.log(complementarias);
+    console.log(banderaComplementaria);
   }
 
 
   return (
     <>
-      <button onClick={ver}>ver
+      <button className='buttonComplementaria' onClick={ver}>
+      ver
+
       </button>
+      {banderaComplementaria && (
+        <div>
+          <p>{indiceComplementaria}</p>
+      </div>
+      )}
       <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
         <Col>
               <Col 

@@ -1170,7 +1170,8 @@ const NuevaEncuesta = ({
                                           obtenerPreg={obtenerPreg}
                                           contenEstilos={contenEstilos}
                                           sendColors={sendColors}
-                                          prueba = 'prueba'
+                                          banderaComplementaria={true}
+                                          indiceComplementaria={`${indexp +1}-${indexpComplementaria}`}
                                         />
                                       ))}
                                     </>

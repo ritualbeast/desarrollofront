@@ -220,6 +220,8 @@ const OpcionMultiple = ({
     sendColors,
     complementariaValue,
     prueba,
+    banderaComplementaria,
+    indiceComplementaria
     
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -648,6 +650,7 @@ const OpcionMultiple = ({
 
     const handleSeccionChange = (index, event) => {
         console.log(event.target.value)
+        console.log(index)
         const selectedValue = event.target.value;
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
@@ -1242,6 +1245,8 @@ const OpcionMultiple = ({
                     configuracion3RC={configuracion3}
                     complementarias={complementarias}
                     complementariaValue={complementariaValue}
+                    banderaComplementaria={banderaComplementaria}
+                    indiceComplementaria={indiceComplementaria}
                 />
             </Container>
         )}
