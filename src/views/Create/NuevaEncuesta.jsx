@@ -629,6 +629,8 @@ const NuevaEncuesta = ({
         ponderacion: ponderacion,
         configuracionPregunta: configuraciongeneral,
         opcionesRespuesta: opcionesRespuesta,
+        save: true,
+        cancelar: cancelar,
       };
 
       
@@ -687,7 +689,17 @@ const NuevaEncuesta = ({
       }
     };
     
-    const handleEditarOpcionMultiple = (indiceSeccion, indicePreg) => {
+    const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const tempCont = [...contentCont];
+        
+        const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        console.log(indiceComplementaria);
+        console.log(contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save);
+        contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save=false
+        tempCont[indiceSeccion].preguntas = contPregTemp;
+        setContentCont(tempCont);
+      } else {
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       console.log(indicePreg);
@@ -695,6 +707,7 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
+      }
     };
 
     const handleCancelarValoracionEstrellas = (indicePreg, indiceSec) => {
@@ -1146,15 +1159,12 @@ const NuevaEncuesta = ({
                                       />
                                       {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
                                         console.log('pregComplementariaS', pregComplementaria),
-                                        console.log('indexpComplementaria', indexpComplementaria),
-                                        console.log('indexp', indexp),
-                                        console.log('index', index),
                                         <OpcionMultiple
 
                                           key={indexpComplementaria}
-                                          indice={indexp}
+                                          indice={`${indexp +1}-${indexpComplementaria}`}
                                           indiceSec={index}
-                                          save={preg.save}
+                                          save={pregComplementaria.save}
                                           complementariaValue={pregComplementaria.complementariaValue}
                                           preguntas={pregComplementaria}
                                           closeopmul={handleCancelarOpcionMultiple}
@@ -1171,7 +1181,8 @@ const NuevaEncuesta = ({
                                           contenEstilos={contenEstilos}
                                           sendColors={sendColors}
                                           banderaComplementaria={true}
-                                          indiceComplementaria={`${indexp +1}-${indexpComplementaria}`}
+                                          indiceComplementaria={indexp}
+                                          saveComplementaria={pregComplementaria.save}
                                         />
                                       ))}
                                     </>

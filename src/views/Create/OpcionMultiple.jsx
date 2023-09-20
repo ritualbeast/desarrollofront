@@ -221,7 +221,8 @@ const OpcionMultiple = ({
     complementariaValue,
     prueba,
     banderaComplementaria,
-    indiceComplementaria
+    indiceComplementaria,
+    saveComplementaria
     
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -837,15 +838,22 @@ const OpcionMultiple = ({
       };
 
       
-    
+    const ver = () => {
+        console.log(save)
+    }
 
 
 
     return (
     <>
+        <button onClick={ver} >vere</button>
+      
+        <h1>{indice}</h1>
         <ToastContainer />
-        {!save && (
+        {!save  &&  (
+           
             <Container className='container-opcionMultiple'>
+                 
                 <Col className='seccion1-opcionMultiple'>
                     <Col className={`editar-opcionMultiple ${isActiveEditar ? 'active' : 'inactive'}`} onClick={handleEditar}>
                         Editar
@@ -861,7 +869,9 @@ const OpcionMultiple = ({
                 </Col>
                 
                 {mostrarEditar && (
+                    
                     <Container className='opcionMultiple-container-editar'>
+                        
                         <Col>
                             <Select
                                 styles={customStyles}
@@ -1226,6 +1236,7 @@ const OpcionMultiple = ({
 
         {save && (
             <Container>
+                
                 <ResultadoOpcionMultiple 
                     index={indice}
                     indexSec={indiceSec}
@@ -1250,6 +1261,7 @@ const OpcionMultiple = ({
                 />
             </Container>
         )}
+
 
 
         

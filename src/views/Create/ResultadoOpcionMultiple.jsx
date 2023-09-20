@@ -274,7 +274,7 @@ const ResultadoOpcionMultiple = ({
   };
 
   const ver = () => {
-    console.log(banderaComplementaria);
+    console.log(preguntaVisible);
   }
 
 
@@ -284,11 +284,6 @@ const ResultadoOpcionMultiple = ({
       ver
 
       </button>
-      {banderaComplementaria && (
-        <div>
-          <p>{indiceComplementaria}</p>
-      </div>
-      )}
       <Container id={`idPregunta${index+1}`} className='container-resultadoOpcionMultiple'>
         <Col>
               <Col 
@@ -296,7 +291,13 @@ const ResultadoOpcionMultiple = ({
                   id={`editPreg${index +1}`}
                   className={`contenedor-editar-pregunta`}
               >
-                  <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
+                  {banderaComplementaria ? (  
+                    <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, indiceComplementaria, banderaComplementaria, index)}}>EditarC</p>  
+                  ) : (
+                    <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index, banderaComplementaria)}}>Editar</p>
+                  )
+
+                  }
                   <p className='titulo-editarOpciones'>Opciones</p>
                   <p className='titulo-editarMover'>Mover</p>
                   <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -311,7 +312,7 @@ const ResultadoOpcionMultiple = ({
                   onMouseLeave={() => handleMouseLeaveEditar(index)}
               >
                   <Col style={{width:'95%', display:'flex'}}>
-                      <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
+                      <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. 7{pregunta}</p>
                       {configuracion6Activa && (
                           <OverlayTrigger
                               trigger="click"
@@ -344,10 +345,11 @@ const ResultadoOpcionMultiple = ({
                   </Col>
               </Col>
         </Col>
-        
-        {preguntaVisible[index] && (
+        {banderaComplementaria ? (
+        preguntaVisible[indiceComplementaria] && (
           <div>
             {opcionesRespuesta.map((opcion, idx) => (
+              console.log(opcion.respuesta),
               <CustomCheckBox 
                 key={idx} 
                 style={{ display: 'flex', marginBottom: '1%' }}
@@ -390,8 +392,56 @@ const ResultadoOpcionMultiple = ({
               </CustomCheckBox>
             ))}
           </div>
+        )
+        ) : (
+          preguntaVisible[index] && (
+            <div>
+              {opcionesRespuesta.map((opcion, idx) => (
+                console.log(opcion.respuesta),
+                <CustomCheckBox 
+                  key={idx} 
+                  style={{ display: 'flex', marginBottom: '1%' }}
+                >
+                  {opcion.type === 'checkbox' ? (
+                    // Opción de tipo "checkbox"
+                    <div style={{cursor: 'pointer'}}>
+                      <HiddenCheckBox
+                        type={opcion.type}
+                        name={`opcion_${index}`}
+                        value={opcion.id}
+                        checked={opcion.checked}
+                        onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
+                      />
+                      <StyledCheckBox checked={opcion.checked}/>
+                    </div>
+                  ) : (
+                    // Opción de tipo "radio"
+                    <div style={{cursor: 'pointer'}}>
+                      <HiddenRadioButton
+                        type={opcion.type}
+                        name={`opcion_${index}`}
+                        value={opcion.id}
+                        checked={opcion.checked}
+                        onChange={() => 
+                          handleOpcionChange(
+                            opcion.idOpcionRespuesta, 
+                            opcion.respuesta, 
+                            opcion.checked, 
+                            'radio'
+                          )
+                        }
+                      />
+                      <StyledRadioButton checked={opcion.checked}/>
+                    </div>
+                  )}
+                  <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
+                    {opcion.respuesta}
+                  </div>
+                </CustomCheckBox>
+              ))}
+            </div>
+          )
         )}
-
         <Modal
               open={openEliminarPregunta}
               onClose={() => setOpenEliminarPregunta(false)}
