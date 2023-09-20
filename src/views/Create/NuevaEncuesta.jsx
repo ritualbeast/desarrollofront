@@ -286,6 +286,7 @@ const NuevaEncuesta = ({
         const obj = {
           tipo: 'OM',
           save: saveValue,
+          editComplementaria : false,
           complementariaValue: complementariaValue,
           pregunta: preguntaSeleccionada.pregunta,
           opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
@@ -613,7 +614,7 @@ const NuevaEncuesta = ({
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
-      
+      console.log('entrooooo');
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -631,15 +632,26 @@ const NuevaEncuesta = ({
         opcionesRespuesta: opcionesRespuesta,
         save: true,
         cancelar: cancelar,
+        editComplementaria: true,
       };
 
       
       if (complementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
-        console.log(contenidoActual[posicionPregunta]);
-        console.log(contenidoActual[indicePreg].preguntasComplementarias);
+        if(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria === true){
+          console.log('siiii edito');
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].pregunta = pregunta;
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].save = true;
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].cancelar = cancelar;
+          setContentCont(nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+          
+        }else{
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
+        console.log('escenario 1');
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
         nuevoEstado[posicionContentCont].preguntas = contenidoActual;
         nuevoEstado[posicionContentCont].tipoSeccion = 'P';
@@ -648,21 +660,15 @@ const NuevaEncuesta = ({
         setContentCont(nuevoEstado);
         setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
 
-        } else {
-          const nuevoEstado = [...contentCont];
-          const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
-          contenidoActual[posicionPregunta].preguntasComplementarias = [preguntaComplementaria];
-          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
-          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
-          contenidoActual[posicionPregunta].complementariaValue = true;
-          setContentCont(nuevoEstado);
-          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
-        }
+        } 
+        
         contenidoActual.splice(indicePreg, 1);
 
         contentCont.splice(indiceSec, 1);
-
+      }
+          
       } else {
+      console.log('escenario 3');
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       contenidoActual[indicePreg].pregunta = pregunta;

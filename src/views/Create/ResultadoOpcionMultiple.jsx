@@ -349,7 +349,6 @@ const ResultadoOpcionMultiple = ({
         preguntaVisible[indiceComplementaria] && (
           <div>
             {opcionesRespuesta.map((opcion, idx) => (
-              console.log(opcion.respuesta),
               <CustomCheckBox 
                 key={idx} 
                 style={{ display: 'flex', marginBottom: '1%' }}
@@ -397,7 +396,6 @@ const ResultadoOpcionMultiple = ({
           preguntaVisible[index] && (
             <div>
               {opcionesRespuesta.map((opcion, idx) => (
-                console.log(opcion.respuesta),
                 <CustomCheckBox 
                   key={idx} 
                   style={{ display: 'flex', marginBottom: '1%' }}
