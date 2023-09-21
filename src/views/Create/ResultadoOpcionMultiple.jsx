@@ -312,7 +312,7 @@ const ResultadoOpcionMultiple = ({
                   onMouseLeave={() => handleMouseLeaveEditar(index)}
               >
                   <Col style={{width:'95%', display:'flex'}}>
-                      <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. 7{pregunta}</p>
+                      <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
                       {configuracion6Activa && (
                           <OverlayTrigger
                               trigger="click"

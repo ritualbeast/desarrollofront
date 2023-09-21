@@ -588,9 +588,26 @@ const NuevaEncuesta = ({
       }
     };
 
-    const handleCancelarOpcionMultiple = (indicePreg, indiceSec) => {
+    const handleCancelarOpcionMultiple = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
+          contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        }
+        else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
+          contenidoActualComplementaria[indiceComplementaria].save = true;
+        }
+        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+        
+      } else {
+      
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+      console.log(contenidoActual);
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -601,9 +618,26 @@ const NuevaEncuesta = ({
     
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
+      }
     };
 
-    const handleEliminarOpcionMultiple = (indicePreg, indiceSec) => {
+    const handleEliminarOpcionMultiple = (indicePreg, indiceSec,  banderaComplementaria, indiceComplementaria) => {
+      
+      if (banderaComplementaria) {
+
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+
+
+
+
+      } else {
+
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -611,10 +645,11 @@ const NuevaEncuesta = ({
     
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
+      }
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
-      console.log('entrooooo');
+      console.log(complementaria);
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -639,7 +674,7 @@ const NuevaEncuesta = ({
       if (complementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
-        if(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria === true){
+        if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicionPregunta]?.editComplementaria === true){
           console.log('siiii edito');
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].pregunta = pregunta;
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
@@ -648,7 +683,6 @@ const NuevaEncuesta = ({
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].cancelar = cancelar;
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
-          
         }else{
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
         console.log('escenario 1');
@@ -685,7 +719,6 @@ const NuevaEncuesta = ({
       contenidoActual[indicePreg].ponderacion = ponderacion;
       contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
       contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].preguntasComplementarias = [] ;
       contenidoActual[indicePreg].save = true;
       contenidoActual[indicePreg].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;

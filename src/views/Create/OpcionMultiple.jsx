@@ -250,7 +250,7 @@ const OpcionMultiple = ({
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
     const [configuracion1, setConfiguracion1] = useState(false);
-    const [configuracion2, setConfiguracion2] = useState(false);
+    const [configuracion2, setConfiguracion2] = useState(banderaComplementaria ? true : false);
     const [configuracion3, setConfiguracion3] = useState(false);
     const [configuracion4, setConfiguracion4] = useState(false);
     const [configuracion5, setConfiguracion5] = useState(false);
@@ -291,24 +291,24 @@ const OpcionMultiple = ({
     
     
       // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
-      contentCont.map((item, indexContentCont) => {
-        // Verifica si el objeto actual tiene un atributo "preguntas"
-        if (item.preguntas && Array.isArray(item.preguntas)) {
-            // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
-            item.preguntas.map((pregunta, indexPregunta) => {
+      contentCont[indiceSec].preguntas.map((pregunta, indexPregunta) => {
+        
                 
             // Verifica si el objeto de pregunta tiene un atributo "pregunta"
             if (pregunta.pregunta) {
                 // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
                 todasLasPreguntasConPosicion.push({
                 pregunta: pregunta.pregunta,
-                posicionContentCont: indexContentCont,
+                posicionContentCont: indiceSec,
                 posicionPregunta: indexPregunta,
+               
                 });
             }
-            });
-        }
         });
+
+        
+
+        
 
     const verPreguntas = (seccionPosicion) => {
         console.log('si entra a ver preguntas');
@@ -688,11 +688,11 @@ const OpcionMultiple = ({
 
     const handleCancelarOpcionMultiple = () => {
         setPregunta(preguntaTemp)
-        closeopmul(indice, indiceSec);
+        closeopmul(indice, indiceSec, banderaComplementaria, indiceComplementaria);
     };
 
     const handleEliminarOpcionMultiple = () => (
-        handleEliminarPregunta(indice, indiceSec)
+        handleEliminarPregunta(indice, indiceSec, banderaComplementaria, indiceComplementaria)
     );
     
     const handleGuardarOpcionMultiple = () => {
@@ -702,15 +702,18 @@ const OpcionMultiple = ({
         if (validacionConfiguracion6() === false) return;   
         if (validacionConfiguracion7() === false) return;
         if (validarCheckedRespuestas() === false) return;
+        
         setPreguntaTemp(pregunta)
+        console.log(configuracion2)
         if (configuracion2)
         {
-            console.log('si entra a configuracion 2')
+            console.log('si entra a configuracion 2 sii')
             console.log(indice, indiceSec )
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont);
         }
         else
         {
+            console.log('si entra a configuracion 2 noo')
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
         }
         
@@ -839,14 +842,14 @@ const OpcionMultiple = ({
 
       
     const ver = () => {
-        console.log(save)
+        console.log(contentCont[indiceSec])
     }
 
 
 
     return (
     <>
-        <button onClick={ver} >vere</button>
+        <button onClick={ver} >veress</button>
       
         <h1>{indice}</h1>
         <ToastContainer />
@@ -1026,7 +1029,7 @@ const OpcionMultiple = ({
 
                         <Col className='seccion2-opcionMultiple-configuracion'>
                             <label className="switch">
-                                <input type="checkbox" onChange={handleSwitchConfigurar2} checked={configuracion2}/>
+                                <input type="checkbox" onChange={handleSwitchConfigurar2} checked={ configuracion2}/>
                                 <span className="slider round"></span>
                             </label>
                             <p style={{ margin: 'unset', cursor: 'default' }}>Hacer que esta pregunta sea complementaria</p>
