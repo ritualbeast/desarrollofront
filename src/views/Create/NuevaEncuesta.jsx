@@ -271,7 +271,7 @@ const NuevaEncuesta = ({
     }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleOptionMultiple = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
-      
+      // setBanderaEditarComplemetaria(false);
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
         return;
@@ -669,20 +669,26 @@ const NuevaEncuesta = ({
         cancelar: cancelar,
         editComplementaria: true,
       };
+      console.log(complementaria);
 
       
       if (complementaria) {
+        console.log('entrooooo');
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
         if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicionPregunta]?.editComplementaria === true){
+          console.log('caso 1 XD');
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].pregunta = pregunta;
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].save = true;
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].cancelar = cancelar;
+          console.log(nuevoEstado)
+          
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
         }else{
+          console.log('caso 2 XD');
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
         nuevoEstado[posicionContentCont].preguntas = contenidoActual;
@@ -706,10 +712,12 @@ const NuevaEncuesta = ({
         pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
       }];
       if (banderaEditarComplemetaria) {
+        console.log(banderaEditarComplemetaria + 'caso 1w');
         handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
         const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
         eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
       } else {
+        console.log('caso 2');
       contenidoActual[contenidoActual.length -1].pregunta = pregunta;
       contenidoActual[contenidoActual.length -1].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
       contenidoActual[contenidoActual.length -1].idTipoPregunta = 1;
@@ -738,10 +746,12 @@ const NuevaEncuesta = ({
       
       
       if (banderaComplementaria) {
+        console.log('XD');
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        console.log(contPregTemp[indicePreg] );
         contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);

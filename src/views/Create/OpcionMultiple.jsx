@@ -829,8 +829,6 @@ const OpcionMultiple = ({
         console.log(contentCont[indiceSec])
     }
 
-
-
     return (
     <>
         <button onClick={ver} >veress</button>
