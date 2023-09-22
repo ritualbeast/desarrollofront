@@ -311,7 +311,6 @@ const OpcionMultiple = ({
         
 
     const verPreguntas = (seccionPosicion) => {
-        console.log('si entra a ver preguntas');
         const preguntasDeSeccion = [];
       
         // Verifica si la posición de la sección es válida
@@ -336,11 +335,8 @@ const OpcionMultiple = ({
             setTodasLasPreguntasConPosiciones((prevPreguntas) => [...prevPreguntas, ...preguntasDeSeccion]);
             setVerLogicaPreguntas(!verLogicaPreguntas);
           }
-        } else {
-          console.log('La posición de la sección no es válida.');
-        }
+        } 
       
-        console.log(todasLasPreguntasConPosiciones);
       };
       
     const seccionesConPosicion = contentCont.map((item, indexContentCont) => {
@@ -446,7 +442,7 @@ const OpcionMultiple = ({
     const handleOpcionPonderacion = (idOpcionRespuesta, newPonderacion) => {
         // Verificar si newPonderacion es una cadena vacía, un número válido entre 0 y 10 o "." para borrar
         if (newPonderacion === "" || newPonderacion === "." || (/^\d+(\.\d*)?$/.test(newPonderacion) && parseFloat(newPonderacion) >= 0 && parseFloat(newPonderacion) <= 10)) {
-            console.log(newPonderacion, idOpcionRespuesta);
+            
             setOpcionesRespuesta((prevOpciones) =>
                 prevOpciones.map((opcion) =>
                     opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, valor: newPonderacion } : opcion
@@ -524,7 +520,6 @@ const OpcionMultiple = ({
     };
 
     const handleSwitchConfigurar5 = () => {
-        console.log('si entra a configuracion 5')
         setConfiguracion5(!configuracion5);
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
@@ -650,8 +645,6 @@ const OpcionMultiple = ({
     };
 
     const handleSeccionChange = (index, event) => {
-        console.log(event.target.value)
-        console.log(index)
         const selectedValue = event.target.value;
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
@@ -704,17 +697,13 @@ const OpcionMultiple = ({
         if (validarCheckedRespuestas() === false) return;
         
         setPreguntaTemp(pregunta)
-        console.log(configuracion2)
         if (configuracion2)
         {
-            console.log('si entra a configuracion 2 sii')
-            console.log(indice, indiceSec )
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont);
         }
         else
         {
-            console.log('si entra a configuracion 2 noo')
-            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2);
+            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2, posicionPregunta, posicionContentCont);
         }
         
 
@@ -732,10 +721,8 @@ const OpcionMultiple = ({
 
 
     const validacionConfiguracion5 = () => {
-        console.log(configuracion5)
         if (configuracion5) 
-        {
-            console.log('si entra a configuracion 5')   
+        {  
             if (configuraciongeneral.etiquetaOtraRespuesta === '' || configuraciongeneral.enumTipoTexto === '' 
             || configuraciongeneral.enumCantidadCaracteres === '' || configuraciongeneral.enumValidacion === '') { 
                 
@@ -835,9 +822,6 @@ const OpcionMultiple = ({
         setPosicionContentCont(selectedValue.posicionContentCont);
         setPosicionPregunta(selectedValue.posicionPregunta);
       
-        // Ahora puedes acceder a las posiciones seleccionadas
-        console.log("Posición en contentCont:", posicionContentCont);
-        console.log("Posición en preguntas:", posicionPregunta);
       };
 
       

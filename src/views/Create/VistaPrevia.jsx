@@ -180,7 +180,6 @@ const VistaPrevia = ({
         prevOpciones.map((opcion) => {
           if (opcion && !opcion.checked === true) { // Verifica si 'opcion' existe antes de acceder a 'checked'
             opcion.checked = false
-            console.log('No seleccionado:', opcion);
           }
           return opcion; // Importante devolver la opción después de modificarla
         })
@@ -202,8 +201,6 @@ const VistaPrevia = ({
     //     )
     //   );
     // }
-    console.log('opcion -->>', opcion)
-    console.log('opcionesRespuesta -->>', opcionesRespuesta)
   };
 
   const handleOpcionChangeVE = (opcion, idOpcionRespuesta, value, checked) => {
@@ -222,7 +219,6 @@ const VistaPrevia = ({
         )
       );
     }
-    console.log(opcion)
   };
 
   const iconoSVG = {
@@ -480,7 +476,6 @@ const VistaPrevia = ({
                                   readOnly
                                   rows={5} // Ajusta el número de filas según tus necesidades
                               />
-                              {console.log(pregunta.respuesta)}
                           </Container>
                         )
                       } return null;

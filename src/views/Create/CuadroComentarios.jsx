@@ -212,7 +212,7 @@ const CuadroComentarios = ({
     }
 
     const handleGuardarCuadroComentarios = () => {
-        console.log(opcionesRespuesta)
+        
         if (!validarCuadroComentarios()) {
             return;
         }

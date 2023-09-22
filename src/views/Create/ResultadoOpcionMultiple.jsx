@@ -134,6 +134,7 @@ const ResultadoOpcionMultiple = ({
   const [contentEstilos, setContentEstilos] = useState(contenEstilos);
   const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
   const [configuracion3, setConfiguracion3] = useState(configuracion3RC);
+  const [banderaEditarComplemetaria, setBanderaEditarComplemetaria] = useState(true);
  
   useEffect(() => {
     let newStyle = {};
@@ -292,7 +293,7 @@ const ResultadoOpcionMultiple = ({
                   className={`contenedor-editar-pregunta`}
               >
                   {banderaComplementaria ? (  
-                    <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, indiceComplementaria, banderaComplementaria, index)}}>EditarC</p>  
+                    <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, indiceComplementaria, banderaComplementaria, index, banderaEditarComplemetaria)}}>EditarC</p>  
                   ) : (
                     <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index, banderaComplementaria)}}>Editar</p>
                   )

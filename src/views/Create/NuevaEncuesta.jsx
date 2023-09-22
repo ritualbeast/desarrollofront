@@ -115,6 +115,7 @@ const NuevaEncuesta = ({
     const [fondo, setFondo] = useState();
     const [configuracion4, setConfiguracion4] = useState(); 
     const [configuracion5, setConfiguracion5] = useState();
+    const [banderaEditarComplemetaria, setBanderaEditarComplemetaria] = useState(false);
     // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
 
   useEffect(() => {
@@ -270,7 +271,7 @@ const NuevaEncuesta = ({
     }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleOptionMultiple = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
-      console.log(saveValue);
+      
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
         return;
@@ -607,7 +608,6 @@ const NuevaEncuesta = ({
       
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      console.log(contenidoActual);
       const cancelarValor = contenidoActual[indicePreg].cancelar;
     
       if (cancelarValor === '') {
@@ -649,7 +649,7 @@ const NuevaEncuesta = ({
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
-      console.log(complementaria);
+      
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -675,7 +675,6 @@ const NuevaEncuesta = ({
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
         if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicionPregunta]?.editComplementaria === true){
-          console.log('siiii edito');
           contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].pregunta = pregunta;
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
@@ -685,7 +684,6 @@ const NuevaEncuesta = ({
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
         }else{
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
-        console.log('escenario 1');
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
         nuevoEstado[posicionContentCont].preguntas = contenidoActual;
         nuevoEstado[posicionContentCont].tipoSeccion = 'P';
@@ -702,47 +700,55 @@ const NuevaEncuesta = ({
       }
           
       } else {
-      console.log('escenario 3');
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta;
-      contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
-      contenidoActual[indicePreg].idTipoPregunta = 1;
-      contenidoActual[indicePreg].orden = indiceSec;
-      contenidoActual[indicePreg].requerida = '';
-      contenidoActual[indicePreg].placeHolder = 'seleccione';
-      contenidoActual[indicePreg].mensajeErrorRequerido = '';
-      contenidoActual[indicePreg].mensajeError = '';
-      contenidoActual[indicePreg].tipoArchivo = '';
-      contenidoActual[indicePreg].pesoArchivo = '';
-      contenidoActual[indicePreg].multipleRespuesta =  multipleRespuesta;
-      contenidoActual[indicePreg].ponderacion = ponderacion;
-      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
-      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].save = true;
-      contenidoActual[indicePreg].cancelar = cancelar;
+      const defaultPregunta = [{ 
+        pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
+      }];
+      if (banderaEditarComplemetaria) {
+        handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
+        const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
+        eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+      } else {
+      contenidoActual[contenidoActual.length -1].pregunta = pregunta;
+      contenidoActual[contenidoActual.length -1].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+      contenidoActual[contenidoActual.length -1].idTipoPregunta = 1;
+      contenidoActual[contenidoActual.length -1].orden = indiceSec;
+      contenidoActual[contenidoActual.length -1].requerida = '';
+      contenidoActual[contenidoActual.length -1].placeHolder = 'seleccione';
+      contenidoActual[contenidoActual.length -1].mensajeErrorRequerido = '';
+      contenidoActual[contenidoActual.length -1].mensajeError = '';
+      contenidoActual[contenidoActual.length -1].tipoArchivo = '';
+      contenidoActual[contenidoActual.length -1].pesoArchivo = '';
+      contenidoActual[contenidoActual.length -1].multipleRespuesta =  multipleRespuesta;
+      contenidoActual[contenidoActual.length -1].ponderacion = ponderacion;
+      contenidoActual[contenidoActual.length -1].configuracionPregunta = configuraciongeneral;
+      contenidoActual[contenidoActual.length -1].opcionesRespuesta = opcionesRespuesta;
+      contenidoActual[contenidoActual.length -1].save = true;
+      contenidoActual[contenidoActual.length -1].cancelar = cancelar;
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       // nuevoEstado[indiceSec].tipoSeccion = 'P';
       setContentCont(nuevoEstado);
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
       }
+    }
     };
     
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+      
+      
       if (banderaComplementaria) {
+        setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-        console.log(indiceComplementaria);
-        console.log(contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save);
         contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
       } else {
+      setBanderaEditarComplemetaria(false);
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-      console.log(indicePreg);
-      console.log(contPregTemp);
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
@@ -807,8 +813,7 @@ const NuevaEncuesta = ({
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
-      console.log(tempCont[0].preguntas[0].opcionesRespuesta)
-    };
+      };
 
     const handleCancelarCargaArchivos = (indicePreg, indiceSec) => {
       const nuevoEstado = [...contentCont];
@@ -1048,7 +1053,6 @@ const NuevaEncuesta = ({
         (objeto) =>
           objeto.tipoSeccion === 'C' 
       );
-      console.log(objetoExistenteIndex);
     
       if (objetoExistenteIndex !== -1) {
         // Si encontramos un objeto existente, lo actualizamos
@@ -1197,8 +1201,7 @@ const NuevaEncuesta = ({
                                         sendColors={sendColors}
                                       />
                                       {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
-                                        console.log('pregComplementariaS', pregComplementaria),
-                                        <OpcionMultiple
+                                         <OpcionMultiple
 
                                           key={indexpComplementaria}
                                           indice={`${indexp +1}-${indexpComplementaria}`}

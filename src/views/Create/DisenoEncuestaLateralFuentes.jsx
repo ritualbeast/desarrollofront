@@ -207,8 +207,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const ListarFuenteTamanoEncuesta = async () => {
         try {
             const response = await  ListarEnumeradosService('TAMANIO_LETRA')
-            console.log(response.data.listaEnumerados);
-            setTamanoApi(response.data.listaEnumerados);
+               setTamanoApi(response.data.listaEnumerados);
         } catch (error) {
             console.error(error);
         }

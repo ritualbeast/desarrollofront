@@ -279,7 +279,6 @@ function ResultadoValoracionEstrellas({
                     : prevOpcion
             )
         );
-        console.log('opcion entra -->>', opcion)
     };
     
     const handleIconMouseLeave = (opcion) => {

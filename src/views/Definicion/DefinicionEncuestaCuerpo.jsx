@@ -78,9 +78,6 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
   const [colors, setColors] = useState(sendColors);
 
   useEffect(() => {
-    console.log(datosDefinicionEstilo);
-   
-
     if (tituloTipografia === 'Nombre de encuesta') {
       if (tituloref.current) {
         tituloref.current.style.fontFamily = tipografia;

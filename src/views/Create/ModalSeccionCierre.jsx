@@ -77,7 +77,7 @@ const ModalSeccionCierre = ({
       newStyle.fontFamily = tipografia;
     }
     if (Object.keys(newStyle).length > 0) {
-    console.log(newStyle)
+    
     setTextoCierre(newStyle);
     }
     }, [tamano, titulotamano, grosor, tituloGrosor, tipografia, tituloTipografia]);

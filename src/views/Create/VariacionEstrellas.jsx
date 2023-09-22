@@ -544,7 +544,6 @@ const VariacionEstrellas = ({
     };
 
     const handleGuardarValoracionEstrellas = () => {
-        console.log(opcionesRespuesta)
         if (validacionConfiguracion1() === false) return;
         if (validacionConfiguracion4() === false) return;
         if (validacionConfiguracion5() === false) return;
@@ -592,10 +591,8 @@ const VariacionEstrellas = ({
     }
 
     const validacionConfiguracion5 = () => {
-        console.log(configuracion5)
         if (configuracion5) 
         {
-            console.log('si entra a configuracion 5')   
             if (configuraciongeneral.etiquetaOtraRespuesta === '' || configuraciongeneral.enumTipoTexto === '' 
             || configuraciongeneral.enumCantidadCaracteres === '' || configuraciongeneral.enumValidacion === '') { 
                 
@@ -658,9 +655,8 @@ const VariacionEstrellas = ({
 
     const handleIconChange = (idOpcionRespuesta, newIcon) => {
 
-        console.log(newIcon)
         const EnumGrafico = newIcon === 'square' ? 13 : newIcon === 'circle' ? 14 : newIcon === 'triangle' ? 40 : newIcon === 'star' ? 12 : 0
-        console.log(EnumGrafico)
+        
         setOpcionesRespuesta((prevOpciones) =>
         prevOpciones.map((opcion) =>
             opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, selectedIcon: newIcon, enumGrafico: EnumGrafico } : opcion
@@ -741,7 +737,7 @@ const VariacionEstrellas = ({
       const handleOpcionPonderacion = (idOpcionRespuesta, newPonderacion) => {
         // Verificar si newPonderacion es una cadena vacía, un número válido entre 0 y 10 o "." para borrar
         if (newPonderacion === "" || newPonderacion === "." || (/^\d+(\.\d*)?$/.test(newPonderacion) && parseFloat(newPonderacion) >= 0 && parseFloat(newPonderacion) <= 10)) {
-            console.log(newPonderacion, idOpcionRespuesta);
+            
             setOpcionesRespuesta((prevOpciones) =>
                 prevOpciones.map((opcion) =>
                     opcion.idOpcionRespuesta === idOpcionRespuesta ? { ...opcion, valor: newPonderacion } : opcion

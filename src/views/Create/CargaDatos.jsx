@@ -369,7 +369,7 @@ const CargaDatos = ({
     };
 
     const validacionCargaDatos = () => {
-        console.log(selectedFormats)
+        
         if (pregunta === '' || pregunta2 === '' || pesoArchivo === undefined || pesoArchivo === '' || mensajeError === ''
             || selectedFormats === '') {
             toast.error('Todos los campos son obligatorios', { autoClose: 1000 });
