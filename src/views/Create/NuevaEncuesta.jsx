@@ -648,7 +648,7 @@ const NuevaEncuesta = ({
       }
     };
 
-    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont) => {
+    const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
       
       const preguntaComplementaria = {
         pregunta: pregunta,
@@ -676,18 +676,25 @@ const NuevaEncuesta = ({
         console.log('entrooooo');
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
-        if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicionPregunta]?.editComplementaria === true){
+        // console.log(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria);
+        if (posicionComplementaria.length > 0 ) {
+        posicionComplementaria.map((posicion) => {
+
+        if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicion]?.editComplementaria === true){
           console.log('caso 1 XD');
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].pregunta = pregunta;
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].pregunta = pregunta;
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].save = true;
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].cancelar = cancelar;
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].save = true;
+          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].cancelar = cancelar;
           console.log(nuevoEstado)
-          
+        
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
-        }else{
+        } });
+
+      }
+        else{
           console.log('caso 2 XD');
         if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
@@ -704,6 +711,7 @@ const NuevaEncuesta = ({
 
         contentCont.splice(indiceSec, 1);
       }
+    
           
       } else {
       const nuevoEstado = [...contentCont];
@@ -716,6 +724,7 @@ const NuevaEncuesta = ({
         handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
         const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
         eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+        setBanderaEditarComplemetaria(false);
       } else {
         console.log('caso 2');
       contenidoActual[contenidoActual.length -1].pregunta = pregunta;
@@ -744,9 +753,9 @@ const NuevaEncuesta = ({
     
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
       
-      
+      console.log('b',banderaComplementaria);
       if (banderaComplementaria) {
-        console.log('XD');
+        console.log('cambio 1');
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
@@ -756,6 +765,7 @@ const NuevaEncuesta = ({
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
       } else {
+      console.log('cambio 2');
       setBanderaEditarComplemetaria(false);
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
@@ -1092,9 +1102,14 @@ const NuevaEncuesta = ({
       setContentCont([...nuevoEstado]);
     };
 
+    const bander = () => {
+      console.log(banderaEditarComplemetaria);
+    }
+
     
   return (
     <>
+        <button onClick={bander}>bandera</button>
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'
             style={{ backgroundColor: fondo } }

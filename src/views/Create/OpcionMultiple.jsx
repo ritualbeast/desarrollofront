@@ -287,6 +287,7 @@ const OpcionMultiple = ({
     const [posicionPregunta, setPosicionPregunta] = useState(0);
     const [posicionContentCont, setPosicionContentCont] = useState(0);
     const [verLogicaPreguntas, setVerLogicaPreguntas] = useState(false);
+    const [posicionComplementaria, setPosicionComplementaria] = useState([]);
     
     
     
@@ -295,7 +296,26 @@ const OpcionMultiple = ({
         
                 
             // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-            if (pregunta.pregunta) {
+            if (pregunta.preguntasComplementarias.length > 0) {
+
+
+                todasLasPreguntasConPosicion.push({
+                    pregunta: pregunta.pregunta,
+                    posicionContentCont: indiceSec,
+                    posicionPregunta: indexPregunta,
+                   
+                    });
+                pregunta.preguntasComplementarias.map((preguntaComplementaria, indexPreguntaComplementaria) => {
+                    todasLasPreguntasConPosicion.push({
+                        pregunta: preguntaComplementaria.pregunta,
+                        posicionContentCont: indiceSec,
+                        posicionPreguntaComplementaria: indexPreguntaComplementaria,
+                    });
+
+                });
+            }
+
+            else if (pregunta.pregunta) {
                 // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
                 todasLasPreguntasConPosicion.push({
                 pregunta: pregunta.pregunta,
@@ -303,7 +323,7 @@ const OpcionMultiple = ({
                 posicionPregunta: indexPregunta,
                
                 });
-            }
+            } 
         });
 
         
@@ -699,7 +719,9 @@ const OpcionMultiple = ({
         setPreguntaTemp(pregunta)
         if (configuracion2)
         {
-            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont);
+            console.log("entro a configuracion 2")
+            console.log(posicionComplementaria)
+            onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
         }
         else
         {
@@ -821,12 +843,13 @@ const OpcionMultiple = ({
         const selectedValue = JSON.parse(event.target.value);
         setPosicionContentCont(selectedValue.posicionContentCont);
         setPosicionPregunta(selectedValue.posicionPregunta);
+        setPosicionComplementaria(selectedValue.posicionPreguntaComplementaria);
       
       };
 
       
     const ver = () => {
-        console.log(contentCont[indiceSec])
+        console.log(todasLasPreguntasConPosicion    )
     }
 
     return (
@@ -1243,6 +1266,7 @@ const OpcionMultiple = ({
                     complementariaValue={complementariaValue}
                     banderaComplementaria={banderaComplementaria}
                     indiceComplementaria={indiceComplementaria}
+                    posicionComplementaria={posicionComplementaria}
                 />
             </Container>
         )}
