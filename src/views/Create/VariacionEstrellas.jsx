@@ -279,7 +279,7 @@ const VariacionEstrellas = ({
             type: 'radio',
             seccionValue: '',
             preguntaValue: '',
-            enumGrafico: '',
+            enumGrafico: 12,
             colorOpcion: "#e0dcdc",
             colorDefault: "#e0dcdc",
             selectedIcon: 'star',
@@ -745,10 +745,17 @@ const VariacionEstrellas = ({
             );
         }
     };
+
+    const verconf = () => {
+        console.log(configuracion4)
+        console.log(configuraciongeneral.etiquetaOtraRespuesta)
+    }
     
 
     return (
     <>
+        <button onClick={verconf} 
+        >rrrr</button>
         <ToastContainer />
         {!save && (
             <Container className='container-variacionEstrellas'>

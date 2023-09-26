@@ -61,6 +61,7 @@ const DisenoEncuesta = () => {
       setNuevaSeccionVisible(false);
     };
     const handleSeccionCierre = () => {
+      
       setShowModal(true);
       setNuevaSeccionVisible(false);
     };    

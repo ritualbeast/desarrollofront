@@ -228,6 +228,23 @@ const Create = () => {
         }
         setActiveIcon('Banco de Preguntas')
         if (pasos === 2) {
+
+            if (contentCont.length === 0) {
+                toast.error('Por favor agregue al menos una sección', {autoClose: 1000});
+                return;
+            }
+            if (contentCont[0].preguntas.length === 0) {
+                toast.error('Por favor agregue al menos una pregunta', {autoClose: 1000});
+                return;
+            }
+            const noExisteTipoP = !contentCont.some(item => item.tipoSeccion === 'C');
+
+            // Si no existe, mostrar el mensaje de error
+            if (noExisteTipoP) {
+                toast.error('Agregue una seccion de cierre', { autoClose: 1000 });
+                return;
+            }
+
             setPasos(3)
             setActiveIcon('')
             setLateralOpciones(false)
@@ -340,10 +357,10 @@ const Create = () => {
     };  
     
     const leerestilos = () => {
-        // console.log(encuestaEstilos);
+         console.log(encuestaEstilos);
          console.log(contentCont);
-         // console.log(datosConfiguracionEncuesta);
-        // console.log(datosEncuesta);
+          console.log(datosConfiguracionEncuesta);
+         console.log(datosEncuesta);
       }
 
     const [imagenFondo, setImagenFondo] = useState(null)

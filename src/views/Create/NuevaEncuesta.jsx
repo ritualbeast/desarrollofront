@@ -18,6 +18,8 @@ import { ListarTipoPregunta } from '../../services/PreguntaServices';
 import ModalLogotipo from './ModalLogotipo';
 import ModalPiePagina from './ModalPiePagina';
 import ModalSeccionCierre from './ModalSeccionCierre';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const chevronDownSVG = svgManager.getSVG('chevron-down');
 const uploadSVG = svgManager.getSVG('upload');
@@ -242,6 +244,11 @@ const NuevaEncuesta = ({
     };
 
     const handleSeccionCierre = () => {
+      console.log('entro a seccion cierre');
+      if (contentCont[0].preguntas.length === 0) {
+        toast.error('Por favor agregue al menos una pregunta en la sección de Preguntas', { autoClose: 2000 });
+        return;
+    }
       setShowModal(true);
       setNuevaSeccionVisible(false);
     };
@@ -1109,6 +1116,7 @@ const NuevaEncuesta = ({
     
   return (
     <>
+      <ToastContainer />
         <button onClick={bander}>bandera</button>
         <Container className='encuesta-Tercerocuerpo2-1'>
             <Col className='contendor-de-EncuestaVeris'

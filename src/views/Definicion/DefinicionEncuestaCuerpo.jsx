@@ -2,6 +2,8 @@ import React, {useState, useEffect, useRef, forwardRef} from 'react'
 import svgManager from '../../assets/svg'
 import '../../styles/definicionEncuestaCuerpo.css'
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const uploadCloudSVG = svgManager.getSVG('upload-cloud');
 const edit2SVG = svgManager.getSVG('edit2');
@@ -241,8 +243,8 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
             reader.readAsDataURL(file); // Lee el archivo como base64
 
         } else {
-            alert('Por favor, selecciona un archivo de imagen válido.');
-            setSelectedFile1(null);
+          toast.error('Por favor, selecciona un archivo de imagen válido.');
+          setSelectedFile1(null);
             setPreview1(null);
         }
     } else {
@@ -279,7 +281,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
 
             reader.readAsDataURL(file); // Lee el archivo como base64
         } else {
-            alert('Por favor, selecciona un archivo de imagen válido.');
+            toast.error('Por favor, selecciona un archivo de imagen válido.');
             setSelectedFile2(null);
             setPreview2(null);
         }
@@ -327,6 +329,7 @@ const DefinicionEncuestaCuerpo =  forwardRef(({
 
   return (
     <>
+      <ToastContainer />
       <div className="tituloDefinicionEncuesta">
          <span> Crear  de Encuesta </span>
       </div>

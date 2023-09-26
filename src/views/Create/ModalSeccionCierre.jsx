@@ -3,6 +3,8 @@ import '../../styles/seccionCierre.css';
 import { Container, Col, Button, FormControl } from 'react-bootstrap';
 import svgManager from '../../assets/svg';
 import styled from 'styled-components';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const uploadSVG = svgManager.getSVG('upload');
 const chevronUpSVG = svgManager.getSVG('chevron-up');
@@ -54,7 +56,7 @@ const ModalSeccionCierre = ({
     const [isMouseOver, setIsMouseOver] = useState(false); 
     const [hasChanges, setHasChanges] = useState(false);
     const [titulo, setTitulo] = useState('Sección de cierre');
-    const [comentario, setComentario] = useState('');
+    const [comentario, setComentario] = useState('#');
     const [textobotonCierre, setTextobotonCierre] = useState('Finalizar');
     const [textoCierre, setTextoCierre] = useState({});
     const tamano = sendTamanoPaso2?.tamano ;
@@ -120,7 +122,7 @@ const ModalSeccionCierre = ({
     
                 reader.readAsDataURL(file); // Lee el archivo como base64
             } else {
-                alert('Por favor, selecciona un archivo de imagen válido.');
+                toast.error('Por favor, selecciona un archivo de imagen válido.');
                 setSelectedFile1(null);
                 setPreview1(null);
             }
@@ -193,6 +195,7 @@ const ModalSeccionCierre = ({
 
   return (
     <>
+        <ToastContainer />
         <br />
         <Container className='encuesta-SeccionCierre'>
             {hasChangeEncabezado ? (

@@ -203,18 +203,19 @@ const DisenoEncuestaLateralColores = ( {
                                         style={{ backgroundColor: colors[index] }}  
                                         onClick={() => handleClickColorSeleccionado(index)}>
                                             {color.isOpen && (
-                                                <div style={{ position: 'absolute', zIndex: '2', right: '70%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
+                                                <div style={{ position: 'absolute', zIndex: '9999', right: '35%', backgroundColor : '#fff', padding: '10px', borderRadius: '5px', boxShadow: '0px 0px 5px 0px rgba(0,0,0,0.75)'}}> 
+                                                    <button 
+                                                        style={{ padding: '5px', margin: '0px', cursor: 'pointer'}}
+                                                        onClick={(event) => handleCloseButtonClick(event, index)}
+                                                    >
+                                                        Cerrar
+                                                    </button>
                                                     <SketchPicker 
                                                         color={colors[index]}
                                                         onChangeComplete={(newColor) => handleChangeComplete(newColor, index, color.nombre)} 
                                                         
                                                     />
-                                                    <button 
-                                                        style={{marginTop: '10px', padding: '5px 10px', cursor: 'pointer'}}
-                                                        onClick={(event) => handleCloseButtonClick(event, index)}
-                                                    >
-                                                        Cerrar
-                                                    </button>
+                                                    
 
                                                 </div>
                                             )}
