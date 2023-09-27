@@ -242,6 +242,8 @@ const OpcionMultiple = ({
             preguntaValue: '', // Valor inicial de la pregunta
             valor: '',
             orden : 0,
+            nemonicoLogicaPregunta: '',
+            logicaOpcionRespuesta: '',
 
         }))
     );
@@ -330,7 +332,7 @@ const OpcionMultiple = ({
 
         
 
-    const verPreguntas = (seccionPosicion) => {
+    const verPreguntas = (seccionPosicion, omitir) => {
         const preguntasDeSeccion = [];
       
         // Verifica si la posición de la sección es válida
@@ -339,21 +341,24 @@ const OpcionMultiple = ({
       
           // Verifica si la sección tiene un atributo "preguntas" y si es un arreglo
           if (seccion.preguntas && Array.isArray(seccion.preguntas)) {
-            seccion.preguntas.forEach((pregunta, indexPregunta) => {
+            seccion.preguntas.forEach((preguntaa, indexPregunta) => {
+                
               // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-              if (pregunta.pregunta) {
+              if (preguntaa.pregunta !== pregunta) {
+              if (preguntaa.pregunta) {
                 preguntasDeSeccion.push({
-                  pregunta: pregunta.pregunta,
+                  pregunta: preguntaa.pregunta,
                   posicionPregunta: indexPregunta,
-                  nemonico : pregunta.nemonico,
+                  nemonico : preguntaa.nemonico,
                 });
+            }
               }
             });
       
             // Limpia las preguntas anteriores antes de agregar las nuevas preguntas
             setTodasLasPreguntasConPosiciones([]);
             setTodasLasPreguntasConPosiciones((prevPreguntas) => [...prevPreguntas, ...preguntasDeSeccion]);
-            setVerLogicaPreguntas(!verLogicaPreguntas);
+            // setVerLogicaPreguntas(!verLogicaPreguntas);
           }
         } 
       
@@ -416,6 +421,8 @@ const OpcionMultiple = ({
             preguntaValue: '',
             orden: opcionesRespuesta.length + 1,
             valor: '1',
+            nemonicoLogicaPregunta: '',
+            logicaOpcionRespuesta: '',
         };
         setOpcionesRespuesta((prevOpciones) => [...prevOpciones, newOpcion]);
         setOpcionText("");
@@ -665,7 +672,10 @@ const OpcionMultiple = ({
     };
 
     const handleSeccionChange = (index, event) => {
+        
         const selectedValue = event.target.value;
+        console.log(selectedValue)
+        if (selectedValue !== '') {
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
                 if (opcionIndex === index) {
@@ -679,16 +689,36 @@ const OpcionMultiple = ({
             return updatedOpciones;
         });
         verPreguntas(selectedValue);
+        setVerLogicaPreguntas(true);
+        }
+        else {
+            setOpcionesRespuesta((prevOpciones) => {
+                const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
+                    if (opcionIndex === index) {
+                    return {
+                        ...opcion,
+                        seccionValue: selectedValue,
+                    };
+                    }
+                    return opcion;
+                });
+                return updatedOpciones;
+            });
+            setVerLogicaPreguntas(false);
+        }
+
     };
       
     const handlePreguntaChange = (index, event) => {
         const selectedValue = event.target.value;
+        console.log(selectedValue)
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
                 if (opcionIndex === index) {
                 return {
                     ...opcion,
-                    respuesta: selectedValue,
+                    nemonicoLogicaPregunta: selectedValue,
+                    logicaOpcionRespuesta: selectedValue,
                 };
                 }
                 return opcion;
@@ -1189,7 +1219,7 @@ const OpcionMultiple = ({
                                                             value={opcion.seccionValue}
                                                             onChange={(event) => handleSeccionChange(opcionIndex, event)}
                                                         >
-                                                            <option value='' disabled hidden>Seleccionar Sección</option>
+                                                            <option value='' >Seleccionar Sección</option>
                                                             {seccionesConPosicion.map((seccion, index) => (
                                                                 <option key={index} value={seccion.posicionContentCont}>
                                                                     {seccion.titulo}
@@ -1200,11 +1230,11 @@ const OpcionMultiple = ({
 
                                                         <select
                                                         className='select1Logica2'
-                                                        value= {opcion.valor}
+                                                        value= {opcion.nemonicoLogicaPregunta}
                                                         onChange={(event) => handlePreguntaChange(index, event)}
                                                         disabled={!verLogicaPreguntas} // Aquí se habilitará o deshabilitará el select
                                                         >
-                                                        <option value='' disabled hidden>Seleccionar Pregunta</option>
+                                                        <option value='' >Seleccionar Pregunta</option>
                                                         {todasLasPreguntasConPosiciones.map((pregunta, index) => (
                                                             <option key={index} value={pregunta.nemonico}>
                                                             {pregunta.pregunta}

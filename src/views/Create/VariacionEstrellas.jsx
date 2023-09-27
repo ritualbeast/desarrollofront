@@ -545,7 +545,7 @@ const VariacionEstrellas = ({
 
     const handleGuardarValoracionEstrellas = () => {
         if (validacionConfiguracion1() === false) return;
-        if (validacionConfiguracion4() === false) return;
+        // if (validacionConfiguracion4() === false) return;
         if (validacionConfiguracion5() === false) return;
         if (validacionConfiguracion6() === false) return;
         if (validacionConfiguracion7() === false) return;

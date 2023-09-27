@@ -656,7 +656,7 @@ const NuevaEncuesta = ({
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
-      
+      console.log('entro a aceptar opcion multiple');
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -734,26 +734,26 @@ const NuevaEncuesta = ({
         setBanderaEditarComplemetaria(false);
       } else {
         console.log('caso 2');
-      contenidoActual[contenidoActual.length -1].pregunta = pregunta;
-      contenidoActual[contenidoActual.length -1].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
-      contenidoActual[contenidoActual.length -1].idTipoPregunta = 1;
-      contenidoActual[contenidoActual.length -1].orden = indiceSec;
-      contenidoActual[contenidoActual.length -1].requerida = '';
-      contenidoActual[contenidoActual.length -1].placeHolder = 'seleccione';
-      contenidoActual[contenidoActual.length -1].mensajeErrorRequerido = '';
-      contenidoActual[contenidoActual.length -1].mensajeError = '';
-      contenidoActual[contenidoActual.length -1].tipoArchivo = '';
-      contenidoActual[contenidoActual.length -1].pesoArchivo = '';
-      contenidoActual[contenidoActual.length -1].multipleRespuesta =  multipleRespuesta;
-      contenidoActual[contenidoActual.length -1].ponderacion = ponderacion;
-      contenidoActual[contenidoActual.length -1].configuracionPregunta = configuraciongeneral;
-      contenidoActual[contenidoActual.length -1].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[contenidoActual.length -1].save = true;
-      contenidoActual[contenidoActual.length -1].cancelar = cancelar;
-      nuevoEstado[indiceSec].preguntas = contenidoActual;
-      // nuevoEstado[indiceSec].tipoSeccion = 'P';
-      setContentCont(nuevoEstado);
-      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+        contenidoActual[indicePreg].pregunta = pregunta;
+        contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+        contenidoActual[indicePreg].idTipoPregunta = 1;
+        contenidoActual[indicePreg].orden = indiceSec;
+        contenidoActual[indicePreg].requerida = '';
+        contenidoActual[indicePreg].placeHolder = 'seleccione';
+        contenidoActual[indicePreg].mensajeErrorRequerido = '';
+        contenidoActual[indicePreg].mensajeError = '';
+        contenidoActual[indicePreg].tipoArchivo = '';
+        contenidoActual[indicePreg].pesoArchivo = '';
+        contenidoActual[indicePreg].multipleRespuesta =  multipleRespuesta;
+        contenidoActual[indicePreg].ponderacion = ponderacion;
+        contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+        contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+        contenidoActual[indicePreg].save = true;
+        contenidoActual[indicePreg].cancelar = cancelar;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        setContentCont(nuevoEstado);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
       }
     }
     };
