@@ -247,6 +247,21 @@ const OpcionMultiple = ({
 
         }))
     );
+    const [opcionesRespuestaLogica, setOpcionesRespuestaLogica] = useState(() =>
+        opcionesApi.map((opcionApi) => ({
+            idOpcionRespuesta: opcionApi.idOpcionRespuesta,
+            respuesta: opcionApi.respuesta,
+            checked: false,
+            type: 'radio',
+            seccionValue: '', // Valor inicial de la sección
+            preguntaValue: '', // Valor inicial de la pregunta
+            valor: '',
+            orden : 0,
+            nemonicoLogicaPregunta: '',
+            logicaOpcionRespuesta: '',
+        }))
+    );
+    
     const complementarias = preguntas.preguntasComplementarias ?? [];
     const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
@@ -332,7 +347,8 @@ const OpcionMultiple = ({
 
         
 
-    const verPreguntas = (seccionPosicion, omitir) => {
+    const verPreguntas = (seccionPosicion, index) => {
+        console.log('esa',index)
         const preguntasDeSeccion = [];
       
         // Verifica si la posición de la sección es válida
@@ -357,8 +373,13 @@ const OpcionMultiple = ({
       
             // Limpia las preguntas anteriores antes de agregar las nuevas preguntas
             setTodasLasPreguntasConPosiciones([]);
-            setTodasLasPreguntasConPosiciones((prevPreguntas) => [...prevPreguntas, ...preguntasDeSeccion]);
-            // setVerLogicaPreguntas(!verLogicaPreguntas);
+            setTodasLasPreguntasConPosiciones(prevPreguntas => [
+                ...prevPreguntas,
+                ...preguntasDeSeccion.map(pregunta => ({
+                    ...pregunta,
+                    index // Añadimos el índice aquí
+                }))
+            ]);
           }
         } 
       
@@ -688,7 +709,7 @@ const OpcionMultiple = ({
             });
             return updatedOpciones;
         });
-        verPreguntas(selectedValue);
+        verPreguntas(selectedValue, index);
         setVerLogicaPreguntas(true);
         }
         else {
@@ -725,6 +746,10 @@ const OpcionMultiple = ({
             });
             return updatedOpciones;
         });
+        setTodasLasPreguntasConPosicionesArreglo(
+            
+
+
     };
    
     
@@ -879,7 +904,7 @@ const OpcionMultiple = ({
 
       
     const ver = () => {
-        console.log(todasLasPreguntasConPosicion    )
+        console.log(todasLasPreguntasConPosiciones)
     }
 
     return (
