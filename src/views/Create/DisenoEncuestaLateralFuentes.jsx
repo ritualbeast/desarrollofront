@@ -11,7 +11,7 @@ const infoSVG = svgManager.getSVG('info');
 const chevronleftSVG = svgManager.getSVG('chevronleft');
 
 const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso, sendTamano, sendGrosor,sendTipografia 
-    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, contenEstiloss
+    ,sendTamanoPaso2, sendGrosorPaso2,sendTipografiaPaso2, contenEstiloss, updateEstilos
  }) => {
 
     const [showBancoPreguntas, setShowBancoPreguntas] = React.useState(false);
@@ -21,6 +21,8 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
     const [tamanoSeleccionado, setTamanoSeleccionado] = useState('a');
     const [pasos, setPasos] = useState(paso);
     const [estilos, setEstilos] = useState(contenEstiloss);
+
+    updateEstilos(estilos);
 
     
     useEffect(() => {
@@ -229,6 +231,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
 
 
     const transformarTitulo = (titulo) => {
+        
         const mapeoTitulos = {
           "Nombre de encuesta": "tituloEncuesta",
           "Descripción de encuesta": "descripcionEncuesta",
@@ -240,7 +243,6 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
           "Opciones de respuesta": "opcionesRespuesta",
           "Texto de cierre de encuestas": "textoCierreEncuesta"
         };
-
       
         return mapeoTitulos[titulo];
       };

@@ -432,9 +432,6 @@ const DisenoEncuestaLateralPrincipal = ({datapasos,preview3, sendPreviewLogotipo
                 sendTamanoImagen={(tamano) => handleSendTamanoLogotipoPiePagina(tamano)}
                 contenEstilos={contenEstilos}
                 preview4={preview}
-                paso={pasos}
-                sendEstado={(estado) => handleSendEstado(estado)}
-                sendPosicion={(posicion) => handleSendPosicion(posicion)}
             />
         )}
 

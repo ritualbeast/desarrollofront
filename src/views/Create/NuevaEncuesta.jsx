@@ -121,6 +121,7 @@ const NuevaEncuesta = ({
     // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
 
   useEffect(() => {
+    console.log(titulotamano);
     setImagenFondo(sendImagenFondo);
     let newStyle = {};
     let newStylecontent = { ...estiloss};
@@ -135,8 +136,10 @@ const NuevaEncuesta = ({
       newStylecontent.fuente.tituloSeccion.enumFuente = tipografia;
     } if (Object.keys(newStyle).length > 0) {
     setTituloStyle(newStyle);
-    } let newStyle2 = {};
+    } 
+    let newStyle2 = {};
     if (titulotamano === 'Descripción de sección') {
+      console.log(tamano);
       newStyle2.fontSize = `${tamano}px`;
       newStylecontent.fuente.descripcionSeccion.enumTamanio = tamano;
     } if (tituloGrosor === 'Descripción de sección') {
@@ -147,8 +150,10 @@ const NuevaEncuesta = ({
       newStylecontent.fuente.descripcionSeccion.enumFuente = tipografia;
 
     } if (Object.keys(newStyle2).length > 0) {
-    setDescripcionStyle(newStyle2);
-    } setEstilos(newStylecontent);
+      console.log("sisis")
+      setDescripcionStyle(newStyle2);
+    } 
+    // setEstilos(newStylecontent);
 
     if (estiloss.fondo.colorFondo !== '') {
       setFondo(estiloss.fondo.colorFondo);
@@ -162,7 +167,7 @@ const NuevaEncuesta = ({
     setLeerTamanoLogotipo(sendTamanoLogotipo);
     setLeerPosicionLogotipoPiePagina(sendPosicionLogotipoPiePagina);
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
-    setEstilos(contenEstilos);
+    // setEstilos(contenEstilos);
   }, [tamano, grosor, tipografia, imagenFondo, 
     sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss, sendColors
   ]);
@@ -171,29 +176,7 @@ const NuevaEncuesta = ({
         setOpenFondo(true);
     }
 
-    useEffect(() => {
-      let newStyle = {};
-      if (titulotamano === 'Título de sección') {
-        newStyle.fontSize = `${tamano}px`;
-      } if (tituloGrosor === 'Título de sección') {
-        newStyle.fontWeight = grosor;
-      } if (tituloTipografia === 'Título de sección') {
-        newStyle.fontFamily = tipografia;
-      }
-  
-      setTituloStyle(newStyle);
-      let newStyle2 = {};
-      if (titulotamano === 'Descripción de sección') {
-        newStyle2.fontSize = `${tamano}px`;
-      } if (tituloGrosor === 'Descripción de sección') {
-        newStyle2.fontWeight = grosor;
-      } if (tituloTipografia === 'Descripción de sección') {
-        newStyle2.fontFamily = tipografia;
-      }
-      setDescripcionStyle(newStyle2);
-  
-    }, [tamano, grosor, tipografia]);
-
+    
     const handleCloseFondo = () => {
       setOpenFondo(false);
       setBlurBackground(false);
@@ -1151,7 +1134,7 @@ const NuevaEncuesta = ({
                               >
                                   <div style={{width:'96%'}}>
                                     <p className='titulo-nuevaEncuesta' style={tituloStyle}> {seccion.titulo}</p>
-                                    <p style={{descripcionStyle, marginTop:'unset', marginBottom:'unset', marginLeft:'1.5%'}}>{seccion.descripcion}</p>
+                                    <p style={descripcionStyle}>{seccion.descripcion}</p>
                                   </div>
                                   <span 
                                     style={{ display: 'flex', alignItems: 'center', cursor:'pointer' }} 

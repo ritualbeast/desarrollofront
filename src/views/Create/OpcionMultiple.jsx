@@ -746,9 +746,6 @@ const OpcionMultiple = ({
             });
             return updatedOpciones;
         });
-        setTodasLasPreguntasConPosicionesArreglo(
-            
-
 
     };
    
