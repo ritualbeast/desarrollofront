@@ -353,7 +353,7 @@ const Create = () => {
     
 
     const handleUpdateEstilos = (nuevosEstilos) => {
-        console.log(nuevosEstilos);
+        
         setEncuestaEstilos(nuevosEstilos);
     };  
     

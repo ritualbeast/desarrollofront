@@ -121,40 +121,41 @@ const NuevaEncuesta = ({
     // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
 
   useEffect(() => {
-    console.log(titulotamano);
     setImagenFondo(sendImagenFondo);
-    let newStyle = {};
-    let newStylecontent = { ...estiloss};
-    if (titulotamano === 'Título de sección') {
-      newStyle.fontSize = `${tamano}px`;
-      newStylecontent.fuente.tituloSeccion.enumTamanio = tamano;
-    } if (tituloGrosor === 'Título de sección') {
-      newStyle.fontWeight = grosor;
-      newStylecontent.fuente.tituloSeccion.enumGrosor = grosor;
-    } if (tituloTipografia === 'Título de sección') {
-      newStyle.fontFamily = tipografia;
-      newStylecontent.fuente.tituloSeccion.enumFuente = tipografia;
-    } if (Object.keys(newStyle).length > 0) {
-    setTituloStyle(newStyle);
-    } 
-    let newStyle2 = {};
-    if (titulotamano === 'Descripción de sección') {
-      console.log(tamano);
-      newStyle2.fontSize = `${tamano}px`;
-      newStylecontent.fuente.descripcionSeccion.enumTamanio = tamano;
-    } if (tituloGrosor === 'Descripción de sección') {
-      newStyle2.fontWeight = grosor;
-      newStylecontent.fuente.descripcionSeccion.enumGrosor = grosor;
-    } if (tituloTipografia === 'Descripción de sección') {
-      newStyle2.fontFamily = tipografia;
-      newStylecontent.fuente.descripcionSeccion.enumFuente = tipografia;
 
-    } if (Object.keys(newStyle2).length > 0) {
-      console.log("sisis")
-      setDescripcionStyle(newStyle2);
-    } 
-    // setEstilos(newStylecontent);
+    const newTituloStyle = { ...tituloStyle };
+    const newDescripcionStyle = { ...descripcionStyle };
 
+    // recorrer el objeto de estiloss 
+
+      if (contenEstilos.fuente.tituloSeccion.enumTamanio !== '') {
+        newTituloStyle.fontSize = `${contenEstilos.fuente.tituloSeccion.enumTamanio}px`;
+      }
+      if (contenEstilos.fuente.tituloSeccion.enumGrosor !== '') {
+        newTituloStyle.fontWeight = contenEstilos.fuente.tituloSeccion.enumGrosor;
+      }
+      if (contenEstilos.fuente.tituloSeccion.enumTipografia !== '') {
+        newTituloStyle.fontFamily = contenEstilos.fuente.tituloSeccion.enumTipografia;
+      }
+      if (contenEstilos.fuente.tituloSeccion.color !== '') {
+        newTituloStyle.color = contenEstilos.fuente.tituloSeccion.color;
+      }
+      if (contenEstilos.fuente.descripcionSeccion.enumTamanio !== '') {
+        newDescripcionStyle.fontSize = `${contenEstilos.fuente.descripcionSeccion.enumTamanio}px`;
+      }
+      if (contenEstilos.fuente.descripcionSeccion.enumGrosor !== '') {
+        newDescripcionStyle.fontWeight = contenEstilos.fuente.descripcionSeccion.enumGrosor;
+      }
+      if (contenEstilos.fuente.descripcionSeccion.enumTipografia !== '') {
+        newDescripcionStyle.fontFamily = contenEstilos.fuente.descripcionSeccion.enumTipografia;
+      }
+      if (contenEstilos.fuente.descripcionSeccion.color !== '') {
+        newDescripcionStyle.color = contenEstilos.fuente.descripcionSeccion.color;
+      }
+      
+      setTituloStyle(newTituloStyle);
+      setDescripcionStyle(newDescripcionStyle);
+   
     if (estiloss.fondo.colorFondo !== '') {
       setFondo(estiloss.fondo.colorFondo);
     } if (estiloss.fuente.tituloSeccion.color !== '') {
@@ -169,7 +170,7 @@ const NuevaEncuesta = ({
     setLeerTamanoLogotipoPiePagina(sendTamanoLogotipoPiePagina);
     // setEstilos(contenEstilos);
   }, [tamano, grosor, tipografia, imagenFondo, 
-    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, estiloss, sendColors
+    sendPosicionLogotipo, sendTamanoLogotipo, sendPosicionLogotipoPiePagina, sendTamanoLogotipoPiePagina, sendColors, contenEstilos
   ]);
   
     const handleOpenFondo = () => {

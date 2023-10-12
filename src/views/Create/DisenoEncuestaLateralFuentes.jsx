@@ -240,7 +240,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
           "Título de sección": "tituloSeccion",
           "Descripción de sección": "descripcionSeccion",
           "Preguntas": "preguntas",
-          "Opciones de respuesta": "opcionesRespuesta",
+          "Opciones de respuesta": "opcionesRespuestas",
           "Texto de cierre de encuestas": "textoCierreEncuesta"
         };
       

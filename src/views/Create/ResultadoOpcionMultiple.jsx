@@ -131,55 +131,49 @@ const ResultadoOpcionMultiple = ({
   const tituloTipografia = sendTipografiaPaso2?.titulo;
   const [opcionesRespuestaStyle, setOpcionesRespuestaStyle] = useState({});
   const [preguntasStyle, setPreguntasStyle] = useState({});
-  const [contentEstilos, setContentEstilos] = useState(contenEstilos);
   const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
   const [configuracion3, setConfiguracion3] = useState(configuracion3RC);
   const [banderaEditarComplemetaria, setBanderaEditarComplemetaria] = useState(true);
  
   useEffect(() => {
-    let newStyle = {};
-    if (titulotamano === 'Opciones de respuesta') {
-      newStyle.fontSize = `${tamano}px`;
+    let newStyle = {...opcionesRespuestaStyle};
+   
+    if (contenEstilos.fuente.opcionesRespuestas.enumTamanio !== ''){
+      newStyle.fontSize = `${contenEstilos.fuente.opcionesRespuestas.enumTamanio}px`;
     }
-    if (tituloGrosor === 'Opciones de respuesta') {
-      newStyle.fontWeight = grosor;
+    if (contenEstilos.fuente.opcionesRespuestas.enumGrosor !== ''){
+      newStyle.fontWeight = contenEstilos.fuente.opcionesRespuestas.enumGrosor;
     }
-    if (tituloTipografia === 'Opciones de respuesta') {
-      newStyle.fontFamily = tipografia;
+    if (contenEstilos.fuente.opcionesRespuestas.enumTipografia !== ''){
+      newStyle.fontFamily = contenEstilos.fuente.opcionesRespuestas.enumTipografia;
     }
-    if (Object.keys(newStyle).length !== 0){
-      setOpcionesRespuestaStyle(newStyle);
-    }
+    setOpcionesRespuestaStyle(newStyle);
+
+    let newStyle2 = {...preguntasStyle};
     
-    let newStyle2 = {};
-    if (titulotamano === 'Preguntas') {
-      newStyle2.fontSize = `${tamano}px`;
+    if (contenEstilos.fuente.preguntas.enumTamanio !== ''){
+      
+      newStyle2.fontSize = `${contenEstilos.fuente.preguntas.enumTamanio}px`;
     }
-    if (tituloGrosor === 'Preguntas') {
-      newStyle2.fontWeight = grosor;
+    if (contenEstilos.fuente.preguntas.enumGrosor !== ''){
+      newStyle2.fontWeight = contenEstilos.fuente.preguntas.enumGrosor;
     }
-    if (tituloTipografia === 'Preguntas') {
-      newStyle2.fontFamily = tipografia;
-    }
-
-    if (Object.keys(newStyle2).length !== 0){
-      setPreguntasStyle(newStyle2);
+    if (contenEstilos.fuente.preguntas.enumTipografia !== ''){
+      newStyle2.fontFamily = contenEstilos.fuente.preguntas.enumTipografia;
     }
 
-    if (Object.keys(contentEstilos).length !== 0){
-      setContentEstilos(contentEstilos);
+    setPreguntasStyle(newStyle2);
+
+    if (contenEstilos.fuente.preguntas.color !== ''){
+      setPreguntasStyle({...newStyle2, color: contenEstilos.fuente.preguntas.color});
     }
 
-    if (contentEstilos.fuente.preguntas.color !== ''){
-      setPreguntasStyle({...newStyle2, color: contentEstilos.fuente.preguntas.color});
-    }
-
-    if (contentEstilos.fuente.opcionesRespuestas.color !== ''){
-      setOpcionesRespuestaStyle({...newStyle, color: contentEstilos.fuente.opcionesRespuestas.color});
+    if (contenEstilos.fuente.opcionesRespuestas.color !== ''){
+      setOpcionesRespuestaStyle({...newStyle, color: contenEstilos.fuente.opcionesRespuestas.color});
     }
 
 
-  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contentEstilos, sendColors]);
+  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contenEstilos, sendColors]);
 
   const handleMouseEnterEditar = (index) => {
     $(`#editPreg${index +1}`).removeClass("oculto");
@@ -352,7 +346,7 @@ const ResultadoOpcionMultiple = ({
             {opcionesRespuesta.map((opcion, idx) => (
               <CustomCheckBox 
                 key={idx} 
-                style={{ display: 'flex', marginBottom: '1%' }}
+                style={{ display: 'flex', marginBottom: '1%'}}
               >
                 {opcion.type === 'checkbox' ? (
                   // Opción de tipo "checkbox"
@@ -398,12 +392,13 @@ const ResultadoOpcionMultiple = ({
             <div>
               {opcionesRespuesta.map((opcion, idx) => (
                 <CustomCheckBox 
-                  key={idx} 
-                  style={{ display: 'flex', marginBottom: '1%' }}
-                >
+                key={idx} 
+                style={{ marginBottom: '1%', width: '100%', height: 'auto' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', margin: '0', padding: '0'}}>
                   {opcion.type === 'checkbox' ? (
                     // Opción de tipo "checkbox"
-                    <div style={{cursor: 'pointer'}}>
+                    <>
                       <HiddenCheckBox
                         type={opcion.type}
                         name={`opcion_${index}`}
@@ -412,10 +407,10 @@ const ResultadoOpcionMultiple = ({
                         onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
                       />
                       <StyledCheckBox checked={opcion.checked}/>
-                    </div>
+                    </>
                   ) : (
                     // Opción de tipo "radio"
-                    <div style={{cursor: 'pointer'}}>
+                    <>
                       <HiddenRadioButton
                         type={opcion.type}
                         name={`opcion_${index}`}
@@ -431,12 +426,14 @@ const ResultadoOpcionMultiple = ({
                         }
                       />
                       <StyledRadioButton checked={opcion.checked}/>
-                    </div>
+                    </>
                   )}
                   <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
                     {opcion.respuesta}
                   </div>
-                </CustomCheckBox>
+                </div>
+              </CustomCheckBox>
+              
               ))}
             </div>
           )

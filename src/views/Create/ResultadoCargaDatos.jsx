@@ -51,50 +51,45 @@ const ResultadoCargaDatos = ({
   
   
   useEffect(() => {
-    // Envía el valor de preview1 a la función prop previewSend inmediatamente cuando cambie
-    let newStyle = {};
-    if (titulotamano === 'Opciones de respuesta') {
-      newStyle.fontSize = `${tamano}px`;
+    let newStyle = {...opcionesRespuestaStyle};
+   
+    if (contenEstilos.fuente.opcionesRespuestas.enumTamanio !== ''){
+      newStyle.fontSize = `${contenEstilos.fuente.opcionesRespuestas.enumTamanio}px`;
     }
-    if (tituloGrosor === 'Opciones de respuesta') {
-      newStyle.fontWeight = grosor;
+    if (contenEstilos.fuente.opcionesRespuestas.enumGrosor !== ''){
+      newStyle.fontWeight = contenEstilos.fuente.opcionesRespuestas.enumGrosor;
     }
-    if (tituloTipografia === 'Opciones de respuesta') {
-      newStyle.fontFamily = tipografia;
+    if (contenEstilos.fuente.opcionesRespuestas.enumTipografia !== ''){
+      newStyle.fontFamily = contenEstilos.fuente.opcionesRespuestas.enumTipografia;
     }
-    if (Object.keys(newStyle).length !== 0){
-      setOpcionesRespuestaStyle(newStyle);
-    }
+    setOpcionesRespuestaStyle(newStyle);
+
+    let newStyle2 = {...preguntasStyle};
     
-    let newStyle2 = {};
-    if (titulotamano === 'Preguntas') {
-      newStyle2.fontSize = `${tamano}px`;
+    if (contenEstilos.fuente.preguntas.enumTamanio !== ''){
+      console.log('entro a tamanio')
+      newStyle2.fontSize = `${contenEstilos.fuente.preguntas.enumTamanio}px`;
     }
-    if (tituloGrosor === 'Preguntas') {
-      newStyle2.fontWeight = grosor;
+    if (contenEstilos.fuente.preguntas.enumGrosor !== ''){
+      newStyle2.fontWeight = contenEstilos.fuente.preguntas.enumGrosor;
     }
-    if (tituloTipografia === 'Preguntas') {
-      newStyle2.fontFamily = tipografia;
-    }
-
-    if (Object.keys(newStyle2).length !== 0){
-      setPreguntasStyle(newStyle2);
+    if (contenEstilos.fuente.preguntas.enumTipografia !== ''){
+      newStyle2.fontFamily = contenEstilos.fuente.preguntas.enumTipografia;
     }
 
-    if (Object.keys(contentEstilos).length !== 0){
-      setContentEstilos(contentEstilos);
+    setPreguntasStyle(newStyle2);
+
+    if (contenEstilos.fuente.preguntas.color !== ''){
+      setPreguntasStyle({...newStyle2, color: contenEstilos.fuente.preguntas.color});
     }
 
-    if (contentEstilos.fuente.preguntas.color !== ''){
-      setPreguntasStyle({...newStyle2, color: contentEstilos.fuente.preguntas.color});
-    }
-
-    if (contentEstilos.fuente.opcionesRespuestas.color !== ''){
-      setOpcionesRespuestaStyle({...newStyle, color: contentEstilos.fuente.opcionesRespuestas.color});
+    if (contenEstilos.fuente.opcionesRespuestas.color !== ''){
+      setOpcionesRespuestaStyle({...newStyle, color: contenEstilos.fuente.opcionesRespuestas.color});
     }
 
 
-  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contentEstilos, sendColors]);
+  }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contenEstilos, sendColors]);
+
 
 
 
