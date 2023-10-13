@@ -593,7 +593,7 @@ const VariacionEstrellas = ({
     const validacionConfiguracion5 = () => {
         if (configuracion5) 
         {
-            if (configuraciongeneral.etiquetaOtraRespuesta === '' || configuraciongeneral.enumTipoTexto === '' 
+            if ( configuraciongeneral.enumTipoTexto === '' 
             || configuraciongeneral.enumCantidadCaracteres === '' || configuraciongeneral.enumValidacion === '') { 
                 
                 toast.error('Debe llenar todos los campos de la configuracion Agregar "otra"', { autoClose: 1000 });

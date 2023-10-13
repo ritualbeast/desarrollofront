@@ -313,7 +313,7 @@ const OpcionMultiple = ({
         
                 
             // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-            if (pregunta.preguntasComplementarias.length > 0) {
+            if (pregunta?.preguntasComplementarias?.length > 0) {
 
 
                 todasLasPreguntasConPosicion.push({
@@ -893,6 +893,7 @@ const OpcionMultiple = ({
 
     const handleComplemetaria = (event) => {
         const selectedValue = JSON.parse(event.target.value);
+        console.log(selectedValue)
         setPosicionContentCont(selectedValue.posicionContentCont);
         setPosicionPregunta(selectedValue.posicionPregunta);
         setPosicionComplementaria(selectedValue.posicionPreguntaComplementaria);
@@ -1093,9 +1094,10 @@ const OpcionMultiple = ({
                         </Col>
                         {configuracion2 && (
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
-                                <select className='selectConfigurar' onChange={handleComplemetaria} value={posicionContentCont}>
+                                <select className='selectConfigurar' onChange={handleComplemetaria}>
                                     <option value="" selected disabled hidden>Seleccionar Pregunta</option>
                                     {todasLasPreguntasConPosicion.map((pregunta, index) => (
+                                        
                                         <option key={index} value={JSON.stringify(pregunta)}>
                                         {pregunta.pregunta}
                                         </option>

@@ -664,11 +664,12 @@ const NuevaEncuesta = ({
 
       
       if (complementaria) {
-        console.log('entrooooo');
+        console.log('entro a complementaria');
         const nuevoEstado = [...contentCont];
-        const contenidoActual = [...nuevoEstado[posicionContentCont].preguntas];
+        console.log(posicionContentCont, 'posicionContentCont');
+        const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
         // console.log(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria);
-        if (posicionComplementaria.length > 0 ) {
+        if (posicionComplementaria?.length > 0 ) {
         posicionComplementaria.map((posicion) => {
 
         if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicion]?.editComplementaria === true){
@@ -687,7 +688,8 @@ const NuevaEncuesta = ({
       }
         else{
           console.log('caso 2 XD');
-        if (contenidoActual[posicionPregunta].preguntasComplementarias) { 
+          
+        if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
         contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
         nuevoEstado[posicionContentCont].preguntas = contenidoActual;
         nuevoEstado[posicionContentCont].tipoSeccion = 'P';

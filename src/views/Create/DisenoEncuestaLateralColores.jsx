@@ -191,7 +191,9 @@ const DisenoEncuestaLateralColores = ( {
                         <div className='contenedorColorPrincipal'>
                         {colorEncuesta.map((color, index) => (
                             datapasos === 1 &&  (color.nombre === 'Titulo de sección' || color.nombre === 'Descripción de sección' || 
-                            color.nombre === 'Preguntas' || color.nombre === 'Opciones de respuesta' ) ? null :  (
+                            color.nombre === 'Preguntas' || color.nombre === 'Opciones de respuesta' ) ? 
+                            
+                            null :  (
                             <div className="contenedorFuenteColor" key={index}>
                                 
                                     

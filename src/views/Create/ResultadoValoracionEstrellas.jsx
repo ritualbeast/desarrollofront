@@ -355,7 +355,7 @@ function ResultadoValoracionEstrellas({
                             opcion.respuesta !== 'Otra respuesta' && (
                                 <Col key={index} style={{ marginRight: '2%' }}>
                                     <Col>
-                                        <div style={{ textAlign: 'center' }}>
+                                        <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
                                             {opcion.respuesta}
                                         </div>
                                         <br />
@@ -405,7 +405,7 @@ function ResultadoValoracionEstrellas({
                             />
                             <StyledRadioButton checked={opcionesRespuesta.checked} />
                         </div>
-                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                        <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
                             Ninguna de las anteriores
                         </div>
                     </Col>
@@ -429,7 +429,7 @@ function ResultadoValoracionEstrellas({
                             />
                             <StyledRadioButton checked={opcionesRespuesta.checked} />
                         </div>
-                        <div style={{ marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                        <div style={{ ...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
                             Otra respuesta
                         </div>
                     </Col>

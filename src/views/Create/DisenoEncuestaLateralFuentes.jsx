@@ -298,7 +298,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                 <select
                                   className="fuenteTituloSelect"
                                   onChange={(event) => handleChangeTipografia(event, titulo)}
-                                  value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumTipografia}
+                                  value={contenEstiloss?.fuente?.[transformarTitulo(titulo)]?.enumTipografia}
                                 >
                                   <option value="">Seleccionar tipografía</option>
                                   {TipografiaApi.map((item) => (
@@ -310,7 +310,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                 <select
                                   className="fuenteTituloSelect2"
                                   onChange={(event) => handleChangeGrosor(event, titulo)}
-                                  value={estilos?.fuente?.[transformarTitulo(titulo)]?.enumGrosor}
+                                  value={contenEstiloss?.fuente?.[transformarTitulo(titulo)]?.enumGrosor}
                                 >
                                   <option value="">Grosor</option>
                                   {GrosorApi.map((item) => (
@@ -320,6 +320,7 @@ const DisenoEncuestaLateralFuentes = ({openMenuPrincipal, closeMenuFuentes,paso,
                                 <select
                                   className="fuenteTituloSelect3"
                                   onChange={(event) => handleChangeTamano(event, titulo)}
+                                  value={contenEstiloss?.fuente?.[transformarTitulo(titulo)]?.enumTamanio}
                                 >
                                   <option value="">Tamaño</option>
                                   {TamanoApi.map((item) => (

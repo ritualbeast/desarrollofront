@@ -344,46 +344,48 @@ const ResultadoOpcionMultiple = ({
         preguntaVisible[indiceComplementaria] && (
           <div>
             {opcionesRespuesta.map((opcion, idx) => (
-              <CustomCheckBox 
-                key={idx} 
-                style={{ display: 'flex', marginBottom: '1%'}}
-              >
-                {opcion.type === 'checkbox' ? (
-                  // Opción de tipo "checkbox"
-                  <div style={{cursor: 'pointer'}}>
-                    <HiddenCheckBox
-                      type={opcion.type}
-                      name={`opcion_${index}`}
-                      value={opcion.id}
-                      checked={opcion.checked}
-                      onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
-                    />
-                    <StyledCheckBox checked={opcion.checked}/>
-                  </div>
-                ) : (
-                  // Opción de tipo "radio"
-                  <div style={{cursor: 'pointer'}}>
-                    <HiddenRadioButton
-                      type={opcion.type}
-                      name={`opcion_${index}`}
-                      value={opcion.id}
-                      checked={opcion.checked}
-                      onChange={() => 
-                        handleOpcionChange(
-                          opcion.idOpcionRespuesta, 
-                          opcion.respuesta, 
-                          opcion.checked, 
-                          'radio'
-                        )
-                      }
-                    />
-                    <StyledRadioButton checked={opcion.checked}/>
-                  </div>
-                )}
-                <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
-                  {opcion.respuesta}
-                </div>
-              </CustomCheckBox>
+               <CustomCheckBox 
+               key={idx} 
+               style={{ marginBottom: '1%', width: '100%', height: 'auto' }}
+             >
+               <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', margin: '0', padding: '0'}}>
+                 {opcion.type === 'checkbox' ? (
+                   // Opción de tipo "checkbox"
+                   <>
+                     <HiddenCheckBox
+                       type={opcion.type}
+                       name={`opcion_${index}`}
+                       value={opcion.id}
+                       checked={opcion.checked}
+                       onChange={() => handleOpcionChange(opcion.idOpcionRespuesta, opcion.respuesta, opcion.checked, 'checkbox')}
+                     />
+                     <StyledCheckBox checked={opcion.checked}/>
+                   </>
+                 ) : (
+                   // Opción de tipo "radio"
+                   <>
+                     <HiddenRadioButton
+                       type={opcion.type}
+                       name={`opcion_${index}`}
+                       value={opcion.id}
+                       checked={opcion.checked}
+                       onChange={() => 
+                         handleOpcionChange(
+                           opcion.idOpcionRespuesta, 
+                           opcion.respuesta, 
+                           opcion.checked, 
+                           'radio'
+                         )
+                       }
+                     />
+                     <StyledRadioButton checked={opcion.checked}/>
+                   </>
+                 )}
+                 <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%'}}>
+                   {opcion.respuesta}
+                 </div>
+               </div>
+             </CustomCheckBox>
             ))}
           </div>
         )
