@@ -207,6 +207,7 @@ const OpcionMultiple = ({
     preguntas, 
     closeopmul, 
     onAceptar, 
+    onAceptarComplementaria,
     handleEditarPregunta, 
     handleEliminarPregunta,
     handleCambiarPregunta,
@@ -222,7 +223,8 @@ const OpcionMultiple = ({
     prueba,
     banderaComplementaria,
     indiceComplementaria,
-    saveComplementaria
+    saveComplementaria, 
+    
     
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
@@ -312,35 +314,37 @@ const OpcionMultiple = ({
       contentCont[indiceSec].preguntas.map((pregunta, indexPregunta) => {
         
                 
-            // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-            if (pregunta?.preguntasComplementarias?.length > 0) {
+            // // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+            // if (pregunta?.preguntasComplementarias?.length > 0) {
 
 
-                todasLasPreguntasConPosicion.push({
-                    pregunta: pregunta.pregunta,
-                    posicionContentCont: indiceSec,
-                    posicionPregunta: indexPregunta,
+            //     todasLasPreguntasConPosicion.push({
+            //         pregunta: pregunta.pregunta,
+            //         posicionContentCont: indiceSec,
+            //         posicionPregunta: indexPregunta,
                    
-                    });
-                pregunta.preguntasComplementarias.map((preguntaComplementaria, indexPreguntaComplementaria) => {
-                    todasLasPreguntasConPosicion.push({
-                        pregunta: preguntaComplementaria.pregunta,
-                        posicionContentCont: indiceSec,
-                        posicionPreguntaComplementaria: indexPreguntaComplementaria,
-                    });
+            //         });
+            //     pregunta.preguntasComplementarias.map((preguntaComplementaria, indexPreguntaComplementaria) => {
+            //         todasLasPreguntasConPosicion.push({
+            //             pregunta: preguntaComplementaria.pregunta,
+            //             posicionContentCont: indiceSec,
+            //             posicionPreguntaComplementaria: indexPreguntaComplementaria,
+            //         });
 
-                });
-            }
+            //     });
+            // }
 
-            else if (pregunta.pregunta) {
+            // else if (pregunta.pregunta) {
                 // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+                if (pregunta.pregunta !== '') {
                 todasLasPreguntasConPosicion.push({
                 pregunta: pregunta.pregunta,
                 posicionContentCont: indiceSec,
                 posicionPregunta: indexPregunta,
                
                 });
-            } 
+            }
+            // }
         });
 
         
@@ -348,7 +352,7 @@ const OpcionMultiple = ({
         
 
     const verPreguntas = (seccionPosicion, index) => {
-        console.log('esa',index)
+        
         const preguntasDeSeccion = [];
       
         // Verifica si la posición de la sección es válida
@@ -774,6 +778,7 @@ const OpcionMultiple = ({
             console.log("entro a configuracion 2")
             console.log(posicionComplementaria)
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
+            //onAceptarComplementaria(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
         }
         else
         {
@@ -1095,7 +1100,7 @@ const OpcionMultiple = ({
                         {configuracion2 && (
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
                                 <select className='selectConfigurar' onChange={handleComplemetaria}>
-                                    <option value="" selected disabled hidden>Seleccionar Pregunta</option>
+                                    <option value="" selected disabled hidden>Seleccionar Pregunta...</option>
                                     {todasLasPreguntasConPosicion.map((pregunta, index) => (
                                         
                                         <option key={index} value={JSON.stringify(pregunta)}>
@@ -1258,7 +1263,7 @@ const OpcionMultiple = ({
                                                         onChange={(event) => handlePreguntaChange(index, event)}
                                                         disabled={!verLogicaPreguntas} // Aquí se habilitará o deshabilitará el select
                                                         >
-                                                        <option value='' >Seleccionar Pregunta</option>
+                                                        <option value='' >Seleccionar LPregunta</option>
                                                         {todasLasPreguntasConPosiciones.map((pregunta, index) => (
                                                             <option key={index} value={pregunta.nemonico}>
                                                             {pregunta.pregunta}

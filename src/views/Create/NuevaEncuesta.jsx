@@ -640,7 +640,7 @@ const NuevaEncuesta = ({
     };
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
-      console.log('entro a aceptar opcion multiple');
+      
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -660,26 +660,23 @@ const NuevaEncuesta = ({
         cancelar: cancelar,
         editComplementaria: true,
       };
-      console.log(complementaria);
 
       
       if (complementaria) {
-        console.log('entro a complementaria');
         const nuevoEstado = [...contentCont];
-        console.log(posicionContentCont, 'posicionContentCont');
         const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
         // console.log(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria);
         if (posicionComplementaria?.length > 0 ) {
         posicionComplementaria.map((posicion) => {
 
         if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicion]?.editComplementaria === true){
-          console.log('caso 1 XD');
+          
           contenidoActual[posicionPregunta].preguntasComplementarias[posicion].pregunta = pregunta;
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
           contenidoActual[posicionPregunta].preguntasComplementarias[posicion].save = true;
           contenidoActual[posicionPregunta].preguntasComplementarias[posicion].cancelar = cancelar;
-          console.log(nuevoEstado)
+          
         
           setContentCont(nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
@@ -746,15 +743,15 @@ const NuevaEncuesta = ({
     
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
       
-      console.log('b',banderaComplementaria);
+      console.log('entro a editar', indicePreg);
       if (banderaComplementaria) {
         console.log('cambio 1');
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-        console.log(contPregTemp[indicePreg] );
-        contPregTemp[indicePreg].preguntasComplementarias[indicePreg].save=false
+        console.log(contPregTemp[0] );
+        contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
       } else {
@@ -1242,7 +1239,7 @@ const NuevaEncuesta = ({
                                           contenEstilos={contenEstilos}
                                           sendColors={sendColors}
                                           banderaComplementaria={true}
-                                          indiceComplementaria={indexp}
+                                          indiceComplementaria={indexpComplementaria}
                                           saveComplementaria={pregComplementaria.save}
                                         />
                                       ))}
@@ -1277,6 +1274,57 @@ const NuevaEncuesta = ({
                               
                               
                               if (preg.tipo == 'VE') {
+                                if(preg.preguntasComplementarias.length > 0){
+                                  return (
+                                    <>
+                                      <VariacionEstrellas
+                                        key={indexp}
+                                        indice={indexp}
+                                        indiceSec={index}
+                                        save={preg.save}
+                                        preguntas={preg}
+                                        closeVariacionEstrellas={handleCancelarValoracionEstrellas}
+                                        onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
+                                        handleEditarPregunta={handleEditarValoracionEstrellas}
+                                        handleEliminarPregunta={handleEliminarValoracionEstrellas}
+                                        handleCambiarPregunta={handleCambiarPregunta}
+                                        contentCont={contentCont}
+                                        preguntaVisibleOpen={preguntaVisible}
+                                        sendTamanoPaso2={sendTamanoPaso2}
+                                        sendGrosorPaso2={sendGrosorPaso2}
+                                        sendTipografiaPaso2={sendTipografiaPaso2}
+                                        contenEstilos={contenEstilos}
+                                        sendColors={sendColors}
+                                      />
+                                      {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
+                                        <VariacionEstrellas
+                                          key={indexpComplementaria}
+                                          indice={`${indexp +1}-${indexpComplementaria}`}
+                                          indiceSec={index}
+                                          save={pregComplementaria.save}
+                                          preguntas={pregComplementaria}
+                                          closeVariacionEstrellas={handleCancelarValoracionEstrellas}
+                                          onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
+                                          handleEditarPregunta={handleEditarValoracionEstrellas}
+                                          handleEliminarPregunta={handleEliminarValoracionEstrellas}
+                                          handleCambiarPregunta={handleCambiarPregunta}
+                                          contentCont={contentCont}
+                                          preguntaVisibleOpen={preguntaVisible}
+                                          sendTamanoPaso2={sendTamanoPaso2}
+                                          sendGrosorPaso2={sendGrosorPaso2}
+                                          sendTipografiaPaso2={sendTipografiaPaso2}
+                                          contenEstilos={contenEstilos}
+                                          sendColors={sendColors}
+                                          banderaComplementaria={true}
+                                          indiceComplementaria={indexp}
+                                          saveComplementaria={pregComplementaria.save}
+                                        />
+                                      ))}
+                                    </>
+                                  );
+                                }
+
+
                                 return <VariacionEstrellas 
                                   key={indexp}
                                   indice={indexp} 
@@ -1297,8 +1345,61 @@ const NuevaEncuesta = ({
                                   sendColors= {sendColors}
                                 />
                               }
+
                               if (preg.tipo == 'CA') {
-                                return <CargaDatos 
+
+                                if(preg.preguntasComplementarias.length > 0){
+                                  return (
+                                    <>
+                                      <CargaDatos
+
+                                        key={indexp}
+                                        indice={indexp}
+                                        indiceSec={index}
+                                        save={preg.save}
+                                        preguntas={preg}
+                                        closeCargaArchivos={handleCancelarCargaArchivos}
+                                        handleCargaArchivos={handleAceptarCargaArchivos}
+                                        handleEditarPregunta={handleEditarCargaDatos}
+                                        handleEliminarPregunta={handleEliminarCargaArchivos}
+                                        handleCambiarPregunta={handleCambiarPregunta}
+                                        contentCont={contentCont}
+                                        preguntaVisibleOpen={preguntaVisible}
+                                        sendTamanoPaso2={sendTamanoPaso2}
+                                        sendGrosorPaso2={sendGrosorPaso2}
+                                        sendTipografiaPaso2={sendTipografiaPaso2}
+                                        contenEstilos={contenEstilos}
+                                        sendColors={sendColors}
+                                      />
+                                      {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
+                                        <CargaDatos
+                                          key={indexpComplementaria}
+                                          indice={`${indexp +1}-${indexpComplementaria}`}
+                                          indiceSec={index}
+                                          save={pregComplementaria.save}
+                                          preguntas={pregComplementaria}
+                                          closeCargaArchivos={handleCancelarCargaArchivos}
+                                          handleCargaArchivos={handleAceptarCargaArchivos}
+                                          handleEditarPregunta={handleEditarCargaDatos}
+                                          handleEliminarPregunta={handleEliminarCargaArchivos}
+                                          handleCambiarPregunta={handleCambiarPregunta}
+                                          contentCont={contentCont}
+                                          preguntaVisibleOpen={preguntaVisible}
+                                          sendTamanoPaso2={sendTamanoPaso2}
+                                          sendGrosorPaso2={sendGrosorPaso2}
+                                          sendTipografiaPaso2={sendTipografiaPaso2}
+                                          contenEstilos={contenEstilos}
+                                          sendColors={sendColors}
+                                          banderaComplementaria={true}
+                                          indiceComplementaria={indexp}
+                                          saveComplementaria={pregComplementaria.save}
+                                        />
+                                      ))}
+                                    </>
+                                  );
+                                }
+
+                                return <CargaDatos
                                   key={indexp}
                                   indice={indexp} 
                                   indiceSec = {index}
@@ -1318,7 +1419,59 @@ const NuevaEncuesta = ({
                                   sendColors= {sendColors}
                                 />
                               }
+                              
                               if (preg.tipo == 'CC') {
+                                if(preg.preguntasComplementarias.length > 0){
+                                  return (
+                                    <>
+                                      <CuadroComentarios
+
+                                        key={indexp}
+                                        indice={indexp}
+                                        indiceSec={index}
+                                        save={preg.save}
+                                        preguntas={preg}
+                                        closeCuadroComentarios={handleCancelarCuadroComentarios}
+                                        handleCuadroComentarios={handleAceptarCuadroComentarios}
+                                        handleEditarPregunta={handleEditarCuadroComentarios}
+                                        handleEliminarPregunta={handleEliminarCuadroComentarios}
+                                        handleCambiarPregunta={handleCambiarPregunta}
+                                        contentCont={contentCont}
+                                        preguntaVisibleOpen={preguntaVisible}
+                                        sendTamanoPaso2={sendTamanoPaso2}
+                                        sendGrosorPaso2={sendGrosorPaso2}
+                                        sendTipografiaPaso2={sendTipografiaPaso2}
+                                        contenEstilos={contenEstilos}
+                                        sendColors={sendColors}
+                                      />
+                                      {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
+                                        <CuadroComentarios
+                                          key={indexpComplementaria}
+                                          indice={`${indexp +1}-${indexpComplementaria}`}
+                                          indiceSec={index}
+                                          save={pregComplementaria.save}
+                                          preguntas={pregComplementaria}
+                                          closeCuadroComentarios={handleCancelarCuadroComentarios}
+                                          handleCuadroComentarios={handleAceptarCuadroComentarios}
+                                          handleEditarPregunta={handleEditarCuadroComentarios}
+                                          handleEliminarPregunta={handleEliminarCuadroComentarios}
+                                          handleCambiarPregunta={handleCambiarPregunta}
+                                          contentCont={contentCont}
+                                          preguntaVisibleOpen={preguntaVisible}
+                                          sendTamanoPaso2={sendTamanoPaso2}
+                                          sendGrosorPaso2={sendGrosorPaso2}
+                                          sendTipografiaPaso2={sendTipografiaPaso2}
+                                          contenEstilos={contenEstilos}
+                                          sendColors={sendColors}
+                                          banderaComplementaria={true}
+                                          indiceComplementaria={indexp}
+                                          saveComplementaria={pregComplementaria.save}
+                                        />
+                                      ))}
+                                    </>
+                                  );
+                                }
+
                                 return <CuadroComentarios
                                   key={indexp}
                                   indice={indexp}
