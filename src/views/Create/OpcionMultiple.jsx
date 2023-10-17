@@ -907,7 +907,7 @@ const OpcionMultiple = ({
 
       
     const ver = () => {
-        console.log(todasLasPreguntasConPosiciones)
+        console.log(handleEditarPregunta )
     }
 
     return (

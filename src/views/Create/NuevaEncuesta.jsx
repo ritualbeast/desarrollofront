@@ -118,7 +118,7 @@ const NuevaEncuesta = ({
     const [configuracion4, setConfiguracion4] = useState(); 
     const [configuracion5, setConfiguracion5] = useState();
     const [banderaEditarComplemetaria, setBanderaEditarComplemetaria] = useState(false);
-    // const [opcionesRespuesta, setOpcionesRespuesta] = useState();
+    const [indicePreguntaComplemetaria, setIndicePreguntaComplemetaria] = useState();
 
   useEffect(() => {
     setImagenFondo(sendImagenFondo);
@@ -581,17 +581,18 @@ const NuevaEncuesta = ({
     };
 
     const handleCancelarOpcionMultiple = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+ 
       if (banderaComplementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        const contenidoActualComplementaria = [...contenidoActual[indiceSec].preguntasComplementarias];
         if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
           contenidoActualComplementaria.splice(indiceComplementaria, 1);
         }
         else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
           contenidoActualComplementaria[indiceComplementaria].save = true;
         }
-        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        contenidoActual[indiceSec].preguntasComplementarias = contenidoActualComplementaria;
         nuevoEstado[indiceSec].preguntas = contenidoActual;
         setContentCont(nuevoEstado);
         
@@ -616,8 +617,14 @@ const NuevaEncuesta = ({
       
       if (banderaComplementaria) {
 
+        console.log(indiceComplementaria)
+        console.log(indicePreg)
+        console.log(indiceSec)
+        
+
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        console.log(contenidoActual)
         const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
         contenidoActualComplementaria.splice(indiceComplementaria, 1);
         contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
@@ -641,6 +648,7 @@ const NuevaEncuesta = ({
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
       
+
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -665,41 +673,45 @@ const NuevaEncuesta = ({
       if (complementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
-        // console.log(contenidoActual[posicionPregunta].preguntasComplementarias[posicionPregunta].editComplementaria);
-        if (posicionComplementaria?.length > 0 ) {
-        posicionComplementaria.map((posicion) => {
-
-        if(contenidoActual[posicionPregunta]?.preguntasComplementarias[posicion]?.editComplementaria === true){
-          
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].pregunta = pregunta;
-          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
-          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].save = true;
-          contenidoActual[posicionPregunta].preguntasComplementarias[posicion].cancelar = cancelar;
-          
+        console.log('contenidoActual', contenidoActual);
         
-          setContentCont(nuevoEstado);
-          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
-        } });
+        if (banderaEditarComplemetaria) {
+          console.log('nonono');
+
+            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
+              nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+              nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
+              
+            
+              setContentCont(nuevoEstado);
+              setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            } 
+            
+        
 
       }
+      
         else{
-          console.log('caso 2 XD');
+          console.log('caso 2 XD sissii');
+            
+          if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
+          contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].complementariaValue = true;
+          // contenidoActual.splice(posicionPregunta, 1);
+          setContentCont(nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+          } 
           
-        if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
-        contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
-        nuevoEstado[posicionContentCont].preguntas = contenidoActual;
-        nuevoEstado[posicionContentCont].tipoSeccion = 'P';
-        contenidoActual[posicionPregunta].complementariaValue = true;
-        // contenidoActual.splice(posicionPregunta, 1);
-        setContentCont(nuevoEstado);
-        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+          contenidoActual.splice(indicePreg, 1);
 
-        } 
-        
-        contenidoActual.splice(indicePreg, 1);
-
-        contentCont.splice(indiceSec, 1);
+          contentCont.splice(indiceSec, 1);
       }
     
           
@@ -743,17 +755,17 @@ const NuevaEncuesta = ({
     
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
       
-      console.log('entro a editar', indicePreg);
       if (banderaComplementaria) {
         console.log('cambio 1');
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-        console.log(contPregTemp[0] );
+        console.log(contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg]);
         contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
+        setIndicePreguntaComplemetaria(indicePreg);
       } else {
       console.log('cambio 2');
       setBanderaEditarComplemetaria(false);
