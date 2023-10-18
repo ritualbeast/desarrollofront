@@ -704,7 +704,8 @@ const NuevaEncuesta = ({
           nuevoEstado[posicionContentCont].tipoSeccion = 'P';
           contenidoActual[posicionPregunta].complementariaValue = true;
           // contenidoActual.splice(posicionPregunta, 1);
-          setContentCont(nuevoEstado);
+          setContentCont(
+            nuevoEstado);
           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
 
           } 
@@ -756,12 +757,14 @@ const NuevaEncuesta = ({
     const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
       
       if (banderaComplementaria) {
-        console.log('cambio 1');
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-        console.log(contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg]);
+        console.log(contPregTemp);
+        console.log(indiceSeccion);
+        console.log(indicePreg);
+        console.log(indiceComplementaria);
         contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);

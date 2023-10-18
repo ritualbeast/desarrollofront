@@ -175,16 +175,18 @@ const ResultadoOpcionMultiple = ({
 
   }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contenEstilos, sendColors]);
 
-  const handleMouseEnterEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("oculto");
-    $(`#editPreg${index +1}`).addClass("visible");
-    $(`#Preg${index +1}`).addClass("editar-visible");
+  const handleMouseEnterEditar = (index, indexSec) => {
+
+    console.log('indexsisisi', indexSec);
+    $(`#editPreg${index +1}-${indexSec}`).removeClass("oculto");
+    $(`#editPreg${index +1}-${indexSec}`).addClass("visible");
+    $(`#Preg${index +1}-${indexSec}`).addClass("editar-visible");
   };
 
-  const handleMouseLeaveEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("visible");
-    $(`#editPreg${index +1}`).addClass("oculto");
-    $(`#Preg${index +1}`).removeClass("editar-visible");
+  const handleMouseLeaveEditar = (index, indexSec) => {
+    $(`#editPreg${index +1}-${indexSec}`).removeClass("visible");
+    $(`#editPreg${index +1}-${indexSec}`).addClass("oculto");
+    $(`#Preg${index +1}-${indexSec}`).removeClass("editar-visible");
   };
 
   const handleOpenEliminarPregunta = () => {
@@ -269,7 +271,8 @@ const ResultadoOpcionMultiple = ({
   };
 
   const ver = () => {
-    console.log(preguntaVisible);
+
+    console.log(indexSec);
   }
 
 
@@ -283,7 +286,7 @@ const ResultadoOpcionMultiple = ({
         <Col>
               <Col 
                   style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
-                  id={`editPreg${index +1}`}
+                  id={`editPreg${index +1}-${indexSec}`}
                   className={`contenedor-editar-pregunta`}
               >
                   {banderaComplementaria ? (  
@@ -301,10 +304,10 @@ const ResultadoOpcionMultiple = ({
               </Col>
               <Col 
                   style={{marginLeft: 'unset', marginRight: 'unset'}}
-                  id={`Preg${index +1}`}
+                  id={`Preg${index +1}-${indexSec}`}
                   className={`contenedor-tituloNuevaEncuesta `} 
-                  onMouseEnter={() => handleMouseEnterEditar(index)}
-                  onMouseLeave={() => handleMouseLeaveEditar(index)}
+                  onMouseEnter={() => handleMouseEnterEditar(index, indexSec)}
+                  onMouseLeave={() => handleMouseLeaveEditar(index, indexSec)}
               >
                   <Col style={{width:'95%', display:'flex'}}>
                       <p style={{...preguntasStyle, width:'95%'}}>{index + 1}. {pregunta}</p>
