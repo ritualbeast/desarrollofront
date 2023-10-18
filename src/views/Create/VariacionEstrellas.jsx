@@ -150,6 +150,9 @@ const VariacionEstrellas = ({
     contenEstilos,
     sendColors,
     contentCont,
+    complementariaValue,
+    banderaComplementaria,
+    indiceComplementaria,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -174,6 +177,7 @@ const VariacionEstrellas = ({
             valor : 0,
         }))
     );
+    const complementarias = preguntas.preguntasComplementarias ?? [];
     const [opcionText, setOpcionText] = useState("");
     const [moreContendorLogica, setMoreContendorLogica] = useState([]);
     const [usarPonderacion, setUsarPonderacion] = useState(false);
@@ -213,26 +217,47 @@ const VariacionEstrellas = ({
     const todasLasPreguntasConPosicion = [];
     const [posicionContentCont, setPosicionContentCont] = useState(0);
     const [posicionPregunta, setPosicionPregunta] = useState(0);
+    const [verLogicaPreguntas, setVerLogicaPreguntas] = useState(false);
+    const [posicionComplementaria, setPosicionComplementaria] = useState([]);
+    
 
      // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
-     contentCont.map((item, indexContentCont) => {
-        // Verifica si el objeto actual tiene un atributo "preguntas"
-        if (item.preguntas && Array.isArray(item.preguntas)) {
-            // Utiliza otro bucle para recorrer el arreglo de preguntas dentro del objeto y capturar su posición
-            item.preguntas.map((pregunta, indexPregunta) => {
+     contentCont[indiceSec].preguntas.map((pregunta, indexPregunta) => {
+        
                 
-            // Verifica si el objeto de pregunta tiene un atributo "pregunta"
-            if (pregunta.pregunta) {
-                // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
-                todasLasPreguntasConPosicion.push({
-                pregunta: pregunta.pregunta,
-                posicionContentCont: indexContentCont,
-                posicionPregunta: indexPregunta,
-                });
-            }
+        // // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+        // if (pregunta?.preguntasComplementarias?.length > 0) {
+
+
+        //     todasLasPreguntasConPosicion.push({
+        //         pregunta: pregunta.pregunta,
+        //         posicionContentCont: indiceSec,
+        //         posicionPregunta: indexPregunta,
+               
+        //         });
+        //     pregunta.preguntasComplementarias.map((preguntaComplementaria, indexPreguntaComplementaria) => {
+        //         todasLasPreguntasConPosicion.push({
+        //             pregunta: preguntaComplementaria.pregunta,
+        //             posicionContentCont: indiceSec,
+        //             posicionPreguntaComplementaria: indexPreguntaComplementaria,
+        //         });
+
+        //     });
+        // }
+
+        // else if (pregunta.pregunta) {
+            // Agrega la pregunta y sus posiciones al arreglo todasLasPreguntasConPosiciones
+            if (pregunta.pregunta !== '') {
+            todasLasPreguntasConPosicion.push({
+            pregunta: pregunta.pregunta,
+            posicionContentCont: indiceSec,
+            posicionPregunta: indexPregunta,
+           
             });
         }
-        });
+        // }
+    });
+
 
 
     const handleEditar = () => {
@@ -729,8 +754,10 @@ const VariacionEstrellas = ({
 
     const handleComplemetaria = (event) => {
         const selectedValue = JSON.parse(event.target.value);
+        console.log(selectedValue)
         setPosicionContentCont(selectedValue.posicionContentCont);
         setPosicionPregunta(selectedValue.posicionPregunta);
+        setPosicionComplementaria(selectedValue.posicionPreguntaComplementaria);
       
       };
 
@@ -747,8 +774,6 @@ const VariacionEstrellas = ({
     };
 
     const verconf = () => {
-        console.log(configuracion4)
-        console.log(configuraciongeneral.etiquetaOtraRespuesta)
     }
     
 
@@ -1192,6 +1217,11 @@ const VariacionEstrellas = ({
                     circleFillSVG={circleFillSVG}
                     triangleFillSVG={triangleFillSVG}
                     preguntas={preguntas}
+                    complementarias={complementarias}
+                    complementariaValue={complementariaValue}
+                    banderaComplementaria={banderaComplementaria}
+                    indiceComplementaria={indiceComplementaria}
+                    posicionComplementaria={posicionComplementaria}
                 />
             </Container>
         )}

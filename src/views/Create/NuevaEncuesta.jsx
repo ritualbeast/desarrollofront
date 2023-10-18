@@ -228,7 +228,6 @@ const NuevaEncuesta = ({
     };
 
     const handleSeccionCierre = () => {
-      console.log('entro a seccion cierre');
       if (contentCont[0].preguntas.length === 0) {
         toast.error('Por favor agregue al menos una pregunta en la sección de Preguntas', { autoClose: 2000 });
         return;
@@ -617,14 +616,10 @@ const NuevaEncuesta = ({
       
       if (banderaComplementaria) {
 
-        console.log(indiceComplementaria)
-        console.log(indicePreg)
-        console.log(indiceSec)
         
 
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-        console.log(contenidoActual)
         const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
         contenidoActualComplementaria.splice(indiceComplementaria, 1);
         contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
@@ -673,11 +668,9 @@ const NuevaEncuesta = ({
       if (complementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
-        console.log('contenidoActual', contenidoActual);
+       
         
         if (banderaEditarComplemetaria) {
-          console.log('nonono');
-
             if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
               
               contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
@@ -696,7 +689,6 @@ const NuevaEncuesta = ({
       }
       
         else{
-          console.log('caso 2 XD sissii');
             
           if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
           contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
@@ -723,13 +715,11 @@ const NuevaEncuesta = ({
         pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
       }];
       if (banderaEditarComplemetaria) {
-        console.log(banderaEditarComplemetaria + 'caso 1w');
         handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
         const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
         eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
         setBanderaEditarComplemetaria(false);
       } else {
-        console.log('caso 2');
         contenidoActual[indicePreg].pregunta = pregunta;
         contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
         contenidoActual[indicePreg].idTipoPregunta = 1;
@@ -761,16 +751,11 @@ const NuevaEncuesta = ({
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-        console.log(contPregTemp);
-        console.log(indiceSeccion);
-        console.log(indicePreg);
-        console.log(indiceComplementaria);
         contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
         setIndicePreguntaComplemetaria(indicePreg);
       } else {
-      console.log('cambio 2');
       setBanderaEditarComplemetaria(false);
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];

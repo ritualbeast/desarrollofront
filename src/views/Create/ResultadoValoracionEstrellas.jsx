@@ -72,6 +72,8 @@ function ResultadoValoracionEstrellas({
     squareFillSVG,
     circleFillSVG,
     triangleFillSVG,
+    indiceComplementaria,
+    banderaComplementaria,
 }) {
     // console.log('opciones -->>', opciones)
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -149,17 +151,19 @@ function ResultadoValoracionEstrellas({
         handleOpcionChange()
     }, [])
 
-    const handleMouseEnterEditar = (index) => {
-        $(`#editPreg${index +1}`).removeClass("oculto");
-        $(`#editPreg${index +1}`).addClass("visible");
-        $(`#Preg${index +1}`).addClass("editar-visible");
-    };
+    const handleMouseEnterEditar = (index, indexSec) => {
+
+        $(`#editPreg${index +1}-${indexSec}`).removeClass("oculto");
+        $(`#editPreg${index +1}-${indexSec}`).addClass("visible");
+        $(`#Preg${index +1}-${indexSec}`).addClass("editar-visible");
+      };
     
-    const handleMouseLeaveEditar = (index) => {
-        $(`#editPreg${index +1}`).removeClass("visible");
-        $(`#editPreg${index +1}`).addClass("oculto");
-        $(`#Preg${index +1}`).removeClass("editar-visible");
-    };
+      const handleMouseLeaveEditar = (index, indexSec) => {
+        $(`#editPreg${index +1}-${indexSec}`).removeClass("visible");
+        $(`#editPreg${index +1}-${indexSec}`).addClass("oculto");
+        $(`#Preg${index +1}-${indexSec}`).removeClass("editar-visible");
+      };
+    
     
     const handleOpenEliminarPregunta = () => {
         setOpenEliminarPregunta(true)
@@ -308,8 +312,9 @@ function ResultadoValoracionEstrellas({
                     style={{marginLeft: 'unset', marginRight: 'unset'}}
                     id={`Preg${index +1}`}
                     className={`contenedor-tituloNuevaEncuesta `} 
-                    onMouseEnter={() => handleMouseEnterEditar(index)}
-                    onMouseLeave={() => handleMouseLeaveEditar(index)}
+                    onMouseEnter={() => handleMouseEnterEditar(index, indexSec)}
+                    onMouseLeave={() => handleMouseLeaveEditar(index, indexSec)}
+            
                 >
                     <Col style={{width:'95%', display:'flex'}}>
                         <p style={{...preguntasStyle, width:'95%'}}

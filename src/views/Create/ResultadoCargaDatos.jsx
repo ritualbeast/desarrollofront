@@ -67,7 +67,6 @@ const ResultadoCargaDatos = ({
     let newStyle2 = {...preguntasStyle};
     
     if (contenEstilos.fuente.preguntas.enumTamanio !== ''){
-      console.log('entro a tamanio')
       newStyle2.fontSize = `${contenEstilos.fuente.preguntas.enumTamanio}px`;
     }
     if (contenEstilos.fuente.preguntas.enumGrosor !== ''){

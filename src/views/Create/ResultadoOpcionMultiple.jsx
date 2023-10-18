@@ -113,8 +113,7 @@ const ResultadoOpcionMultiple = ({
   complementarias,
   complementariaValue,
   indiceComplementaria,
-  banderaComplementaria
-  
+  banderaComplementaria,
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -176,8 +175,6 @@ const ResultadoOpcionMultiple = ({
   }, [tamano, grosor, tipografia, titulotamano, tituloGrosor, tituloTipografia, contenEstilos, sendColors]);
 
   const handleMouseEnterEditar = (index, indexSec) => {
-
-    console.log('indexsisisi', indexSec);
     $(`#editPreg${index +1}-${indexSec}`).removeClass("oculto");
     $(`#editPreg${index +1}-${indexSec}`).addClass("visible");
     $(`#Preg${index +1}-${indexSec}`).addClass("editar-visible");
@@ -272,7 +269,6 @@ const ResultadoOpcionMultiple = ({
 
   const ver = () => {
 
-    console.log(indexSec);
   }
 
 

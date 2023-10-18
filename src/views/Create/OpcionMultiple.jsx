@@ -699,7 +699,6 @@ const OpcionMultiple = ({
     const handleSeccionChange = (index, event) => {
         
         const selectedValue = event.target.value;
-        console.log(selectedValue)
         if (selectedValue !== '') {
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
@@ -736,7 +735,6 @@ const OpcionMultiple = ({
       
     const handlePreguntaChange = (index, event) => {
         const selectedValue = event.target.value;
-        console.log(selectedValue)
         setOpcionesRespuesta((prevOpciones) => {
             const updatedOpciones = prevOpciones.map((opcion, opcionIndex) => {
                 if (opcionIndex === index) {
@@ -775,8 +773,6 @@ const OpcionMultiple = ({
         setPreguntaTemp(pregunta)
         if (configuracion2)
         {
-            console.log("entro a configuracion 2")
-            console.log(posicionComplementaria)
             onAceptar(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
             //onAceptarComplementaria(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
         }
@@ -898,7 +894,6 @@ const OpcionMultiple = ({
 
     const handleComplemetaria = (event) => {
         const selectedValue = JSON.parse(event.target.value);
-        console.log(selectedValue)
         setPosicionContentCont(selectedValue.posicionContentCont);
         setPosicionPregunta(selectedValue.posicionPregunta);
         setPosicionComplementaria(selectedValue.posicionPreguntaComplementaria);
@@ -907,7 +902,6 @@ const OpcionMultiple = ({
 
       
     const ver = () => {
-        console.log(handleEditarPregunta )
     }
 
     return (
