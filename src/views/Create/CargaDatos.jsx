@@ -163,7 +163,12 @@ const CargaDatos = ({
     sendGrosorPaso2, 
     sendTipografiaPaso2,
     contenEstilos,
-    sendColors
+    sendColors,
+    complementariaValue,
+    prueba,
+    banderaComplementaria,
+    indiceComplementaria,
+    saveComplementaria, 
  }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -208,6 +213,15 @@ const CargaDatos = ({
             etiquetaBancoPregunta: ""
         }
     );
+    const complementarias = preguntas.preguntasComplementarias ?? [];
+    const [todasLasPreguntasConPosiciones, setTodasLasPreguntasConPosiciones] = useState([]);
+    const todasLasPreguntasConPosicion = [];
+    const [posicionPregunta, setPosicionPregunta] = useState(0);
+    const [posicionContentCont, setPosicionContentCont] = useState(0);
+    const [verLogicaPreguntas, setVerLogicaPreguntas] = useState(false);
+    const [posicionComplementaria, setPosicionComplementaria] = useState([]);
+     
+
     const handleEditar = () => {
         setMostrarEditar(!mostrarEditar);
         setMostrarConfiguracion(false);
@@ -721,6 +735,11 @@ const CargaDatos = ({
                     sendTipografiaPaso2={sendTipografiaPaso2}
                     contenEstilos={contenEstilos}
                     sendColors={sendColors}
+                    complementarias={complementarias}
+                    complementariaValue={complementariaValue}
+                    banderaComplementaria={banderaComplementaria}
+                    indiceComplementaria={indiceComplementaria}
+                    posicionComplementaria={posicionComplementaria}
                 />
             </Container>
         )}

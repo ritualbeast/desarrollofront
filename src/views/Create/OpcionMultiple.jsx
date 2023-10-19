@@ -1297,7 +1297,6 @@ const OpcionMultiple = ({
 
         {save && (
             <Container>
-                
                 <ResultadoOpcionMultiple 
                     index={indice}
                     indexSec={indiceSec}
