@@ -95,7 +95,9 @@ function ResultadoValoracionEstrellas({
     const [preguntasStyle, setPreguntasStyle] = useState({});
     const [contentEstilos, setContentEstilos] = useState(contenEstilos);
     const [opcionesRespuesta, setOpcionesRespuesta] = useState(opciones);
-    const [tipoIcono, setTipoIcono] = useState()
+    const [tipoIcono, setTipoIcono] = useState();
+    const opcionNinguna = opcionesRespuesta.find((opcion) => opcion.respuesta === 'Ninguna de las anteriores');
+    const otraRespuesta = opcionesRespuesta.find((opcion) => opcion.respuesta === 'Otra respuesta');
 
     useEffect(() => {
         let newStyle = {...opcionesRespuestaStyle};
@@ -389,56 +391,47 @@ function ResultadoValoracionEstrellas({
                             )
                         ))}
                     </Col>
+
+                    {configuracion4Activa && (
+                        <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                            <Col style={{ display: 'flex' }}>
+                                <>
+                                    <HiddenRadioButton
+                                        type={opcionNinguna.type}
+                                        checked={opcionNinguna.checked}
+                                        value={opcionNinguna.idOpcionRespuesta}
+                                    />
+                                    <StyledRadioButton checked={opcionNinguna.checked} 
+                                        onClick={() => handleOpcionChange(opcionNinguna, opcionNinguna.idOpcionRespuesta, opcionNinguna.respuesta, opcionNinguna.checked, 'radio')}
+                                    />
+                                </>
+                                <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
+                                    {opcionNinguna.respuesta}
+                                </div>
+                            </Col>
+                        </Col>
+                    )}
+
+                    {configuracion5Activa && (
+                        <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                            <Col style={{ display: 'flex' }}>
+                                <div>
+                                    <HiddenRadioButton
+                                        type={otraRespuesta.type}
+                                        checked={otraRespuesta.checked}
+                                        value={otraRespuesta.idOpcionRespuesta}
+                                    />
+                                    <StyledRadioButton checked={otraRespuesta.checked}
+                                        onClick={() => handleOpcionChange(otraRespuesta, otraRespuesta.idOpcionRespuesta, otraRespuesta.respuesta, otraRespuesta.checked, 'radio')}
+                                    />
+                                </div>
+                                <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                    {otraRespuesta.respuesta}
+                                </div>
+                            </Col>
+                        </Col>
+                    )}
                 </div>
-            )}
-
-            {configuracion4Activa && (
-                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                    <Col style={{ display: 'flex' }}>
-                        <div>
-                            <HiddenRadioButton
-                                type={opcionesRespuesta.type}
-                                checked={opcionesRespuesta.checked}
-                                value={opcionesRespuesta.idOpcionRespuesta}
-                                onChange={() =>
-                                    handleOpcionChange(
-                                    opcionesRespuesta.idOpcionRespuesta,
-                                    opcionesRespuesta.respuesta,
-                                    opcionesRespuesta.checked
-                                    )
-                                }
-                            />
-                            <StyledRadioButton checked={opcionesRespuesta.checked} />
-                        </div>
-                        <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                            Ninguna de las anteriores
-                        </div>
-                    </Col>
-                </Col>
-            )}
-
-            {configuracion5Activa && (
-                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                    <Col style={{ display: 'flex' }}>
-                        <div>
-                            <HiddenRadioButton
-                                type={opcionesRespuesta.type}
-                                checked={opcionesRespuesta.checked}
-                                onChange={() =>
-                                    handleOpcionChange(
-                                    opcionesRespuesta.idOpcionRespuesta,
-                                    opcionesRespuesta.respuesta,
-                                    opcionesRespuesta.checked
-                                    )
-                                }
-                            />
-                            <StyledRadioButton checked={opcionesRespuesta.checked} />
-                        </div>
-                        <div style={{ ...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                            Otra respuesta
-                        </div>
-                    </Col>
-                </Col>
             )}
 
             <Modal

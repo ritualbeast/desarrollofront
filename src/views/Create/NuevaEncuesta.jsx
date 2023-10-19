@@ -615,9 +615,6 @@ const NuevaEncuesta = ({
     const handleEliminarOpcionMultiple = (indicePreg, indiceSec,  banderaComplementaria, indiceComplementaria) => {
       
       if (banderaComplementaria) {
-
-        
-
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
         const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
@@ -625,17 +622,12 @@ const NuevaEncuesta = ({
         contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
         nuevoEstado[indiceSec].preguntas = contenidoActual;
         setContentCont(nuevoEstado);
-
-
-
-
       } else {
 
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
       contenidoActual.splice(indicePreg, 1);
-    
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
       }
@@ -643,7 +635,6 @@ const NuevaEncuesta = ({
 
     const handleAceptarOpcionMultiple = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
       
-
       const preguntaComplementaria = {
         pregunta: pregunta,
         nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
@@ -662,6 +653,7 @@ const NuevaEncuesta = ({
         save: true,
         cancelar: cancelar,
         editComplementaria: true,
+        tipo: 'OM',
       };
 
       
@@ -763,9 +755,26 @@ const NuevaEncuesta = ({
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
       }
-    };
+    }; 
 
-    const handleCancelarValoracionEstrellas = (indicePreg, indiceSec) => {
+    const handleCancelarValoracionEstrellas = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceSec].preguntasComplementarias];
+        if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
+          contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        }
+        else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
+          contenidoActualComplementaria[indiceComplementaria].save = true;
+        }
+        contenidoActual[indiceSec].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+        
+      } else {
+      
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -778,9 +787,19 @@ const NuevaEncuesta = ({
     
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
+      };
     };
 
-    const handleEliminarValoracionEstrellas = (indicePreg, indiceSec) => {
+    const handleEliminarValoracionEstrellas = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+      } else {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -788,44 +807,183 @@ const NuevaEncuesta = ({
 
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
+      };
     };
 
-    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta;
-      contenidoActual[indicePreg].nemonico = '1S_1P';
-      contenidoActual[indicePreg].idTipoPregunta = 2;
-      contenidoActual[indicePreg].orden = indiceSec;
-      contenidoActual[indicePreg].requerida = '';
-      contenidoActual[indicePreg].placeHolder = 'seleccione';
-      contenidoActual[indicePreg].mensajeErrorRequerido = '';
-      contenidoActual[indicePreg].mensajeError = '';
-      contenidoActual[indicePreg].tipoArchivo = '';
-      contenidoActual[indicePreg].pesoArchivo = '';
-      contenidoActual[indicePreg].ponderacion = ponderacion;
-      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
-      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].preguntasComplementarias = [] ;
-      contenidoActual[indicePreg].save = true;
-      contenidoActual[indicePreg].cancelar = cancelar;
-      nuevoEstado[indiceSec].preguntas = contenidoActual;
-      // nuevoEstado[indiceSec].tipoSeccion = 'P';
-      setContentCont(nuevoEstado);
-      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
-      setConfiguracion4(configuracion4); 
-      setConfiguracion5(configuracion5);
-    };
-
-    const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg) => {
-      const tempCont = [...contentCont];
-      const contPregTemp = [...tempCont[indiceSeccion].preguntas];
-      contPregTemp[indicePreg].save=false
-      tempCont[indiceSeccion].preguntas = contPregTemp;
-      setContentCont(tempCont);
+    const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
+      
+      const preguntaComplementaria = {
+        pregunta: pregunta,
+        nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
+        idTipoPregunta: 1,
+        orden: indiceSec,
+        requerida: '',
+        placeHolder: 'seleccione',
+        mensajeErrorRequerido: '',
+        mensajeError: '',
+        tipoArchivo: '',
+        pesoArchivo: '',
+        ponderacion: ponderacion,
+        configuracionPregunta: configuraciongeneral,
+        opcionesRespuesta: opcionesRespuesta,
+        save: true,
+        cancelar: cancelar,
+        editComplementaria: true,
+        tipo: 'VE',
       };
 
-    const handleCancelarCargaArchivos = (indicePreg, indiceSec) => {
+      
+      if (complementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
+       
+        
+        if (banderaEditarComplemetaria) {
+          
+          console.log('entrando')
+            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
+              nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+              nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
+              
+            
+              setContentCont(nuevoEstado);
+              setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            } 
+            
+        
+
+      }
+      
+        else{
+          
+        console.log('entrando 2')
+            
+          if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
+          contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].complementariaValue = true;
+          // contenidoActual.splice(posicionPregunta, 1);
+          setContentCont(
+            nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+          } 
+          
+          contenidoActual.splice(indicePreg, 1);
+
+          contentCont.splice(indiceSec, 1);
+      }
+    
+          
+      } else {
+
+        console.log('entrando 3')
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+      const defaultPregunta = [{ 
+        pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
+      }];
+      if (banderaEditarComplemetaria) {
+        handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
+        const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
+        eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+        setBanderaEditarComplemetaria(false);
+      } else {
+        contenidoActual[indicePreg].pregunta = pregunta;
+        contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+        contenidoActual[indicePreg].idTipoPregunta = 1;
+        contenidoActual[indicePreg].orden = indiceSec;
+        contenidoActual[indicePreg].requerida = '';
+        contenidoActual[indicePreg].placeHolder = 'seleccione';
+        contenidoActual[indicePreg].mensajeErrorRequerido = '';
+        contenidoActual[indicePreg].mensajeError = '';
+        contenidoActual[indicePreg].tipoArchivo = '';
+        contenidoActual[indicePreg].pesoArchivo = '';
+        contenidoActual[indicePreg].ponderacion = ponderacion;
+        contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+        contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+        contenidoActual[indicePreg].save = true;
+        contenidoActual[indicePreg].cancelar = cancelar;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        setContentCont(nuevoEstado);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      }
+    }
+    };
+
+    // const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
+      
+      
+    //   const nuevoEstado = [...contentCont];
+    //   const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+    //   contenidoActual[indicePreg].pregunta = pregunta;
+    //   contenidoActual[indicePreg].nemonico = '1S_1P';
+    //   contenidoActual[indicePreg].idTipoPregunta = 2;
+    //   contenidoActual[indicePreg].orden = indiceSec;
+    //   contenidoActual[indicePreg].requerida = '';
+    //   contenidoActual[indicePreg].placeHolder = 'seleccione';
+    //   contenidoActual[indicePreg].mensajeErrorRequerido = '';
+    //   contenidoActual[indicePreg].mensajeError = '';
+    //   contenidoActual[indicePreg].tipoArchivo = '';
+    //   contenidoActual[indicePreg].pesoArchivo = '';
+    //   contenidoActual[indicePreg].ponderacion = ponderacion;
+    //   contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+    //   contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+    //   contenidoActual[indicePreg].preguntasComplementarias = [] ;
+    //   contenidoActual[indicePreg].save = true;
+    //   contenidoActual[indicePreg].cancelar = cancelar;
+    //   nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //   // nuevoEstado[indiceSec].tipoSeccion = 'P';
+    //   setContentCont(nuevoEstado);
+    //   setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+    //   setConfiguracion4(configuracion4); 
+    //   setConfiguracion5(configuracion5);
+    // };
+
+    const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+      
+      if (banderaComplementaria) {
+        setBanderaEditarComplemetaria(true);
+        const tempCont = [...contentCont];
+        
+        const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
+        tempCont[indiceSeccion].preguntas = contPregTemp;
+        setContentCont(tempCont);
+        setIndicePreguntaComplemetaria(indicePreg);
+      } else {
+        setBanderaEditarComplemetaria(false);
+        
+        const tempCont = [...contentCont];
+        const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        contPregTemp[indicePreg].save=false
+        tempCont[indiceSeccion].preguntas = contPregTemp;
+        setContentCont(tempCont);
+      };
+    };
+
+    const handleCancelarCargaArchivos = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceSec].preguntasComplementarias];
+        if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
+          contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        }
+        else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
+          contenidoActualComplementaria[indiceComplementaria].save = true;
+        }
+        contenidoActual[indiceSec].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+        
+      } else {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -839,8 +997,19 @@ const NuevaEncuesta = ({
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
+    };
 
-    const handleEliminarCargaArchivos = (indicePreg, indiceSec) => {
+    const handleEliminarCargaArchivos = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+      } else {
+
       setContentCont((prevContent) => {
         const nuevoEstado = [...prevContent];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
@@ -849,41 +1018,173 @@ const NuevaEncuesta = ({
         return nuevoEstado;
       });
     };
-
-    const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar,configuraciongeneral, selectedFormats, mensajeError, pesoArchivo) => {
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].nemonico = '1S_1P';
-      contenidoActual[indicePreg].idTipoPregunta = 4;
-      contenidoActual[indicePreg].orden = indiceSec;
-      contenidoActual[indicePreg].requerida = '';
-      contenidoActual[indicePreg].placeHolder = 'seleccione';
-      contenidoActual[indicePreg].mensajeErrorRequerido = '';
-      contenidoActual[indicePreg].mensajeError = mensajeError;
-      contenidoActual[indicePreg].tipoArchivo = selectedFormats;
-      contenidoActual[indicePreg].pesoArchivo = pesoArchivo;
-      contenidoActual[indicePreg].ponderacion = '';
-      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
-      contenidoActual[indicePreg].opcionesRespuesta = [];
-      contenidoActual[indicePreg].save = true;
-      contenidoActual[indicePreg].cancelar = cancelar;
-      nuevoEstado[indiceSec].preguntas = contenidoActual;
-      // nuevoEstado[indiceSec].tipoSeccion = 'P';
-      nuevoEstado[indiceSec].preguntas = contenidoActual;
-      setContentCont(nuevoEstado);
-      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
-    const handleEditarCargaDatos = (indiceSeccion, indicePreg) => {
+
+    const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
+      
+      const preguntaComplementaria = {
+        pregunta: pregunta,
+        nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
+        idTipoPregunta: 1,
+        orden: indiceSec,
+        requerida: '',
+        placeHolder: 'seleccione',
+        mensajeErrorRequerido: '',
+        mensajeError: '',
+        tipoArchivo: '',
+        pesoArchivo: '',
+        multipleRespuesta:  multipleRespuesta,
+        ponderacion: ponderacion,
+        configuracionPregunta: configuraciongeneral,
+        opcionesRespuesta: opcionesRespuesta,
+        save: true,
+        cancelar: cancelar,
+        editComplementaria: true,
+        tipo: 'CA',
+      };
+
+      
+      if (complementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
+       
+        
+        if (banderaEditarComplemetaria) {
+            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
+              nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+              nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
+              
+            
+              setContentCont(nuevoEstado);
+              setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            } 
+            
+        
+
+      }
+      
+        else{
+            
+          if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
+          contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].complementariaValue = true;
+          // contenidoActual.splice(posicionPregunta, 1);
+          setContentCont(
+            nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+          } 
+          
+          contenidoActual.splice(indicePreg, 1);
+
+          contentCont.splice(indiceSec, 1);
+      }
+    
+          
+      } else {
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+      const defaultPregunta = [{ 
+        pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
+      }];
+      if (banderaEditarComplemetaria) {
+        handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
+        const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
+        eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+        setBanderaEditarComplemetaria(false);
+      } else {
+        contenidoActual[indicePreg].pregunta = pregunta;
+        contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+        contenidoActual[indicePreg].idTipoPregunta = 1;
+        contenidoActual[indicePreg].orden = indiceSec;
+        contenidoActual[indicePreg].requerida = '';
+        contenidoActual[indicePreg].placeHolder = 'seleccione';
+        contenidoActual[indicePreg].mensajeErrorRequerido = '';
+        contenidoActual[indicePreg].mensajeError = '';
+        contenidoActual[indicePreg].tipoArchivo = '';
+        contenidoActual[indicePreg].pesoArchivo = '';
+        contenidoActual[indicePreg].multipleRespuesta =  multipleRespuesta;
+        contenidoActual[indicePreg].ponderacion = ponderacion;
+        contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+        contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+        contenidoActual[indicePreg].save = true;
+        contenidoActual[indicePreg].cancelar = cancelar;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        setContentCont(nuevoEstado);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      }
+    }
+    };
+    // const handleAceptarCargaArchivos = (indicePreg, indiceSec, pregunta, pregunta2, cancelar,configuraciongeneral, selectedFormats, mensajeError, pesoArchivo) => {
+    //   const nuevoEstado = [...contentCont];
+    //   const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+    //   contenidoActual[indicePreg].pregunta = pregunta
+    //   contenidoActual[indicePreg].nemonico = '1S_1P';
+    //   contenidoActual[indicePreg].idTipoPregunta = 4;
+    //   contenidoActual[indicePreg].orden = indiceSec;
+    //   contenidoActual[indicePreg].requerida = '';
+    //   contenidoActual[indicePreg].placeHolder = 'seleccione';
+    //   contenidoActual[indicePreg].mensajeErrorRequerido = '';
+    //   contenidoActual[indicePreg].mensajeError = mensajeError;
+    //   contenidoActual[indicePreg].tipoArchivo = selectedFormats;
+    //   contenidoActual[indicePreg].pesoArchivo = pesoArchivo;
+    //   contenidoActual[indicePreg].ponderacion = '';
+    //   contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+    //   contenidoActual[indicePreg].opcionesRespuesta = [];
+    //   contenidoActual[indicePreg].save = true;
+    //   contenidoActual[indicePreg].cancelar = cancelar;
+    //   nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //   // nuevoEstado[indiceSec].tipoSeccion = 'P';
+    //   nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //   setContentCont(nuevoEstado);
+    //   setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+    // };
+
+    const handleEditarCargaDatos = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        setBanderaEditarComplemetaria(true);
+        const tempCont = [...contentCont];
+        
+        const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
+        tempCont[indiceSeccion].preguntas = contPregTemp;
+        setContentCont(tempCont);
+        setIndicePreguntaComplemetaria(indicePreg);
+      } else {
+      setBanderaEditarComplemetaria(false);
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     };
+    };
 
-    const handleCancelarCuadroComentarios = (indicePreg, indiceSec) => {
+    const handleCancelarCuadroComentarios = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceSec].preguntasComplementarias];
+        if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
+          contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        }
+        else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
+          contenidoActualComplementaria[indiceComplementaria].save = true;
+        }
+        contenidoActual[indiceSec].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+        
+      } else {
+      
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -897,8 +1198,19 @@ const NuevaEncuesta = ({
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
+    };
 
-    const handleEliminarCuadroComentarios = (indicePreg, indiceSec) => {
+    const handleEliminarCuadroComentarios = (indicePreg, indiceSec, banderaComplementaria, indiceComplementaria) => {
+
+      if (banderaComplementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+        const contenidoActualComplementaria = [...contenidoActual[indiceComplementaria].preguntasComplementarias];
+        contenidoActualComplementaria.splice(indiceComplementaria, 1);
+        contenidoActual[indiceComplementaria].preguntasComplementarias = contenidoActualComplementaria;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        setContentCont(nuevoEstado);
+      } else {
       const nuevoEstado = [...contentCont];
       const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
       const cancelarValor = contenidoActual[indicePreg].cancelar;
@@ -907,38 +1219,153 @@ const NuevaEncuesta = ({
       nuevoEstado[indiceSec].preguntas = contenidoActual;
       setContentCont(nuevoEstado);
     };
-
-    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral) => {
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-      contenidoActual[indicePreg].pregunta = pregunta
-      contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
-      contenidoActual[indicePreg].idTipoPregunta = 5;
-      contenidoActual[indicePreg].orden = indiceSec;
-      contenidoActual[indicePreg].requerida = '';
-      contenidoActual[indicePreg].placeHolder = 'seleccione';
-      contenidoActual[indicePreg].mensajeErrorRequerido = '';
-      contenidoActual[indicePreg].mensajeError = '';
-      contenidoActual[indicePreg].tipoArchivo = '';
-      contenidoActual[indicePreg].pesoArchivo = '';
-      contenidoActual[indicePreg].ponderacion = '';
-      contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
-      contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
-      contenidoActual[indicePreg].save = true;
-      contenidoActual[indicePreg].cancelar = cancelar;
-      nuevoEstado[indiceSec].preguntas = contenidoActual;
-      // nuevoEstado[indiceSec].tipoSeccion = 'P';
-      setContentCont(nuevoEstado);
-      setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
 
-    const handleEditarCuadroComentarios = (indiceSeccion, indicePreg) => {
+    const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
+      
+      const preguntaComplementaria = {
+        pregunta: pregunta,
+        nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
+        idTipoPregunta: 1,
+        orden: indiceSec,
+        requerida: '',
+        placeHolder: 'seleccione',
+        mensajeErrorRequerido: '',
+        mensajeError: '',
+        tipoArchivo: '',
+        pesoArchivo: '',
+        multipleRespuesta:  multipleRespuesta,
+        ponderacion: ponderacion,
+        configuracionPregunta: configuraciongeneral,
+        opcionesRespuesta: opcionesRespuesta,
+        save: true,
+        cancelar: cancelar,
+        editComplementaria: true,
+        tipo: 'CC',
+      };
+
+      
+      if (complementaria) {
+        const nuevoEstado = [...contentCont];
+        const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
+       
+        
+        if (banderaEditarComplemetaria) {
+            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
+              nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+              nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
+              contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
+              
+            
+              setContentCont(nuevoEstado);
+              setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+            } 
+            
+        
+
+      }
+      
+        else{
+            
+          if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
+          contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+          nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+          nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+          contenidoActual[posicionPregunta].complementariaValue = true;
+          // contenidoActual.splice(posicionPregunta, 1);
+          setContentCont(
+            nuevoEstado);
+          setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+          } 
+          
+          contenidoActual.splice(indicePreg, 1);
+
+          contentCont.splice(indiceSec, 1);
+      }
+    
+          
+      } else {
+      const nuevoEstado = [...contentCont];
+      const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+      const defaultPregunta = [{ 
+        pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
+      }];
+      if (banderaEditarComplemetaria) {
+        handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
+        const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
+        eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+        setBanderaEditarComplemetaria(false);
+      } else {
+        contenidoActual[indicePreg].pregunta = pregunta;
+        contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+        contenidoActual[indicePreg].idTipoPregunta = 1;
+        contenidoActual[indicePreg].orden = indiceSec;
+        contenidoActual[indicePreg].requerida = '';
+        contenidoActual[indicePreg].placeHolder = 'seleccione';
+        contenidoActual[indicePreg].mensajeErrorRequerido = '';
+        contenidoActual[indicePreg].mensajeError = '';
+        contenidoActual[indicePreg].tipoArchivo = '';
+        contenidoActual[indicePreg].pesoArchivo = '';
+        contenidoActual[indicePreg].multipleRespuesta =  multipleRespuesta;
+        contenidoActual[indicePreg].ponderacion = ponderacion;
+        contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+        contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+        contenidoActual[indicePreg].save = true;
+        contenidoActual[indicePreg].cancelar = cancelar;
+        nuevoEstado[indiceSec].preguntas = contenidoActual;
+        nuevoEstado[indiceSec].tipoSeccion = 'P';
+        setContentCont(nuevoEstado);
+        setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+      }
+    }
+    };
+    
+    // const handleAceptarCuadroComentarios = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral) => {
+    //   const nuevoEstado = [...contentCont];
+    //   const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+    //   contenidoActual[indicePreg].pregunta = pregunta
+    //   contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+    //   contenidoActual[indicePreg].idTipoPregunta = 5;
+    //   contenidoActual[indicePreg].orden = indiceSec;
+    //   contenidoActual[indicePreg].requerida = '';
+    //   contenidoActual[indicePreg].placeHolder = 'seleccione';
+    //   contenidoActual[indicePreg].mensajeErrorRequerido = '';
+    //   contenidoActual[indicePreg].mensajeError = '';
+    //   contenidoActual[indicePreg].tipoArchivo = '';
+    //   contenidoActual[indicePreg].pesoArchivo = '';
+    //   contenidoActual[indicePreg].ponderacion = '';
+    //   contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+    //   contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+    //   contenidoActual[indicePreg].save = true;
+    //   contenidoActual[indicePreg].cancelar = cancelar;
+    //   nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //   // nuevoEstado[indiceSec].tipoSeccion = 'P';
+    //   setContentCont(nuevoEstado);
+    //   setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+    // };
+
+    const handleEditarCuadroComentarios = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+      if (banderaComplementaria) {
+        setBanderaEditarComplemetaria(true);
+        const tempCont = [...contentCont];
+        
+        const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
+        tempCont[indiceSeccion].preguntas = contPregTemp;
+        setContentCont(tempCont);
+        setIndicePreguntaComplemetaria(indicePreg);
+      } else {
       const tempCont = [...contentCont];
       const contPregTemp = [...tempCont[indiceSeccion].preguntas];
       contPregTemp[indicePreg].save=false
       tempCont[indiceSeccion].preguntas = contPregTemp;
       setContentCont(tempCont);
     };
+    }
 
     const handleCambiarPregunta = (indicePreg, indiceSec, value) => {
       const nuevoEstado = [...contentCont];
@@ -1216,33 +1643,116 @@ const NuevaEncuesta = ({
                                         contenEstilos={contenEstilos}
                                         sendColors={sendColors}
                                       />
+                                      {console.log(preg.preguntasComplementarias)}
                                       {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
-                                         <OpcionMultiple
+                                       
+                                        <div key={indexpComplementaria}>
+                                          {pregComplementaria.tipo === 'OM' && (
+                                            <OpcionMultiple
+                                              key={indexpComplementaria}
+                                              indice={`${indexp + 1}-${indexpComplementaria}`}
+                                              indiceSec={index}
+                                              save={pregComplementaria.save}
+                                              complementariaValue={pregComplementaria.complementariaValue}
+                                              preguntas={pregComplementaria}
+                                              closeopmul={handleCancelarOpcionMultiple}
+                                              onAceptar={handleAceptarOpcionMultiple}
+                                              handleEditarPregunta={handleEditarOpcionMultiple}
+                                              handleEliminarPregunta={handleEliminarOpcionMultiple}
+                                              handleCambiarPregunta={handleCambiarPregunta}
+                                              contentCont={contentCont}
+                                              preguntaVisibleOpen={preguntaVisible}
+                                              sendTamanoPaso2={sendTamanoPaso2}
+                                              sendGrosorPaso2={sendGrosorPaso2}
+                                              sendTipografiaPaso2={sendTipografiaPaso2}
+                                              obtenerPreg={obtenerPreg}
+                                              contenEstilos={contenEstilos}
+                                              sendColors={sendColors}
+                                              banderaComplementaria={true}
+                                              indiceComplementaria={indexpComplementaria}
+                                              saveComplementaria={pregComplementaria.save}
+                                            />
+                                          )}
+                                          {pregComplementaria.tipo === 'VE' && (
+                                            <VariacionEstrellas
+                                              key={indexpComplementaria}
+                                              indice={`${indexp + 1}-${indexpComplementaria}`}
+                                              indiceSec={index}
+                                              save={pregComplementaria.save}
+                                              preguntas={pregComplementaria}
+                                              closeVariacionEstrellas={handleCancelarValoracionEstrellas}
+                                              onAceptarValoracionEstrellas={handleAceptarValoracionEstrellas}
+                                              handleEditarPregunta={handleEditarValoracionEstrellas}
+                                              handleEliminarPregunta={handleEliminarValoracionEstrellas}
+                                              handleCambiarPregunta={handleCambiarPregunta}
+                                              contentCont={contentCont}
+                                              preguntaVisibleOpen={preguntaVisible}
+                                              sendTamanoPaso2={sendTamanoPaso2}
+                                              sendGrosorPaso2={sendGrosorPaso2}
+                                              sendTipografiaPaso2={sendTipografiaPaso2}
+                                              contenEstilos={contenEstilos}
+                                              sendColors={sendColors}
+                                              banderaComplementaria={true}
+                                              indiceComplementaria={indexp}
+                                              saveComplementaria={pregComplementaria.save}
+                                            />
+                                          )}
+                                          {pregComplementaria.tipo === 'CA' && (
+                                            
+                                            <CargaDatos
+                                            
+                                              key={indexpComplementaria}
+                                              indice={`${indexp + 1}-${indexpComplementaria}`}
+                                              indiceSec={index}
+                                              save={pregComplementaria.save}
+                                              preguntas={pregComplementaria}
+                                              closeCargaArchivos={handleCancelarCargaArchivos}
+                                              handleCargaArchivos={handleAceptarCargaArchivos}
+                                              handleEditarPregunta={handleEditarCargaDatos}
+                                              handleEliminarPregunta={handleEliminarCargaArchivos}
+                                              handleCambiarPregunta={handleCambiarPregunta}
+                                              contentCont={contentCont}
+                                              preguntaVisibleOpen={preguntaVisible}
+                                              sendTamanoPaso2={sendTamanoPaso2}
+                                              sendGrosorPaso2={sendGrosorPaso2}
+                                              sendTipografiaPaso2={sendTipografiaPaso2}
+                                              contenEstilos={contenEstilos}
+                                              sendColors={sendColors}
+                                              banderaComplementaria={true}
+                                              indiceComplementaria={indexp}
+                                              saveComplementaria={pregComplementaria.save}
+                                            />
+                                          )}
 
-                                          key={indexpComplementaria}
-                                          indice={`${indexp +1}-${indexpComplementaria}`}
-                                          indiceSec={index}
-                                          save={pregComplementaria.save}
-                                          complementariaValue={pregComplementaria.complementariaValue}
-                                          preguntas={pregComplementaria}
-                                          closeopmul={handleCancelarOpcionMultiple}
-                                          onAceptar={handleAceptarOpcionMultiple}
-                                          handleEditarPregunta={handleEditarOpcionMultiple}
-                                          handleEliminarPregunta={handleEliminarOpcionMultiple}
-                                          handleCambiarPregunta={handleCambiarPregunta}
-                                          contentCont={contentCont}
-                                          preguntaVisibleOpen={preguntaVisible}
-                                          sendTamanoPaso2={sendTamanoPaso2}
-                                          sendGrosorPaso2={sendGrosorPaso2}
-                                          sendTipografiaPaso2={sendTipografiaPaso2}
-                                          obtenerPreg={obtenerPreg}
-                                          contenEstilos={contenEstilos}
-                                          sendColors={sendColors}
-                                          banderaComplementaria={true}
-                                          indiceComplementaria={indexpComplementaria}
-                                          saveComplementaria={pregComplementaria.save}
-                                        />
+                                          {pregComplementaria.tipo === 'CC' && ( 
+                                           
+                                            <CuadroComentarios  
+
+                                              key={indexpComplementaria}
+                                              indice={`${indexp + 1}-${indexpComplementaria}`}
+                                              indiceSec={index}
+                                              save={pregComplementaria.save}
+                                              preguntas={pregComplementaria}
+                                              closeCuadroComentarios={handleCancelarCuadroComentarios}
+                                              handleEditarPregunta={handleEditarCuadroComentarios}
+                                              handleEliminarPregunta={handleEliminarCuadroComentarios}
+                                              handleCambiarPregunta={handleCambiarPregunta}
+                                              contentCont={contentCont}
+                                              preguntaVisibleOpen={preguntaVisible}
+                                              sendTamanoPaso2={sendTamanoPaso2}
+                                              sendGrosorPaso2={sendGrosorPaso2}
+                                              sendTipografiaPaso2={sendTipografiaPaso2}
+                                              contenEstilos={contenEstilos}
+                                              sendColors={sendColors}
+                                              banderaComplementaria={true}
+                                              indiceComplementaria={indexp}
+                                              saveComplementaria={pregComplementaria.save}
+                                            />
+
+                                          )}
+                                        </div>
                                       ))}
+
                                     </>
                                   );
                                 }

@@ -214,6 +214,7 @@ const VariacionEstrellas = ({
     const [otraRespuesta, setOtraRespuesta] = useState('Otra respuesta');
     const [selectedTipoPregunta, setSelectedTipoPregunta] = useState(null);
     const containerColor = useRef(null);
+    const [todasLasPreguntasConPosiciones, setTodasLasPreguntasConPosiciones] = useState([]);
     const todasLasPreguntasConPosicion = [];
     const [posicionContentCont, setPosicionContentCont] = useState(0);
     const [posicionPregunta, setPosicionPregunta] = useState(0);
@@ -257,6 +258,52 @@ const VariacionEstrellas = ({
         }
         // }
     });
+
+
+    const verPreguntas = (seccionPosicion, index) => {
+        
+        const preguntasDeSeccion = [];
+      
+        // Verifica si la posición de la sección es válida
+        if (seccionPosicion >= 0 && seccionPosicion < contentCont.length) {
+          const seccion = contentCont[seccionPosicion];
+      
+          // Verifica si la sección tiene un atributo "preguntas" y si es un arreglo
+          if (seccion.preguntas && Array.isArray(seccion.preguntas)) {
+            seccion.preguntas.forEach((preguntaa, indexPregunta) => {
+                
+              // Verifica si el objeto de pregunta tiene un atributo "pregunta"
+              if (preguntaa.pregunta !== pregunta) {
+              if (preguntaa.pregunta) {
+                preguntasDeSeccion.push({
+                  pregunta: preguntaa.pregunta,
+                  posicionPregunta: indexPregunta,
+                  nemonico : preguntaa.nemonico,
+                });
+            }
+              }
+            });
+      
+            // Limpia las preguntas anteriores antes de agregar las nuevas preguntas
+            setTodasLasPreguntasConPosiciones([]);
+            setTodasLasPreguntasConPosiciones(prevPreguntas => [
+                ...prevPreguntas,
+                ...preguntasDeSeccion.map(pregunta => ({
+                    ...pregunta,
+                    index // Añadimos el índice aquí
+                }))
+            ]);
+          }
+        } 
+      
+      };
+      
+    const seccionesConPosicion = contentCont.map((item, indexContentCont) => {
+        return {
+          titulo: item.titulo,
+          posicionContentCont: indexContentCont
+        };
+      });
 
 
 
@@ -384,16 +431,29 @@ const VariacionEstrellas = ({
     const handleSwitchConfigurar4 = () => {
         // Invierte el valor de configuracion4
         setConfiguracion4(!configuracion4);
-        // Actualiza las opciones de respuesta
-        setOpcionesRespuesta((prevOpcionesRespuesta) => {
-            // Filtra las opciones de respuesta que no contienen 'Ninguna de las anteriores'
-            const nuevasOpciones = prevOpcionesRespuesta.filter(
-                (opcion) => opcion.respuesta !== 'Ninguna de las anteriores'
-            );
-        
-            return nuevasOpciones;
-        });
+
+        const ningunaAnterioresOption = opcionesRespuesta.find(option => option.respuesta === 'Ninguna de las anteriores');
       
+        if (!configuracion4 && !ningunaAnterioresOption) {
+            const nuevaOpcion = {
+                idOpcionRespuesta: opcionesRespuesta.length + 1,
+                checked: false,
+                respuesta: ningunaAnteriores,
+                type: 'radio',
+                seccionValue: '',
+                preguntaValue: '',
+                enumGrafico: 12,
+                colorOpcion: "#e0dcdc",
+                colorDefault: "#e0dcdc",
+                selectedIcon: 'star',
+                selectedColor: "#e0dcdc",
+                valor: 0,
+                orden: opcionesRespuesta.length + 1,
+            };
+
+            setOpcionesRespuesta((prevOpciones) => [...prevOpciones, nuevaOpcion]);
+        }
+        
         // Actualiza el estado de configuraciongeneral según el valor de configuracion4
         setConfiguraciongeneral((prevConfiguracion) => {
             return {
@@ -406,16 +466,28 @@ const VariacionEstrellas = ({
     const handleSwitchConfigurar5 = () => {
         // Invierte el valor de configuracion4
         setConfiguracion5(!configuracion5);
-      
-        // Actualiza las opciones de respuesta
-        setOpcionesRespuesta((prevOpcionesRespuesta) => {
-            // Filtra las opciones de respuesta que no contienen 'Ninguna de las anteriores'
-            const nuevasOpciones = prevOpcionesRespuesta.filter(
-                (opcion) => opcion.respuesta !== 'Otra respuesta'
-            );
-        
-            return nuevasOpciones;
-        });
+
+        const otraRespuestaOption = opcionesRespuesta.find(option => option.respuesta === 'Otra respuesta');
+
+        if (!configuracion5 && !otraRespuestaOption) {
+            const nuevaOpcion = {
+                idOpcionRespuesta: opcionesRespuesta.length + 1,
+                checked: false,
+                respuesta: otraRespuesta,
+                type: 'radio',
+                seccionValue: '',
+                preguntaValue: '',
+                enumGrafico: 12,
+                colorOpcion: "#e0dcdc",
+                colorDefault: "#e0dcdc",
+                selectedIcon: 'star',
+                selectedColor: "#e0dcdc",
+                valor: 0,
+                orden: opcionesRespuesta.length + 1,
+            };
+
+            setOpcionesRespuesta((prevOpciones) => [...prevOpciones, nuevaOpcion]);
+        }
       
         // Actualiza el estado de configuraciongeneral según el valor de configuracion4
         setConfiguraciongeneral((prevConfiguracion) => {
@@ -579,7 +651,16 @@ const VariacionEstrellas = ({
             return;
         }
         setPreguntaTemp(pregunta)
-        onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, cancelar,configuraciongeneral,ponderacion);
+        if (configuracion2)
+        {
+            onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
+            //onAceptarComplementaria(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,multipleRespuesta,ponderacion, configuracion2,posicionPregunta, posicionContentCont, posicionComplementaria);
+        }
+        else
+        {
+            onAceptarValoracionEstrellas(indice, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,ponderacion, configuracion2, posicionPregunta, posicionContentCont);
+        }
+    
     };
 
     const validacionEstrella = () => {
@@ -1142,26 +1223,33 @@ const VariacionEstrellas = ({
                                             opcionIndex === index && (
                                                 <Col style={{ width: '100%' }}>
                                                     <div key={opcion.idOpcionRespuesta}></div>
-                                                        <select
+                                                    <select
                                                             className='select1Logica1'
                                                             value={opcion.seccionValue}
                                                             onChange={(event) => handleSeccionChange(opcionIndex, event)}
                                                         >
-                                                            <option value='' disabled hidden>Seleccionar Sección</option>
-                                                            <option value='option1'>Sección 1</option>
-                                                            <option value='option2'>Sección 2</option>
-                                                            <option value='option3'>Sección 3</option>
+                                                            <option value='' >Seleccionar Sección</option>
+                                                            {seccionesConPosicion.map((seccion, index) => (
+                                                                <option key={index} value={seccion.posicionContentCont}>
+                                                                    {seccion.titulo}
+                                                                </option>
+                                                            ))}
+
                                                         </select>
 
+
                                                         <select
-                                                            className='select1Logica2'
-                                                            value={opcion.preguntaValue}
-                                                            onChange={(event) => handlePreguntaChange(index, event)}
+                                                        className='select1Logica2'
+                                                        value= {opcion.nemonicoLogicaPregunta}
+                                                        onChange={(event) => handlePreguntaChange(index, event)}
+                                                        disabled={!verLogicaPreguntas} // Aquí se habilitará o deshabilitará el select
                                                         >
-                                                            <option value='' disabled hidden>Seleccionar Pregunta</option>
-                                                            <option value='option1'>Pregunta 1</option>
-                                                            <option value='option2'>Pregunta 2</option>
-                                                            <option value='option3'>Pregunta 3</option>
+                                                        <option value='' >Seleccionar LPregunta</option>
+                                                        {todasLasPreguntasConPosiciones.map((pregunta, index) => (
+                                                            <option key={index} value={pregunta.nemonico}>
+                                                            {pregunta.pregunta}
+                                                            </option>
+                                                        ))}
                                                         </select>
 
                                                         <Button className='borrarLogica'>
