@@ -335,11 +335,12 @@ const CargaDatos = ({
 
     const handleSwitchConfigurar3 = () => {
         setConfiguracion3(!configuracion3);
-        setConfiguraciongeneral({
-            ...configuraciongeneral,
-            bancoPregunta: configuracion3 ? "N" : "S",
-
-        })
+        setConfiguraciongeneral((prevConfiguracion) => {
+            return {
+                ...prevConfiguracion,
+                bancoPregunta: configuracion3 ? "N" : "S",
+        };
+        });
     };
 
     const handleBancoPregunta = (event) => {

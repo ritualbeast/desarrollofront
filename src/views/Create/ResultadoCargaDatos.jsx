@@ -30,7 +30,11 @@ const ResultadoCargaDatos = ({
   sendGrosorPaso2, 
   sendTipografiaPaso2,
   contenEstilos, 
-  sendColors
+  sendColors,
+  complementarias,
+  complementariaValue,
+  indiceComplementaria,
+  banderaComplementaria,
 }) => {
   const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -93,15 +97,15 @@ const ResultadoCargaDatos = ({
 
 
   const handleMouseEnterEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("oculto");
-    $(`#editPreg${index +1}`).addClass("visible");
-    $(`#Preg${index +1}`).addClass("editar-visible");
+    $(`#editPreg${index +1}-${indexSec}`).removeClass("oculto");
+    $(`#editPreg${index +1}-${indexSec}`).addClass("visible");
+    $(`#Preg${index +1}-${indexSec}`).addClass("editar-visible");
   };
 
   const handleMouseLeaveEditar = (index) => {
-    $(`#editPreg${index +1}`).removeClass("visible");
-    $(`#editPreg${index +1}`).addClass("oculto");
-    $(`#Preg${index +1}`).removeClass("editar-visible");
+    $(`#editPreg${index +1}-${indexSec}`).removeClass("visible");
+    $(`#editPreg${index +1}-${indexSec}`).addClass("oculto");
+    $(`#Preg${index +1}-${indexSec}`).removeClass("editar-visible");
   };
 
   const handleOpenEliminarPregunta = () => {
@@ -162,10 +166,10 @@ const ResultadoCargaDatos = ({
       <Col>
             <Col 
                 style={{marginLeft: 'unset', marginRight: 'unset', marginTop: '2%'}}
-                id={`editPreg${index +1}`}
+                id={`editPreg${index +1}-${indexSec}`}
                 className={`contenedor-editar-pregunta`}
             >
-                <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
+                <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index, banderaComplementaria)}}>Editar</p>
                 <p className='titulo-editarOpciones'>Opciones</p>
                 <p className='titulo-editarMover'>Mover</p>
                 <p className='titulo-editarDuplicar'>Duplicar</p>
@@ -174,10 +178,10 @@ const ResultadoCargaDatos = ({
             </Col>
             <Col 
                 style={{marginLeft: 'unset', marginRight: 'unset'}}
-                id={`Preg${index +1}`}
+                id={`Preg${index +1}-${indexSec}`}
                 className={`contenedor-tituloNuevaEncuesta `} 
-                onMouseEnter={() => handleMouseEnterEditar(index)}
-                onMouseLeave={() => handleMouseLeaveEditar(index)}
+                onMouseEnter={() => handleMouseEnterEditar(index, indexSec)}
+                onMouseLeave={() => handleMouseLeaveEditar(index, indexSec)}
             >
                 <Col style={{width:'95%', display:'flex'}}>
                 <p style={{...preguntasStyle, width:'95%'}}
