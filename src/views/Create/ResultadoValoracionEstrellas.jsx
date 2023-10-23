@@ -363,84 +363,167 @@ function ResultadoValoracionEstrellas({
                     </Col>
                 </Col>
 
-                {preguntaVisible[index] && (
-                    <div>
-                        <Col style={{ display: 'flex' }}>
-                            {opcionesRespuesta.map((opcion, index) => (
-                                opcion.respuesta !== 'Ninguna de las anteriores' &&
-                                opcion.respuesta !== 'Otra respuesta' && (
-                                    <Col key={index} style={{ marginRight: '2%' }}>
-                                        <Col>
-                                            <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
-                                                {opcion.respuesta}
-                                            </div>
-                                            <br />
-                                            <div style={{ display: 'flex', justifyContent: 'center'}}>
-                                                <span
-                                                    style={{
-                                                        marginLeft: '2%',
-                                                        cursor: 'pointer',
-                                                        marginTop: '0.8%',
-                                                        fill: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
-                                                        stroke: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
-                                                    }}
-                                                    onMouseOver={() => handleIconMouseOver(opcion)}
-                                                    onMouseLeave={() => handleIconMouseLeave(opcion)}
-                                                    dangerouslySetInnerHTML={{
-                                                        __html:
-                                                        iconoSVG[opcion.selectedIcon] ||
-                                                        (tipoIcono ? iconoSVG[tipoIcono.find((enumGrafico) => enumGrafico.id === opcion.enumGrafico)?.etiqueta] : '') ||
-                                                        opcion.enumGrafico, // Utiliza el enumGrafico si no se encuentra una etiqueta coincidente
-                                                    }}
-                                                    onClick={() => handleIconFClick(opcion, index)}
-                                                />
-                                            </div>
+                {banderaComplementaria ? (
+                    preguntaVisible[indiceComplementaria] && (
+                        <div>
+                            <Col style={{ display: 'flex' }}>
+                                {opcionesRespuesta.map((opcion, index) => (
+                                    opcion.respuesta !== 'Ninguna de las anteriores' &&
+                                    opcion.respuesta !== 'Otra respuesta' && (
+                                        <Col key={index} style={{ marginRight: '2%' }}>
+                                            <Col>
+                                                <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
+                                                    {opcion.respuesta}
+                                                </div>
+                                                <br />
+                                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                                    <span
+                                                        style={{
+                                                            marginLeft: '2%',
+                                                            cursor: 'pointer',
+                                                            marginTop: '0.8%',
+                                                            fill: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                            stroke: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                        }}
+                                                        onMouseOver={() => handleIconMouseOver(opcion)}
+                                                        onMouseLeave={() => handleIconMouseLeave(opcion)}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html:
+                                                            iconoSVG[opcion.selectedIcon] ||
+                                                            (tipoIcono ? iconoSVG[tipoIcono.find((enumGrafico) => enumGrafico.id === opcion.enumGrafico)?.etiqueta] : '') ||
+                                                            opcion.enumGrafico, // Utiliza el enumGrafico si no se encuentra una etiqueta coincidente
+                                                        }}
+                                                        onClick={() => handleIconFClick(opcion, index)}
+                                                    />
+                                                </div>
+                                            </Col>
                                         </Col>
+                                    )
+                                ))}
+                            </Col>
+    
+                            {configuracion4Activa && (
+                                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                                    <Col style={{ display: 'flex' }}>
+                                        <>
+                                            <HiddenRadioButton
+                                                type={opcionNinguna.type}
+                                                checked={opcionNinguna.checked}
+                                                value={opcionNinguna.idOpcionRespuesta}
+                                            />
+                                            <StyledRadioButton checked={opcionNinguna.checked} 
+                                                onClick={() => handleOpcionChange(opcionNinguna, opcionNinguna.idOpcionRespuesta, opcionNinguna.respuesta, opcionNinguna.checked, 'radio')}
+                                            />
+                                        </>
+                                        <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
+                                            {opcionNinguna.respuesta}
+                                        </div>
                                     </Col>
-                                )
-                            ))}
-                        </Col>
-
-                        {configuracion4Activa && (
-                            <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                                <Col style={{ display: 'flex' }}>
-                                    <>
-                                        <HiddenRadioButton
-                                            type={opcionNinguna.type}
-                                            checked={opcionNinguna.checked}
-                                            value={opcionNinguna.idOpcionRespuesta}
-                                        />
-                                        <StyledRadioButton checked={opcionNinguna.checked} 
-                                            onClick={() => handleOpcionChange(opcionNinguna, opcionNinguna.idOpcionRespuesta, opcionNinguna.respuesta, opcionNinguna.checked, 'radio')}
-                                        />
-                                    </>
-                                    <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
-                                        {opcionNinguna.respuesta}
-                                    </div>
                                 </Col>
-                            </Col>
-                        )}
-
-                        {configuracion5Activa && (
-                            <Col style={{ marginRight: '2%', marginTop: '1%' }}>
-                                <Col style={{ display: 'flex' }}>
-                                    <div>
-                                        <HiddenRadioButton
-                                            type={otraRespuesta.type}
-                                            checked={otraRespuesta.checked}
-                                            value={otraRespuesta.idOpcionRespuesta}
-                                        />
-                                        <StyledRadioButton checked={otraRespuesta.checked}
-                                            onClick={() => handleOpcionChange(otraRespuesta, otraRespuesta.idOpcionRespuesta, otraRespuesta.respuesta, otraRespuesta.checked, 'radio')}
-                                        />
-                                    </div>
-                                    <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
-                                        {otraRespuesta.respuesta}
-                                    </div>
+                            )}
+    
+                            {configuracion5Activa && (
+                                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                                    <Col style={{ display: 'flex' }}>
+                                        <div>
+                                            <HiddenRadioButton
+                                                type={otraRespuesta.type}
+                                                checked={otraRespuesta.checked}
+                                                value={otraRespuesta.idOpcionRespuesta}
+                                            />
+                                            <StyledRadioButton checked={otraRespuesta.checked}
+                                                onClick={() => handleOpcionChange(otraRespuesta, otraRespuesta.idOpcionRespuesta, otraRespuesta.respuesta, otraRespuesta.checked, 'radio')}
+                                            />
+                                        </div>
+                                        <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                            {otraRespuesta.respuesta}
+                                        </div>
+                                    </Col>
                                 </Col>
+                            )}
+                        </div>
+                    )
+                ) : (
+                    preguntaVisible[index] && (
+                        <div>
+                            <Col style={{ display: 'flex' }}>
+                                {opcionesRespuesta.map((opcion, index) => (
+                                    opcion.respuesta !== 'Ninguna de las anteriores' &&
+                                    opcion.respuesta !== 'Otra respuesta' && (
+                                        <Col key={index} style={{ marginRight: '2%' }}>
+                                            <Col>
+                                                <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
+                                                    {opcion.respuesta}
+                                                </div>
+                                                <br />
+                                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                                    <span
+                                                        style={{
+                                                            marginLeft: '2%',
+                                                            cursor: 'pointer',
+                                                            marginTop: '0.8%',
+                                                            fill: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                            stroke: opcion.hoverColor || opcion.selectedColor || opcion.colorDefault,
+                                                        }}
+                                                        onMouseOver={() => handleIconMouseOver(opcion)}
+                                                        onMouseLeave={() => handleIconMouseLeave(opcion)}
+                                                        dangerouslySetInnerHTML={{
+                                                            __html:
+                                                            iconoSVG[opcion.selectedIcon] ||
+                                                            (tipoIcono ? iconoSVG[tipoIcono.find((enumGrafico) => enumGrafico.id === opcion.enumGrafico)?.etiqueta] : '') ||
+                                                            opcion.enumGrafico, // Utiliza el enumGrafico si no se encuentra una etiqueta coincidente
+                                                        }}
+                                                        onClick={() => handleIconFClick(opcion, index)}
+                                                    />
+                                                </div>
+                                            </Col>
+                                        </Col>
+                                    )
+                                ))}
                             </Col>
-                        )}
-                    </div>
+    
+                            {configuracion4Activa && (
+                                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                                    <Col style={{ display: 'flex' }}>
+                                        <>
+                                            <HiddenRadioButton
+                                                type={opcionNinguna.type}
+                                                checked={opcionNinguna.checked}
+                                                value={opcionNinguna.idOpcionRespuesta}
+                                            />
+                                            <StyledRadioButton checked={opcionNinguna.checked} 
+                                                onClick={() => handleOpcionChange(opcionNinguna, opcionNinguna.idOpcionRespuesta, opcionNinguna.respuesta, opcionNinguna.checked, 'radio')}
+                                            />
+                                        </>
+                                        <div style={{...opcionesRespuestaStyle, textAlign: 'center' }}>
+                                            {opcionNinguna.respuesta}
+                                        </div>
+                                    </Col>
+                                </Col>
+                            )}
+    
+                            {configuracion5Activa && (
+                                <Col style={{ marginRight: '2%', marginTop: '1%' }}>
+                                    <Col style={{ display: 'flex' }}>
+                                        <div>
+                                            <HiddenRadioButton
+                                                type={otraRespuesta.type}
+                                                checked={otraRespuesta.checked}
+                                                value={otraRespuesta.idOpcionRespuesta}
+                                            />
+                                            <StyledRadioButton checked={otraRespuesta.checked}
+                                                onClick={() => handleOpcionChange(otraRespuesta, otraRespuesta.idOpcionRespuesta, otraRespuesta.respuesta, otraRespuesta.checked, 'radio')}
+                                            />
+                                        </div>
+                                        <div style={{...opcionesRespuestaStyle, marginBottom: '0.4%', marginLeft: '2%', textAlign: 'center' }}>
+                                            {otraRespuesta.respuesta}
+                                        </div>
+                                    </Col>
+                                </Col>
+                            )}
+                        </div>
+                    )
+                    
                 )}
 
                 <Modal

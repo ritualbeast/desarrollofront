@@ -223,7 +223,8 @@ const VariacionEstrellas = ({
     
 
      // Utiliza el método map para recorrer el arreglo contentCont y capturar su posición
-     contentCont[indiceSec].preguntas.map((pregunta, indexPregunta) => {
+     
+     contentCont[indiceSec]?.preguntas.map((pregunta, indexPregunta) => {
         
                 
         // // Verifica si el objeto de pregunta tiene un atributo "pregunta"

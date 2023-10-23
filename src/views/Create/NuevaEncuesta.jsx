@@ -261,7 +261,6 @@ const NuevaEncuesta = ({
     }, [obtenerPreg]); // Depende de obtenerPreg
 
     const handleOptionMultiple = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
-      // setBanderaEditarComplemetaria(false);
       if (!Array.isArray(preguntas)) {
         console.error('Preguntas no es un array:', preguntas);
         return;
@@ -269,45 +268,56 @@ const NuevaEncuesta = ({
     
       const seccionIndex = index; // Define el índice de la sección donde quieres añadir las preguntas
     
-      const nuevoEstado = [...contentCont];
-      const contenidoActual = nuevoEstado[seccionIndex]?.preguntas || [];
+      setContentCont((prevContentCont) => {
+        return prevContentCont.map((seccion, seccionIdx) => {
+          if (seccionIdx === seccionIndex) {
+            const contenidoActual = seccion.preguntas || [];
     
-      preguntas.forEach((preguntaSeleccionada) => {
-        const { requerida, ...restoPropiedades } = preguntaSeleccionada;
-        const obj = {
-          tipo: 'OM',
-          save: saveValue,
-          editComplementaria : false,
-          complementariaValue: complementariaValue,
-          pregunta: preguntaSeleccionada.pregunta,
-          opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
-          cancelar: cancelarValue,
-          configuracionPregunta: {},
-          idTipoPregunta: 1,
-          mensajeError: '',
-          mensajeErrorRequerido: '',
-          multipleRespuesta: '',
-          nemonico: "1S_1P",
-          orden: '',
-          pesoArchivo: "",
-          placeHolder: "seleccione",
-          preguntasComplementarias: [],
-          ponderacion: "",
-          requerida: requerida === true,
-          tipoArchivo: "",
-        };
-        contenidoActual.push(obj);
+            const nuevasPreguntas = preguntas.map((preguntaSeleccionada) => {
+              const { requerida, ...restoPropiedades } = preguntaSeleccionada;
+              const obj = {
+                tipo: 'OM',
+                save: saveValue,
+                editComplementaria: false,
+                complementariaValue: complementariaValue,
+                pregunta: preguntaSeleccionada.pregunta,
+                opcionesRespuesta: preguntaSeleccionada.opcionesRespuesta,
+                cancelar: cancelarValue,
+                configuracionPregunta: {},
+                idTipoPregunta: 1,
+                mensajeError: '',
+                mensajeErrorRequerido: '',
+                multipleRespuesta: '',
+                nemonico: "1S_1P", // Debes generar el nemonico adecuado
+                orden: '',
+                pesoArchivo: "",
+                placeHolder: "seleccione",
+                preguntasComplementarias: [],
+                ponderacion: "",
+                requerida: requerida === true,
+                tipoArchivo: "",
+              };
+              return obj;
+            });
+    
+            const updatedPreguntas = [...contenidoActual, ...nuevasPreguntas];
+    
+            return {
+              ...seccion,
+              preguntas: updatedPreguntas,
+            };
+          }
+          return seccion;
+        });
       });
     
-      nuevoEstado[seccionIndex].preguntas = contenidoActual;
-      setContentOpt(nuevoEstado);
-
-      $(`#NuevaPreg${index +1}`).removeClass("active");
-      $(`#NuevaPreg${index +1}`).addClass("inactive");
-      $(`#NuevaPreg${index +1}`).removeClass("editar-visible");
-      $(`#NuevaPregVisi${index +1}`).addClass("ocultar");
+      $(`#NuevaPreg${index + 1}`).removeClass("active");
+      $(`#NuevaPreg${index + 1}`).addClass("inactive");
+      $(`#NuevaPreg${index + 1}`).removeClass("editar-visible");
+      $(`#NuevaPregVisi${index + 1}`).addClass("ocultar");
       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
     };
+    
 
     const handleValoracionEstrellas = (index, preguntas, saveValue = false, complementariaValue = false, cancelarValue = '') => {
       if (!Array.isArray(preguntas)) {
@@ -711,6 +721,11 @@ const NuevaEncuesta = ({
       }
       
         else{
+          console.log('aia');
+          console.log(contenidoActual);
+        console.log(posicionPregunta);
+        console.log(contenidoActual[posicionPregunta]?.preguntasComplementarias);
+        console.log(posicionContentCont);  
             
           if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
           contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
@@ -727,6 +742,7 @@ const NuevaEncuesta = ({
           contenidoActual.splice(indicePreg, 1);
 
           contentCont.splice(indiceSec, 1);
+          console.log('fin');
       }
     
           
@@ -773,6 +789,9 @@ const NuevaEncuesta = ({
         const tempCont = [...contentCont];
         
         const contPregTemp = [...tempCont[indiceSeccion].preguntas];
+        console.log(contPregTemp);
+        console.log(indicePreg);
+        console.log(indiceSeccion);
         contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
@@ -865,17 +884,20 @@ const NuevaEncuesta = ({
       
       if (complementaria) {
         const nuevoEstado = [...contentCont];
-        const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
-       
+        console.log(posicionContentCont);
+        console.log(indiceSec);
+        const contenidoActual = [...nuevoEstado[indiceSec]?.preguntas];
+        console.log(contenidoActual);
+        console.log(indicePreguntaComplemetaria);
         
         if (banderaEditarComplemetaria) {
           
           console.log('entrando')
-            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+            if(contenidoActual[posicionContentCont]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
               
               contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
-              nuevoEstado[posicionContentCont].preguntas = contenidoActual;
-              nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+              nuevoEstado[indiceSec].preguntas = contenidoActual;
+              nuevoEstado[indiceSec].tipoSeccion = 'P';
               contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
               contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
               
@@ -891,7 +913,10 @@ const NuevaEncuesta = ({
         else{
           
         console.log('entrando 2')
-            
+        console.log(contenidoActual);
+        console.log(posicionPregunta);
+        console.log(contenidoActual[posicionPregunta]?.preguntasComplementarias);
+        console.log(posicionContentCont);    
           if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
           contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
           nuevoEstado[posicionContentCont].preguntas = contenidoActual;
@@ -947,6 +972,121 @@ const NuevaEncuesta = ({
     }
     };
 
+    // const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral,ponderacion, complementaria,posicionPregunta, posicionContentCont, posicionComplementaria) => {
+      
+    //   const preguntaComplementaria = {
+    //     pregunta: pregunta,
+    //     nemonico:  `${posicionContentCont + 1}S_${posicionPregunta + 1}P`,
+    //     idTipoPregunta: 1,
+    //     orden: indiceSec,
+    //     requerida: '',
+    //     placeHolder: 'seleccione',
+    //     mensajeErrorRequerido: '',
+    //     mensajeError: '',
+    //     tipoArchivo: '',
+    //     pesoArchivo: '',
+    //     ponderacion: ponderacion,
+    //     configuracionPregunta: configuraciongeneral,
+    //     opcionesRespuesta: opcionesRespuesta,
+    //     save: true,
+    //     cancelar: cancelar,
+    //     editComplementaria: true,
+    //     tipo: 'VE',
+    //   };
+
+      
+    //   if (complementaria) {
+    //     const nuevoEstado = [...contentCont];
+    //     console.log(posicionContentCont);
+    //     console.log(indiceSec);
+    //     const contenidoActual = [...nuevoEstado[indiceSec]?.preguntas];
+    //     console.log(contenidoActual);
+    //     console.log(indicePreguntaComplemetaria);
+        
+    //     if (banderaEditarComplemetaria) {
+          
+    //       console.log('entrando')
+    //         if(contenidoActual[posicionContentCont]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              
+    //           contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
+    //           nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //           nuevoEstado[indiceSec].tipoSeccion = 'P';
+    //           contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].save = true;
+    //           contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].cancelar = cancelar;
+              
+            
+    //           setContentCont(nuevoEstado);
+    //           setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+    //         } 
+            
+        
+
+    //   }
+      
+    //     else{
+          
+    //     console.log('entrando 2')
+    //     console.log(contenidoActual);
+    //     console.log(posicionPregunta);
+    //     console.log(contenidoActual[posicionPregunta]?.preguntasComplementarias);
+    //     console.log(posicionContentCont);    
+    //       if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
+    //       contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
+    //       nuevoEstado[posicionContentCont].preguntas = contenidoActual;
+    //       nuevoEstado[posicionContentCont].tipoSeccion = 'P';
+    //       contenidoActual[posicionPregunta].complementariaValue = true;
+    //       // contenidoActual.splice(posicionPregunta, 1);
+    //       setContentCont(
+    //         nuevoEstado);
+    //       setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+
+    //       } 
+          
+    //       contenidoActual.splice(indicePreg, 1);
+
+    //       contentCont.splice(indiceSec, 1);
+    //   }
+    
+          
+    //   } else {
+
+    //     console.log('entrando 3')
+    //   const nuevoEstado = [...contentCont];
+    //   const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
+    //   const defaultPregunta = [{ 
+    //     pregunta: pregunta // Puedes definir más propiedades aquí si es necesario
+    //   }];
+    //   if (banderaEditarComplemetaria) {
+    //     handleOptionMultiple(posicionPregunta, defaultPregunta, true, true);
+    //     const eliminarPreguntaComplementaria = nuevoEstado[posicionContentCont].preguntas[posicionPregunta].preguntasComplementarias;
+    //     eliminarPreguntaComplementaria.splice(posicionPregunta, 1);
+    //     setBanderaEditarComplemetaria(false);
+    //   } else {
+    //     contenidoActual[indicePreg].pregunta = pregunta;
+    //     contenidoActual[indicePreg].nemonico = `${indiceSec + 1}S_${indicePreg + 1}P`
+    //     contenidoActual[indicePreg].idTipoPregunta = 1;
+    //     contenidoActual[indicePreg].orden = indiceSec;
+    //     contenidoActual[indicePreg].requerida = '';
+    //     contenidoActual[indicePreg].placeHolder = 'seleccione';
+    //     contenidoActual[indicePreg].mensajeErrorRequerido = '';
+    //     contenidoActual[indicePreg].mensajeError = '';
+    //     contenidoActual[indicePreg].tipoArchivo = '';
+    //     contenidoActual[indicePreg].pesoArchivo = '';
+    //     contenidoActual[indicePreg].ponderacion = ponderacion;
+    //     contenidoActual[indicePreg].configuracionPregunta = configuraciongeneral;
+    //     contenidoActual[indicePreg].opcionesRespuesta = opcionesRespuesta;
+    //     contenidoActual[indicePreg].save = true;
+    //     contenidoActual[indicePreg].cancelar = cancelar;
+    //     nuevoEstado[indiceSec].preguntas = contenidoActual;
+    //     nuevoEstado[indiceSec].tipoSeccion = 'P';
+    //     setContentCont(nuevoEstado);
+    //     setPreguntaVisible((prevVisibility) => [...prevVisibility, true]);
+    //   }
+    // }
+    // };
+
+
+
     // const handleAceptarValoracionEstrellas = (indicePreg, indiceSec, pregunta, opcionesRespuesta, cancelar, configuraciongeneral, ponderacion, configuracion4, configuracion5) => {
       
       
@@ -979,6 +1119,7 @@ const NuevaEncuesta = ({
     const handleEditarValoracionEstrellas = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
       
       if (banderaComplementaria) {
+        console.log(indicePreg);
         setBanderaEditarComplemetaria(true);
         const tempCont = [...contentCont];
         
