@@ -224,6 +224,7 @@ const OpcionMultiple = ({
     banderaComplementaria,
     indiceComplementaria,
     saveComplementaria, 
+    indiceComplementariaPosicionPregunta,
     
     
 }) => {
@@ -1319,6 +1320,7 @@ const OpcionMultiple = ({
                     banderaComplementaria={banderaComplementaria}
                     indiceComplementaria={indiceComplementaria}
                     posicionComplementaria={posicionComplementaria}
+                    indiceComplementariaPosicionPregunta={indiceComplementariaPosicionPregunta}
                 />
             </Container>
         )}

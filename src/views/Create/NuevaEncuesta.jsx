@@ -624,14 +624,15 @@ const NuevaEncuesta = ({
       if (banderaComplementaria) {
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[indiceSec].preguntas];
-        const contenidoActualComplementaria = [...contenidoActual[indiceSec].preguntasComplementarias];
+        console.log(contenidoActual);
+        const contenidoActualComplementaria = [...contenidoActual[0].preguntasComplementarias];
         if (contenidoActualComplementaria[indiceComplementaria].cancelar === '') {
           contenidoActualComplementaria.splice(indiceComplementaria, 1);
         }
         else if (contenidoActualComplementaria[indiceComplementaria].cancelar === 'true') {
           contenidoActualComplementaria[indiceComplementaria].save = true;
         }
-        contenidoActual[indiceSec].preguntasComplementarias = contenidoActualComplementaria;
+        contenidoActual[0].preguntasComplementarias = contenidoActualComplementaria;
         nuevoEstado[indiceSec].preguntas = contenidoActual;
         setContentCont(nuevoEstado);
         
@@ -698,13 +699,20 @@ const NuevaEncuesta = ({
 
       
       if (complementaria) {
+        console.log('aiassss');
         const nuevoEstado = [...contentCont];
         const contenidoActual = [...nuevoEstado[posicionContentCont]?.preguntas];
        
         
         if (banderaEditarComplemetaria) {
-            if(contenidoActual[indiceSec]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
-              
+          console.log('entro paso');
+          console.log(contenidoActual);
+          console.log(indiceSec);
+          console.log(posicionPregunta); 
+          console.log(indicePreguntaComplemetaria);
+
+            if(contenidoActual[posicionPregunta]?.preguntasComplementarias[indicePreguntaComplemetaria]?.editComplementaria === true){
+              console.log('entro paso 1');
               contenidoActual[posicionContentCont].preguntasComplementarias[indicePreguntaComplemetaria].pregunta = pregunta;
               nuevoEstado[posicionContentCont].preguntas = contenidoActual;
               nuevoEstado[posicionContentCont].tipoSeccion = 'P';
@@ -721,11 +729,6 @@ const NuevaEncuesta = ({
       }
       
         else{
-          console.log('aia');
-          console.log(contenidoActual);
-        console.log(posicionPregunta);
-        console.log(contenidoActual[posicionPregunta]?.preguntasComplementarias);
-        console.log(posicionContentCont);  
             
           if (contenidoActual[posicionPregunta]?.preguntasComplementarias) { 
           contenidoActual[posicionPregunta].preguntasComplementarias.push(preguntaComplementaria);
@@ -782,7 +785,7 @@ const NuevaEncuesta = ({
     }
     };
     
-    const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria) => {
+    const handleEditarOpcionMultiple = (indiceSeccion, indicePreg, banderaComplementaria, indiceComplementaria, banderaEditarComplemetaria, indiceComplementariaPosicionPregunta) => {
       
       if (banderaComplementaria) {
         setBanderaEditarComplemetaria(true);
@@ -792,7 +795,9 @@ const NuevaEncuesta = ({
         console.log(contPregTemp);
         console.log(indicePreg);
         console.log(indiceSeccion);
-        contPregTemp[indiceSeccion].preguntasComplementarias[indicePreg].save=false
+        console.log(indiceComplementaria);
+        console.log(indiceComplementariaPosicionPregunta);
+        contPregTemp[indiceComplementariaPosicionPregunta].preguntasComplementarias[indicePreg].save=false
         tempCont[indiceSeccion].preguntas = contPregTemp;
         setContentCont(tempCont);
         setIndicePreguntaComplemetaria(indicePreg);
@@ -1690,6 +1695,7 @@ const NuevaEncuesta = ({
                             {seccion.preguntas.map((preg, indexp) => { 
                               if (preg.tipo === 'OM') {
                                 if (preg.preguntasComplementarias.length > 0) {
+                                  
                                   return (
                                     <>
                                       <OpcionMultiple 
@@ -1715,7 +1721,7 @@ const NuevaEncuesta = ({
                                       />
                                       
                                       {preg.preguntasComplementarias.map((pregComplementaria, indexpComplementaria) => (
-                                       
+                                        <>
                                         <div key={indexpComplementaria}>
                                           {pregComplementaria.tipo === 'OM' && (
                                             <OpcionMultiple
@@ -1741,6 +1747,7 @@ const NuevaEncuesta = ({
                                               banderaComplementaria={true}
                                               indiceComplementaria={indexpComplementaria}
                                               saveComplementaria={pregComplementaria.save}
+                                              indiceComplementariaPosicionPregunta={indexp}
                                             />
                                           )}
                                           {pregComplementaria.tipo === 'VE' && (
@@ -1769,6 +1776,7 @@ const NuevaEncuesta = ({
                                           )}
                                           
                                         </div>
+                                        </>
                                       ))}
 
                                     </>
