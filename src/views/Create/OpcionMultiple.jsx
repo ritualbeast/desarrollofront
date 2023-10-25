@@ -756,7 +756,10 @@ const OpcionMultiple = ({
 
     const handleCancelarOpcionMultiple = () => {
         setPregunta(preguntaTemp)
-        closeopmul(indice, indiceSec, banderaComplementaria, indiceComplementaria);
+        
+        closeopmul(indice, indiceSec, banderaComplementaria, indiceComplementaria, indiceComplementariaPosicionPregunta);
+    
+
     };
 
     const handleEliminarOpcionMultiple = () => (
@@ -1095,7 +1098,7 @@ const OpcionMultiple = ({
                         {configuracion2 && (
                             <Col className='seccion1-2-opcionMultiple-configuracion'>
                                 <select className='selectConfigurar' onChange={handleComplemetaria}>
-                                    <option value="" selected disabled hidden>Seleccionar Pregunta...</option>
+                                    <option value="" selected disabled hidden>Seleccionar Preguntas...</option>
                                     {todasLasPreguntasConPosicion.map((pregunta, index) => (
                                         
                                         <option key={index} value={JSON.stringify(pregunta)}>

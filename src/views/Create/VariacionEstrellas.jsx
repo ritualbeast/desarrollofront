@@ -153,6 +153,7 @@ const VariacionEstrellas = ({
     complementariaValue,
     banderaComplementaria,
     indiceComplementaria,
+    indiceComplementariaPosicionPregunta,
 }) => {
     const [mostrarEditar, setMostrarEditar] = useState(true);
     const [mostrarConfiguracion, setMostrarConfiguracion] = useState(false);
@@ -634,11 +635,12 @@ const VariacionEstrellas = ({
 
     const handleCancelarVariacionEstrellas = () => {
         setPregunta(preguntaTemp)
-        closeVariacionEstrellas(indice, indiceSec);
+        closeVariacionEstrellas(indice, indiceSec, banderaComplementaria, indiceComplementaria, indiceComplementariaPosicionPregunta);
+    
     };
 
     const handleEliminarVariacionEstrellas = () => {
-        handleEliminarPregunta(indice, indiceSec)
+        handleEliminarPregunta(indice, indiceSec, banderaComplementaria, indiceComplementaria)
     };
 
     const handleGuardarValoracionEstrellas = () => {
@@ -1075,8 +1077,8 @@ const VariacionEstrellas = ({
                         </Col>
                         {configuracion2 && (
                             <Col className='seccion1-2-variacionEstrellas-configuracion'>
-                                <select className='selectConfigurar' onChange={handleComplemetaria} value={posicionContentCont}>
-                                   <option value="" selected disabled hidden>Seleccionar Pregunta</option>
+                                <select className='selectConfigurar' onChange={handleComplemetaria}>
+                                   <option value="" selected disabled hidden>Seleccionar Pregunta...</option>
                                     {todasLasPreguntasConPosicion.map((pregunta, index) => (
                                         <option key={index} value={JSON.stringify(pregunta)}>
                                         {pregunta.pregunta}
@@ -1311,6 +1313,8 @@ const VariacionEstrellas = ({
                     banderaComplementaria={banderaComplementaria}
                     indiceComplementaria={indiceComplementaria}
                     posicionComplementaria={posicionComplementaria}
+                    indiceComplementariaPosicionPregunta={indiceComplementariaPosicionPregunta}
+               
                 />
             </Container>
         )}

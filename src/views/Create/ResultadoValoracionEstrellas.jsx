@@ -74,6 +74,7 @@ function ResultadoValoracionEstrellas({
     triangleFillSVG,
     indiceComplementaria,
     banderaComplementaria,
+    indiceComplementariaPosicionPregunta,
 }) {
     // console.log('opciones -->>', opciones)
     const [openEliminarPregunta, setOpenEliminarPregunta] = useState(false);
@@ -98,6 +99,8 @@ function ResultadoValoracionEstrellas({
     const [tipoIcono, setTipoIcono] = useState();
     const opcionNinguna = opcionesRespuesta.find((opcion) => opcion.respuesta === 'Ninguna de las anteriores');
     const otraRespuesta = opcionesRespuesta.find((opcion) => opcion.respuesta === 'Otra respuesta');
+    const [banderaEditarComplemetaria, setBanderaEditarComplemetaria] = useState(true);
+ 
 
     useEffect(() => {
         let newStyle = {...opcionesRespuestaStyle};
@@ -312,7 +315,13 @@ function ResultadoValoracionEstrellas({
                         id={`editPreg${index +1}-${indexSec}`}
                         className={`contenedor-editar-pregunta`}
                     >
-                        <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index)}}>Editar</p>
+                        {banderaComplementaria ? (  
+                            <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, indiceComplementaria, banderaComplementaria, index, banderaEditarComplemetaria, indiceComplementariaPosicionPregunta)}}>EditarC</p>  
+                        ) : (
+                            <p className='titulo-editarPregunta' onClick={() => {handleEditarPregunta(indexSec, index, banderaComplementaria)}}>Editar</p>
+                        )
+
+                        }
                         <p className='titulo-editarOpciones'>Opciones</p>
                         <p className='titulo-editarMover'>Mover</p>
                         <p className='titulo-editarDuplicar'>Duplicar</p>
